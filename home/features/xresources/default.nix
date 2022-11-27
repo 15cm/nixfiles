@@ -1,4 +1,4 @@
-{ withArgs, ... }:
+{ specialArgs, withArgs, ... }:
 
 {
   xresources.properties = {

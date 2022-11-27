@@ -1,0 +1,19 @@
+" Common
+set number relativenumber
+
+" Extensions
+set surround
+
+" With a map leader it's possible to do extra key combinations
+" like <leader>w saves the current file
+let mapleader = " "
+let g:mapleader = " "
+
+noremap t :action AceAction<CR>
+noremap <leader>jl :action AceLineAction<CR>
+
+" Disable Hardware Beep Sound
+set vb
+
+set ignorecase
+set smartcase

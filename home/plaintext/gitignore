@@ -1,0 +1,5 @@
+# Emacs
+.dir-locals.el
+
+# Python
+.python-version

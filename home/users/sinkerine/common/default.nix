@@ -12,4 +12,7 @@ in {
   programs.home-manager.enable = true;
 
   home.packages = [pkgs.exa];
+
+  home.file.".gitignore".source = ../../../plaintext/gitignore;
+  home.file.".ideavimrc".source = ../../../plaintext/ideavimrc;
 }

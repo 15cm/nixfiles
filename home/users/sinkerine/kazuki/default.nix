@@ -1,4 +1,4 @@
-args@{ config, pkgs, ... }:
+args@{ self, config, pkgs, ... }:
 
 {
   imports = [
@@ -10,4 +10,6 @@ args@{ config, pkgs, ... }:
 
   home.stateVersion = "22.05";
   programs.home-manager.enable = true;
+
+  home.file.".imwheelrc".source = ../../../plaintext/imwheelrc;
 }
