@@ -9,6 +9,7 @@
     ../features/zsh
     ../features/navi
     ../features/powerline
+    ../features/misc-dotfiles
   ];
 
   home.packages = [ pkgs.exa pkgs.fd ];

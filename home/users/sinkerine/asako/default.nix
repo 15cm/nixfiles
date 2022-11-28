@@ -1,18 +1,28 @@
 args@{ config, pkgs, ... }:
 
 let
-  xresourcesArgs = { propertiesOverride = { "Xft.dpi" = 192; "Xcursor.size" = 48;}; };
+  xresourcesArgs = {
+    propertiesOverride = {
+      "Xft.dpi" = 120;
+      "Xcursor.size" = 30;
+    };
+  };
   xprofileArgs = {
     extraConfig = ''
       # QT
-      export QT_SCREEN_SCALE_FACTORS=2
+      export QT_SCREEN_SCALE_FACTORS=1.25
 
       # GTK
-      export GDK_SCALE=2
-      export GDK_DPI_SCALE=0.5
+      export GDK_SCALE=1.25
+      export GDK_DPI_SCALE=0.8
 
       # Alacritty
-      export WINIT_HIDPI_FACTOR=2
+      export WINIT_HIDPI_FACTOR=1.25
+
+      # Disable trackpad
+      xinput disable "ELAN06A0:00 04F3:3231 Touchpad"
+      # TrackPoint flat acceleration 
+      xinput set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Profile Enabled" 0, 1
     '';
   };
 in {
@@ -27,4 +37,5 @@ in {
     (import ../../../features/x-dotfiles
       (args // { withArgs.xprofile = xprofileArgs; }))
   ];
+
 }
