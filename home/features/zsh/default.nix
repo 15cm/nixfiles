@@ -52,9 +52,6 @@ in {
     } // (if isDarwin then { HOMEBREW_NO_AUTO_UPDATE = "1"; } else { });
     initExtraFirst = (builtins.readFile ./extra-first.zshrc);
     initExtra = (builtins.readFile ./extra.zshrc) + ''
-
-      # Powerline
-      ${pkgs.python3Packages.powerline}/share/zsh/powerline.zsh
     '';
 
     shellAliases = {
@@ -92,6 +89,5 @@ in {
       { });
   };
 
-
-  # home.packages = [ pkgs.lua pkgs.python3Packages.powerline ];
+  home.packages = [ pkgs.lua ];
 }

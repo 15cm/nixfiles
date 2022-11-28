@@ -1,0 +1,29 @@
+{
+  "segments": {
+	"right": [
+      {
+        "function": "powerline.segments.common.sys.system_load",
+        "args": {
+          "short": true
+        }
+      },
+	  {
+		"function": "powerline.segments.common.time.date"
+	  },
+	  {
+		"function": "powerline.segments.common.time.date",
+		"name": "time",
+		"args": {
+		  "format": "%H:%M",
+		  "istime": true
+		}
+	  },
+	  {
+		"function": "powerline.segments.common.net.hostname",
+        "args": {
+          "only_if_ssh": true
+        }
+	  }
+	]
+  }
+}

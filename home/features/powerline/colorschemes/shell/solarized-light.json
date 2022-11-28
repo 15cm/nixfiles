@@ -1,0 +1,95 @@
+{
+    "mode_translations": {
+        "vicmd": {
+            "groups": {
+                "mode": {
+                    "attrs": [
+                        "bold"
+                    ],
+                    "bg": "solarized:blue",
+                    "fg": "solarized:base3"
+                }
+            }
+        }
+    },
+    "groups": {
+        "gitstatus:divider": {
+            "attrs": [],
+            "bg": "gray2",
+            "fg": "gray8"
+        },
+        "gitstatus_stashed": {
+            "attrs": [],
+            "bg": "gray2",
+            "fg": "darkblue"
+        },
+        "gitstatus_untracked": {
+            "attrs": [],
+            "bg": "gray2",
+            "fg": "brightestorange"
+        },
+        "gitstatus_changed": {
+            "attrs": [],
+            "bg": "gray2",
+            "fg": "orangered"
+        },
+        "gitstatus_unmerged": {
+            "attrs": [],
+            "bg": "gray2",
+            "fg": "brightred"
+        },
+        "gitstatus_staged": {
+            "attrs": [],
+            "bg": "lightyellowgreen",
+            "fg": "solarized:base2"
+        },
+        "gitstatus_ahead": {
+            "attrs": [],
+            "bg": "green",
+            "fg": "solarized:base3"
+        },
+        "gitstatus_behind": {
+            "attrs": [],
+            "bg": "solarized:orange",
+            "fg": "solarized:base3"
+        },
+        "gitstatus_tag": {
+            "attrs": [],
+            "bg": "gray2",
+            "fg": "darkcyan"
+        },
+        "gitstatus_branch_detached": {
+            "attrs": [],
+            "bg": "solarized:red",
+            "fg": "mediumpurple"
+        },
+        "gitstatus_branch_dirty": "warning:regular",
+        "gitstatus_branch_clean": "vcs:clean",
+        "gitstatus_branch": "vcs:clean",
+        "gitstatus": "vcs:clean",
+        "mode": {
+            "attrs": [
+                "bold"
+            ],
+            "bg": "solarized:green",
+            "fg": "solarized:base3"
+        },
+        "pyenv:version": {
+            "fg": "solarized:green",
+            "bg": "solarized:base2"
+        },
+        "vcs:clean": {
+            "attrs": [],
+            "bg": "solarized:green",
+            "fg": "solarized:base3"
+        },
+        "cwd:divider": {
+            "attrs": [],
+            "bg": "cornflowerblue",
+            "fg": "gray10"
+        },
+        "cwd:current_folder": "information:regular",
+        "cwd": "information:additional"
+    },
+    "name": "Solarized light for shell"
+}

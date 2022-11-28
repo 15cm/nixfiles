@@ -21,17 +21,17 @@
         };
       };
     in {
-      homeConfigurations = nixpkgs.lib.trivial.pipe homeConfigurationArgs [
-        (builtins.mapAttrs (name: value:
-          value // {
+      homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
+        (builtins.mapAttrs (_: v:
+          v // {
             inherit pkgs;
-            extraSpecialArgs = (value.extraSpecialArgs or { }) // {
+            extraSpecialArgs = (v.extraSpecialArgs or { }) // {
               inherit (state) colorScheme;
               projectRootUnderHome = ".nixfiles";
             };
           }))
         (builtins.mapAttrs
-          (name: value: home-manager.lib.homeManagerConfiguration value))
+          (_: v: home-manager.lib.homeManagerConfiguration v))
       ];
     };
 }

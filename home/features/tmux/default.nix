@@ -27,7 +27,7 @@ in {
       set -g default-command "${shell}"
 
       # Copy mode key bindings
-      bind-key -t vi-copy y copy-pipe "${commonConfig.clipper.copyCommand}"
+      bind-key -T copy-mode-vi 'y' send-keys -X copy-pipe-and-cancel "${commonConfig.clipper.copyCommand}"
 
       # tmux fzf
       bind-key s run-shell -b "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts/session.sh attach"
@@ -45,6 +45,4 @@ in {
       source ${pkgs.python3Packages.powerline}/share/tmux/powerline.conf
     '';
   };
-
-  home.packages = [ pkgs.python3Packages.powerline ];
 }
