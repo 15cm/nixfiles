@@ -4,5 +4,6 @@
     enableZshIntegration = true;
     enableBashIntegration = false;
     enableFishIntegration = false;
+    keys = [];
   };
 }
