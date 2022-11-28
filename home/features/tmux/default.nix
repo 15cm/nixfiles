@@ -19,14 +19,19 @@ in {
       pain-control
       extrakto
       jump
-      # fzf
+      tmux-fzf
     ];
-    extraConfig = ''
+    extraConfig = (builtins.readFile ./extra.tmux.conf) + ''
+
       # Start a non-login shell
       set -g default-command "${shell}"
 
       # Copy mode key bindings
       bind-key -t vi-copy y copy-pipe "${commonConfig.clipper.copyCommand}"
+
+      # tmux fzf
+      bind-key s run-shell -b "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts/session.sh attach"
+      bind-key w run-shell -b "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts/window.sh switch"
 
       # Extrakto
       set -g @extrakto_fzf_tool fzf
