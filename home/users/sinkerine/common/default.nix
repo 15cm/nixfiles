@@ -1,18 +1,20 @@
 args@{ pkgs, ... }:
 
-let constants = (import ./constants.nix);
+let commonConfig = (import ./config.nix);
 in {
-  imports = [
-    (import ../../../features/emacs
-      (args // { withArgs.homeDirectory = constants.home.homeDirectory; }))
-  ];
-  home.username = constants.home.username;
-  home.homeDirectory = constants.home.homeDirectory;
+  home.username = commonConfig.home.username;
+  home.homeDirectory = commonConfig.home.homeDirectory;
 
   programs.home-manager.enable = true;
 
-  home.packages = [pkgs.exa];
+  imports = [
+    (import ../../../common
+      (args // { withArgs.homeDirectory = commonConfig.home.homeDirectory; }))
+  ];
+
+  home.packages = [ pkgs.exa ];
 
   home.file.".gitignore".source = ../../../plaintext/gitignore;
   home.file.".ideavimrc".source = ../../../plaintext/ideavimrc;
+
 }
