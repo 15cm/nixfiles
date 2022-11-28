@@ -45,14 +45,15 @@ in {
       ignoreDups = true;
     };
     sessionVariables = {
-      PATH = "$PATH:$HOME/.local/bin";
+      PATH = "$PATH:$HOME/.local/bin:/usr/local/bin";
       EDITOR = ./exec-editor.sh;
       LC_ALL = "en_US.utf-8";
       LANG = "en_US.utf-8";
+      LANGUAGE = "en_US.UTF-8";
+      TZ = "America/Los_Angeles";
     } // (if isDarwin then { HOMEBREW_NO_AUTO_UPDATE = "1"; } else { });
     initExtraFirst = (builtins.readFile ./extra-first.zshrc);
-    initExtra = (builtins.readFile ./extra.zshrc) + ''
-    '';
+    initExtra = (builtins.readFile ./extra.zshrc) + "";
 
     shellAliases = {
       md = "mkdir -p";
