@@ -6,10 +6,4 @@ in rec {
   home.homeDirectory = commonConfig.home.homeDirectory;
 
   imports = [ ../../../common ];
-
-  home.packages = [ ];
-
-  home.file.".gitignore".source = ../../../plaintext/gitignore;
-  home.file.".ideavimrc".source = ../../../plaintext/ideavimrc;
-
 }
