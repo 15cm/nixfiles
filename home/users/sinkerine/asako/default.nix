@@ -27,8 +27,13 @@ let
   };
 in {
   home.stateVersion = "22.05";
+  nixpkgs = { inherit (commonConfig.nix.nixpkgs) overlays; };
+
   imports = [
     ../common
+    # TODO: switch to the pkgs.emacsPgtkNativeComp when the nixfiles repo is stable. The Pgtk variant needs to compile from Emacs head and it takes a while.
+    (import ../../../features/emacs
+      (args // { withArgs.packageOverride = pkgs.emacsPgtkNativeComp; }))
     (import ../../../features/xresources (args // {
       withArgs = { inherit (xresourcesArgs) propertiesOverride; };
     }))

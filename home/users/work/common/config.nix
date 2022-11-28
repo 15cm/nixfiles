@@ -1,10 +1,6 @@
 { ... }:
 
 {
-  home = {
-    username = "sinkerine";
-    homeDirectory = "/home/sinkerine";
-  };
   nix = {
     nixpkgs.overlays = [
       (import (builtins.fetchGit {

@@ -1,7 +1,13 @@
 args@{ config, pkgs, ... }:
 
 let
-  xresourcesArgs = { propertiesOverride = { "Xft.dpi" = 192; "Xcursor.size" = 48;}; };
+  commonConfig = (import ../common/config.nix args);
+  xresourcesArgs = {
+    propertiesOverride = {
+      "Xft.dpi" = 192;
+      "Xcursor.size" = 48;
+    };
+  };
   xprofileArgs = {
     extraConfig = ''
       # QT
@@ -17,8 +23,13 @@ let
   };
 in {
   home.stateVersion = "22.05";
+  nixpkgs = { inherit (commonConfig.nix.nixpkgs) overlays; };
+
   imports = [
     ../common
+    # TODO: switch to the pkgs.emacsPgtkNativeComp when the nixfiles repo is stable. The Pgtk variant needs to compile from Emacs head and it takes a while.
+    (import ../../../features/emacs
+      (args // { withArgs.packageOverride = pkgs.emacsNativeComp; }))
     (import ../../../features/xresources (args // {
       withArgs = { inherit (xresourcesArgs) propertiesOverride; };
     }))
