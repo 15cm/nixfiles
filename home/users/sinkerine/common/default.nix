@@ -1,15 +1,13 @@
 args@{ pkgs, ... }:
 
 let commonConfig = (import ./config.nix);
-in {
+in rec {
   home.username = commonConfig.home.username;
   home.homeDirectory = commonConfig.home.homeDirectory;
 
-  programs.home-manager.enable = true;
-
   imports = [ ../../../common ];
 
-  home.packages = [ pkgs.exa ];
+  home.packages = [ ];
 
   home.file.".gitignore".source = ../../../plaintext/gitignore;
   home.file.".ideavimrc".source = ../../../plaintext/ideavimrc;

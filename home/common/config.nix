@@ -1,6 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, config, specialArgs, ... }:
 
 {
+  nix = {
+    projectRoot = "${config.home.homeDirectory}/${specialArgs.projectRootUnderHome}";
+  };
   shell = {
     binary = "${pkgs.zsh}/bin/zsh";
   };

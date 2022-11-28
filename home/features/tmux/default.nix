@@ -1,6 +1,6 @@
-{ config, pkgs, ... }:
+args@{ config, pkgs, ... }:
 
-let commonConfig = (import ../../common/config.nix pkgs);
+let commonConfig = (import ../../common/config.nix args);
 in {
   programs.tmux = rec {
     enable = true;
