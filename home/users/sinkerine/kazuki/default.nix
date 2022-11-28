@@ -6,6 +6,7 @@ args@{ self, config, pkgs, ... }:
     (import ../../../features/xresources
       (args // { withArgs.propertiesOverride = { "Xft.dpi" = 192; }; }))
     ../../../features/alacritty
+    ../../../features/keychain
   ];
 
   home.stateVersion = "22.05";

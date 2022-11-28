@@ -3,7 +3,11 @@
 {
   programs.home-manager.enable = true;
 
-  imports = [ ../features/emacs ../features/tmux ../features/zsh];
+  imports =
+    [ ../features/emacs ../features/tmux ../features/zsh ../features/navi ];
 
-  home.packages = [ pkgs.exa ];
+  home.packages = [
+    pkgs.exa
+    pkgs.fd
+  ];
 }
