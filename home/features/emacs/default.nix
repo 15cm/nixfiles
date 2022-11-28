@@ -1,6 +1,6 @@
-{ pkgs, withArgs, ... }:
+{ pkgs, config, ... }:
 
-let config = (import ./config.nix withArgs.homeDirectory);
+let customConfig = (import ./config.nix { inherit config; });
 in {
   # Use the lucid instead of gtk to get a more stable daemon experience.
   programs.emacs = {
@@ -12,8 +12,8 @@ in {
     enable = true;
     socketActivation = {
       enable = true;
-      socketDir = config.socket.dir;
-      socketName = config.socket.name;
+      socketDir = customConfig.socket.dir;
+      socketName = customConfig.socket.name;
     };
   };
 }

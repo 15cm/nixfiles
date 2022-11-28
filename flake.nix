@@ -10,7 +10,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -18,6 +18,9 @@
       homeConfigurationArgs = {
         "sinkerine@kazuki" = {
           modules = [ ./home/users/sinkerine/kazuki ./modules/home-manager ];
+          extraSpecialArgs = {
+            inherit inputs;
+          };
         };
       };
     in {
@@ -25,7 +28,7 @@
         (builtins.mapAttrs (name: value:
           value // {
             inherit pkgs;
-            extraSpecialArgs = { inherit (state) colorScheme; };
+            extraSpecialArgs = (value.extraSpecialArgs or {}) // { inherit (state) colorScheme; };
           }))
         (builtins.mapAttrs
           (name: value: home-manager.lib.homeManagerConfiguration value))

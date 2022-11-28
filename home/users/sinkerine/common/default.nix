@@ -7,10 +7,7 @@ in {
 
   programs.home-manager.enable = true;
 
-  imports = [
-    (import ../../../common
-      (args // { withArgs.homeDirectory = commonConfig.home.homeDirectory; }))
-  ];
+  imports = [ ../../../common ];
 
   home.packages = [ pkgs.exa ];
 

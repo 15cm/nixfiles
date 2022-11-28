@@ -1,8 +1,8 @@
-homeDirectory:
+{ config, ...}:
 
 {
   socket = rec {
-    dir = "${homeDirectory}/local/run/emacs";
+    dir = "${config.home.homeDirectory}/local/run/emacs";
     name = "misc";
     path = "${dir}/name";
   };
