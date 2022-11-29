@@ -1,3 +1,1 @@
-{
-  imports = [./emacs.nix];
-}
+{ imports = [ ./emacs.nix ./clipper.nix ]; }

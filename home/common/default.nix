@@ -10,7 +10,8 @@
     ../features/powerline
     ../features/misc-dotfiles
     ../features/set-theme
+    ../features/clipper
   ];
 
-  home.packages = [ pkgs.exa pkgs.fd pkgs.bottom pkgs.clipper ];
+  home.packages = [ pkgs.exa pkgs.fd pkgs.bottom ];
 }
