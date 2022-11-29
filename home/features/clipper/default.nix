@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, templateData, ... }:
 
 let
   logDir = "${config.home.homeDirectory}/local/log";
@@ -7,8 +7,7 @@ in {
   programs.clipper = {
     enable = true;
     settings = {
-      address = "localhost";
-      port = 8377;
+      inherit (templateData.clipper) address port;
       logfile = logFile;
     };
   };

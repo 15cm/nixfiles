@@ -1,9 +1,10 @@
-args@{ pkgs, ... }:
+args@{ ... }:
 
-let commonConfig = (import ./config.nix args);
-in rec {
-  home.username = commonConfig.home.username;
-  home.homeDirectory = commonConfig.home.homeDirectory;
+{
+  home = rec {
+    username = "sinkerine";
+    homeDirectory = "/home/${username}";
+  };
 
   imports = [ ../../../common ];
 }

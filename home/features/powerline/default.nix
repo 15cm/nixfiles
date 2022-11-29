@@ -2,84 +2,39 @@
 
 with lib;
 let
-  colorScheme =
-    (if specialArgs.colorScheme == "light" then "solarized-light" else "nord");
-in {
-  programs.powerline = {
-    enable = true;
-    enableZshIntegration = true;
-
-    settings = {
-      ext = {
-        shell = {
-          theme = "default";
-          local_themes = {
-            continuation = "continuation";
-            select = "select";
-          };
-          colorscheme = colorScheme;
-        };
-        tmux = {
-          theme = "default";
-          colorscheme = colorScheme;
-        };
-      };
-      # TODO: Verify 24 bit color support of Alacritty
-      # Powerline doc: https://powerline.readthedocs.io/en/2.3/configuration/reference.html
-      # Alacritty issue: https://github.com/alacritty/alacritty/issues/109
-      common = { term_truecolor = false; };
-    };
-
-    colors = pipe ./colors.json [ builtins.readFile builtins.fromJSON ];
-
-    colorSchemes = {
-      nord =
-        pipe ./colorschemes/nord.json [ builtins.readFile builtins.fromJSON ];
-      "solarized-light" = pipe ./colorschemes/solarized-light.json [
-        builtins.readFile
-        builtins.fromJSON
-      ];
-    };
-    colorSchemesShell = {
-      nord = pipe ./colorschemes/shell/nord.json [
-        builtins.readFile
-        builtins.fromJSON
-      ];
-      "solarized-light" = pipe ./colorschemes/shell/solarized-light.json [
-        builtins.readFile
-        builtins.fromJSON
-      ];
-    };
-    colorSchemesTmux = {
-      nord = pipe ./colorschemes/tmux/nord.json [
-        builtins.readFile
-        builtins.fromJSON
-      ];
-      "solarized-light" = pipe ./colorschemes/tmux/solarized-light.json [
-        builtins.readFile
-        builtins.fromJSON
-      ];
-    };
-    # TODO: Find a way to package these shell theme segments and conditionally loads them:
-    # "right": [
-    # {
-    #     "function": "powerline_pyenv.pyenv",
-    #     "priority": 20
-    # },
-    # {
-    #     "function": "powerline_gitstatus.gitstatus",
-    #     "priority": 10
-    # }
-    # ]
-    themesShell = {
-      default = pipe ./themes/shell/default.json [
-        builtins.readFile
-        builtins.fromJSON
-      ];
-    };
-    themesTmux = {
-      default =
-        pipe ./themes/tmux/default.json [ builtins.readFile builtins.fromJSON ];
-    };
+  inherit (specialArgs) theme;
+  inherit (specialArgs.mylib) templateFile;
+  templateData = {
+    colorScheme = (if theme == "light" then "solarized-light" else "nord");
   };
+  package = config.programs.powerline.package;
+in {
+  programs.powerline.enable = true;
+  xdg.configFile."powerline/config.json".source =
+    templateFile "powerline-config" templateData ./config.json.jinja;
+  xdg.configFile."powerline/color.json".source = ./colors.json;
+  xdg.configFile."powerline/colorschemes/nord.json".source =
+    ./colorschemes/nord.json;
+  xdg.configFile."powerline/colorschemes/solarized-light.json".source =
+    ./colorschemes/solarized-light.json;
+  xdg.configFile."powerline/colorschemes/shell/nord.json".source =
+    ./colorschemes/shell/nord.json;
+  xdg.configFile."powerline/colorschemes/shell/solarized-light.json".source =
+    ./colorschemes/shell/solarized-light.json;
+  xdg.configFile."powerline/colorschemes/tmux/nord.json".source =
+    ./colorschemes/tmux/nord.json;
+  xdg.configFile."powerline/colorschemes/tmux/solarized-light.json".source =
+    ./colorschemes/tmux/solarized-light.json;
+  xdg.configFile."powerline/themes/shell/default.json".source =
+    ./themes/shell/default.json;
+  xdg.configFile."powerline/themes/tmux/default.json".source =
+    ./themes/tmux/default.json;
+  programs.zsh.initExtra = ''
+    # Powerline
+    source ${package}/share/zsh/powerline.zsh
+  '';
+  programs.tmux.extraConfig = ''
+    # Powerline
+    source ${package}/share/tmux/powerline.conf
+  '';
 }

@@ -1,6 +1,7 @@
-{ nixpkgs, pkgs, ... }:
+args@{ nixpkgs, pkgs, ... }:
 
-{
+let commonConfig = (import ./config.nix args);
+in {
   programs.home-manager.enable = true;
 
   imports = [
@@ -10,7 +11,8 @@
     ../features/powerline
     ../features/misc-dotfiles
     ../features/set-theme
-    ../features/clipper
+    (import ../features/clipper
+      (args // { templateData = { inherit (commonConfig) clipper; }; }))
   ];
 
   home.packages = [ pkgs.exa pkgs.fd pkgs.bottom ];

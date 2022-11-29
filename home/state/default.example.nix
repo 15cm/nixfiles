@@ -1,3 +1,3 @@
 {
-  colorScheme = "dark";
+  theme = "dark";
 }

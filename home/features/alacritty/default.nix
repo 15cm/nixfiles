@@ -20,7 +20,7 @@
         # Point size of the font
         size = 12;
       };
-      colors = (if specialArgs.colorScheme == "light" then { # Soloriazed light
+      colors = (if specialArgs.theme == "light" then { # Soloriazed light
         primary = {
           background = "0xfdf6e3";
           foreground = "0x586e75";

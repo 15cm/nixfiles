@@ -1,5 +1,10 @@
-{ specialArgs, withArgs, ... }:
-let colorScheme = specialArgs.colorScheme;
+{ specialArgs, ... }:
+let
+  inherit (specialArgs.mylib) templateFile;
+  templateData = rec {
+    inherit (specialArgs) hostname theme;
+    colorScheme = (if theme == "light" then "solarized-light" else "nord-dark");
+  };
 in {
   programs.i3status-rust = {
     enable = true;

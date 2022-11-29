@@ -1,5 +1,6 @@
 args@{ config, lib, pkgs, ... }:
 
+with lib;
 let
   commonConfig = (import ../../common/config.nix args);
   isLinux = pkgs.stdenv.isLinux;
@@ -46,14 +47,14 @@ in {
     };
     sessionVariables = {
       PATH = "$PATH:$HOME/.local/bin:$HOME/local/bin:/usr/local/bin";
-      EDITOR = ./exec-editor.sh;
+      EDITOR = pkgs.writeShellScript "exec-editor.sh" ./exec-editor.sh;
       LC_ALL = "en_US.utf-8";
       LANG = "en_US.utf-8";
       LANGUAGE = "en_US.UTF-8";
       TZ = "America/Los_Angeles";
-    } // (if isDarwin then { HOMEBREW_NO_AUTO_UPDATE = "1"; } else { });
+    } // optionalAttrs isDarwin { HOMEBREW_NO_AUTO_UPDATE = "1"; };
     initExtraFirst = (builtins.readFile ./extra-first.zshrc);
-    initExtra = (builtins.readFile ./extra.zshrc) + "";
+    initExtra = (builtins.readFile ./extra.zshrc);
 
     shellAliases = {
       md = "mkdir -p";
@@ -80,12 +81,11 @@ in {
       cpy = commonConfig.clipper.copyCommand;
       pst = (if isLinux then "xclip -o" else "pbpaste");
       th = (if isLinux then "trash-put" else "trash");
-    } // (if isLinux then {
+    } // optionalAttrs isLinux {
       sc = "sudo systemctl";
       scu = "systemctl --user";
-      ssh = "ssh -F ${../ssh/interactive.conf}";
-    } else
-      { });
+      ssh = "ssh -F ~/.ssh/interactive.conf";
+    };
   };
 
   home.packages = [ pkgs.lua ];
