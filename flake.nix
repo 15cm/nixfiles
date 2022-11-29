@@ -20,15 +20,13 @@
         rev = "c231c73992cf9a024070b841fdcfdf067da1a3dd";
       }));
     in rec {
-      overlays = import ./overlays;
+      overlays = import ./overlays { inherit inputs; };
       legacyPackages = forAllSystems (system:
         import nixpkgs {
           inherit system;
           overlays = with overlays; [ additions emacsOverlay ];
           config.allowUnfree = true;
         });
-      packages = forAllSystems
-        (system: import ./pkgs { pkgs = legacyPackages.${system}; });
       homeConfigurationArgs = {
         "sinkerine@kazuki" = {
           pkgs = legacyPackages."x86_64-linux";
@@ -40,9 +38,12 @@
         (builtins.mapAttrs (configName: v:
           v // {
             extraSpecialArgs = (v.extraSpecialArgs or { }) // {
-              inherit configName;
-              inherit (state) theme;
-              projectRootUnderHome = ".nixfiles";
+              inherit inputs;
+              inherit state;
+              nixinfo = {
+                inherit configName;
+                projectRoot = ".nixfiles";
+              };
               mylib = (import ./lib {
                 inherit (v) pkgs;
                 inherit (v.pkgs) lib;

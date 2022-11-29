@@ -1,4 +1,4 @@
-args@{ pkgs, ... }:
+args@{ pkgs, inputs, ... }:
 
 {
   home.stateVersion = "22.05";
@@ -15,4 +15,6 @@ args@{ pkgs, ... }:
     ../../../features/keychain
     ../../../features/i3
   ];
+
+  home.file."test".text = builtins.toJSON inputs.mach-nix;
 }

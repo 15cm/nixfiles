@@ -1,10 +1,10 @@
 # Dotfiles related to X that doesn't have a module support or doesn't want completed program modules.
 
-{ specialArgs, ... }:
+{ mylib, hostname, ... }:
 
 let
-  inherit (specialArgs.mylib) templateFile;
-  templateData = { inherit (specialArgs) hostname; };
+  inherit (mylib) templateFile;
+  templateData = { inherit hostname; };
 in {
   home.file.".imwheelrc".source = ./imwheelrc;
   home.file.".xprofile".source =

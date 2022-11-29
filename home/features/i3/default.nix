@@ -1,11 +1,16 @@
-{ specialArgs, pkgs, lib, ... }:
+{ mylib, hostname, state, pkgs, lib, ... }:
 
 with lib;
 let
-  inherit (specialArgs.mylib) templateFile;
+  inherit (mylib) templateFile;
   templateData = rec {
-    inherit (specialArgs) hostname theme;
+    inherit hostname;
+    inherit (state) theme;
     colorScheme = (if theme == "light" then "solarized-light" else "nord-dark");
+    monitors = {
+      one = "DP-0";
+      two = "DP-2";
+    };
   };
 in {
   home.packages = [ pkgs.i3status-rust ];
@@ -14,6 +19,8 @@ in {
     templateFile "i3-config" templateData ./config.jinja;
   xdg.configFile."i3/status.toml".source =
     templateFile "i3status-rust" templateData ./status.toml.jinja;
-  xdg.configFile."scripts/i3/init.sh".source =
+
+  # Scripts
+  xdg.configFile."i3/scripts/init.sh".source =
     pipe ./init.sh [ builtins.readFile (pkgs.writeShellScript "i3-init.sh") ];
 }

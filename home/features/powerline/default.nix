@@ -1,9 +1,9 @@
-{ config, lib, pkgs, specialArgs, ... }:
+{ config, lib, pkgs, state, mylib, ... }:
 
 with lib;
 let
-  inherit (specialArgs) theme;
-  inherit (specialArgs.mylib) templateFile;
+  inherit (state) theme;
+  inherit (mylib) templateFile;
   templateData = {
     colorScheme = (if theme == "light" then "solarized-light" else "nord");
   };

@@ -1,8 +1,9 @@
-{ specialArgs, ... }:
+{ mylib, hostname, state, ... }:
 let
-  inherit (specialArgs.mylib) templateFile;
+  inherit (mylib) templateFile;
   templateData = rec {
-    inherit (specialArgs) hostname theme;
+    inherit hostname;
+    inherit (state) theme;
     colorScheme = (if theme == "light" then "solarized-light" else "nord-dark");
   };
 in {

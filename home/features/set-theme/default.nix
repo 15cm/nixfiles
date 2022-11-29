@@ -1,14 +1,14 @@
-args@{ pkgs, config, specialArgs, ... }:
+args@{ pkgs, config, mylib, ... }:
 
 let
   commonConfig = (import ../../common/config.nix args);
   templateData = {
-    statePath = "${commonConfig.nix.projectRoot}/home/state/default.nix";
-    flakeUri = "${commonConfig.nix.flakeUri}";
+    statePath = "${commonConfig.nixinfo.projectRoot}/home/state/default.nix";
+    flakeUri = "${commonConfig.nixinfo.flakeUri}";
     powerlineTmuxConfPath =
       "${config.programs.powerline.package}/share/tmux/powerline.conf";
   };
-  inherit (specialArgs.mylib) templateShellScriptFile;
+  inherit (mylib) templateShellScriptFile;
 in {
   home.file."local/bin/set-theme.sh".source =
     templateShellScriptFile "set-theme.sh" templateData

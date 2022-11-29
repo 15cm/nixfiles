@@ -1,7 +1,5 @@
-{ specialArgs, ... }:
+{ hostname, ... }:
 
-let inherit (specialArgs) hostname;
-    in
 {
   xresources.properties = {
     "Xft.rgba" = "rgb";
@@ -9,10 +7,10 @@ let inherit (specialArgs) hostname;
     "Xft.hinting" = true;
     "Xft.lcdfilter" = "lcddefault";
   } // (if hostname == "akako" then {
-      "Xft.dpi" = 120;
-      "Xcursor.size" = 30;
+    "Xft.dpi" = 120;
+    "Xcursor.size" = 30;
   } else {
-      "Xft.dpi" = 192;
-      "Xcursor.size" = 48;
-  }) ;
+    "Xft.dpi" = 192;
+    "Xcursor.size" = 48;
+  });
 }

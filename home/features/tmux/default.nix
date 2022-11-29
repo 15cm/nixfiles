@@ -1,9 +1,9 @@
-args@{ config, pkgs, lib, specialArgs, ... }:
+args@{ config, pkgs, lib, mylib, ... }:
 
 with lib;
 let
   commonConfig = (import ../../common/config.nix args);
-  inherit (specialArgs.mylib) templateFile;
+  inherit (mylib) templateFile;
   templateData = {
     shell = commonConfig.shell.binary;
     tmuxFzfScriptsDir =

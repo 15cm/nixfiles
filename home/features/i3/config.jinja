@@ -51,7 +51,6 @@ bindsym $mod+semicolon split h
 bindsym $mod+apostrophe split v
 
 # enter fullscreen mode for the focused container
-# bindsym $mod+f exec ~/.config/scripts/i3/i3_maximize.sh
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
@@ -73,8 +72,8 @@ bindsym $mod+question focus child
 #bindsym $mod+d focus child
 
 # Displays and Screens
-set $monitor_1 DP-0
-set $monitor_2 DP-2
+set $monitor_1 {{monitors.one}}
+set $monitor_2 {{monitors.two}}
 
 # assign workspaces to screens
 workspace 1 output $monitor_1
@@ -133,8 +132,6 @@ bindsym $mod+Shift+r reload
 bindsym $mod+Mod1+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-# move workspaces to specified display
-bindsym $mod+Mod1+Shift+m exec "$HOME/local/bin/move-workspaces.sh"
 
 # Easyfocus
 bindsym $mod+v exec wmfocus
@@ -295,4 +292,4 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #ffffff
 
 # Autostart applications
-exec --no-startup-id ~/.config/scripts/i3/init.sh &
+exec --no-startup-id ~/.config/i3/scripts/init.sh &
