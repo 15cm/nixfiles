@@ -12,5 +12,5 @@
     ../features/set-theme
   ];
 
-  home.packages = [ pkgs.exa pkgs.fd ];
+  home.packages = [ pkgs.exa pkgs.fd pkgs.bottom pkgs.clipper ];
 }
