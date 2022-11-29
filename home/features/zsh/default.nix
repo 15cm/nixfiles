@@ -45,7 +45,7 @@ in {
       ignoreDups = true;
     };
     sessionVariables = {
-      PATH = "$PATH:$HOME/.local/bin:/usr/local/bin";
+      PATH = "$PATH:$HOME/.local/bin:$HOME/local/bin:/usr/local/bin";
       EDITOR = ./exec-editor.sh;
       LC_ALL = "en_US.utf-8";
       LANG = "en_US.utf-8";
@@ -57,8 +57,6 @@ in {
 
     shellAliases = {
       md = "mkdir -p";
-      stl = "set-theme.sh light";
-      std = "set-theme.sh dark";
       rz = "exec $SHELL";
       cdg = "cd-gitroot";
       prl = "parallel";

@@ -1,1 +1,1 @@
-{ imports = [ ./powerline.nix ]; }
+{ imports = [ ./powerline.nix ./set-theme.nix ]; }

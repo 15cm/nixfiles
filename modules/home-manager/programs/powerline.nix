@@ -5,14 +5,10 @@ with lib;
 let
   cfg = config.programs.powerline;
   yamlFormat = pkgs.formats.yaml { };
-  colorSchemes = (mapAttrs' (k: v:
-    nameValuePair ("home.file.${cfg.configDir}/colorschemes/a.json.text") ("a"))
-    cfg.colorSchemes);
 in {
   options = {
     programs.powerline = {
       enable = mkEnableOption "powerline";
-
       package = mkOption {
         type = types.package;
         default = pkgs.python3Packages.powerline;
@@ -20,7 +16,8 @@ in {
         description = "The powerline package to install.";
       };
 
-      enableZshIntegration = mkEnableOption "Enable zsh integration";
+      enableZshIntegration = mkEnableOption "zsh integration";
+      enableTmuxIntegration = mkEnableOption "tmux integration";
 
       configDir = mkOption {
         type = types.str;
@@ -110,6 +107,12 @@ in {
       programs.zsh.initExtra = mkIf (cfg.enableZshIntegration) ''
         # Powerline
         source ${cfg.package}/share/zsh/powerline.zsh
+      '';
+    })
+    ({
+      programs.tmux.extraConfig = mkIf (cfg.enableTmuxIntegration) ''
+        # Powerline
+        source ${pkgs.python3Packages.powerline}/share/tmux/powerline.conf
       '';
     })
     (mkIf (cfg.settings != { }) {

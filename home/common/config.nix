@@ -1,9 +1,10 @@
 { pkgs, config, specialArgs, ... }:
 
 {
-  nix = {
+  nix = rec {
     projectRoot =
       "${config.home.homeDirectory}/${specialArgs.projectRootUnderHome}";
+    flakeUri = "path:${projectRoot}#${specialArgs.configName}";
   };
   shell = { binary = "${pkgs.zsh}/bin/zsh"; };
   clipper = rec {

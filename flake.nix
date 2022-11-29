@@ -21,10 +21,11 @@
       };
     in {
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
-        (builtins.mapAttrs (_: v:
+        (builtins.mapAttrs (configName: v:
           v // {
             inherit pkgs;
             extraSpecialArgs = (v.extraSpecialArgs or { }) // {
+              inherit configName;
               inherit (state) colorScheme;
               projectRootUnderHome = ".nixfiles";
             };
