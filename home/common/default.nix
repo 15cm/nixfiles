@@ -15,5 +15,5 @@ in {
       (args // { templateData = { inherit (commonConfig) clipper; }; }))
   ];
 
-  home.packages = [ pkgs.exa pkgs.fd pkgs.bottom ];
+  home.packages = [ pkgs.exa pkgs.fd pkgs.bottom pkgs.nix-template ];
 }

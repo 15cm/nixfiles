@@ -7,24 +7,23 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, ... }@inputs:
+  outputs = { nixpkgs, home-manager, emacs-overlay, ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       state = (import ./home/state);
-      emacsOverlay = (import (builtins.fetchGit {
-        url = "https://github.com/nix-community/emacs-overlay.git";
-        ref = "master";
-        rev = "c231c73992cf9a024070b841fdcfdf067da1a3dd";
-      }));
     in rec {
-      overlays = import ./overlays { inherit inputs; };
+      overlays = import ./overlays;
       legacyPackages = forAllSystems (system:
         import nixpkgs {
           inherit system;
-          overlays = with overlays; [ additions emacsOverlay ];
+          overlays = with overlays; [ additions emacs-overlay.overlay ];
           config.allowUnfree = true;
         });
       homeConfigurationArgs = {
@@ -38,7 +37,6 @@
         (builtins.mapAttrs (configName: v:
           v // {
             extraSpecialArgs = (v.extraSpecialArgs or { }) // {
-              inherit inputs;
               inherit state;
               nixinfo = {
                 inherit configName;

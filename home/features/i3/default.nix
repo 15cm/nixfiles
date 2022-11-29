@@ -13,7 +13,7 @@ let
     };
   };
 in {
-  home.packages = [ pkgs.i3status-rust ];
+  home.packages = [ pkgs.i3status-rust pkgs.i3-quickterm ];
   #TODO: go through and fix paths of the scripts called by i3 config.
   xdg.configFile."i3/config.jinja".source =
     templateFile "i3-config" templateData ./config.jinja;
