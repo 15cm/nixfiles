@@ -49,19 +49,15 @@ in {
         Environment = "DISPLAY=:0;";
         Type = "exec";
         ExecStartPre = "${pkgs.runtimeShell} -c 'mkdir -p ${cfg.logDir}'";
-        ExecStart = "${clipperBinary}";
+        ExecStart = "${clipperBinary} ${escapeShellArgs cfg.extraArgs}";
         Restart = "always";
         RestartSec = 10;
-        StandardOutput = "syslog";
-        StandardError = "syslog";
         SyslogIdentifier = "clipper";
       };
       # TODO: Figure out if the prerequisites for clipper to work correctly:
       # - X server is up?
       # - After graphical.target?
-      Install = {
-        WantedBy = "default.target";
-      }
+      Install = { WantedBy = [ "default.target" ]; };
     };
   }]);
 }

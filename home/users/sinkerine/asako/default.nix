@@ -1,6 +1,7 @@
-args@{ config, pkgs, ... }:
+args@{ specialArgs, config, pkgs, ... }:
 
 let
+  colorScheme = specialArgs.colorScheme;
   xresourcesArgs = {
     propertiesOverride = {
       "Xft.dpi" = 120;
@@ -24,6 +25,33 @@ let
       # TrackPoint flat acceleration 
       xinput set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Profile Enabled" 0, 1
     '';
+  };
+  i3Args = {
+    extraConfig = ''
+      for_window [class="keepassxc" class="KeePassXC"] floating enable, resize set 800 400, move position center
+      for_window [class="GoldenDict"] floating enable, move position center, resize set 800 400, move position center;
+      for_window [class="^Anki$"] floating enable, resize set 600 300, move position center; mark anki
+    '';
+  };
+  i3status-rust = {
+    extraBlocks = [
+      { block = "backlight"; }
+      {
+
+        block = "battery";
+        driver = "upower";
+        format = "{percentage} {time}";
+        theme_overrides = (if colorScheme == "light" then {
+
+          good_bg = "#fdf6e3"; # base3
+          good_fg = "#586e75"; # base01
+        } else {
+
+          good_bg = "#2e3440"; # nord0
+          good_fg = "#81a1c1"; # light blue
+        });
+      }
+    ];
   };
 in {
   home.stateVersion = "22.05";

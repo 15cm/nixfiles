@@ -1,0 +1,242 @@
+# (No) Title Bars
+default_border pixel 2
+default_floating_border pixel 2
+
+workspace_auto_back_and_forth no
+
+# Windows button
+set $mod Mod4
+
+# Default Layout mode for new containers
+workspace_layout stacking
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango:Noto Sans, FontAwesome 12
+ 
+# This font is widely installed, provides lots of unicode glyphs, right-to-left
+# text rendering and scalability on retina/hidpi displays (thanks to pango).
+#font pango:DejaVu Sans Mono 8
+
+# floating size
+# floating_minimum_size 800 x 600
+
+mouse_warping output
+
+# use mouse+$mod to drag floating windows to their wanted position
+# kill focused window
+bindsym $mod+q kill
+
+# rofi
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu='rofi -i -dmenu'
+
+bindsym $mod+w exec --no-startup-id i3-dmenu-desktop --dmenu='rofi -i -show window'
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# move focused window
+bindsym $mod+shift+h move left
+bindsym $mod+shift+j move down
+bindsym $mod+shift+k move up
+bindsym $mod+shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+semicolon split h
+
+# split in vertical orientation
+bindsym $mod+apostrophe split v
+
+# enter fullscreen mode for the focused container
+# bindsym $mod+f exec ~/.config/scripts/i3/i3_maximize.sh
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+a layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+s layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+shift+x floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+x focus mode_toggle
+
+# focus the parent container
+bindsym $mod+slash focus parent
+bindsym $mod+question focus child
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# Displays and Screens
+set $monitor_1 DP-0
+set $monitor_2 DP-2
+
+# assign workspaces to screens
+workspace 1 output $monitor_1
+workspace 2 output $monitor_1
+workspace 3 output $monitor_1
+workspace 4 output $monitor_1
+workspace 5 output $monitor_1
+workspace 6 output $monitor_2
+workspace 7 output $monitor_2
+workspace 8 output $monitor_2
+workspace 9 output $monitor_2
+workspace 10 output $monitor_2
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# hide/show windows in scratchpad
+bindsym $mod+comma [con_mark="misc"] scratchpad show
+bindsym $mod+period mark "misc", move scratchpad
+
+# Move focus between screens
+bindsym $mod+n focus output $monitor_1
+bindsym $mod+m focus output $monitor_2
+bindsym $mod+Shift+n move container to output $monitor_1
+bindsym $mod+Shift+m move container to output $monitor_2
+bindsym $mod+Mod1+n move workspace to output $monitor_1
+bindsym $mod+Mod1+m move workspace to output $monitor_2
+
+# Disable focus follow mouse
+focus_follows_mouse no
+
+# reload the configuration file
+bindsym $mod+Shift+r reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Mod1+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# move workspaces to specified display
+bindsym $mod+Mod1+Shift+m exec "$HOME/local/bin/move-workspaces.sh"
+
+# Easyfocus
+bindsym $mod+v exec wmfocus
+
+# Chezmoi
+bindsym $mod+z exec "chezmoi apply --force"
+
+# Launcher
+bindsym $mod+Return exec alacritty
+bindsym $mod+i exec keepassxc
+bindsym $mod+y exec ~/.local/bin/i3-quickterm shell
+bindsym $mod+e exec splatmoji type
+
+bindsym $mod+o mode "launcher"
+
+mode "launcher" {
+     bindsym f exec firefox; mode "default"
+     bindsym shift+e exec $HOME/.config/scripts/i3/start-emacs-one-instance.sh -f; mode "default"
+     bindsym e exec $HOME/.config/scripts/i3/start-emacs-one-instance.sh; mode "default"
+     bindsym s exec "flameshot gui"; mode "default"
+     bindsym d exec dex /usr/share/applications/org.gnome.Nautilus.desktop; mode "default"
+     bindsym r exec rambox; mode "default"
+     bindsym c exec chromium; mode "default"
+     bindsym l exec telegram-desktop; mode "default"
+     bindsym m exec dex /usr/share/applications/org.clementine_player.Clementine.desktop; mode "default"
+     bindsym n exec dunstctl close-all; mode "default"
+     bindsym Shift+n exec dunstctl history-pop; mode "default"
+     bindsym Escape mode "default"
+}
+
+# Media
+# Sony Headphones sends XF86AudioPause and XF86AudioPlay in turn when connected via bluetooth
+bindsym XF86AudioPause exec "playerctl -p clementine play-pause"
+bindsym XF86AudioPlay exec "playerctl -p clementine play-pause"
+bindsym XF86AudioNext exec "playerctl -p clementine next"
+bindsym XF86AudioPrev exec "playerctl -p clementine previous"
+bindsym XF86MonBrightnessUp exec "light -A 5"
+bindsym XF86MonBrightnessDown exec "light -U 5"
+bindsym XF86AudioMute exec "pactl set-sink-mute 0 toggle"
+bindsym XF86AudioRaiseVolume exec "pactl set-sink-mute 0 false"; exec "pactl set-sink-volume 0 +5%"
+bindsym XF86AudioLowerVolume exec "pactl set-sink-volume 0 -5%"
+# fn+F12 on Thinkpad Z13
+bindsym XF86Favorites exec "playerctl -p clementine play-pause"
+
+# Set shut down, restart and locking features
+bindsym $mod+Shift+z mode "$mode_system"
+set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (r)eboot, (Shift+s)hutdown
+mode "$mode_system" {
+    bindsym l exec --no-startup-id ~/.config/scripts/i3/i3exit.sh lock, mode "default"
+    bindsym s exec --no-startup-id ~/.config/scripts/i3/i3exit.sh suspend, mode "default"
+    bindsym u exec --no-startup-id ~/.config/scripts/i3/i3exit.sh switch_user, mode "default"
+    bindsym e exec --no-startup-id ~/.config/scripts/i3/i3exit.sh logout, mode "default"
+    bindsym r exec --no-startup-id ~/.config/scripts/i3/i3exit.sh reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+
+    # exit system mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# resize or move floating window (you can also use the mouse for that)
+mode "resize_move" {
+        # These bindings trigger as soon as you enter the resize mode
+        bindsym h resize shrink width 10 px or 5 ppt
+        bindsym j resize grow height 10 px or 5 ppt
+        bindsym k resize shrink height 10 px or 5 ppt
+        bindsym l resize grow width 10 px or 5 ppt
+
+        bindsym y move left 10
+        bindsym u move down 10
+        bindsym i move up 10
+        bindsym o move right 10
+
+        bindsym Shift+y move left 20
+        bindsym Shift+u move down 20
+        bindsym Shift+i move up 20
+        bindsym Shift+o move right 20
+
+        bindsym Shift+h resize shrink width 20 px or 10 ppt
+        bindsym Shift+j resize grow height 20 px or 10 ppt
+        bindsym Shift+k resize shrink height 20 px or 10 ppt
+        bindsym Shift+l resize grow width 20 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize_move"
+
+# Window floating
+for_window [class="yakuake"] floating enable;
+for_window [class="Clementine"] floating disable;
+for_window [instance="^copyq$" class="^Copyq$"] border pixel 0, floating enable, move position center
+for_window [class="antimicrox"] floating disable;
+
+# Border Colors
+# class                 border  backgr. text    indicator child_border
+client.focused          #ffffff  #285577 #ffffff #2e9ef4  #00ff00
+client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+client.background       #ffffff

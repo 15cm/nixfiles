@@ -21,6 +21,13 @@ let
       export WINIT_HIDPI_FACTOR=2
     '';
   };
+  i3Args = {
+    extraConfig = ''
+      for_window [class="keepassxc" class="KeePassXC"] floating enable, resize set 2400 1400, move position center
+      for_window [class="GoldenDict"] floating enable, move position center, resize set 2400 1200, move position center;
+      for_window [class="^Anki$"] floating enable, resize set 1600 600, move position center; mark anki
+    '';
+  };
 in {
   home.stateVersion = "22.05";
   nixpkgs = { inherit (commonConfig.nix.nixpkgs) overlays; };
@@ -30,12 +37,13 @@ in {
     # TODO: switch to the pkgs.emacsPgtkNativeComp when the nixfiles repo is stable. The Pgtk variant needs to compile from Emacs head and it takes a while.
     (import ../../../features/emacs
       (args // { withArgs.packageOverride = pkgs.emacsNativeComp; }))
-    (import ../../../features/xresources (args // {
-      withArgs = { inherit (xresourcesArgs) propertiesOverride; };
-    }))
+    (import ../../../features/xresources
+      (args // { withArgs = xresourcesArgs; }))
     ../../../features/alacritty
     ../../../features/keychain
     (import ../../../features/x-dotfiles
       (args // { withArgs.xprofile = xprofileArgs; }))
+    ../../../features/fontconfig
+    (import ../../../features/i3 (args // { withArgs = i3Args; }))
   ];
 }
