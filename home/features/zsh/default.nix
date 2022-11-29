@@ -53,8 +53,7 @@ in {
       LANGUAGE = "en_US.UTF-8";
       TZ = "America/Los_Angeles";
     } // optionalAttrs isDarwin { HOMEBREW_NO_AUTO_UPDATE = "1"; };
-    initExtraFirst = (builtins.readFile ./extra-first.zshrc);
-    initExtra = (builtins.readFile ./extra.zshrc);
+    initExtraFirst = (builtins.readFile ./zshrc);
 
     shellAliases = {
       md = "mkdir -p";
