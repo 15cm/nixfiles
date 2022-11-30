@@ -14,5 +14,6 @@ args@{ pkgs, ... }: {
     # Applications
     ../../../features/app/alacritty
     ../../../features/conf/mpv
+    ../../../features/app/redshift
   ];
 }

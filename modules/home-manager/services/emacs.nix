@@ -4,7 +4,7 @@ with lib;
 
 let
 
-  cfg = config.services.my-emacs;
+  cfg = config.services.emacs-misc;
   emacsCfg = config.programs.emacs;
   emacsBinPath = "${cfg.package}/bin";
   emacsVersion = getVersion cfg.package;
@@ -36,7 +36,7 @@ let
 in {
   meta.maintainers = [ maintainers.tadfisher ];
 
-  options.services.my-emacs = {
+  options.services.emacs-misc = {
     enable = mkEnableOption "the Emacs daemon";
 
     package = mkOption {
@@ -98,7 +98,7 @@ in {
       type = lib.types.bool;
       default = !cfg.socketActivation.enable;
       defaultText =
-        literalExpression "!config.services.emacs.socketActivation.enable";
+        literalExpression "!config.services.emacs-misc.socketActivation.enable";
       example = true;
       description = ''
         Whether to launch Emacs service with the systemd user session.
@@ -119,14 +119,14 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       assertions = [
-        (lib.hm.assertions.assertPlatform "services.emacs" pkgs
+        (lib.hm.assertions.assertPlatform "services.emacs-misc" pkgs
           lib.platforms.linux)
       ];
 
-      services.my-emacs.socketActivation.socketPath =
+      services.emacs-misc.socketActivation.socketPath =
         "${cfg.socketActivation.socketDir}/${cfg.socketActivation.socketName}";
 
-      systemd.user.services.emacs = {
+      systemd.user.services.emacs-misc = {
         Unit = {
           Description = "Emacs text editor";
           Documentation =

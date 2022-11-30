@@ -15,8 +15,12 @@ let
     emacsSocketPath = emacsConfig.socket.gui.path;
   };
 in {
+  # TODO: follow https://github.com/vincentbernat/i3wm-configuration to run i3 with systemd, so that graphical-session.target will be activated by i3.
+  # Launch sequence:
+  # - lightdm (let it call xsession https://askubuntu.com/questions/77191/how-can-i-use-lightdm-for-user-defined-sessions)
+  # - xsession (e.g. https://github.com/vincentbernat/i3wm-configuration/blob/master/dotfiles/xsession)
+  # - i3
   home.packages = [ pkgs.i3status-rust pkgs.i3-quickterm ];
-  #TODO: go through and fix paths of the scripts called by i3 config.
   xdg.configFile."i3/config.jinja".source =
     templateFile "i3-config" templateData ./config.jinja;
   xdg.configFile."i3/status.toml".source =
