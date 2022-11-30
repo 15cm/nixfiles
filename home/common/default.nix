@@ -14,6 +14,7 @@ in {
     ../features/app/set-theme
     (import ../features/app/clipper
       (args // { templateData = { inherit (commonConfig) clipper; }; }))
+    ../features/app/ranger
   ];
 
   home.packages = [ pkgs.exa pkgs.fd pkgs.bottom pkgs.nix-template ];

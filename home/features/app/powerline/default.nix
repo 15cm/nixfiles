@@ -10,25 +10,13 @@ let
   package = config.programs.powerline.package;
 in {
   programs.powerline.enable = true;
-  xdg.configFile."powerline/config.json".source =
-    templateFile "powerline-config" templateData ./config.json.jinja;
-  xdg.configFile."powerline/color.json".source = ./colors.json;
-  xdg.configFile."powerline/colorschemes/nord.json".source =
-    ./colorschemes/nord.json;
-  xdg.configFile."powerline/colorschemes/solarized-light.json".source =
-    ./colorschemes/solarized-light.json;
-  xdg.configFile."powerline/colorschemes/shell/nord.json".source =
-    ./colorschemes/shell/nord.json;
-  xdg.configFile."powerline/colorschemes/shell/solarized-light.json".source =
-    ./colorschemes/shell/solarized-light.json;
-  xdg.configFile."powerline/colorschemes/tmux/nord.json".source =
-    ./colorschemes/tmux/nord.json;
-  xdg.configFile."powerline/colorschemes/tmux/solarized-light.json".source =
-    ./colorschemes/tmux/solarized-light.json;
-  xdg.configFile."powerline/themes/shell/default.json".source =
-    ./themes/shell/default.json;
-  xdg.configFile."powerline/themes/tmux/default.json".source =
-    ./themes/tmux/default.json;
+  xdg.configFile = {
+    "powerline/config.json".source =
+      templateFile "powerline-config" templateData ./config.json.jinja;
+    "powerline/color.json".source = ./colors.json;
+    "powerline/colorschemes".source = ./colorschemes;
+    "powerline/themes".source = ./themes;
+  };
   programs.zsh.initExtra = ''
     # Powerline
     source ${package}/share/zsh/powerline.zsh
