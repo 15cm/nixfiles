@@ -16,5 +16,6 @@ args@{ pkgs, ... }: {
     ../../../features/conf/mpv
     ../../../features/app/redshift
     ../../../features/app/rofi
+    ../../../features/app/picom
   ];
 }
