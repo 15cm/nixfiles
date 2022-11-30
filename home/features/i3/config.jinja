@@ -136,21 +136,18 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # Easyfocus
 bindsym $mod+v exec wmfocus
 
-# Chezmoi
-bindsym $mod+z exec "chezmoi apply --force"
-
 # Launcher
 bindsym $mod+Return exec alacritty
 bindsym $mod+i exec keepassxc
-bindsym $mod+y exec ~/.local/bin/i3-quickterm shell
+bindsym $mod+y exec i3-quickterm shell
 bindsym $mod+e exec splatmoji type
 
 bindsym $mod+o mode "launcher"
 
 mode "launcher" {
      bindsym f exec firefox; mode "default"
-     bindsym shift+e exec $HOME/.config/scripts/i3/start-emacs-one-instance.sh -f; mode "default"
-     bindsym e exec $HOME/.config/scripts/i3/start-emacs-one-instance.sh; mode "default"
+     bindsym shift+e exec $HOME/.config/i3/scripts/start-emacs-one-instance.sh -f; mode "default"
+     bindsym e exec $HOME/.config/i3/scripts/start-emacs-one-instance.sh; mode "default"
      bindsym s exec "flameshot gui"; mode "default"
      bindsym d exec dex /usr/share/applications/org.gnome.Nautilus.desktop; mode "default"
      bindsym r exec rambox; mode "default"
@@ -180,12 +177,12 @@ bindsym XF86Favorites exec "playerctl -p clementine play-pause"
 bindsym $mod+Shift+z mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id ~/.config/scripts/i3/i3exit.sh lock, mode "default"
-    bindsym s exec --no-startup-id ~/.config/scripts/i3/i3exit.sh suspend, mode "default"
-    bindsym u exec --no-startup-id ~/.config/scripts/i3/i3exit.sh switch_user, mode "default"
-    bindsym e exec --no-startup-id ~/.config/scripts/i3/i3exit.sh logout, mode "default"
-    bindsym r exec --no-startup-id ~/.config/scripts/i3/i3exit.sh reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+    bindsym l exec --no-startup-id ~/.config/i3/scripts/i3exit.sh lock, mode "default"
+    bindsym s exec --no-startup-id ~/.config/i3/scripts/i3exit.sh suspend, mode "default"
+    bindsym u exec --no-startup-id ~/.config/i3/scripts/i3exit.sh switch_user, mode "default"
+    bindsym e exec --no-startup-id ~/.config/i3/scripts/i3exit.sh logout, mode "default"
+    bindsym r exec --no-startup-id ~/.config/i3/scripts/i3exit.sh reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id ~/.config/i3/scripts/i3exit.sh shutdown, mode "default"
 
     # exit system mode: "Enter" or "Escape"
     bindsym Return mode "default"

@@ -1,0 +1,9 @@
+if [ $# -eq 1 ] && [ $1 = "-f" ]; then
+  rm {{emacsSocketPath}}
+fi
+
+if [ -S {{emacsSocketPath}} ]; then
+  emacsclient -s {{emacsSocketPath}} -c
+else
+  emacs
+fi

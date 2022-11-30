@@ -32,4 +32,6 @@ in rec {
       builtins.readFile
       (pkgs.writeShellScript name)
     ];
+  writeShellScriptFile = name: file:
+    pipe file [ builtins.readFile (pkgs.writeShellScript name) ];
 }

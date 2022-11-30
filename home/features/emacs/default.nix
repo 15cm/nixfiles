@@ -12,7 +12,7 @@ in {
     socketActivation = {
       enable = true;
       socketDir = customConfig.socket.dir;
-      socketName = customConfig.socket.name;
+      socketName = customConfig.socket.cli.name;
     };
   };
 }

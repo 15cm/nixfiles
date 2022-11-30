@@ -1,8 +1,9 @@
-{ mylib, hostname, state, pkgs, lib, ... }:
+args@{ mylib, hostname, state, pkgs, lib, ... }:
 
 with lib;
 let
-  inherit (mylib) templateFile;
+  emacsConfig = (import ../emacs/config.nix args);
+  inherit (mylib) templateFile templateShellScriptFile writeShellScriptFile;
   templateData = rec {
     inherit hostname;
     inherit (state) theme;
@@ -11,6 +12,7 @@ let
       one = "DP-0";
       two = "DP-2";
     };
+    emacsSocketPath = emacsConfig.socket.gui.path;
   };
 in {
   home.packages = [ pkgs.i3status-rust pkgs.i3-quickterm ];
@@ -22,5 +24,10 @@ in {
 
   # Scripts
   xdg.configFile."i3/scripts/init.sh".source =
-    pipe ./init.sh [ builtins.readFile (pkgs.writeShellScript "i3-init.sh") ];
+    writeShellScriptFile "i3-scripts-init.sh" ./scripts/init.sh;
+  xdg.configFile."i3/scripts/start-emacs-one-instance.sh".source =
+    templateShellScriptFile "i3-scripts-start-emacs-one-instance.sh"
+    templateData ./scripts/start-emacs-one-instance.sh.jinja;
+  xdg.configFile."i3/scripts/i3exit.sh".source =
+    writeShellScriptFile "i3-scripts-i3exit.sh" ./scripts/i3exit.sh;
 }
