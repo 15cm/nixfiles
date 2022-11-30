@@ -15,5 +15,6 @@ args@{ pkgs, ... }: {
     ../../../features/app/alacritty
     ../../../features/conf/mpv
     ../../../features/app/redshift
+    ../../../features/app/rofi
   ];
 }
