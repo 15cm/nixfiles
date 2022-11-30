@@ -2,7 +2,7 @@ args@{ config, pkgs, lib, mylib, ... }:
 
 with lib;
 let
-  commonConfig = (import ../../common/config.nix args);
+  commonConfig = (import ../../../common/config.nix args);
   inherit (mylib) templateFile;
   templateData = {
     shell = commonConfig.shell.binary;

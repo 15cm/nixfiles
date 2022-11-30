@@ -2,17 +2,17 @@ args@{ pkgs, ... }: {
   imports = [
     # Essentials
     # TODO: switch to the pkgs.emacsPgtkNativeComp when the nixfiles repo is stable. The Pgtk variant needs to compile from Emacs head and it takes a while.
-    (import ../../../features/emacs
+    (import ../../../features/app/emacs
       (args // { withArgs.packageOverride = pkgs.emacsNativeComp; }))
+    ../../../features/conf/ssh
     # XSession related
-    ../../../features/xresources
-    ../../../features/keychain
-    ../../../features/x-dotfiles
-    ../../../features/fontconfig
-    ../../../features/i3
+    ../../../features/conf/xresources
+    ../../../features/conf/keychain
+    ../../../features/conf/x-dotfiles
+    ../../../features/conf/fontconfig
+    ../../../features/conf/i3
     # Applications
-    ../../../features/alacritty
-    ../../../features/ssh
-    ../../../features/mpv
+    ../../../features/app/alacritty
+    ../../../features/conf/mpv
   ];
 }

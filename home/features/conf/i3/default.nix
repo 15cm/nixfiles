@@ -2,7 +2,7 @@ args@{ mylib, hostname, state, pkgs, lib, ... }:
 
 with lib;
 let
-  emacsConfig = (import ../emacs/config.nix args);
+  emacsConfig = (import ../../app/emacs/config.nix args);
   inherit (mylib) templateFile templateShellScriptFile writeShellScriptFile;
   templateData = rec {
     inherit hostname;

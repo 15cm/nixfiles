@@ -32,6 +32,7 @@ in {
   programs.zsh.initExtra = ''
     # Powerline
     source ${package}/share/zsh/powerline.zsh
+    unset _POWERLINE_SAVE_WIDGET
   '';
   programs.tmux.extraConfig = ''
     # Powerline

@@ -2,7 +2,7 @@ args@{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 let
-  commonConfig = (import ../../common/config.nix args);
+  commonConfig = (import ../../../common/config.nix args);
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
 in {

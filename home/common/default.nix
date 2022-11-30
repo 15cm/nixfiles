@@ -5,13 +5,14 @@ in {
   programs.home-manager.enable = true;
 
   imports = [
-    ../features/tmux
-    ../features/zsh
-    ../features/navi
-    ../features/powerline
-    ../features/misc-dotfiles
-    ../features/set-theme
-    (import ../features/clipper
+    ../features/app/tmux
+    ../features/app/zsh
+    ../features/app/navi
+    ../features/app/powerline
+    ../features/app/fzf
+    ../features/conf/misc-dotfiles
+    ../features/app/set-theme
+    (import ../features/app/clipper
       (args // { templateData = { inherit (commonConfig) clipper; }; }))
   ];
 

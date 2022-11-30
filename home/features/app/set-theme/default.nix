@@ -1,7 +1,7 @@
 args@{ pkgs, config, mylib, ... }:
 
 let
-  commonConfig = (import ../../common/config.nix args);
+  commonConfig = (import ../../../common/config.nix args);
   templateData = {
     statePath = "${commonConfig.nixinfo.projectRoot}/home/state/default.nix";
     flakeUri = "${commonConfig.nixinfo.flakeUri}";
