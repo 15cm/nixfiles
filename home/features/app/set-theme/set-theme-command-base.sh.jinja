@@ -4,5 +4,10 @@ i3-msg reload
 killall -USR2 i3status-rs
 powerline-daemon --replace
 tmux source {{powerlineTmuxConfPath}}
+emacs_server_socket_dir_globs=("$HOME/local/run/emacs/*")
+for path in ${emacs_server_socket_dir_globs[@]}; do
+  emacsclient -s $path -eun '(load "~/.config/emacs/scripts/load-theme.el")'
+done
+
 
 

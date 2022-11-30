@@ -1,6 +1,9 @@
-args@{ pkgs, config, ... }:
+args@{ pkgs, config, mylib, state, ... }:
 
-let customConfig = (import ./config.nix { inherit config; });
+let
+  customConfig = (import ./config.nix { inherit config; });
+  inherit (mylib) templateFile;
+  templateData = { inherit (state) theme; };
 in {
   programs.emacs = {
     enable = true;
@@ -15,4 +18,8 @@ in {
       socketName = customConfig.socket.cli.name;
     };
   };
+
+  xdg.configFile."emacs/scripts/load-theme.el".source =
+    templateFile "emacs-scripts-load-theme.el" templateData
+    ./scripts/load-theme.el.jinja;
 }

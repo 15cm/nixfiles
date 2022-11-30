@@ -1,4 +1,4 @@
-args@{ pkgs, config, mylib, ... }:
+args@{ pkgs, config, mylib, state, ... }:
 
 let
   commonConfig = (import ../../../common/config.nix args);
@@ -13,6 +13,7 @@ in {
   home.file."local/bin/set-theme.sh".source =
     templateShellScriptFile "set-theme.sh" templateData
     ./set-theme-command-base.sh.jinja;
+
   programs.zsh.shellAliases = {
     stl = "set-theme.sh light";
     std = "set-theme.sh dark";

@@ -1,0 +1,12 @@
+(when spacemacs--cur-theme
+  (disable-theme spacemacs--cur-theme))
+{%if theme == "light"%}
+(spacemacs/load-theme 'solarized-light)
+(setq frame-background-mode 'light)
+{%else%}
+(spacemacs/load-theme 'sanityinc-tomorrow-night)
+(setq frame-background-mode 'dark)
+{%endif%}
+(mapc 'frame-set-background-mode (frame-list))
+(cnfonts-increase-fontsize)
+(cnfonts-decrease-fontsize)
