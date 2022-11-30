@@ -1,11 +1,14 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, mylib, config, ... }:
 
 with lib;
-let package = pkgs.aria2;
+let
+  package = pkgs.aria2;
+  inherit (mylib) templateFile;
+  templateData = { inherit (config.home) homeDirectory; };
 in rec {
   home.packages = [ package ];
-  # TODO: add the real config file once encryption is introduced
-  xdg.configFile."aria2/aria2.conf".source = ./aria2.conf;
+  xdg.configFile."aria2/aria2.conf".source =
+    templateFile "aria2-conf" templateData ./aria2.conf.jinja;
 
   systemd.user.services.aria2 = {
     Unit = { Description = "Aria2"; };
