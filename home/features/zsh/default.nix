@@ -83,7 +83,6 @@ in {
     } // optionalAttrs isLinux {
       sc = "sudo systemctl";
       scu = "systemctl --user";
-      ssh = "ssh -F ~/.ssh/interactive.conf";
     };
   };
 

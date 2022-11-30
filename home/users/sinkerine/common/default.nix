@@ -1,5 +1,3 @@
-args@{ ... }:
-
 {
   home = rec {
     username = "sinkerine";
