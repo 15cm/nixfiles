@@ -13,5 +13,6 @@ args@{ pkgs, ... }: {
     # Applications
     ../../../features/alacritty
     ../../../features/ssh
+    ../../../features/mpv
   ];
 }
