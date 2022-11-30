@@ -17,5 +17,6 @@ args@{ pkgs, ... }: {
     ../../../features/app/redshift
     ../../../features/app/rofi
     ../../../features/app/picom
+    ../../../features/app/aria2
   ];
 }
