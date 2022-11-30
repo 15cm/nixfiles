@@ -7,7 +7,7 @@ in {
     package = args.withArgs.packageOverride or pkgs.emacs-nox;
   };
 
-  services.myEmacs = {
+  services.my-emacs = {
     enable = true;
     socketActivation = {
       enable = true;

@@ -23,7 +23,11 @@
       legacyPackages = forAllSystems (system:
         import nixpkgs {
           inherit system;
-          overlays = with overlays; [ additions emacs-overlay.overlay ];
+          overlays = with overlays; [
+            emacs-overlay.overlay
+            additions
+            modifications
+          ];
           config.allowUnfree = true;
         });
       homeConfigurationArgs = {

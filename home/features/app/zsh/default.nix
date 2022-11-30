@@ -8,7 +8,7 @@ let
 in {
   programs.zsh = {
     enable = true;
-    zplug = {
+    my-zplug = {
       enable = true;
       plugins = [
         {

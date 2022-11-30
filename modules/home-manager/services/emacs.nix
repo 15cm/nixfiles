@@ -4,7 +4,7 @@ with lib;
 
 let
 
-  cfg = config.services.myEmacs;
+  cfg = config.services.my-emacs;
   emacsCfg = config.programs.emacs;
   emacsBinPath = "${cfg.package}/bin";
   emacsVersion = getVersion cfg.package;
@@ -36,7 +36,7 @@ let
 in {
   meta.maintainers = [ maintainers.tadfisher ];
 
-  options.services.myEmacs = {
+  options.services.my-emacs = {
     enable = mkEnableOption "the Emacs daemon";
 
     package = mkOption {
@@ -123,7 +123,7 @@ in {
           lib.platforms.linux)
       ];
 
-      services.myEmacs.socketActivation.socketPath =
+      services.my-emacs.socketActivation.socketPath =
         "${cfg.socketActivation.socketDir}/${cfg.socketActivation.socketName}";
 
       systemd.user.services.emacs = {
