@@ -1,0 +1,52 @@
+(defcfg
+ ;; For Linux
+ input  (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+ output (uinput-sink "My KMonad output")
+ fallthrough true
+ )
+
+(defsrc
+ esc  mute vold volu f20  brdn brup switchvideomode wlan                bookmarks ins
+      f1   f2   f3   f4   f5   f6   f7              f8   f9   f10  f11  f12       home end  prnt del
+ grv  1    2    3    4    5    6    7               8    9    0    -    =         bspc
+ tab  q    w    e    r    t    y    u               i    o    p    [    ]         \
+ caps a    s    d    f    g    h    j               k    l    ;    '              ret
+ lsft z    x    c    v    b    n                    m    ,    .    /    rsft
+ lctl wkup lmet lalt           spc                       ralt rctl      left up   down rght
+                                                                             pgup pgdn
+ )
+
+(defalias
+  ecl (tap-hold 175 esc lctl)
+  f8m (tap-hold 175 f8 lmet)
+  spclte (tap-hold 175 spc (layer-toggle edit))
+  crt C-rght
+  clt C-left
+  cbc C-bspc
+  cdl C-del
+  im1 C-M-spc
+  im2 A-M-spc
+  im3 C-A-M-spc
+  )
+
+(deflayer basic
+ _    _    _    _    _    _    _    _               _                   _         _
+      _    _    _    _    _    _    _               _    _    _    _    _         _    _    _    _
+ _    _    _    _    _    _    _    _               _    _    _    _    _         _
+ _    _    _    _    _    _    _    _               _    _    _    _    _         _
+ @ecl _    _    _    _    _    _    _               _    _    _    _              _
+ _    _    _    _    _    _    _                    _    _    _    _    _
+ _    _    lalt @f8m           @spclte                   rmet ralt      _    _    _    _
+                                                                             _    _
+          )
+
+(deflayer edit
+ _    _    _    _    _    _    _    _               _                   _         _
+      _    _    _    _    _    _    _               _    _    _    _    _         _    _    _    _
+ _    _    _    _    _    _    _    _               _    _    _    _    _         _
+ _    _    _    _    _    _    home pgdn            pgup end  caps _    _         _
+ _    _    @im1 @im2 @im3 _    left down            up   rght @clt @crt           _
+ _    _    _    _    _    _    _                    _    @cbc @cdl _    _
+ _    _    _    _              _                         _    _    _    _    _    _
+                                                                             _    _
+          )
