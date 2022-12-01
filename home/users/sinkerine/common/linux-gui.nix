@@ -6,11 +6,11 @@ args@{ pkgs, ... }: {
       (args // { withArgs.packageOverride = pkgs.emacsNativeComp; }))
     ../../../features/conf/ssh
     # XSession related
+    ../../../features/conf/xsession
     ../../../features/conf/xresources
     ../../../features/conf/keychain
-    ../../../features/conf/x-dotfiles
     ../../../features/conf/fontconfig
-    ../../../features/conf/i3
+    ../../../features/app/i3
     # Applications
     ../../../features/app/alacritty
     ../../../features/conf/mpv
