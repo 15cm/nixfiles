@@ -53,12 +53,15 @@ in {
       LANGUAGE = "en_US.UTF-8";
       TZ = "America/Los_Angeles";
       TERM = "alacritty";
+      NIX_PATH =
+        "$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels\${NIX_PATH:+:$NIX_PATH}";
     } // optionalAttrs isDarwin { HOMEBREW_NO_AUTO_UPDATE = "1"; };
     initExtraFirst = builtins.readFile ./zshrc;
 
     shellAliases = {
       md = "mkdir -p";
-      rz = "exec $SHELL";
+      rz =
+        "unset __HM_SESS_VARS_SOURCED; unset __HM_ZSH_SESS_VARS_SOURCED; exec $SHELL";
       cdg = "cd-gitroot";
       prl = "parallel";
       grep = "grep --color=auto";

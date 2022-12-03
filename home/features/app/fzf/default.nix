@@ -37,7 +37,7 @@ in {
       fg = "-1";
       "fg+" = colorPalette.base02;
       bg = "-1";
-      "bg+" = colorPalette.base02;
+      "bg+" = colorPalette.base2;
       hl = colorPalette.magenta;
       "hl+" = colorPalette.cyan;
     };

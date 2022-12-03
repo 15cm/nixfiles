@@ -8,7 +8,7 @@ args@{ pkgs, ... }: {
     # XSession related
     ../../../features/conf/xsession
     ../../../features/conf/xresources
-    ../../../features/conf/keychain
+    ../../../features/app/keychain
     ../../../features/conf/fontconfig
     ../../../features/app/i3
     # Applications

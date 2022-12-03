@@ -17,10 +17,11 @@ in {
     "powerline/colorschemes".source = ./colorschemes;
     "powerline/themes".source = ./themes;
   };
-  programs.zsh.initExtra = ''
+  programs.zsh.initExtra = mkAfter ''
     # Powerline
+    export POWERLINE_CONFIG_COMMAND=${package}/bin/powerline-config
+    powerline-daemon -q
     source ${package}/share/zsh/powerline.zsh
-    unset _POWERLINE_SAVE_WIDGET
   '';
   programs.tmux.extraConfig = ''
     # Powerline

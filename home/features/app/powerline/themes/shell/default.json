@@ -1,67 +1,65 @@
 {
     "segments": {
+        "left": [
+            {
+                "args": {
+                    "override": {
+                        "viins": "I",
+                        "vicmd": "C"
+                    }
+                },
+                "function": "powerline.segments.shell.mode"
+            }
+        ],
         "above": [
             {
-                "left": [
-                    {
-                        "function": "powerline.segments.common.env.user",
-                        "priority": 10
-                    },
-                    {
-                        "args": {
-                          "exclude_domain": true,
-                          "only_if_ssh": false
-                        },
-                        "priority": 10,
-                        "function": "powerline.segments.common.net.hostname"
-                    },
-                    {
-                        "function": "powerline.segments.shell.cwd",
-                        "args": {
-                            "dir_limit_depth": 3
-                        },
-                        "priority": 10
-                    }
-                ],
                 "right": [
                     {
-                        "type": "string",
+                        "width": "auto",
+                        "draw_hard_divider": false,
+                        "draw_soft_divider": false,
                         "highlight_groups": [
                             "background"
                         ],
-                        "draw_soft_divider": false,
-                        "draw_hard_divider": false,
-                        "width": "auto"
+                        "type": "string"
+                    },
+                    {
+                        "priority": 10,
+                        "function": "powerline.segments.shell.last_status"
+                    },
+                    {
+                        "priority": 20,
+                        "function": "powerline.segments.shell.jobnum"
+                    },
+                    {
+                        "args": {
+                            "format": "%H:%M:%S",
+                            "istime": true
+                        },
+                        "function": "powerline.segments.common.time.date"
+                    }
+                ],
+                "left": [
+                    {
+                        "priority": 10,
+                        "function": "powerline.segments.common.env.user"
+                    },
+                    {
+                        "function": "powerline.segments.common.net.hostname",
+                        "priority": 10,
+                        "args": {
+                            "only_if_ssh": false,
+                            "exclude_domain": true
+                        }
+                    },
+                    {
+                        "priority": 10,
+                        "args": {
+                            "dir_limit_depth": 3
+                        },
+                        "function": "powerline.segments.shell.cwd"
                     }
                 ]
-            }
-        ],
-        "left": [
-            {
-                "function": "powerline.segments.shell.mode",
-                "args": {
-                    "override": {
-                        "vicmd": "C",
-                        "viins": "I"
-                    }
-                }
-            }
-        ],
-        "right": [
-            {
-                "function": "powerline.segments.shell.last_status",
-                "priority": 10
-            },
-            {
-                "function": "powerline.segments.shell.jobnum",
-                "priority": 20
-            },
-            {
-                "function": "powerline.segments.common.time.date",
-                "args": {
-                    "istime": true,
-                    "format": "%H:%M:%S"
-                }
             }
         ]
     }
