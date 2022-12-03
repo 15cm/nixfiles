@@ -11,8 +11,8 @@ in {
       enable = mkEnableOption "powerline";
       package = mkOption {
         type = types.package;
-        default = pkgs.python3Packages.powerline;
-        defaultText = literalExpression "pkgs.python3Packages.powerline";
+        default = pkgs.powerline;
+        defaultText = literalExpression "pkgs.powerline";
         description = "The powerline package to install.";
       };
     };
