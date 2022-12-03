@@ -49,9 +49,17 @@ TRAPWINCH() {
   zle &&  zle -R
 }
 
+# zle keybindings
 autoload -Uz edit-command-line
 bindkey -a '^[v' edit-command-line # equivalent to 'bindkey -M vicmd'
 bindkey '^[v' edit-command-line
+
+# The key code is obtained by pressing the key in the input of `cat`.
+# https://stackoverflow.com/questions/8638012/fix-key-settings-home-end-insert-delete-in-zshrc-when-running-zsh-in-terminat
+bindkey -M vicmd "^[[1~" beginning-of-line
+bindkey -M viins "^[[1~" beginning-of-line
+bindkey -M vicmd "^[[4~" end-of-line
+bindkey -M viins "^[[4~" end-of-line
 
 # zce
 bindkey -M vicmd 't' zce
