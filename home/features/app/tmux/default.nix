@@ -23,6 +23,7 @@ in {
     escapeTime = 0;
     historyLimit = 20000;
     keyMode = "vi";
+    terminal = "tmux";
     plugins = with pkgs.tmuxPlugins; [
       resurrect
       continuum

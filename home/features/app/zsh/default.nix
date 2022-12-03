@@ -52,6 +52,7 @@ in {
       LANG = "en_US.utf-8";
       LANGUAGE = "en_US.UTF-8";
       TZ = "America/Los_Angeles";
+      TERM = "alacritty";
     } // optionalAttrs isDarwin { HOMEBREW_NO_AUTO_UPDATE = "1"; };
     initExtraFirst = builtins.readFile ./zshrc;
 
