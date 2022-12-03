@@ -29,7 +29,7 @@ bind , send-keys -R \; run "sleep 0.1" \; clear-history
 bind-key -T copy-mode-vi v   send -X begin-selection
 bind-key -T copy-mode-vi V   send -X select-line
 bind-key -T copy-mode-vi C-v send -X rectangle-toggle
-bind-key -T copy-mode-vi 'y' send-keys -X copy-pipe-and-cancel "{{copyCommand}}"
+bind-key -T copy-mode-vi 'y' send-keys -X copy-pipe "{{copyCommand}}"
 
 # Press C-q to disable/enable prefix for outer session
 bind -T root C-q  \
