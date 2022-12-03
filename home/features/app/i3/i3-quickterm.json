@@ -1,0 +1,9 @@
+{
+    "term": "alacritty",
+    "term_command": "nixGL alacritty",
+    "ratio": 0.6,
+    "pos": "top",
+    "shells": {
+      "shell": "zsh"
+    }
+}
