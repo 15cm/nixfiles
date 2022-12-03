@@ -13,5 +13,9 @@ in {
     ];
   };
 
+  home.sessionVariables = {
+    PATH = "${config.home.homeDirectory}/.nix-profile/bin:$PATH";
+  };
+
   home.file.".imwheelrc".source = ./imwheelrc;
 }
