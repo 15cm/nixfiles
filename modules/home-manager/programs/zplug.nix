@@ -44,7 +44,8 @@ in {
   config = mkIf cfg.enable {
     home.packages = [ pkgs.zplug ];
 
-    programs.zsh.initExtraBeforeCompInit = ''
+    # Load plugins first so zshrc can override config later, e.g. key bindings of zsh-vi-mode. Plugin env vars should go to zsh.sessionVariables (not a good practice to put things in .zshenv though).
+    programs.zsh.initExtraFirst = ''
       export ZPLUG_HOME=${cfg.zplugHome}
 
       source ${pkgs.zplug}/share/zplug/init.zsh

@@ -29,13 +29,16 @@ in {
         { name = "15cm/zce.zsh"; }
         {
           name = "plugins/fzf";
-          tags = [ "from:oh-my-zsh" ];
+          tags = [ "defer:2" "from:oh-my-zsh" ];
         }
         {
           name = "plugins/git";
           tags = [ "from:oh-my-zsh" ];
         }
-        { name = "jeffreytse/zsh-vi-mode"; }
+        {
+          name = "jeffreytse/zsh-vi-mode";
+          tags = [ "defer:0" ];
+        }
       ];
     };
 
@@ -52,11 +55,22 @@ in {
       LANG = "en_US.utf-8";
       LANGUAGE = "en_US.UTF-8";
       TZ = "America/Los_Angeles";
-      TERM = "alacritty";
       NIX_PATH =
         "$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels\${NIX_PATH:+:$NIX_PATH}";
     } // optionalAttrs isDarwin { HOMEBREW_NO_AUTO_UPDATE = "1"; };
-    initExtraFirst = builtins.readFile ./zshrc;
+    # Env vars that are specific to interactive shell.
+    initExtraFirst = mkBefore ''
+      export TERM="alacritty";
+      export TLDR_COLOR_BLANK="blue";
+      export TLDR_COLOR_DESCRIPTION="green";
+      export TLDR_COLOR_PARAMETER="blue";
+      export ZSH_AUTOSUGGEST_USE_ASYNC=true;
+      export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#a8a8a8,underline";
+      # This allows us to override the zvm keybindings later.
+      # https://github.com/jeffreytse/zsh-vi-mode#initialization-mode
+      export ZVM_INIT_MODE=sourcing
+    '';
+    initExtra = builtins.readFile ./zshrc;
 
     shellAliases = {
       md = "mkdir -p";

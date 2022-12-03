@@ -1,11 +1,5 @@
 export GPG_TTY="$(tty)"
-export TLDR_COLOR_BLANK="blue"
-export TLDR_COLOR_DESCRIPTION="green"
-export TLDR_COLOR_PARAMETER="blue"
-export ZSH_AUTOSUGGEST_USE_ASYNC=true
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#a8a8a8,underline"
 export KEYTIMEOUT=5
-export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
 
 setopt autocd
 setopt auto_pushd
@@ -43,10 +37,6 @@ zle -N edit-command-line
 # <tab> selection color
 zstyle ':completion:*' menu select
 
-# Fix backspace behavior after switching back from command mode
-# https://unix.stackexchange.com/questions/290392/backspace-in-zsh-stuck
-bindkey -v '^?' backward-delete-char
-
 # Updates editor information when the keymap changes.
 function zle-keymap-select() {
   zle reset-prompt
@@ -59,52 +49,9 @@ TRAPWINCH() {
   zle &&  zle -R
 }
 
-bindkey -v
 autoload -Uz edit-command-line
 bindkey -a '^[v' edit-command-line # equivalent to 'bindkey -M vicmd'
 bindkey '^[v' edit-command-line
-
-bindkey '^p' up-history
-bindkey '^n' down-history
-
-bindkey '^h' backward-delete-char
-bindkey '^d' delete-char
-bindkey '^b' backward-char
-bindkey '^f' forward-char
-bindkey '^o' forward-word
-bindkey '^k' kill-line
-bindkey '^a' beginning-of-line
-bindkey '^e' end-of-line
-
-# TODO: remove this vi zle improvements after verifying zsh-vi-mode can cover them.
-# # zle functions
-# # select quoted
-# autoload -U select-quoted
-# zle -N select-quoted
-# for m in visual viopp; do
-# 	for c in {a,i}{\',\",\`}; do
-# 	  bindkey -M $m $c select-quoted
-# 	done
-# done
-
-# # select bracketed
-# autoload -U select-bracketed
-# zle -N select-bracketed
-# for m in visual viopp; do
-# 	for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
-# 	  bindkey -M $m $c select-bracketed
-# 	done
-# done
-
-# # surround
-# autoload -Uz surround
-# zle -N delete-surround surround
-# zle -N add-surround surround
-# zle -N change-surround surround
-# bindkey -a cs change-surround
-# bindkey -a ds delete-surround
-# bindkey -a ys add-surround
-# bindkey -a S add-surround
 
 # zce
 bindkey -M vicmd 't' zce
