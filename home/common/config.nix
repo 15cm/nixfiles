@@ -1,4 +1,6 @@
-{ pkgs, config, nixinfo, ... }:
+{ pkgs, config, nixinfo, lib, ... }:
+
+with lib;
 
 {
   nixinfo = rec {
@@ -9,7 +11,8 @@
   clipper = rec {
     address = "localhost";
     port = 8377;
-    copyCommand = "nc " + (if pkgs.stdenv.isLinux then " -q0" else "")
-      + "localhost ${toString port}";
+    copyCommand = concatStringsSep " " ([ "nc" ]
+      ++ optionals pkgs.stdenv.isLinux [ "-q0" ]
+      ++ [ "localhost ${toString port}" ]);
   };
 }
