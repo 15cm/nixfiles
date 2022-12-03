@@ -2,6 +2,7 @@
 
 let inherit (state) theme;
 in {
+  home.packages = [ pkgs.nixgl.auto.nixGLDefault ];
   programs.alacritty = {
     enable = true;
     settings = {

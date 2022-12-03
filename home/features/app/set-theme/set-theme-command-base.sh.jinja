@@ -1,5 +1,5 @@
 sed -i "s/\(theme.*\)\"[^\"]*\"/\1\"$1\"/" {{statePath}}
-home-manager switch --flake {{flakeUri}}
+home-manager switch --impure --flake {{flakeUri}}
 i3-msg reload
 killall -USR2 i3status-rs
 powerline-daemon --replace

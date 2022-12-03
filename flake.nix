@@ -11,9 +11,19 @@
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-utils.url = "github:numtide/flake-utils";
+    # nixgl is needed for alacritty outside of nixOS
+    # refer to https://github.com/NixOS/nixpkgs/issues/122671
+    # https://github.com/guibou/nixGL/#use-an-overlay
+    nixgl = {
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:guibou/nixGL";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, emacs-overlay, ... }@inputs:
+  outputs =
+    { nixpkgs, home-manager, emacs-overlay, nixgl, flake-utils, ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -24,9 +34,10 @@
         import nixpkgs {
           inherit system;
           overlays = with overlays; [
-            emacs-overlay.overlay
             additions
             modifications
+            emacs-overlay.overlay
+            nixgl.overlays.default
           ];
           config.allowUnfree = true;
         });
