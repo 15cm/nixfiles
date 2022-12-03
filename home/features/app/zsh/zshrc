@@ -1,6 +1,3 @@
-export GPG_TTY="$(tty)"
-export KEYTIMEOUT=5
-
 setopt autocd
 setopt auto_pushd
 setopt pushd_ignore_dups

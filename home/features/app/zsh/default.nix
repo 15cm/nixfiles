@@ -67,6 +67,9 @@ in {
       export TLDR_COLOR_PARAMETER="blue";
       export ZSH_AUTOSUGGEST_USE_ASYNC=true;
       export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#a8a8a8,underline";
+      export GPG_TTY="$(tty)"
+      export KEYTIMEOUT=3
+
       # This allows us to override the zvm keybindings later.
       # https://github.com/jeffreytse/zsh-vi-mode#initialization-mode
       export ZVM_INIT_MODE=sourcing
