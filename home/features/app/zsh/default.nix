@@ -39,6 +39,7 @@ in {
           name = "jeffreytse/zsh-vi-mode";
           tags = [ "defer:0" ];
         }
+        { name = "skywind3000/z.lua"; }
       ];
     };
 
