@@ -23,5 +23,8 @@ args@{ pkgs, ... }: {
     ../../../features/app/copyq
     ../../../features/app/goldendict
     ../../../features/app/imwheel
+    ../../../features/app/nm-applet
   ];
+
+  home.packages = [ pkgs.keepassxc ];
 }
