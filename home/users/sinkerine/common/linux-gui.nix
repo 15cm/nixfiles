@@ -22,5 +22,6 @@ args@{ pkgs, ... }: {
     ../../../features/app/arandr
     ../../../features/app/copyq
     ../../../features/app/goldendict
+    ../../../features/app/imwheel
   ];
 }
