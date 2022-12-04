@@ -19,5 +19,6 @@ args@{ pkgs, ... }: {
     ../../../features/app/picom
     ../../../features/app/aria2
     ../../../features/app/fcitx5
+    ../../../features/app/arandr
   ];
 }
