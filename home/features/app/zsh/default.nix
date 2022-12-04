@@ -51,7 +51,7 @@ in {
     };
     sessionVariables = {
       PATH = "$PATH:$HOME/.local/bin:$HOME/local/bin:/usr/local/bin";
-      EDITOR = pkgs.writeShellScript "exec-editor.sh" ./exec-editor.sh;
+      EDITOR = "${config.home.homeDirectory}/local/bin/exec-editor.sh";
       LC_ALL = "en_US.utf-8";
       LANG = "en_US.utf-8";
       LANGUAGE = "en_US.UTF-8";

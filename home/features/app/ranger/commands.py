@@ -214,7 +214,7 @@ class open_files(Command):
             )
 
 
-shell_emacs_cmd = "emacsclient -s $HOME/local/run/emacs/misc -t -a vim"
+shell_emacs_cmd = "$HOME/local/bin/exec-editor.sh"
 shell_vim_cmd = "vim"
 
 

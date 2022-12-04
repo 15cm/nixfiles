@@ -2,7 +2,6 @@ args@{ mylib, hostname, state, pkgs, lib, ... }:
 
 with lib;
 let
-  emacsConfig = (import ../../app/emacs/config.nix args);
   inherit (mylib) templateFile templateShellScriptFile writeShellScriptFile;
   templateData = rec {
     inherit hostname;
@@ -12,7 +11,6 @@ let
       one = "DP-0";
       two = "DP-2";
     };
-    emacsSocketPath = emacsConfig.socket.gui.path;
   };
 in {
   xsession.windowManager.i3 = {
@@ -25,9 +23,6 @@ in {
   };
 
   # i3 Scripts
-  xdg.configFile."i3/scripts/start-emacs-one-instance.sh".source =
-    templateShellScriptFile "i3-scripts-start-emacs-one-instance.sh"
-    templateData ./scripts/start-emacs-one-instance.sh.jinja;
   xdg.configFile."i3/scripts/i3exit.sh".source =
     writeShellScriptFile "i3-scripts-i3exit.sh" ./scripts/i3exit.sh;
 

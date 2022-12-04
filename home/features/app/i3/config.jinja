@@ -146,8 +146,8 @@ bindsym $mod+o mode "launcher"
 
 mode "launcher" {
      bindsym f exec firefox; mode "default"
-     bindsym shift+e exec $HOME/.config/i3/scripts/start-emacs-one-instance.sh -f; mode "default"
-     bindsym e exec $HOME/.config/i3/scripts/start-emacs-one-instance.sh; mode "default"
+     bindsym shift+e exec ~/local/bin/exec-emacs-gui.sh -f; mode "default"
+     bindsym e exec ~/local/bin/exec-emacs-gui.sh; mode "default"
      bindsym s exec "flameshot gui"; mode "default"
      bindsym d exec dex /usr/share/applications/org.gnome.Nautilus.desktop; mode "default"
      bindsym r exec rambox; mode "default"

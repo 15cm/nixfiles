@@ -8,5 +8,6 @@
 (setq frame-background-mode 'dark)
 {%endif%}
 (mapc 'frame-set-background-mode (frame-list))
-(cnfonts-increase-fontsize)
-(cnfonts-decrease-fontsize)
+(when (display-graphic-p)
+  (cnfonts-increase-fontsize)
+  (cnfonts-decrease-fontsize))
