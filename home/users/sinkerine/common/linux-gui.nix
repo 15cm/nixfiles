@@ -24,6 +24,10 @@ args@{ pkgs, ... }: {
     ../../../features/app/goldendict
     ../../../features/app/imwheel
     ../../../features/app/nm-applet
+    ../../../features/app/playctl
+    ../../../features/app/syncthing
+    ../../../features/app/unclutter
+    ../../../features/app/wallpaper
   ];
 
   home.packages = [ pkgs.keepassxc ];

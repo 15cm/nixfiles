@@ -17,9 +17,8 @@ in rec {
 
     Service = {
       ExecStart = concatStringsSep " " [
-        # "${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL"
-        # "${package}/bin/picom"
-        "/usr/bin/picom"
+        "${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL"
+        "${package}/bin/picom"
       ];
       Restart = "always";
       RestartSec = 3;
