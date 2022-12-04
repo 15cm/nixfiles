@@ -77,7 +77,7 @@ ranger-cd() {
 }
 
 bindkey -s '^u' 'ranger .^m'
-bindkey -s '^[u' 'ranger-cd^m'
+bindkey -s '^U' 'ranger-cd^m'
 
 # --------------------- Version Management ---------------------
 # Lazy Load to speed up zsh start
@@ -192,7 +192,7 @@ __fzf_z_arg_widget() {
 zle -N __fzf_z_arg_widget
 
 # fzf z arg
-bindkey '^[j' __fzf_z_arg_widget
+bindkey '^J' __fzf_z_arg_widget
 
 __fzf_z_cd_widget() {
   local dir=$(__fzf_z)
@@ -228,4 +228,8 @@ __fzf_dir_widget() {
 zle -N __fzf_dir_widget
 
 bindkey '^x' fzf-cd-widget
-bindkey '^[x' __fzf_dir_widget
+bindkey '^X' __fzf_dir_widget
+
+# Remove alt bindings of fzf because it conflicts with zsh vi mode. Esc and Alt sends the same key code '^['.
+bindkey -r viins '^[c'
+bindkey -r vicmd '^[c'
