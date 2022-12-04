@@ -44,20 +44,17 @@ in {
       Unit = {
         Description = "Clipper ~ Clipboard proxy";
         Documentation = "https://github.com/wincent/clipper";
+        PartOf = [ "graphical-session.target" ];
       };
       Service = {
-        Environment = "DISPLAY=:0;";
-        Type = "exec";
+        Type = "simple";
         ExecStartPre = "${pkgs.runtimeShell} -c 'mkdir -p ${cfg.logDir}'";
         ExecStart = "${clipperBinary} ${escapeShellArgs cfg.extraArgs}";
-        Restart = "always";
+        Restart = "on-failure";
         RestartSec = 10;
         SyslogIdentifier = "clipper";
       };
-      # TODO: Figure out if the prerequisites for clipper to work correctly:
-      # - X server is up?
-      # - After graphical.target?
-      Install = { WantedBy = [ "default.target" ]; };
+      Install = { WantedBy = [ "graphical-session.target" ]; };
     };
   }]);
 }

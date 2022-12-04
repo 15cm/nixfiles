@@ -12,7 +12,7 @@ with lib;
     address = "localhost";
     port = 8377;
     copyCommand = concatStringsSep " " ([ "nc" ]
-      ++ optionals pkgs.stdenv.isLinux [ "-q0" ]
+      ++ optionals pkgs.stdenv.isLinux [ "-N" ]
       ++ [ "localhost ${toString port}" ]);
   };
 }
