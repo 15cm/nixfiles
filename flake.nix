@@ -20,10 +20,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:guibou/nixGL";
     };
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs =
-    { nixpkgs, home-manager, emacs-overlay, nixgl, flake-utils, ... }@inputs:
+  outputs = { nixpkgs, home-manager, emacs-overlay, nixgl, flake-utils, sops-nix
+    , ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -45,8 +49,9 @@
             "qtwebkit-5.212.0-alpha4"
           ];
         });
+
       homeConfigurationArgs = {
-        "sinkerine@kazuki" = {
+        "sinkerine@kazuki" = rec {
           pkgs = legacyPackages."x86_64-linux";
           modules = [ ./home/users/sinkerine/kazuki ./modules/home-manager ];
           extraSpecialArgs = { hostname = "kazuki"; };
@@ -69,5 +74,17 @@
           }))
         (builtins.mapAttrs (_: v: home-manager.lib.homeManagerConfiguration v))
       ];
+
+      nixosConfigurationArgs = {
+        "kazuki" = rec {
+          system = "x86_64-linux";
+          pkgs = builtins.getAttr system legacyPackages;
+          modules = [ ./hosts/kazuki ];
+        };
+      };
+      nixosConfigurations = builtins.mapAttrs (_: v:
+        nixpkgs.lib.nixosSystem
+        (v // { modules = v.modules ++ [ sops-nix.nixosModules.sops ]; }))
+        nixosConfigurationArgs;
     };
 }
