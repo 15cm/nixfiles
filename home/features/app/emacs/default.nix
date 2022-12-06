@@ -1,12 +1,8 @@
 args@{ pkgs, config, mylib, state, ... }:
 
 let
-  customConfig = (import ./config.nix { inherit config; });
-  inherit (mylib) templateFile templateShellScriptFile;
-  templateData = {
-    inherit (state) theme;
-    inherit (customConfig) socket;
-  };
+  inherit (mylib) templateFile templateShellScriptFile writeShellScriptFile;
+  templateData = { inherit (state) theme; };
   package = args.withArgs.packageOverride or pkgs.emacs-nox;
 in {
   programs.emacs = {
@@ -14,18 +10,13 @@ in {
     inherit package;
   };
 
-  services.emacs-cli = {
+  services.emacs = {
     enable = true;
-    socketPath = customConfig.socket.cli.path;
     startWithUserSession = true;
   };
 
   home.file."local/bin/exec-editor.sh".source =
-    templateShellScriptFile "exec-editor.sh" templateData
-    ./exec-editor.sh.jinja;
-  home.file."local/bin/exec-emacs-gui.sh".source =
-    templateShellScriptFile "exec-emacs-gui.sh" templateData
-    ./exec-emacs-gui.sh.jinja;
+    writeShellScriptFile "exec-editor.sh" ./exec-editor.sh;
   xdg.configFile."emacs/scripts/load-theme.el".source =
     templateFile "emacs-scripts-load-theme.el" templateData
     ./scripts/load-theme.el.jinja;

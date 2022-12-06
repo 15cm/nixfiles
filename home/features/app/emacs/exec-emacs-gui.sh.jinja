@@ -1,9 +1,0 @@
-if [ $# -eq 1 ] && [ $1 = "-f" ]; then
-  rm -f {{socket.gui.path}}
-fi
-
-if [ -S {{socket.gui.path}} ]; then
-  emacsclient -s {{socket.gui.path}} -c
-else
-  emacs
-fi

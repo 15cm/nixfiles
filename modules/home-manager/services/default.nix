@@ -1,1 +1,1 @@
-{ imports = [ ./emacs-cli.nix ./clipper.nix ]; }
+{ imports = [ ./clipper.nix ]; }
