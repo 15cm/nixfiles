@@ -108,5 +108,5 @@ in {
     };
   };
 
-  home.packages = [ pkgs.lua ];
+  hom.packages = [ pkgs.lua pkgs.zsh-completions ];
 }
