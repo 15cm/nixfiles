@@ -8,6 +8,7 @@ let
 in {
   programs.zsh = {
     enable = true;
+    package = null;
     zplug = {
       enable = true;
       zplugInitScriptPath =
