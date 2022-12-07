@@ -80,6 +80,7 @@
           system = "x86_64-linux";
           pkgs = builtins.getAttr system legacyPackages;
           modules = [ ./hosts/kazuki ];
+          specialArgs = { hostname = "kazuki"; };
         };
       };
       nixosConfigurations = builtins.mapAttrs (_: v:
