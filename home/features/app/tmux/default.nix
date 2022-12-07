@@ -5,7 +5,6 @@ let
   commonConfig = (import ../../../common/config.nix args);
   inherit (mylib) templateFile;
   templateData = {
-    shell = commonConfig.shell.binary;
     tmuxFzfScriptsDir =
       "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts";
     inherit (config.home) sessionVariables;
@@ -16,7 +15,7 @@ in {
   imports = [ ../fzf ];
   programs.tmux = rec {
     enable = true;
-    shell = commonConfig.shell.binary;
+    shell = "$SHELL";
     sensibleOnTop = true;
     prefix = "F8";
     baseIndex = 1;
