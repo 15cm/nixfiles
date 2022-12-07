@@ -1,1 +1,1 @@
-{ imports = [ ./clipper.nix ./powerline.nix ./zplug.nix ]; }
+{ imports = [ ./clipper.nix ./powerline.nix ]; }

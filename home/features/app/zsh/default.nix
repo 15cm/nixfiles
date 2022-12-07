@@ -8,8 +8,10 @@ let
 in {
   programs.zsh = {
     enable = true;
-    my-zplug = {
+    zplug = {
       enable = true;
+      zplugInitScriptPath =
+        "${config.programs.zsh.zplug.package}/share/zplug/init.zsh";
       plugins = [
         {
           name = "zsh-users/zsh-completions";
