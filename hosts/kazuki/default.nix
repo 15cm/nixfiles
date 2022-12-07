@@ -1,4 +1,4 @@
-{ config, pkgs, lib, mylib, ... }:
+{ config, pkgs, lib, mylib, hostname, ... }:
 
 with lib;
 
@@ -14,7 +14,25 @@ with lib;
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = { hashedPassword.neededForUsers = true; };
-    age = { keyFile = "/keys/age/kazuki.txt"; };
+    age = {
+      keyFile = "/keys/age/kazuki.txt";
+      sshKeyPaths = [ ];
+    };
+    # https://github.com/Mic92/sops-nix/issues/167
+    gnupg.sshKeyPaths = [ ];
+  };
+
+  services.openssh = {
+    enable = true;
+    passwordAuthentication = false;
+    kbdInteractiveAuthentication = false;
+    permitRootLogin = "no";
+  };
+
+  networking = {
+    hostName = hostname;
+    domain = "mado.moe";
+    networkmanager = { enable = true; };
   };
 
   boot.kernelParams = [ "nvidia-drm.modeset=1" ];
