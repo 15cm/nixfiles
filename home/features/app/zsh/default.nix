@@ -74,6 +74,9 @@ in {
       # https://github.com/jeffreytse/zsh-vi-mode#initialization-mode
       export ZVM_INIT_MODE=sourcing
     '';
+    initExtraBeforeCompInit = ''
+      fpath+=(/usr/share/zsh/site-functions /run/current-system/sw/share/zsh/site-functions)
+    '';
     initExtra = builtins.readFile ./zshrc;
 
     shellAliases = {
@@ -108,5 +111,5 @@ in {
     };
   };
 
-  hom.packages = [ pkgs.lua pkgs.zsh-completions ];
+  home.packages = [ pkgs.lua pkgs.zsh-completions ];
 }
