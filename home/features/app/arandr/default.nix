@@ -4,6 +4,7 @@
     Unit = {
       Description = "ArandR -- A simple visual front end for XRandR";
       PartOf = [ "graphical-session.target" ];
+      Before = [ "tray.target" ];
     };
     Install = { WantedBy = [ "graphical-session.target" ]; };
     Service = {
