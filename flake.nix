@@ -24,17 +24,26 @@
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    kmonad = {
+      url = "github:kmonad/kmonad?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    envfs = {
+      url = "github:Mic92/envfs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { nixpkgs, home-manager, emacs-overlay, nixgl, flake-utils, sops-nix
-    , ... }@inputs:
+    , kmonad, nixos-hardware, envfs, ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       state = (import ./home/state);
     in rec {
       overlays = import ./overlays;
-      legacyPackages = forAllSystems (system:
+      homeLegacyPackages = forAllSystems (system:
         import nixpkgs {
           inherit system;
           overlays = with overlays; [
@@ -44,6 +53,12 @@
             nixgl.overlays.default
           ];
           config.allowUnfree = true;
+        });
+      nixosLegacyPackages = forAllSystems (system:
+        import nixpkgs {
+          inherit system;
+          overlays = with overlays; [ kmonad.overlays.default ];
+          config.allowUnfree = true;
           config.permittedInsecurePackages = [
             # For goldendict
             "qtwebkit-5.212.0-alpha4"
@@ -52,7 +67,7 @@
 
       homeConfigurationArgs = {
         "sinkerine@kazuki" = rec {
-          pkgs = legacyPackages."x86_64-linux";
+          pkgs = homeLegacyPackages."x86_64-linux";
           modules = [ ./home/users/sinkerine/kazuki ./modules/home-manager ];
           extraSpecialArgs = { hostname = "kazuki"; };
         };
@@ -78,14 +93,23 @@
       nixosConfigurationArgs = {
         "kazuki" = rec {
           system = "x86_64-linux";
-          pkgs = builtins.getAttr system legacyPackages;
-          modules = [ ./hosts/kazuki ];
+          pkgs = builtins.getAttr system nixosLegacyPackages;
+          modules = [ ./hosts/kazuki ] ++ (with nixos-hardware.nixosModules;
+            [ common-gpu-nvidia-nonprime ]);
           specialArgs = { hostname = "kazuki"; };
+        };
+        "asako" = rec {
+          system = "x86_64-linux";
+          pkgs = builtins.getAttr system nixosLegacyPackages;
+          modules = [ ./hosts/asako kmonad.nixosModules.default ]
+            ++ (with nixos-hardware.nixosModules; [ lenovo-thinkpad-z13 ]);
+          specialArgs = { hostname = "asako"; };
         };
       };
       nixosConfigurations = builtins.mapAttrs (_: v:
-        nixpkgs.lib.nixosSystem
-        (v // { modules = v.modules ++ [ sops-nix.nixosModules.sops ]; }))
-        nixosConfigurationArgs;
+        nixpkgs.lib.nixosSystem (v // {
+          modules = v.modules
+            ++ [ sops-nix.nixosModules.sops envfs.nixosModules.envfs ];
+        })) nixosConfigurationArgs;
     };
 }

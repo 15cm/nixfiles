@@ -78,7 +78,7 @@ in {
       export ZVM_INIT_MODE=sourcing
     '';
     initExtraBeforeCompInit = ''
-      fpath+=(/usr/share/zsh/site-functions /run/current-system/sw/share/zsh/site-functions)
+      fpath+=(/usr/share/zsh/site-functions)
     '';
     initExtra = builtins.readFile ./zshrc;
 

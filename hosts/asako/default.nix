@@ -13,17 +13,20 @@ with lib;
     ./generated/extra-configuration.nix
   ];
 
+  environment.systemPackages = with pkgs; [ systemd ];
+
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = { hashedPassword.neededForUsers = true; };
     age = {
-      keyFile = "/keys/age/kazuki.txt";
+      keyFile = "/keys/age/asako.txt";
       sshKeyPaths = [ ];
     };
     # https://github.com/Mic92/sops-nix/issues/167
     gnupg.sshKeyPaths = [ ];
   };
 
+  # TODO: disable ssh after configuration is done.
   services.openssh = {
     enable = true;
     passwordAuthentication = false;
@@ -37,9 +40,22 @@ with lib;
     networkmanager = { enable = true; };
   };
 
-  hardware.opengl.enable = true;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
-  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
+  services.kmonad = {
+    enable = true;
+    keyboards = {
+      "laptop" = {
+        device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
+        defcfg = {
+          enable = true;
+          fallthrough = true;
+          allowCommands = false;
+        };
+        config = builtins.readFile ./kmonad/laptop.kbd;
+      };
+    };
+  };
 
-  environment.systemPackages = with pkgs; [ systemd ];
+  udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="input", ATTR{name}=="TPPS/2 Elan TrackPoint", ATTR{device/sensitivity}="255", ATTR{device/press_to_select}="1"
+  '';
 }

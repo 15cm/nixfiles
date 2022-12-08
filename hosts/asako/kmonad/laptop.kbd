@@ -1,10 +1,3 @@
-(defcfg
- ;; For Linux
- input  (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
- output (uinput-sink "My KMonad output")
- fallthrough true
- )
-
 (defsrc
  esc  mute vold volu f20  brdn brup switchvideomode wlan                bookmarks ins
       f1   f2   f3   f4   f5   f6   f7              f8   f9   f10  f11  f12       home end  prnt del

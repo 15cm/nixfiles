@@ -8,3 +8,6 @@ creation_rules:
   - path_regex: hosts/kazuki/secrets.yaml$
     pgp: *sinkerine
     age: *kazuki
+  - path_regex: hosts/asako/secrets.yaml$
+    pgp: *sinkerine
+    age: *asako

@@ -2,7 +2,7 @@ args@{ pkgs, ... }: {
   imports = [
     # Essentials
     (import ../../../features/app/emacs
-      (args // { withArgs.packageOverride = pkgs.emacsPgtk; }))
+      (args // { withArgs.packageOverride = pkgs.emacsUnstable; }))
     ../../../features/conf/ssh
     # XSession related
     ../../../features/conf/xsession
