@@ -1,4 +1,6 @@
-args@{ pkgs, ... }: {
+args@{ pkgs, ... }:
+
+{
   imports = [
     # Essentials
     (import ../../../features/app/emacs
