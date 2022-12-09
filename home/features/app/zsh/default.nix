@@ -61,6 +61,7 @@ in {
       TZ = "America/Los_Angeles";
       NIX_PATH =
         "$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels\${NIX_PATH:+:$NIX_PATH}";
+      CARGO_HOME = "${config.xdg.cacheHome}/cargo";
     } // optionalAttrs isDarwin { HOMEBREW_NO_AUTO_UPDATE = "1"; };
     # Env vars that are specific to interactive shell.
     initExtraFirst = mkBefore ''

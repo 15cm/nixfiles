@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  # home..source = ./fonts.conf;
   fonts.fontconfig = { enable = true; };
 
   home.packages = with pkgs; [

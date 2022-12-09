@@ -55,7 +55,10 @@ with lib;
     };
   };
 
-  udev.extraRules = ''
+  # Removes the unused rocm opencl packages in https://github.com/NixOS/nixos-hardware/blob/master/common/gpu/amd/default.nix
+  hardware.opengl.extraPackages = with pkgs; mkForce [ amdvlk ];
+
+  services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="input", ATTR{name}=="TPPS/2 Elan TrackPoint", ATTR{device/sensitivity}="255", ATTR{device/press_to_select}="1"
   '';
 }

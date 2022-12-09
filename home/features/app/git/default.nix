@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.git = {
@@ -8,4 +8,6 @@
 
     lfs = { enable = true; };
   };
+
+  home.packages = with pkgs; [ git-secret ];
 }

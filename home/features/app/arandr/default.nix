@@ -4,12 +4,11 @@
     Unit = {
       Description = "ArandR -- A simple visual front end for XRandR";
       PartOf = [ "graphical-session.target" ];
-      Before = [ "tray.target" ];
     };
     Install = { WantedBy = [ "graphical-session.target" ]; };
     Service = {
       Type = "oneshot";
-      ExecStart = "%h/.screenlayout/default.sh";
+      ExecStart = "${pkgs.runtimeShell} %h/.screenlayout/default.sh";
     };
   };
 }

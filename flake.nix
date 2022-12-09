@@ -61,10 +61,15 @@
         });
 
       homeConfigurationArgs = {
-        "sinkerine@kazuki" = rec {
+        "sinkerine@kazuki" = {
           pkgs = packages."x86_64-linux";
           modules = [ ./home/users/sinkerine/kazuki ./modules/home-manager ];
           extraSpecialArgs = { hostname = "kazuki"; };
+        };
+        "sinkerine@asako" = {
+          pkgs = packages."x86_64-linux";
+          modules = [ ./home/users/sinkerine/asako ./modules/home-manager ];
+          extraSpecialArgs = { hostname = "asako"; };
         };
       };
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [

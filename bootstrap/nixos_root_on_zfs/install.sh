@@ -47,8 +47,14 @@ sleep 1
 export ESP_PART=${DISK}-part1
 export ZFS_PART=${DISK}-part2
 
-info "Creating zfs root pool"
 export RPOOL="rpool"
+zpool list -o name | tail -n +2 | grep -q $RPOOL
+if [ $? -eq 0 ]; then
+  info "ZFS root pool '$RPOOL' already exists. Destroying it."
+  umount -Rl /mnt
+  zpool destroy -f $RPOOL
+fi
+info "Creating zfs root pool"
 zpool create \
     -o autotrim=on \
     -O relatime=on \
@@ -117,9 +123,9 @@ zfs mount -a
 
 info "Changing directory permissions"
 USER_ID=1000
-chown -R 1000:1000 /mnt/nixfiles /mnt/keys /mnt/home
-chmod 700 /mnt/keys /mnt/keys/age
-chmod 500 /mnt/keys/age/*
+chown -R 1000:1000 /nixfiles /keys /mnt/home
+chmod 700 /keys /keys/age
+chmod 500 /keys/age/*
 
 info "Formatting and mounting the esp"
 mkfs.vfat -n ESP $ESP_PART
