@@ -217,7 +217,7 @@ __fzf_dir() {
   set -o nonomatch
   _fzf_compgen_dir . \
     | fzf --tac --reverse --preview "$_tree_cmd {} | head -200" \
-    | while read item; do printf ' %q/' "$item"; done
+    | while read item; do printf ' %q' "$item"; done
   echo
 }
 
@@ -231,8 +231,8 @@ __fzf_dir_widget() {
 
 zle -N __fzf_dir_widget
 
-bindkey '^x' fzf-cd-widget
-bindkey '^X' __fzf_dir_widget
+bindkey '^f' fzf-cd-widget
+bindkey '^x' __fzf_dir_widget
 
 # Remove alt bindings of fzf because it conflicts with zsh vi mode. Esc and Alt sends the same key code '^['.
 bindkey -r viins '^[c'

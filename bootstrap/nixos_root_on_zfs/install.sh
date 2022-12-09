@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -euox pipefail
 
 ################################################################################
 
@@ -56,7 +56,6 @@ zpool create \
     -O canmount=off \
     -O compression=lz4 \
     -O encryption=aes-256-gcm \
-
     -O keyformat=passphrase \
     -O keylocation=prompt \
     -O dnodesize=auto \
