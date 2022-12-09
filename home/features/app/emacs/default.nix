@@ -30,4 +30,12 @@ in {
       git switch develop
     fi
   '';
+  home.activation.gitCloneSpacemacsConfig =
+    hm.dag.entryAfter [ "writeBoundary" ] ''
+      if ! [ -d $HOME/.emacs.d ]; then
+        ${pkgs.git}/bin/git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
+        cd $HOME/.emacs.d
+        git switch develop
+      fi
+    '';
 }
