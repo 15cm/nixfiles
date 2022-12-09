@@ -43,7 +43,7 @@
       state = (import ./home/state);
     in rec {
       overlays = import ./overlays;
-      homeLegacyPackages = forAllSystems (system:
+      packages = forAllSystems (system:
         import nixpkgs {
           inherit system;
           overlays = with overlays; [
@@ -51,13 +51,8 @@
             modifications
             emacs-overlay.overlay
             nixgl.overlays.default
+            kmonad.overlays.default
           ];
-          config.allowUnfree = true;
-        });
-      nixosLegacyPackages = forAllSystems (system:
-        import nixpkgs {
-          inherit system;
-          overlays = with overlays; [ kmonad.overlays.default ];
           config.allowUnfree = true;
           config.permittedInsecurePackages = [
             # For goldendict
@@ -67,7 +62,7 @@
 
       homeConfigurationArgs = {
         "sinkerine@kazuki" = rec {
-          pkgs = homeLegacyPackages."x86_64-linux";
+          pkgs = packages."x86_64-linux";
           modules = [ ./home/users/sinkerine/kazuki ./modules/home-manager ];
           extraSpecialArgs = { hostname = "kazuki"; };
         };
@@ -93,14 +88,14 @@
       nixosConfigurationArgs = {
         "kazuki" = rec {
           system = "x86_64-linux";
-          pkgs = builtins.getAttr system nixosLegacyPackages;
+          pkgs = builtins.getAttr system packages;
           modules = [ ./hosts/kazuki ] ++ (with nixos-hardware.nixosModules;
             [ common-gpu-nvidia-nonprime ]);
           specialArgs = { hostname = "kazuki"; };
         };
         "asako" = rec {
           system = "x86_64-linux";
-          pkgs = builtins.getAttr system nixosLegacyPackages;
+          pkgs = builtins.getAttr system packages;
           modules = [ ./hosts/asako kmonad.nixosModules.default ]
             ++ (with nixos-hardware.nixosModules; [ lenovo-thinkpad-z13 ]);
           specialArgs = { hostname = "asako"; };
