@@ -1,4 +1,6 @@
-args@{ pkgs, config, mylib, state, ... }:
+args@{ pkgs, config, lib, mylib, state, ... }:
+
+with lib;
 
 let
   inherit (mylib) templateFile templateShellScriptFile writeShellScriptFile;
@@ -20,4 +22,12 @@ in {
   xdg.configFile."emacs/scripts/load-theme.el".source =
     templateFile "emacs-scripts-load-theme.el" templateData
     ./scripts/load-theme.el.jinja;
+
+  home.activation.gitCloneSpacemacs = hm.dag.entryAfter [ "writeBoundary" ] ''
+    if ! [ -d $HOME/.emacs.d ]; then
+      ${pkgs.git}/bin/git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
+      cd $HOME/.emacs.d
+      git switch develop
+    fi
+  '';
 }

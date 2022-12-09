@@ -1,12 +1,14 @@
 { pkgs, fetchFromGitHub }:
 
-let rev = "49fe4753c89615a32f14b2f4c78bbd02ee76be3c";
+let
+  version = "49fe4753c89615a32f14b2f4c78bbd02ee76be3c";
+  pname = "ranger_devicons";
 in pkgs.stdenv.mkDerivation {
-  name = "ranger_devicons";
+  inherit version pname;
   src = fetchFromGitHub {
     owner = "alexanderjeurissen";
     repo = "ranger_devicons";
-    inherit rev;
+    rev = version;
     sha256 = "sha256-YT7YFiTA2XtIoVzaVjUWMu6j4Nwo4iGzvOtjjWva/80=";
   };
 
