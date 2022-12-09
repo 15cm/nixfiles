@@ -8,15 +8,15 @@ in {
     settings = {
       font = {
         normal = {
-          family = "Inconsolata Nerd Font Mono";
+          family = "InconsolataLGC Nerd Font Mono";
           style = "Medium";
         };
         bold = {
-          family = "Inconsolata Nerd Font Mono";
+          family = "InconsolataLGC Nerd Font Mono";
           style = "Bold";
         };
         italic = {
-          family = "Inconsolata Nerd Font Mono";
+          family = "InconsolataLGC Nerd Font Mono";
           style = "Italic";
         };
         # Point size of the font
