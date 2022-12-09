@@ -6,7 +6,6 @@ args@{ pkgs, ... }:
   imports = [
     ../common/baseline.nix
     ../common/linux-gui.nix
-    ../../../features/conf/kmonad
     ../../../features/app/easyeffects
   ];
 }

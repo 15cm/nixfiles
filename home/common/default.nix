@@ -16,6 +16,7 @@ in {
     (import ../features/app/clipper
       (args // { templateData = { inherit (commonConfig) clipper; }; }))
     ../features/app/ranger
+    ../features/conf/misc-dotfiles
   ];
 
   home.packages = [ pkgs.exa pkgs.fd pkgs.bottom pkgs.nix-template ];
