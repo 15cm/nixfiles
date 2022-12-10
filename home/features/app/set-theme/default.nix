@@ -1,10 +1,8 @@
-args@{ pkgs, config, mylib, state, ... }:
+args@{ pkgs, config, nixinfo, mylib, state, ... }:
 
 let
-  commonConfig = (import ../../../common/config.nix args);
   templateData = {
-    statePath = "${commonConfig.nixinfo.projectRoot}/home/state/default.nix";
-    flakeUri = "${commonConfig.nixinfo.flakeUri}";
+    statePath = "${nixinfo.projectRoot}/home/state/default.nix";
     powerlineTmuxConfPath =
       "${config.programs.powerline.package}/share/tmux/powerline.conf";
   };

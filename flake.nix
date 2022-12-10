@@ -79,7 +79,7 @@
               inherit state;
               nixinfo = {
                 inherit configName;
-                projectRoot = ".nixfiles";
+                projectRoot = "/nixfiles";
               };
               mylib = (import ./lib {
                 inherit (v) pkgs;

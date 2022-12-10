@@ -19,5 +19,5 @@ in {
     ../features/conf/misc-dotfiles
   ];
 
-  home.packages = [ pkgs.exa pkgs.fd pkgs.bottom pkgs.nix-template ];
+  home.packages = [ pkgs.exa pkgs.fd pkgs.bottom pkgs.nix-template pkgs.xclip ];
 }

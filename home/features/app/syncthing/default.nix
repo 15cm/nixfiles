@@ -4,6 +4,9 @@
   home.packages = [ config.services.syncthing.tray.package ];
   services.syncthing = {
     enable = true;
-    tray = { enable = true; };
+    tray = {
+      enable = true;
+      command = "syncthingtray --wait";
+    };
   };
 }

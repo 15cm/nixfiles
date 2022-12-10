@@ -10,8 +10,9 @@
     ];
   };
   users.mutableUsers = false;
+  time.timeZone = "America/Los_Angeles";
 
-  environment.systemPackages = with pkgs; [ systemd ];
+  environment.systemPackages = with pkgs; [ systemd lsof ];
 
   system.activationScripts.systemdZshCompletion = ''
     mkdir -p /usr/share/zsh/site-functions

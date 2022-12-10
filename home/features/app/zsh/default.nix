@@ -111,6 +111,9 @@ in {
     } // optionalAttrs isLinux {
       sc = "sudo systemctl";
       scu = "systemctl --user";
+    } // optionalAttrs commonConfig.isNixOs {
+      snh = "switch-nix-home.sh";
+      sno = "switch-nix-os.sh";
     };
   };
 

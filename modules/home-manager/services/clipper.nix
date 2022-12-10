@@ -6,6 +6,9 @@ let
   cfg = config.services.clipper;
   clipperCfg = config.programs.clipper;
   clipperBinary = "${cfg.package}/bin/clipper";
+  preStartScript = pkgs.writeShellScript "clipper-pre-start" ''
+    mkdir -p ${cfg.logDir}
+  '';
 in {
   meta.maintainers = [ "i@15cm.net" ];
 
@@ -48,7 +51,7 @@ in {
       };
       Service = {
         Type = "simple";
-        ExecStartPre = "${pkgs.runtimeShell} -c 'mkdir -p ${cfg.logDir}'";
+        ExecStartPre = "${preStartScript}";
         ExecStart = "${clipperBinary} ${escapeShellArgs cfg.extraArgs}";
         Restart = "on-failure";
         RestartSec = 10;

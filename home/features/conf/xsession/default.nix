@@ -18,6 +18,7 @@ in {
   };
 
   xsession.importedVariables = [
+    "PATH"
     "DISPLAY"
     "XAUTHORITY"
     "QT_QPA_PLATFORMTHEME"
