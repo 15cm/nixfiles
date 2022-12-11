@@ -46,7 +46,6 @@ with lib;
       '';
     }];
   };
-  programs.light.enable = true;
 
   # Adjust DPIs by myself.
   hardware.video.hidpi.enable = mkForce false;
