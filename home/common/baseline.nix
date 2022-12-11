@@ -19,5 +19,15 @@ in {
     ../features/conf/misc-dotfiles
   ];
 
-  home.packages = [ pkgs.exa pkgs.fd pkgs.bottom pkgs.nix-template pkgs.xclip ];
+  home.packages = with pkgs; [
+    exa
+    fd
+    bottom
+    nix-template
+    xclip
+    htop
+    lsof
+    ripgrep
+    silver-searcher
+  ];
 }

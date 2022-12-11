@@ -1,6 +1,6 @@
 keys:
   - &users:
-    - &sinkerine 242F455F27D96A97A2FB9DA1FB938BEA0458EF24
+    - &sinkerine E51ECE14AD2CBB96D4FC42E25C8651C428B9DF03
   - &hosts:
     - &kazuki age1sc2gp8d40y7d9engfqhydg5v6mcg0aj40x3yccndzh7ruxvj63cqcpax76
     - &asako age1kez9h9hmz4amrq5phv8cwv3d04l775ctzaqgrd7q9u70hp6s0ehsjp5wk8

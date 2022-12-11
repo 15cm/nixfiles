@@ -15,5 +15,5 @@
     in pkgs.writeShellScript "switch-nix-os.sh"
     "sudo nixos-rebuild switch --flake ${osFlakeUri}";
 
-  imports = [ ../../../common ../../../features/app/gpg ];
+  imports = [ ../../../common/baseline.nix ../../../features/app/gpg ];
 }

@@ -1,9 +1,6 @@
 { pkgs, mylib, ... }:
 
-let
-  package = pkgs.goldendict;
-  preStartScript =
-    mylib.writeShellScriptFile "goldendict-prestart" ./fix-zoom.sh;
+let package = pkgs.goldendict;
 in {
   home.packages = [ package ];
   systemd.user.services.goldendict = {
@@ -14,7 +11,6 @@ in {
     Install = { WantedBy = [ "graphical-session.target" ]; };
     Service = {
       Type = "simple";
-      ExecStartPre = "${preStartScript}";
       ExecStart = "${package}/bin/goldendict";
     };
   };

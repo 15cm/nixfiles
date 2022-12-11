@@ -53,7 +53,6 @@ in {
       ignoreDups = true;
     };
     sessionVariables = {
-      PATH = "$PATH:$HOME/.local/bin:$HOME/local/bin:/usr/local/bin";
       LC_ALL = "en_US.utf-8";
       LANG = "en_US.utf-8";
       LANGUAGE = "en_US.UTF-8";
@@ -63,6 +62,7 @@ in {
     } // optionalAttrs isDarwin { HOMEBREW_NO_AUTO_UPDATE = "1"; };
     # Env vars that are specific to interactive shell.
     initExtraFirst = mkBefore ''
+      export PATH="$PATH:$HOME/.local/bin:$HOME/local/bin:/usr/local/bin";
       export EDITOR="${config.home.homeDirectory}/local/bin/exec-editor.sh";
       export TERM="alacritty";
       export TLDR_COLOR_BLANK="blue";

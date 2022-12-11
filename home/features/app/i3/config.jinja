@@ -145,14 +145,14 @@ bindsym $mod+e exec splatmoji type
 bindsym $mod+o mode "launcher"
 
 mode "launcher" {
-     bindsym f exec firefox; mode "default"
+     bindsym f exec nixGL firefox; mode "default"
      bindsym e exec emacsclient -c; mode "default"
      bindsym s exec flameshot gui; mode "default"
      bindsym d exec dex /usr/share/applications/org.gnome.Nautilus.desktop; mode "default"
      bindsym r exec rambox; mode "default"
-     bindsym c exec chromium; mode "default"
+     bindsym c exec nixGL chromium; mode "default"
      bindsym l exec telegram-desktop; mode "default"
-     bindsym m exec dex /usr/share/applications/org.clementine_player.Clementine.desktop; mode "default"
+     bindsym m exec clementine; mode "default"
      bindsym n exec dunstctl close-all; mode "default"
      bindsym Shift+n exec dunstctl history-pop; mode "default"
      bindsym Escape mode "default"

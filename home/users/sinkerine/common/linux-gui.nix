@@ -1,6 +1,6 @@
-args@{ pkgs, ... }:
+args@{ pkgs, lib, hostname, ... }:
 
-{
+with lib; {
   imports = [
     # Essentials
     (import ../../../features/app/emacs
@@ -29,7 +29,10 @@ args@{ pkgs, ... }:
     ../../../features/app/syncthing
     ../../../features/app/unclutter
     ../../../features/app/wallpaper
-  ];
+  ] ++ (optionals (hostname == "asako") [
+    ../../../features/app/firefox
+    ../../../features/app/chromium
+  ]);
 
-  home.packages = [ pkgs.keepassxc ];
+  home.packages = with pkgs; [ keepassxc font-manager ];
 }

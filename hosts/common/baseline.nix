@@ -11,8 +11,9 @@
   };
   users.mutableUsers = false;
   time.timeZone = "America/Los_Angeles";
+  services.acpid.enable = true;
 
-  environment.systemPackages = with pkgs; [ systemd lsof ];
+  environment.systemPackages = with pkgs; [ systemd acpi ];
 
   system.activationScripts.systemdZshCompletion = ''
     mkdir -p /usr/share/zsh/site-functions
