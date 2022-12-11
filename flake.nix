@@ -75,7 +75,7 @@
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
         (builtins.mapAttrs (configName: v:
           v // {
-            extraSpecialArgs = (v.extraSpecialArgs or { }) // {
+            extraSpecialArgs = (v.extraSpecialArgs or { }) // rec {
               inherit state;
               nixinfo = {
                 inherit configName;
@@ -84,6 +84,7 @@
               mylib = (import ./lib {
                 inherit (v) pkgs;
                 inherit (v.pkgs) lib;
+                inherit nixinfo;
               });
             };
           }))
