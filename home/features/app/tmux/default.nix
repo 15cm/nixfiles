@@ -24,6 +24,7 @@ in {
     keyMode = "vi";
     terminal = "tmux";
     plugins = with pkgs.tmuxPlugins; [
+      sensible
       resurrect
       continuum
       pain-control
@@ -31,9 +32,11 @@ in {
       jump
       tmux-fzf
     ];
-    extraConfig = pipe ./tmux.conf.jinja [
-      (templateFile "tmux.conf" templateData)
-      builtins.readFile
-    ];
   };
+  # Place my config between mkBefore and mkDefault
+  xdg.configFile."tmux/tmux.conf".text = pipe ./tmux.conf.jinja [
+    (templateFile "tmux.conf" templateData)
+    builtins.readFile
+    (mkOrder 600)
+  ];
 }
