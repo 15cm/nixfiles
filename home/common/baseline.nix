@@ -30,5 +30,6 @@ in {
     ripgrep
     silver-searcher
     ueberzug
+    bind
   ];
 }

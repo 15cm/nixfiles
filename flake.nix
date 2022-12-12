@@ -84,7 +84,6 @@
               mylib = (import ./lib {
                 inherit (v) pkgs;
                 inherit (v.pkgs) lib;
-                inherit nixinfo;
               });
             };
           }))
@@ -111,6 +110,12 @@
         nixpkgs.lib.nixosSystem (v // {
           modules = v.modules
             ++ [ sops-nix.nixosModules.sops envfs.nixosModules.envfs ];
+          specialArgs = v.specialArgs // {
+            mylib = (import ./lib {
+              inherit (v) pkgs;
+              inherit (v.pkgs) lib;
+            });
+          };
         })) nixosConfigurationArgs;
     };
 }

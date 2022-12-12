@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  environment.systemPackages = with pkgs; [ systemd acpi ];
+
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     substituters =
@@ -12,8 +14,6 @@
   users.mutableUsers = false;
   time.timeZone = "America/Los_Angeles";
   services.acpid.enable = true;
-
-  environment.systemPackages = with pkgs; [ systemd acpi ];
 
   system.activationScripts.systemdZshCompletion = ''
     mkdir -p /usr/share/zsh/site-functions

@@ -11,3 +11,10 @@ creation_rules:
   - path_regex: hosts/asako/secrets.yaml$
     pgp: *sinkerine
     age: *asako
+  - path_regex: hosts/common/autofs/cifs-credentials.txt$
+    key_groups:
+      - age:
+        - *kazuki
+        - *asako
+        pgp:
+          - *sinkerine

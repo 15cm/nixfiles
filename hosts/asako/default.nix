@@ -9,6 +9,7 @@ with lib;
     ../common/zfs.nix
     ../common/users/sinkerine.nix
     ../common/linux-gui.nix
+    ../common/autofs
     ./generated/hardware-configuration.nix
     ./generated/extra-configuration.nix
   ];
