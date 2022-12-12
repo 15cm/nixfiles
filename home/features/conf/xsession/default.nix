@@ -42,7 +42,8 @@ in {
   services.screen-locker = {
     enable = true;
     lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen -l";
-    inactiveInterval = (if hostname == "asako" then 60 else 360);
+    inactiveInterval = (if hostname == "asako" then 60 else 180);
+    xss-lock.screensaverCycle = (if hostname == "asako" then 90 else 360);
   };
 
   home.file.".icons/default".source =
