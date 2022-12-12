@@ -12,6 +12,9 @@ with lib; {
     ../../../features/app/keychain
     ../../../features/conf/fontconfig
     ../../../features/app/i3
+    ../../../features/app/dunst
+    ../../../features/app/unclutter
+    ../../../features/app/wallpaper
     # Applications
     ../../../features/app/alacritty
     ../../../features/conf/mpv
@@ -27,8 +30,6 @@ with lib; {
     ../../../features/app/nm-applet
     ../../../features/app/playctl
     ../../../features/app/syncthing
-    ../../../features/app/unclutter
-    ../../../features/app/wallpaper
   ];
 
   home.packages = with pkgs; [ keepassxc font-manager firefox chromium ];
