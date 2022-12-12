@@ -45,5 +45,8 @@ in {
     inactiveInterval = (if hostname == "asako" then 60 else 360);
   };
 
-  home.packages = with pkgs; [ betterlockscreen ];
+  home.file.".icons/default".source =
+    "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ";
+
+  home.packages = with pkgs; [ betterlockscreen nitrogen ];
 }
