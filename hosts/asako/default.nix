@@ -63,4 +63,9 @@ with lib;
 
   # Laptop battery
   services.upower.enable = true;
+
+  services.logind = {
+    lidSwitch = "suspend";
+    lidSwitchExternalPower = "lock";
+  };
 }

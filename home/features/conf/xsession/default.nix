@@ -1,4 +1,4 @@
-{ config, mylib, hostname, lib, ... }:
+{ pkgs, config, mylib, hostname, lib, ... }:
 
 with lib;
 let
@@ -38,4 +38,12 @@ in {
   ];
 
   home.file.".imwheelrc".source = ./imwheelrc;
+
+  services.screen-locker = {
+    enable = true;
+    lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen -l";
+    inactiveInterval = (if hostname == "asako" then 60 else 360);
+  };
+
+  home.packages = with pkgs; [ betterlockscreen ];
 }

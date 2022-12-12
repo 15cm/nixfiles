@@ -29,5 +29,6 @@ in {
     lsof
     ripgrep
     silver-searcher
+    ueberzug
   ];
 }
