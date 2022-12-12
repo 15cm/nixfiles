@@ -3,7 +3,13 @@
 with lib;
 
 {
-  environment.systemPackages = with pkgs; [ pavucontrol pulseaudio ];
+  environment.systemPackages = with pkgs; [
+    pavucontrol
+    pulseaudio
+    xorg.xev
+    evtest
+    libinput
+  ];
   fonts.fonts = with pkgs; [
     noto-fonts
     noto-fonts-cjk-sans
@@ -27,14 +33,16 @@ with lib;
         user = "sinkerine";
       };
       lightdm = { enable = true; };
+      defaultSession = "none+i3";
+      session = [{
+        manage = "window";
+        name = "i3";
+        start = ''
+          ${pkgs.runtimeShell} $HOME/.xsession &
+          waitPID=$!
+        '';
+      }];
     };
-    desktopManager.session = [{
-      name = "xsession";
-      start = ''
-        ${pkgs.runtimeShell} $HOME/.xsession &
-        waitPID=$!
-      '';
-    }];
   };
 
   # Adjust DPIs by myself.

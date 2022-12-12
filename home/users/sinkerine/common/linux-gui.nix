@@ -29,10 +29,7 @@ with lib; {
     ../../../features/app/syncthing
     ../../../features/app/unclutter
     ../../../features/app/wallpaper
-  ] ++ (optionals (hostname == "asako") [
-    ../../../features/app/firefox
-    ../../../features/app/chromium
-  ]);
+  ];
 
-  home.packages = with pkgs; [ keepassxc font-manager ];
+  home.packages = with pkgs; [ keepassxc font-manager firefox chromium ];
 }
