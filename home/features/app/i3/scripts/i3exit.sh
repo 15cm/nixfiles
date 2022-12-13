@@ -12,10 +12,10 @@ case "$1" in
     dm-tool switch-to-greeter
     ;;
   suspend)
-    betterlockscreen -l && $logind suspend
+    $logind suspend
     ;;
   hibernate)
-    betterlockscreen -l && $logind hibernate
+    $logind hibernate
     ;;
   reboot)
     $logind reboot
