@@ -63,18 +63,19 @@
       homeConfigurationArgs = {
         "sinkerine@kazuki" = {
           pkgs = packages."x86_64-linux";
-          modules = [ ./home/users/sinkerine/kazuki ./modules/home-manager ];
+          modules = [ ./home/users/sinkerine/kazuki ];
           extraSpecialArgs = { hostname = "kazuki"; };
         };
         "sinkerine@asako" = {
           pkgs = packages."x86_64-linux";
-          modules = [ ./home/users/sinkerine/asako ./modules/home-manager ];
+          modules = [ ./home/users/sinkerine/asako ];
           extraSpecialArgs = { hostname = "asako"; };
         };
       };
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
         (builtins.mapAttrs (configName: v:
           v // {
+            modules = v.modules ++ [ ./modules/home-manager ];
             extraSpecialArgs = (v.extraSpecialArgs or { }) // rec {
               inherit state;
               nixinfo = {
@@ -108,8 +109,11 @@
       };
       nixosConfigurations = builtins.mapAttrs (_: v:
         nixpkgs.lib.nixosSystem (v // {
-          modules = v.modules
-            ++ [ sops-nix.nixosModules.sops envfs.nixosModules.envfs ];
+          modules = v.modules ++ [
+            ./modules/nixos
+            sops-nix.nixosModules.sops
+            envfs.nixosModules.envfs
+          ];
           specialArgs = v.specialArgs // {
             mylib = (import ./lib {
               inherit (v) pkgs;

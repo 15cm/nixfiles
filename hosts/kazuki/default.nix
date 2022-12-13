@@ -13,6 +13,8 @@ with lib;
     ./generated/extra-configuration.nix
   ];
 
+  environment.systemPackages = with pkgs; [ easyrsa ];
+
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = { hashedPassword.neededForUsers = true; };
@@ -40,6 +42,4 @@ with lib;
   hardware.opengl.enable = true;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   boot.kernelParams = [ "nvidia-drm.modeset=1" ];
-
-  environment.systemPackages = with pkgs; [ systemd ];
 }

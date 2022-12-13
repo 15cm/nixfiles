@@ -2,20 +2,21 @@
 
 with lib;
 
-let inherit (mylib) writeShellScriptFile;
+let inherit (mylib) writeShellScriptFile templateFile;
 in {
   system.stateVersion = "22.05";
   imports = [
+    ./generated/hardware-configuration.nix
+    ./generated/extra-configuration.nix
     ../common/baseline.nix
     ../common/zfs.nix
     ../common/users/sinkerine.nix
     ../common/linux-gui.nix
-    ../common/autofs
-    ./generated/hardware-configuration.nix
-    ./generated/extra-configuration.nix
+    ../features/app/autofs
+    ./zrepl
   ];
 
-  environment.systemPackages = with pkgs; [ systemd ];
+  environment.systemPackages = with pkgs; [ easyrsa ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;

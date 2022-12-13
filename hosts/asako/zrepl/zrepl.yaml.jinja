@@ -1,0 +1,44 @@
+global:
+  logging:
+    # use syslog instead of stdout because it makes journald happy
+    - type: syslog
+      format: human
+      level: warn
+
+jobs:
+  - type: push
+    name: "push"
+    filesystems: {
+      "rpool/data<": true,
+      "rpool/data/home/sinkerine/.cache": false,
+      "rpool/data/home/sinkerine/vmware": false,
+      "rpool/data/var-lib-docker<": false,
+    }
+    connect:
+      type: tls
+      address: "sachi.machine.mado.moe:38888"
+      ca: {{caCertPath}}
+      cert: {{certPath}}
+      key: {{keyPath}}
+      server_cn: "sachi.machine.mado.moe"
+    snapshotting:
+      type: periodic
+      prefix: zrepl_
+      interval: 24h
+    send:
+    pruning:
+      keep_sender:
+        - type: not_replicated
+        - type: grid
+          grid: 3x1d
+          regex: "^zrepl_.*"
+        - type: regex
+          regex: "^manual_.*"
+      keep_receiver:
+        - type: grid
+          grid: 48x1h | 35x1d | 6x30d
+          regex: "^zrepl_.*"
+        - type: regex
+          regex: "^manual_.*"
+        - type: regex
+          regex: "^local_zrepl_.*"

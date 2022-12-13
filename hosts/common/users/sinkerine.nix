@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 
-let keys = import (../keys.nix);
+let pubCredentials = import (../pub-credentials);
 in {
   users.users.sinkerine = {
     isNormalUser = true;
@@ -18,6 +18,6 @@ in {
     home = "/home/sinkerine";
     passwordFile = config.sops.secrets.hashedPassword.path;
 
-    openssh.authorizedKeys.keys = keys.sshKeys;
+    openssh.authorizedKeys.keys = pubCredentials.ssh.keys;
   };
 }
