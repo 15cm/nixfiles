@@ -32,5 +32,11 @@ with lib; {
     ../../../features/app/syncthing
   ];
 
-  home.packages = with pkgs; [ keepassxc font-manager firefox chromium ];
+  home.packages = with pkgs; [
+    keepassxc
+    font-manager
+    firefox
+    chromium
+    trash-cli
+  ];
 }
