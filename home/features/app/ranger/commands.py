@@ -145,7 +145,7 @@ class fzf_z(Command):
     def execute(self):
         global tree_cmd
         command = (
-            'source $HOME/.z/z.sh; _z -l 2>&1 | sed "s/^[0-9,.]* *//" | '
+            'eval "$(lua $HOME/.zplug/repos/skywind3000/z.lua/z.lua --init zsh)"; _zlua -i 2>&1 | sed "s/^[0-9,.]* *//" | '
             + fzf_default_cmd
             + '--tac --reverse --preview "{0} {{}} | head -200" --preview-window right:30%'.format(
                 tree_cmd
