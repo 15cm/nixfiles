@@ -1,9 +1,13 @@
-{ lib, mylib, state, pkgs, ... }:
+args@{ lib, mylib, state, pkgs, ... }:
 
 with lib;
 let
   inherit (mylib) templateFile;
-  templateData = { inherit (state) theme; };
+  commonConfig = import ../../../common/config.nix args;
+  templateData = {
+    inherit (state) theme;
+    inherit (commonConfig.clipper) copyCommand;
+  };
 in {
   programs.vim = {
     enable = true;

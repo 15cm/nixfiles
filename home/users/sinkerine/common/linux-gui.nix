@@ -36,7 +36,10 @@ with lib; {
     keepassxc
     font-manager
     firefox
-    chromium
+    google-chrome
     trash-cli
+    flameshot
+    jellyfin-media-player
+    radeontop
   ];
 }

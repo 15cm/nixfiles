@@ -20,6 +20,7 @@ in {
   ];
 
   home.packages = with pkgs; [
+    nixfmt
     exa
     fd
     bottom
@@ -31,5 +32,6 @@ in {
     silver-searcher
     ueberzug
     bind
+    tealdeer
   ];
 }

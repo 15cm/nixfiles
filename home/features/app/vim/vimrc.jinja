@@ -394,4 +394,4 @@ function! GetVisualSelection()
     return join(lines, "\n")
 endfunction
 
-vmap <C-y> :call system('nc -q0 localhost 8377', GetVisualSelection())<CR>
+vmap <C-y> :call system('{{copyCommand}}', GetVisualSelection())<CR>
