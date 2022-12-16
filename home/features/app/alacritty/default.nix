@@ -6,6 +6,10 @@ in {
   programs.alacritty = {
     enable = true;
     settings = {
+      shell = {
+        program = "${pkgs.tmux}/bin/tmux";
+        args = [ "new" "-A" "-s" "main" ];
+      };
       font = {
         normal = {
           family = "InconsolataLGC Nerd Font Mono";
