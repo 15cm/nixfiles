@@ -33,5 +33,6 @@ in {
     ueberzug
     bind
     tealdeer
+    cloc
   ];
 }
