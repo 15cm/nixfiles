@@ -30,10 +30,10 @@ zpool export -a
 Reboot the matchine. After reboot, switch to tty and setup home manager:
 ```
 nix build --no-link --impure 'path:/nixfiles#homeConfigurations.sinkerine@<hostname>.activationPackage'
-"$(nix path-info --impure 'path:/nixfiles#homeConfigurations.sinkerine@asako.activationPackage')"/activate
+"$(nix path-info --impure 'path:/nixfiles#homeConfigurations.sinkerine@<hostname>.activationPackage')"/activate
 ```
 
-Link /mnt/keys/age/<hostname>.txt to /mnt/home/<username>/.config/sops/age/keys.txt
+Link /mnt/keys/age/<hostname>.txt to /mnt/home/sinkerine/.config/sops/age/keys.txt
 
 Pull the configs out side of nixfiles:
 ```
