@@ -5,12 +5,13 @@ with lib;
 {
   system.stateVersion = "22.05";
   imports = [
+    ./generated/hardware-configuration.nix
+    ./generated/extra-configuration.nix
     ../common/baseline.nix
     ../common/zfs.nix
     ../common/users/sinkerine.nix
     ../common/linux-gui.nix
-    ./generated/hardware-configuration.nix
-    ./generated/extra-configuration.nix
+    ../features/app/autofs
   ];
 
   environment.systemPackages = with pkgs; [ easyrsa ];
@@ -39,7 +40,6 @@ with lib;
     networkmanager = { enable = true; };
   };
 
-  hardware.opengl.enable = true;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   boot.kernelParams = [ "nvidia-drm.modeset=1" ];
 }

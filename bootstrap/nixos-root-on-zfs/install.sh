@@ -48,8 +48,7 @@ export ESP_PART=${DISK}-part1
 export ZFS_PART=${DISK}-part2
 
 export RPOOL="rpool"
-zpool list -o name | tail -n +2 | grep -q $RPOOL
-if [ $? -eq 0 ]; then
+if [ zpool list -o name | tail -n +2 | grep -q $RPOOL ]; then
   info "ZFS root pool '$RPOOL' already exists. Destroying it."
   umount -Rl /mnt
   zpool destroy -f $RPOOL
@@ -70,6 +69,7 @@ zpool create \
     -O devices=off \
     -O mountpoint=none \
     -R /mnt \
+    -f \
     $RPOOL \
     $ZFS_PART
 
