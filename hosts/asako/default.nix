@@ -32,13 +32,7 @@ in {
   services.fwupd.enable = true;
   services.udisks2.enable = true;
 
-  # TODO: disable ssh after configuration is done.
-  services.openssh = {
-    enable = true;
-    passwordAuthentication = false;
-    kbdInteractiveAuthentication = false;
-    permitRootLogin = "no";
-  };
+  services.openssh.enable = false;
 
   networking = {
     hostName = hostname;

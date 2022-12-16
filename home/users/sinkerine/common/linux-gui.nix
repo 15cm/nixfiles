@@ -41,5 +41,10 @@ with lib; {
     flameshot
     jellyfin-media-player
     radeontop
+    clementine
+    gnome.nautilus
   ];
+
+  qt.enable = true;
+  gtk.enable = true;
 }

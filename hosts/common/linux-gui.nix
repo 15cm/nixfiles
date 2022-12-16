@@ -49,4 +49,6 @@ with lib;
   };
 
   hardware.bluetooth.enable = true;
+  # Needed by Nautilus.
+  services.gvfs.enable = true;
 }
