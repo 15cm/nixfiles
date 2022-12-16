@@ -53,6 +53,7 @@ with lib;
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
+
   hardware.bluetooth.enable = true;
   # Needed by Nautilus.
   services.gvfs.enable = true;

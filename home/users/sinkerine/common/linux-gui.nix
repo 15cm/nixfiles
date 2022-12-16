@@ -47,4 +47,8 @@ with lib; {
 
   qt.enable = true;
   gtk.enable = true;
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+  };
 }
