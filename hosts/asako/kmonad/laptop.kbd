@@ -36,7 +36,7 @@
 (deflayer edit
  _    _    _    _    _    _    _    _               _                   _         _
       _    _    _    _    _    _    _               _    _    _    _    _         _    _    _    _
- _    _    _    _    _    _    _    _               _    _    _    _    _         _
+ _    f1   f2   f3   f4   f5   f6   f7              f8   f9   f10  _    _         _
  _    _    _    _    _    _    home pgdn            pgup end  caps _    _         _
  _    _    @im1 @im2 @im3 _    left down            up   rght @clt @crt           _
  _    _    _    _    _    _    _                    _    @cbc @cdl _    _
