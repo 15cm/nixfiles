@@ -6,11 +6,8 @@ let
 in {
   home.packages = [ pkgs.arandr ];
   systemd.user.services.arandr = {
-    Unit = {
-      Description = "ArandR -- A simple visual front end for XRandR";
-      PartOf = [ "tray.target" ];
-    };
-    Install = { WantedBy = [ "graphical-session.target" "tray.target" ]; };
+    Unit = { Description = "ArandR -- A simple visual front end for XRandR"; };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
     Service = {
       Type = "oneshot";
       ExecStart = "${preStartScript}";
