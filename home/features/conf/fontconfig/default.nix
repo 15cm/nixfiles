@@ -10,6 +10,7 @@
     inconsolata-lgc
     font-awesome_4
     (nerdfonts.override { fonts = [ "Noto" "InconsolataLGC" ]; })
+    emacs-all-the-icons-fonts
   ];
 
   xdg.configFile."fontconfig/conf.d/90-my-fonts.conf".source = ./fonts.conf;

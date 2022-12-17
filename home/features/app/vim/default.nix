@@ -17,12 +17,12 @@ in {
     ];
   };
 
-  home.file.".vim/colors/solarized.vim".source = pkgs.fetchurl {
+  home.file.".vim/colors/solarized.vim".source = builtins.fetchurl {
     url =
       "https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim";
     hash = "sha256-i2NgdR9IIGv0sKRN0v65xIr2VvJmLlv2K0fruHwncAQ=";
   };
-  home.file.".vim/colors/Tomorrow-Night.vim".source = pkgs.fetchurl {
+  home.file.".vim/colors/Tomorrow-Night.vim".source = builtins.fetchurl {
     url =
       "https://github.com/chriskempson/tomorrow-theme/raw/master/vim/colors/Tomorrow-Night.vim";
     hash = "sha256-Nrn/IoBWCpsoI/bVBVbJeY82VxchrEqV8hYn3c7LIgY=";

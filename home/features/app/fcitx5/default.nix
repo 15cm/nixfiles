@@ -10,7 +10,7 @@ in {
   };
 
   home.file.".local/share/fcitx5/themes/Material-Color-Pink/theme.conf".source =
-    pkgs.fetchurl {
+    builtins.fetchurl {
       url =
         "https://raw.githubusercontent.com/hosxy/Fcitx5-Material-Color/master/theme-pink.conf";
       hash = "sha256-VbYvwAb3pxyReFzl7j3eqqUsMuSY32+XlEhBNb12ZRc=";
