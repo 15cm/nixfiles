@@ -17,6 +17,7 @@ in {
       (args // { templateData = { inherit (commonConfig) clipper; }; }))
     ../features/app/ranger
     ../features/conf/misc-dotfiles
+    ../features/conf/fontconfig
   ];
 
   home.packages = with pkgs; [

@@ -10,7 +10,6 @@ with lib; {
     ../../../features/conf/xsession
     ../../../features/conf/xresources
     ../../../features/app/keychain
-    ../../../features/conf/fontconfig
     ../../../features/app/i3
     ../../../features/app/dunst
     ../../../features/app/unclutter
