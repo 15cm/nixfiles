@@ -8,10 +8,9 @@ in {
   systemd.user.services.arandr = {
     Unit = {
       Description = "ArandR -- A simple visual front end for XRandR";
-      PartOf = [ "graphical-session.target" ];
-      Beforfe = [ "syncthingtray.service" ];
+      PartOf = [ "tray.target" ];
     };
-    Install = { WantedBy = [ "graphical-session.target" ]; };
+    Install = { WantedBy = [ "graphical-session.target" "tray.target" ]; };
     Service = {
       Type = "oneshot";
       ExecStart = "${preStartScript}";

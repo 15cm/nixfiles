@@ -7,6 +7,7 @@ in {
     Unit = {
       Description = "Copyq";
       PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" "tray.target" ];
     };
     Install = { WantedBy = [ "graphical-session.target" ]; };
     Service = {
