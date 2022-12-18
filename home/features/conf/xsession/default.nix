@@ -45,6 +45,7 @@ in {
     inactiveInterval = (if hostname == "asako" then 60 else 180);
   };
 
+  # Cursor icons.
   home.file.".icons/default".source =
     "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ";
 

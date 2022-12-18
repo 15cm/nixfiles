@@ -9,6 +9,7 @@ with lib;
     xorg.xev
     evtest
     libinput
+    mpv
   ];
 
   services.xserver = {
