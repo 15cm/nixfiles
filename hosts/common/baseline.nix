@@ -1,7 +1,13 @@
 { pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [ systemd acpi wget ];
+  environment.systemPackages = with pkgs; [
+    systemd
+    acpi
+    wget
+    killall
+    pciutils
+  ];
 
   nix = {
     gc = {

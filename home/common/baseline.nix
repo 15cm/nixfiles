@@ -35,5 +35,8 @@ in {
     bind
     tealdeer
     cloc
+    hunspell
+    hunspellDicts.en_US-large
+    direnv
   ];
 }
