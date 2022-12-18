@@ -2,7 +2,13 @@
 
 with lib;
 
-{
+let
+  openrgb-rules = pkgs.fetchurl {
+    url =
+      "https://gitlab.com/CalcProgrammer1/OpenRGB/-/raw/ca3c2ad54188c604c7626136ceda574e9fde3bc0/60-openrgb.rules";
+    hash = "sha256:0s0cdjdc5yndzwl0l2lccbqv08r0js7laln0slncb7h1lj6k5imf";
+  };
+in {
   system.stateVersion = "22.05";
   imports = [
     ./generated/hardware-configuration.nix
@@ -14,7 +20,7 @@ with lib;
     ../features/app/autofs
   ];
 
-  environment.systemPackages = with pkgs; [ easyrsa ];
+  environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
@@ -41,5 +47,11 @@ with lib;
   };
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
-  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
+  boot.kernelParams = [ "nvidia-drm.modeset=1" "acpi_enforce_resources=lax" ];
+  boot.kernelModules = [
+    # Ensure we can access i2c bus for RGB memory
+    "i2c-dev"
+    "i2c-piix4"
+  ];
+  services.udev.extraRules = builtins.readFile openrgb-rules;
 }
