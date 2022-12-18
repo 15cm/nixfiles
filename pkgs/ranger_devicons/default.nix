@@ -9,7 +9,7 @@ in pkgs.stdenv.mkDerivation {
     owner = "alexanderjeurissen";
     repo = "ranger_devicons";
     rev = version;
-    sha256 = "sha256-YT7YFiTA2XtIoVzaVjUWMu6j4Nwo4iGzvOtjjWva/80=";
+    hash ="sha256-YT7YFiTA2XtIoVzaVjUWMu6j4Nwo4iGzvOtjjWva/80=";
   };
 
   phases = [ "installPhase" ];

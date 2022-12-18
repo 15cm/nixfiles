@@ -8,7 +8,7 @@ python3.pkgs.buildPythonPackage rec {
     owner = "15cm";
     repo = "i3-quickterm";
     rev = "0114be21787349df3de7644026c5f781ab60dddd";
-    sha256 = "sha256-aTCAEl+eXj20Z7L46x0Et3y37un489mxw+uwtqnuGgY=";
+    hash ="sha256-aTCAEl+eXj20Z7L46x0Et3y37un489mxw+uwtqnuGgY=";
   };
 
   propagatedBuildInputs = [ pkgs.python3Packages.i3ipc ];
