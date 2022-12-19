@@ -40,6 +40,7 @@ with lib; {
     radeontop
     clementine
     gnome.nautilus
+    ark
   ];
 
   qt.enable = true;

@@ -17,7 +17,6 @@ in {
     ../common/zfs.nix
     ../common/users/sinkerine.nix
     ../common/linux-gui.nix
-    ../features/app/autofs
   ];
 
   environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];

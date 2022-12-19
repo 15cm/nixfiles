@@ -2,9 +2,11 @@
 
 let pubCredentials = import (../pub-credentials);
 in {
+  users.groups.sinkerine = { gid = 1000; };
   users.users.sinkerine = {
     isNormalUser = true;
     shell = pkgs.zsh;
+    group = "sinkerine";
     extraGroups = [
       "wheel"
       "video"
@@ -13,6 +15,7 @@ in {
       "networkmanager"
       "docker"
       "libvirtd"
+      "dockremap"
     ];
     uid = 1000;
     home = "/home/sinkerine";

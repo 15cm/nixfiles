@@ -3,6 +3,8 @@
 with lib;
 
 {
+  imports =
+    [ ../features/app/autofs ../features/app/docker ../features/app/AriaNg ];
   environment.systemPackages = with pkgs; [
     pavucontrol
     pulseaudio
@@ -58,4 +60,7 @@ with lib;
   hardware.bluetooth.enable = true;
   # Needed by Nautilus.
   services.gvfs.enable = true;
+
+  # For web apps.
+  services.nginx.enable = true;
 }

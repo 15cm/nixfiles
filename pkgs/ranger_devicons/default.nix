@@ -1,15 +1,15 @@
 { pkgs, fetchFromGitHub }:
 
 let
-  version = "49fe4753c89615a32f14b2f4c78bbd02ee76be3c";
   pname = "ranger_devicons";
+  version = "49fe4753c89615a32f14b2f4c78bbd02ee76be3c";
 in pkgs.stdenv.mkDerivation {
-  inherit version pname;
+  inherit pname version;
   src = fetchFromGitHub {
     owner = "alexanderjeurissen";
     repo = "ranger_devicons";
     rev = version;
-    hash ="sha256-YT7YFiTA2XtIoVzaVjUWMu6j4Nwo4iGzvOtjjWva/80=";
+    hash = "sha256-YT7YFiTA2XtIoVzaVjUWMu6j4Nwo4iGzvOtjjWva/80=";
   };
 
   phases = [ "installPhase" ];
