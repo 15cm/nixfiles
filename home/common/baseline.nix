@@ -6,6 +6,7 @@ in {
 
   imports = [
     ../features/app/git
+    ../features/app/emacs
     ../features/app/vim
     ../features/app/tmux
     ../features/app/zsh

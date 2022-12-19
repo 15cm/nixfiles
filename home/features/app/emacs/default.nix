@@ -5,7 +5,7 @@ with lib;
 let
   inherit (mylib) templateFile templateShellScriptFile writeShellScriptFile;
   templateData = { inherit (state) theme; };
-  package = args.withArgs.packageOverride or pkgs.emacs-nox;
+  package = args.withArgs.packageOverride or pkgs.emacsUnstable;
 in {
   programs.emacs = {
     enable = true;
