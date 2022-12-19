@@ -7,12 +7,5 @@
   boot.supportedFilesystems = [ "zfs" ];
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
-  # Bootloader
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 3;
-  };
-  boot.loader.efi.canTouchEfiVariables = true;
-
   services.zfs = { autoScrub.enable = true; };
 }
