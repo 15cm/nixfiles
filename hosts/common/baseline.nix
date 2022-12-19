@@ -8,6 +8,7 @@
     wget
     killall
     pciutils
+    openssl
   ];
 
   nix = {

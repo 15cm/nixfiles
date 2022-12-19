@@ -18,6 +18,6 @@ with lib;
     autoPrune.enable = true;
   };
   system.activationScripts.createDockerNetowrk = ''
-    ${pkgs.docker}/bin/docker network ls | grep -q g_proxy || ${pkgs.docker}/bin/docker network create g_proxy
+    if ! ${pkgs.docker}/bin/docker network ls | grep -q g_proxy; then ${pkgs.docker}/bin/docker network create g_proxy; fi
   '';
 }
