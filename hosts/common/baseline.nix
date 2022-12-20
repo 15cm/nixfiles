@@ -48,4 +48,6 @@
       ln -sf ${pkgs.tzdata}/share/zoneinfo /usr/share/zoneinfo
     fi
   '';
+
+  boot.kernel.sysctl = { "vm.max_map_count" = 262144; };
 }
