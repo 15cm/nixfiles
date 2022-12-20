@@ -39,5 +39,6 @@ in {
     hunspell
     hunspellDicts.en_US-large
     direnv
+    emacsPackages.emacsql-sqlite
   ];
 }
