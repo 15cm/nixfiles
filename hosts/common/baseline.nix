@@ -42,4 +42,8 @@
     mkdir -p /usr/share/zsh/site-functions
     ln -sf ${pkgs.systemd}/share/zsh/site-functions/* /usr/share/zsh/site-functions/
   '';
+  system.activationScripts.linkTzdata = ''
+    mkdir -p /usr/share
+    ln -sf ${pkgs.tzdata}/share/zoneinfo /usr/share/zoneinfo
+  '';
 }
