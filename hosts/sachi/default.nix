@@ -17,7 +17,10 @@ with lib;
     defaultSopsFile = ./secrets.yaml;
     secrets = {
       hashedPassword.neededForUsers = true;
-      smbpasswd.mode = "400";
+      smbpasswd = {
+        sopsFile = ./smbpasswd;
+        format = "binary";
+      };
     };
     age = {
       keyFile = "/keys/age/sachi.txt";
@@ -60,13 +63,15 @@ with lib;
       };
     };
   };
-  # Initialize smb password following https://unix.stackexchange.com/questions/204975/script-samba-password-but-securely
+  # Initialize smb password following https://serverfault.com/questions/1104310/how-do-i-import-an-smbpasswd-file-into-a-different-samba-server
+  # The smbpasswd is generated via:
+  # pdbedit -a -u <username>
+  # pdbedit -L -w > /tmp/smbpasswd
   system.activationScripts = mkIf config.services.samba.enable {
     sambaUserSetup = {
       text = ''
         ${pkgs.samba}/bin/pdbedit \
-          -i smbpasswd:/run/secrets/smbpasswd \
-          -e tdbsam:/var/lib/samba/private/passdb.tdb
+          -i smbpasswd:/run/secrets/smbpasswd
       '';
       deps = [ "setupSecrets" ];
     };
