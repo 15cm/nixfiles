@@ -1,6 +1,8 @@
 args@{ nixpkgs, pkgs, ... }:
 
-let commonConfig = (import ./config.nix args);
+let
+  commonConfig = (import ./config.nix args);
+  parallel = pkgs.parallel-full.override (old: { willCite = true; });
 in {
   programs.home-manager.enable = true;
 
@@ -21,7 +23,7 @@ in {
     ../features/conf/fontconfig
   ];
 
-  home.packages = with pkgs; [
+  home.packages = (with pkgs; [
     nixfmt
     exa
     fd
@@ -40,7 +42,8 @@ in {
     hunspellDicts.en_US-large
     direnv
     emacsPackages.emacsql-sqlite
-    parallel
     traceroute
-  ];
+  ]) ++
+    # Packages with overrides.
+    [ parallel ];
 }
