@@ -37,15 +37,10 @@ with lib;
     useDHCP = true;
   };
 
-  # Manually starts docker after zfs load-key.
-  virtualisation.docker = { enableOnBoot = false; };
-
+  # You will still need to set up the user accounts to begin with:
+  # $ sudo smbpasswd -a yourusername
   services.samba = {
     enable = true;
-
-    syncPasswordsByPam = true;
-    # You will still need to set up the user accounts to begin with:
-    # $ sudo smbpasswd -a yourusername
 
     # This adds to the [global] section:
     extraConfig = ''
@@ -53,9 +48,14 @@ with lib;
       smb encrypt = required
     '';
   };
-  # Curiously, `services.samba` does not automatically open
-  # the needed ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 445 139 ];
-  networking.firewall.allowedUDPPorts = [ 137 138 ];
   services.nfs.server.enable = true;
+  networking.firewall.allowedTCPPorts = [
+    # smb ports
+    445
+    139
+    # nfs ports
+    2049
+  ];
+  # smb ports
+  networking.firewall.allowedUDPPorts = [ 137 138 ];
 }

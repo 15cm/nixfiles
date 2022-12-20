@@ -41,16 +41,18 @@ info "Partitioning $DISK"
 sgdisk --zap-all $DISK
 sgdisk -n1:1M:+4G -t1:EF00 -c ESP $DISK
 sgdisk -n2:0:0    -t2:BF00 -c ROOT $DISK
-partprobe $DISK
 sleep 1
+partprobe $DISK
 
 export ESP_PART=${DISK}-part1
 export ZFS_PART=${DISK}-part2
 
+info "Unmounting /mnt"
+umount -Rl /mnt
+
 export RPOOL="rpool"
 if [ zpool list -o name | tail -n +2 | grep -q $RPOOL ]; then
   info "ZFS root pool '$RPOOL' already exists. Destroying it."
-  umount -Rl /mnt
   zpool destroy -f $RPOOL
 fi
 info "Creating zfs root pool"
@@ -129,8 +131,7 @@ chmod 500 /keys/age/*
 
 info "Formatting and mounting the esp"
 mkfs.vfat -n ESP $ESP_PART
-mkdir -p /mnt/boot
-mount -t vfat $ESP_PART /mnt/boot
+mount --mkdir -t vfat $ESP_PART /mnt/boot
 
 # Disable cache, stale cache will prevent system from booting
 info "Disabling zfs cache"

@@ -12,28 +12,23 @@ rsync -ahP --relative /keys/age/<hostname>.txt root@<host>:/
 ```
 
 ### 3
-Run `bash install.sh <hostname> <diskpath>`.
+SSH into the target host and run `bash install.sh <hostname> <diskpath>`.
 
 ### 4
-After `install.sh`, maybe fix the permissions of these folders:
-- /keys
-- /nixfiles
-
-### 5
 Verify the content of /mnt. Then export the zfs pool:
 ```
 umount -Rl /mnt
 zpool export -a
 ```
 
-### 6
+### 5
 Reboot the matchine. After reboot, switch to tty and setup home manager:
 ```
 nix build --no-link --impure 'path:/nixfiles#homeConfigurations.sinkerine@<hostname>.activationPackage'
 "$(nix path-info --impure 'path:/nixfiles#homeConfigurations.sinkerine@<hostname>.activationPackage')"/activate
 ```
 
-Link /mnt/keys/age/<hostname>.txt to /mnt/home/sinkerine/.config/sops/age/keys.txt
+Link /keys/age/<hostname>.txt to /home/sinkerine/.config/sops/age/keys.txt
 
 Pull the configs out side of nixfiles:
 ```

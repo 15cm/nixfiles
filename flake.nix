@@ -71,6 +71,11 @@
           modules = [ ./home/users/sinkerine/asako ];
           extraSpecialArgs = { hostname = "asako"; };
         };
+        "sinkerine@sachi" = {
+          pkgs = packages."x86_64-linux";
+          modules = [ ./home/users/sinkerine/sachi ];
+          extraSpecialArgs = { hostname = "sachi"; };
+        };
       };
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
         (builtins.mapAttrs (configName: v:
@@ -105,6 +110,12 @@
           modules = [ ./hosts/asako kmonad.nixosModules.default ]
             ++ (with nixos-hardware.nixosModules; [ lenovo-thinkpad-z13 ]);
           specialArgs = { hostname = "asako"; };
+        };
+        "sachi" = rec {
+          system = "x86_64-linux";
+          pkgs = builtins.getAttr system packages;
+          modules = [ ./hosts/sachi ];
+          specialArgs = { hostname = "sachi"; };
         };
       };
       nixosConfigurations = builtins.mapAttrs (_: v:

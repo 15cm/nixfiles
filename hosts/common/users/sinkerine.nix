@@ -1,4 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
+
+with lib;
 
 let pubCredentials = import (../pub-credentials);
 in {
@@ -20,6 +22,14 @@ in {
     uid = 1000;
     home = "/home/sinkerine";
     passwordFile = config.sops.secrets.hashedPassword.path;
+    subUidRanges = [{
+      startUid = 100000;
+      count = 65536;
+    }];
+    subGidRanges = [{
+      startGid = 100000;
+      count = 65536;
+    }];
 
     openssh.authorizedKeys.keys = pubCredentials.ssh.keys;
   };

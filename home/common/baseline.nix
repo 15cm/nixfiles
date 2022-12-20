@@ -40,5 +40,7 @@ in {
     hunspellDicts.en_US-large
     direnv
     emacsPackages.emacsql-sqlite
+    parallel
+    traceroute
   ];
 }
