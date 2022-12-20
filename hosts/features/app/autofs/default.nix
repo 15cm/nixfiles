@@ -9,7 +9,7 @@ let
   };
   autoNasPath = templateFile "autofs-nas" templateData ./auto.nas.jinja;
 in {
-  environment.systemPackages = with pkgs; [ nfs-utils cifs-utils ];
+  environment.systemPackages = with pkgs; [ nfs-utils cifs-utils samba ];
 
   sops.secrets."autofs-cifs" = {
     format = "binary";

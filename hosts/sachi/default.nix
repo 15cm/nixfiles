@@ -15,7 +15,10 @@ with lib;
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    secrets = { hashedPassword.neededForUsers = true; };
+    secrets = {
+      hashedPassword.neededForUsers = true;
+      smbpasswd.mode = "400";
+    };
     age = {
       keyFile = "/keys/age/sachi.txt";
       sshKeyPaths = [ ];
@@ -37,25 +40,41 @@ with lib;
     useDHCP = true;
   };
 
-  # You will still need to set up the user accounts to begin with:
-  # $ sudo smbpasswd -a yourusername
   services.samba = {
     enable = true;
+    securityType = "user";
 
     # This adds to the [global] section:
     extraConfig = ''
       browseable = yes
-      smb encrypt = required
     '';
+    openFirewall = true;
+
+    shares.global = { "server min protocol" = "SMB2_02"; };
+
+    # Smb sharing doesn't work well with zfs properties.
+    shares = {
+      "main_storage" = {
+        path = "/mnt/main/storage";
+        writeable = "yes";
+      };
+    };
   };
+  # Initialize smb password following https://unix.stackexchange.com/questions/204975/script-samba-password-but-securely
+  system.activationScripts = mkIf config.services.samba.enable {
+    sambaUserSetup = {
+      text = ''
+        ${pkgs.samba}/bin/pdbedit \
+          -i smbpasswd:/run/secrets/smbpasswd \
+          -e tdbsam:/var/lib/samba/private/passdb.tdb
+      '';
+      deps = [ "setupSecrets" ];
+    };
+  };
+
   services.nfs.server.enable = true;
   networking.firewall.allowedTCPPorts = [
-    # smb ports
-    445
-    139
     # nfs ports
     2049
   ];
-  # smb ports
-  networking.firewall.allowedUDPPorts = [ 137 138 ];
 }
