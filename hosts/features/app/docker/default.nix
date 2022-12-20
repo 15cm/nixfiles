@@ -17,7 +17,16 @@ with lib;
     };
     autoPrune.enable = true;
   };
-  system.activationScripts.createDockerNetowrk = ''
-    if ! ${pkgs.docker}/bin/docker network ls | grep -q g_proxy; then ${pkgs.docker}/bin/docker network create g_proxy; fi
-  '';
+  systemd.services.createDockerNetowrk = {
+    enable = true;
+    description = "Create Docker network";
+    wantedBy = [ "default.target" ];
+    after = [ "docker.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "create-docker-network.service" ''
+        if ! ${pkgs.docker}/bin/docker network ls | grep -q g_proxy; then ${pkgs.docker}/bin/docker network create g_proxy; fi
+      '';
+    };
+  };
 }
