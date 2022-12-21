@@ -19,6 +19,7 @@ in {
     (import ../features/app/clipper
       (args // { templateData = { inherit (commonConfig) clipper; }; }))
     ../features/app/ranger
+    ../features/app/tealdeer
     ../features/conf/misc-dotfiles
     ../features/conf/fontconfig
   ];
@@ -36,7 +37,6 @@ in {
     silver-searcher
     ueberzug
     bind
-    tealdeer
     cloc
     hunspell
     hunspellDicts.en_US-large
