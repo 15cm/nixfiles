@@ -27,6 +27,7 @@ with lib; {
     ../../../features/app/nm-applet
     ../../../features/app/playctl
     ../../../features/app/syncthing
+    ../../../features/app/flameshot
   ];
 
   home.packages = with pkgs; [
@@ -35,7 +36,6 @@ with lib; {
     firefox
     google-chrome
     trash-cli
-    flameshot
     jellyfin-media-player
     radeontop
     clementine
