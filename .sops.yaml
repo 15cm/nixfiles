@@ -15,7 +15,7 @@ creation_rules:
   - path_regex: hosts/sachi/secrets\.yaml$
     pgp: *sinkerine
     age: *sachi
-  - path_regex: hosts/sachi/smbpasswd$
+  - path_regex: hosts/sachi/samba/smbpasswd$
     pgp: *sinkerine
     age: *sachi
   - path_regex: hosts/features/app/autofs/cifs-secrets.txt

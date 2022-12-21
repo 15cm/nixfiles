@@ -1,19 +1,15 @@
-# cifs
-storage -fstype=cifs,rw,forceuid,forcegid,cache=loose,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/main_storage
-
-# nfs
 ## main
-music -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/main/media/music
-picture -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/main/media/picture
-photo -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/main/media/photo
-book -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/main/media/book
+storage -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/main-storage
+music -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/main-music
+picture -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/main-picture
+photo -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/main-photo
+book -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/main-book
 
 ## sub
-aria2 -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/sub/download/aria2
-aria2-baidu -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/sub/download/aria2-baidu
-bangumi -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/sub/download/bangumi
-torrent-download -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/sub/download/torrent/download
-torrent-upload -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/sub/download/torrent/upload
-tvshow -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/sub/media/tvshow
-movie -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/sub/media/movie
-# resources-sync -fstype=nfs,vers=4.2,rw,soft,rsize=131072,wsize=131072,timeo=5,retrans=5,actimeo=10,retry=3 nas.mado.moe:/mnt/sub/resources-sync
+aria2 -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/sub-aria2
+aria2-baidu -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/sub-aria2-baidu
+bangumi -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/sub-bangumi
+torrent-download -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/sub-torrent-download
+torrent-upload -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/sub-torrent-upload
+tvshow -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/sub-tvshow
+movie -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsPath}} ://nas.mado.moe/sub-movie

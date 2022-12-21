@@ -1,9 +1,8 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
     sops
-    systemd
     acpi
     wget
     killall
@@ -40,7 +39,7 @@
 
   system.activationScripts.systemdZshCompletion = ''
     mkdir -p /usr/share/zsh/site-functions
-    ln -sf ${pkgs.systemd}/share/zsh/site-functions/* /usr/share/zsh/site-functions/
+    ln -sf ${config.systemd.package}/share/zsh/site-functions/* /usr/share/zsh/site-functions/
   '';
   system.activationScripts.linkTzdata = ''
     if ! [ -L /usr/share/zoneinfo ]; then

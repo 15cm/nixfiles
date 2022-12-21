@@ -115,7 +115,10 @@
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
           modules = [ ./hosts/sachi ];
-          specialArgs = { hostname = "sachi"; };
+          specialArgs = {
+            hostname = "sachi";
+            encryptedZfsPool = "main";
+          };
         };
       };
       nixosConfigurations = builtins.mapAttrs (_: v:

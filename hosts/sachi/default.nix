@@ -8,20 +8,16 @@ with lib;
     ./generated/hardware-configuration.nix
     ./generated/extra-configuration.nix
     ../common/baseline.nix
-    ../common/zfs.nix
+    ../common/zfs
+    ../common/zfs/non-root.nix
     ../common/users/sinkerine.nix
     ../features/app/docker
+    ./samba
   ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    secrets = {
-      hashedPassword.neededForUsers = true;
-      smbpasswd = {
-        sopsFile = ./smbpasswd;
-        format = "binary";
-      };
-    };
+    secrets = { hashedPassword.neededForUsers = true; };
     age = {
       keyFile = "/keys/age/sachi.txt";
       sshKeyPaths = [ ];
@@ -42,44 +38,4 @@ with lib;
     domain = "mado.moe";
     useDHCP = true;
   };
-
-  services.samba = {
-    enable = true;
-    securityType = "user";
-
-    # This adds to the [global] section:
-    extraConfig = ''
-      browseable = yes
-    '';
-    openFirewall = true;
-
-    shares.global = { "server min protocol" = "SMB2_02"; };
-
-    # Smb sharing doesn't work well with zfs properties.
-    shares = {
-      "main_storage" = {
-        path = "/mnt/main/storage";
-        writeable = "yes";
-      };
-    };
-  };
-  # Initialize smb password following https://serverfault.com/questions/1104310/how-do-i-import-an-smbpasswd-file-into-a-different-samba-server
-  # The smbpasswd is generated via:
-  # pdbedit -a -u <username>
-  # pdbedit -L -w > /tmp/smbpasswd
-  system.activationScripts = mkIf config.services.samba.enable {
-    sambaUserSetup = {
-      text = ''
-        ${pkgs.samba}/bin/pdbedit \
-          -i smbpasswd:/run/secrets/smbpasswd
-      '';
-      deps = [ "setupSecrets" ];
-    };
-  };
-
-  services.nfs.server.enable = true;
-  networking.firewall.allowedTCPPorts = [
-    # nfs ports
-    2049
-  ];
 }

@@ -14,7 +14,7 @@ in {
     ./generated/hardware-configuration.nix
     ./generated/extra-configuration.nix
     ../common/baseline.nix
-    ../common/zfs.nix
+    ../common/zfs
     ../common/users/sinkerine.nix
     ../common/linux-gui.nix
   ];
