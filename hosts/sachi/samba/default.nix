@@ -29,18 +29,20 @@ with lib; {
 
     # Smb sharing doesn't work well with zfs properties.
     shares = {
-      "main-storage" = { path = "/mnt/main/storage"; };
-      "main-music" = { path = "/mnt/main/media/music"; };
-      "main-picture" = { path = "/mnt/main/media/picture"; };
-      "main-photo" = { path = "/mnt/main/media/photo"; };
-      "main-book" = { path = "/mnt/main/media/book"; };
-      "sub-aria2" = { path = "/mnt/sub/download/aria2"; };
-      "sub-aria2-baidu" = { path = "/mnt/sub/download/aria2-baidu"; };
-      "sub-bangumi" = { path = "/mnt/sub/download/bangumi"; };
-      "sub-torrent-download" = { path = "/mnt/sub/download/torrent/download"; };
-      "sub-torrent-upload" = { path = "/mnt/sub/download/torrent/upload"; };
-      "sub-tvshow" = { path = "/mnt/sub/media/tvshow"; };
-      "sub-movie" = { path = "/mnt/sub/media/movie"; };
+      "main-storage" = { path = "/pool/main/storage"; };
+      "main-music" = { path = "/pool/main/media/music"; };
+      "main-picture" = { path = "/pool/main/media/picture"; };
+      "main-photo" = { path = "/pool/main/media/photo"; };
+      "main-book" = { path = "/pool/main/media/book"; };
+      "sub-aria2" = { path = "/pool/sub/download/aria2"; };
+      "sub-aria2-baidu" = { path = "/pool/sub/download/aria2-baidu"; };
+      "sub-bangumi" = { path = "/pool/sub/download/bangumi"; };
+      "sub-torrent-download" = {
+        path = "/pool/sub/download/torrent/download";
+      };
+      "sub-torrent-upload" = { path = "/pool/sub/download/torrent/upload"; };
+      "sub-tvshow" = { path = "/pool/sub/media/tvshow"; };
+      "sub-movie" = { path = "/pool/sub/media/movie"; };
     };
   };
   systemd.targets.samba = {

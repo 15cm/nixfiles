@@ -8,12 +8,10 @@ with lib;
     ./generated/hardware-configuration.nix
     ./generated/extra-configuration.nix
     ../common/baseline.nix
-    ../common/systemd-boot.nix
+    ../common/grub-legacy.nix
     ../common/zfs
     ../common/zfs/non-root.nix
     ../common/users/sinkerine.nix
-    ../features/app/docker
-    ./samba
     ./zrepl
   ];
 
@@ -37,9 +35,7 @@ with lib;
 
   networking = {
     hostName = hostname;
-    domain = "mado.moe";
+    domain = "15cm.net";
     useDHCP = true;
-    # Delegate home firewall to the router.
-    firewall.enable = mkForce false;
   };
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euox pipefail
+set -eox pipefail
 
 ################################################################################
 
@@ -54,7 +54,7 @@ info "Cleaning up useless files in /etc"
 rm -rf /mnt/etc/nixos
 
 info "Rebuilding nixos"
-nixos-rebuild switch --flake "path:/nixfiles#${_HOSTNAME}" --no-root-passwd
+nixos-rebuild switch --flake "path:/nixfiles#${_HOSTNAME}"
 
 info "Creating symlink of sops keys to ~/.config/sops/age/"
 HOME_DIR=/home/sinkerine

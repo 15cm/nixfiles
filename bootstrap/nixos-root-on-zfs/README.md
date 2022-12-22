@@ -12,7 +12,7 @@ rsync -ahP --relative /keys/age/<hostname>.txt root@<host>:/
 ```
 
 ### 3
-SSH into the target host and run `bash install.sh <hostname> <diskpath>`.
+SSH into the target host as root and run `bash /nixfiles/bootstrap/nixos-root-on-zfs/install.sh <hostname> <disk_path>`.
 
 ### 4
 Verify the content of /mnt. Then export the zfs pool:
@@ -28,14 +28,21 @@ nix build --no-link --impure 'path:/nixfiles#homeConfigurations.sinkerine@<hostn
 "$(nix path-info --impure 'path:/nixfiles#homeConfigurations.sinkerine@<hostname>.activationPackage')"/activate
 ```
 
-Link /keys/age/<hostname>.txt to /home/sinkerine/.config/sops/age/keys.txt
+### 6
+Pull the configs out side of nixfiles.
 
-Pull the configs out side of nixfiles:
+#### Emacs
 ```
 # For hosts that have access to my git repo, get ssh keys and then:
 git clone git@github.com:15cm/spacemacs-config.git ~/.spacemacs.d
 # Otherwise
 git clone https://github.com/15cm/spacemacs-config.git ~/.spacemacs.d
+```
+
+Import the gpg of `i@15cm.net` or `share@15cm.net`. Then
+```
+cd ~/.spacemacs.d
+git-secret reveal
 ```
 
 ## Notes

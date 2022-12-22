@@ -76,6 +76,16 @@
           modules = [ ./home/users/sinkerine/sachi ];
           extraSpecialArgs = { hostname = "sachi"; };
         };
+        "sinkerine@yumiko" = {
+          pkgs = packages."x86_64-linux";
+          modules = [ ./home/users/sinkerine/yumiko ];
+          extraSpecialArgs = { hostname = "yumiko"; };
+        };
+        "sinkerine@amane" = {
+          pkgs = packages."x86_64-linux";
+          modules = [ ./home/users/sinkerine/amane ];
+          extraSpecialArgs = { hostname = "amane"; };
+        };
       };
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
         (builtins.mapAttrs (configName: v:
@@ -120,14 +130,28 @@
             encryptedZfsPool = "main";
           };
         };
+        "yumiko" = rec {
+          system = "x86_64-linux";
+          pkgs = builtins.getAttr system packages;
+          modules = [ ./hosts/yumiko ];
+          specialArgs = {
+            hostname = "yumiko";
+            encryptedZfsPool = "tank";
+          };
+        };
+        "amane" = rec {
+          system = "x86_64-linux";
+          pkgs = builtins.getAttr system packages;
+          modules = [ ./hosts/amane ];
+          specialArgs = {
+            hostname = "amane";
+            encryptedZfsPool = "tank";
+          };
+        };
       };
       nixosConfigurations = builtins.mapAttrs (_: v:
         nixpkgs.lib.nixosSystem (v // {
-          modules = v.modules ++ [
-            ./modules/nixos
-            sops-nix.nixosModules.sops
-            envfs.nixosModules.envfs
-          ];
+          modules = v.modules ++ [ ./modules/nixos sops-nix.nixosModules.sops ];
           specialArgs = v.specialArgs // {
             mylib = (import ./lib {
               inherit (v) pkgs;

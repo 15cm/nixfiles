@@ -1,0 +1,21 @@
+global:
+  logging:
+    - type: syslog
+      format: human
+      level: warn
+
+jobs:
+  - type: sink
+    name: "sink"
+    root_fs: "tank"
+    serve:
+      type: tls
+      listen: ":38888"
+      ca: {{caCertPath}}
+      cert: {{certPath}}
+      key: {{keyPath}}
+      client_cns:
+        - "sachi.machine.mado.moe"
+    recv:
+      placeholder:
+        encryption: inherit

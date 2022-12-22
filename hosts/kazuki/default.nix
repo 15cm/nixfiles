@@ -14,6 +14,7 @@ in {
     ./generated/hardware-configuration.nix
     ./generated/extra-configuration.nix
     ../common/baseline.nix
+    ../common/systemd-boot.nix
     ../common/zfs
     ../common/users/sinkerine.nix
     ../common/linux-gui.nix
@@ -26,7 +27,7 @@ in {
     defaultSopsFile = ./secrets.yaml;
     secrets = { hashedPassword.neededForUsers = true; };
     age = {
-      keyFile = "/keys/age/kazuki.txt";
+      keyFile = "/keys/age/${hostname}.txt";
       sshKeyPaths = [ ];
     };
     # https://github.com/Mic92/sops-nix/issues/167

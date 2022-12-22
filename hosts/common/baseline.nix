@@ -8,6 +8,9 @@
     killall
     pciutils
     openssl
+    sops
+    gnupg
+    age
   ];
 
   nix = {
@@ -25,13 +28,6 @@
       ];
     };
   };
-
-  # Bootloader
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 3;
-  };
-  boot.loader.efi.canTouchEfiVariables = true;
 
   users.mutableUsers = false;
   time.timeZone = "America/Los_Angeles";

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euox pipefail
+set -eox pipefail
 
 ################################################################################
 
@@ -34,21 +34,29 @@ if [[ "$EUID" > 0 ]]; then
     exit 1
 fi
 
-# PARTITON DISK:
-# p1 4GB ESP+EFI
+# Partition the disk:
+# p1 1GB ESP+EFI
 # p2 REST ZFS
 info "Partitioning $DISK"
 sgdisk --zap-all $DISK
-sgdisk -n1:1M:+4G -t1:EF00 -c ESP $DISK
+sgdisk -n1:1M:+1G -t1:EF00 -c ESP $DISK
 sgdisk -n2:0:0    -t2:BF00 -c ROOT $DISK
-sleep 1
+sleep 3
 partprobe $DISK
 
 export ESP_PART=${DISK}-part1
 export ZFS_PART=${DISK}-part2
 
+for i in {1..10}; do
+  info "Waiting for esp and zfs partitions to be ready. $i out of 10 reties"
+  sleep 3
+  if [ -e $ESP_PART ] && [ -e $ZFS_PART ]; then
+    break
+  fi
+done
+
 info "Unmounting /mnt"
-umount -Rl /mnt
+umount -Rl /mnt || :
 
 export RPOOL="rpool"
 if [ zpool list -o name | tail -n +2 | grep -q $RPOOL ]; then
@@ -183,6 +191,8 @@ info "Installing nixos"
 nixos-install --flake "path:/nixfiles#${_HOSTNAME}" --no-root-passwd -v --root /mnt
 
 info "Creating symlink of sops keys to ~/.config/sops/age/"
-mkdir -p /mnt/home/${_HOSTNAME}/.config/sops/age
-ln -sf /keys/age/${_HOSTNAME}.txt /mnt/home/${_HOSTNAME}/.config/sops/age/
-chown -R 1000:1000 /mnt/home/${_HOSTNAME}/.config/sops
+HOME_DIR=/mnt/home/sinkerine
+mkdir -p ${HOME_DIR}/.config/sops/age
+ln -sf /keys/age/${_HOSTNAME}.txt ${HOME_DIR}/.config/sops/age/keys.txt
+chown 1000:1000 ${HOME_DIR} ${HOME_DIR}/.config
+chown -R 1000:1000 ${HOME_DIR}/.config/sops
