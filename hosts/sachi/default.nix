@@ -13,6 +13,7 @@ with lib;
     ../common/users/sinkerine.nix
     ../features/app/docker
     ./samba
+    ./zrepl
   ];
 
   sops = {
@@ -37,5 +38,7 @@ with lib;
     hostName = hostname;
     domain = "mado.moe";
     useDHCP = true;
+    # Delegate home firewall to the router.
+    firewall.enable = mkForce false;
   };
 }

@@ -92,3 +92,8 @@ rsync -ahP /nixfiles/ /mnt/nixfiles
 
 info "Installing nixos"
 nixos-install --flake "path:/nixfiles#${_HOSTNAME}" --no-root-passwd -v --root /mnt
+
+info "Creating symlink of sops keys to ~/.config/sops/age/"
+mkdir -p /mnt/home/${_HOSTNAME}/.config/sops/age
+ln -sf /keys/age/${_HOSTNAME}.txt /mnt/home/${_HOSTNAME}/.config/sops/age/
+chown -R 1000:1000 /mnt/home/${_HOSTNAME}/.config/sops

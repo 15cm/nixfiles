@@ -24,3 +24,9 @@ creation_rules:
   - path_regex: hosts/asako/zrepl/.*\.(crt|key)$
     pgp: *sinkerine
     age: *asako
+  - path_regex: hosts/kazuki/zrepl/.*\.(crt|key)$
+    pgp: *sinkerine
+    age: *kazuki
+  - path_regex: hosts/sachi/zrepl/.*\.(crt|key)$
+    pgp: *sinkerine
+    age: *sachi

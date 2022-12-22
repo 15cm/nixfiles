@@ -17,6 +17,7 @@ in {
     ../common/zfs
     ../common/users/sinkerine.nix
     ../common/linux-gui.nix
+    ./zrepl
   ];
 
   environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];
