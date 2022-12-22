@@ -14,6 +14,7 @@ jobs:
       # Backups don't need auto snapshots. They are pushed via wakeup viasystemd timer.
       "main/backup<": false,
       "main/backup-old<": false,
+      "main/backup-clone-for-mount<": false,
       "main/storage/torrent<": false,
       "main/storage/resources<": false,
       "main/credentials<": false,
@@ -54,8 +55,8 @@ jobs:
   - type: push
     name: "push_no_snapshot"
     filesystems: {
-      "main/backup/kazuki.machine.mado.moe/zroot<": true,
-      "main/backup/asako.machine.mado.moe/zroot<": true,
+      "main/backup/kazuki.machine.mado.moe/rpool<": true,
+      "main/backup/asako.machine.mado.moe/rpool<": true,
     }
     connect:
       type: tls
@@ -85,7 +86,6 @@ jobs:
   - type: snap
     name: "local_snap"
     filesystems: {
-      "main": true,
       "main/storage/torrent<": true,
       "main/storage/resources<": true,
       "main/credentials<": true,
