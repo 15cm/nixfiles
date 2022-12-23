@@ -30,6 +30,28 @@ umount -Rl /mnt
 ```
 
 ### [optional] 4 Create zpool
+#### encrypted-send-to-untrusted-receiver
+For the untrusted host where zfs key won't be loaded, create an unencrypted pool to [allow placeholder datasets to be created](https://zrepl.github.io/configuration/sendrecvoptions.html#placeholders).
+
+```
+sudo zpool create \
+    -O relatime=on \
+    -O acltype=posixacl \
+    -O canmount=on \
+    -O compression=lz4 \
+    -O dnodesize=auto \
+    -O normalization=formD \
+    -O xattr=sa \
+    -O devices=off \
+    -O mountpoint=/pool/<pool_name> \
+    -f \
+    <pool_name> \
+    <zfs_partition>
+```
+
+#### send-plain-encrypt-on-receive
+For the trusted host where zfs key will be loaded, create an encrypted pool.
+
 ```
 sudo zpool create \
     -O relatime=on \
@@ -49,10 +71,5 @@ sudo zpool create \
     <zfs_partition>
 ```
 
-Then
-```
-zpool export -a
-```
-
 ### 5
-Follow [steps 5 in nixos-root-on-zfs](../nixos-root-on-zfs/README.md#5).
+Follow [steps 4 and 5 in nixos-root-on-zfs](../nixos-root-on-zfs/README.md#5).
