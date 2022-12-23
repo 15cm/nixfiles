@@ -1,4 +1,4 @@
-{ pkgs, nixinfo, hostname, ... }:
+{ config, pkgs, nixinfo, hostname, ... }:
 
 {
   home = rec {
@@ -16,6 +16,18 @@
     in pkgs.writeShellScript "switch-nix-os.sh" ''
       sudo nixos-rebuild switch "$@" --flake ${osFlakeUri}
     '';
+  home.file."local/bin/build-nix-home.sh".source = let
+    homeTopLevelFlakeUri = with nixinfo;
+      "path:${projectRoot}#homeConfigurations.${config.home.username}@${hostname}.activationPackage";
+  in pkgs.writeShellScript "build-nix-home.sh" ''
+    nix build --impure --no-link --print-out-paths "$@" ${homeTopLevelFlakeUri}
+  '';
+  home.file."local/bin/build-nix-os.sh".source = let
+    osTopLevelFlakeUri = with nixinfo;
+      "path:${projectRoot}#nixosConfigurations.${hostname}.config.system.build.toplevel";
+  in pkgs.writeShellScript "build-nix-os.sh" ''
+    nix build --no-link --print-out-paths "$@" ${osTopLevelFlakeUri}
+  '';
 
   imports = [ ../../../common/baseline.nix ../../../features/app/gpg ];
 }

@@ -10,7 +10,7 @@ with lib;
     ../common/baseline.nix
     ../common/zfs
     ../common/zfs/non-root.nix
-    ../common/users/sinkerine.nix
+    ../common/users.nix
     # ./zrepl
   ];
 

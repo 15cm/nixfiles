@@ -11,7 +11,7 @@ with lib;
     ../common/systemd-boot.nix
     ../common/zfs
     ../common/zfs/non-root.nix
-    ../common/users/sinkerine.nix
+    ../common/users.nix
     ../features/docker
     ./samba
     ./zrepl
@@ -32,7 +32,7 @@ with lib;
     enable = true;
     passwordAuthentication = false;
     kbdInteractiveAuthentication = false;
-    permitRootLogin = "no";
+    permitRootLogin = "prohibit-password";
   };
 
   networking = {

@@ -2,8 +2,7 @@
 
 with lib;
 
-let pubCredentials = import (../pub-credentials);
-in {
+{
   users.groups.sinkerine = { gid = config.my.ids.uids.sinkerine; };
   users.users.sinkerine = {
     isNormalUser = true;
@@ -31,6 +30,10 @@ in {
       count = 65536;
     }];
 
-    openssh.authorizedKeys.keys = pubCredentials.ssh.keys;
+    openssh.authorizedKeys.keys = config.my.trusts.ssh.pubKeys;
+  };
+
+  users.users.root = {
+    openssh.authorizedKeys.keys = config.my.trusts.ssh.pubKeys;
   };
 }

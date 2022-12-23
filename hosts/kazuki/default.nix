@@ -16,7 +16,7 @@ in {
     ../common/baseline.nix
     ../common/systemd-boot.nix
     ../common/zfs
-    ../common/users/sinkerine.nix
+    ../common/users.nix
     ../common/linux-gui.nix
     ./zrepl
   ];

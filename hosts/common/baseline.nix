@@ -21,8 +21,11 @@
     };
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      substituters =
-        [ "https://nix-community.cachix.org" "https://cache.nixos.org/" ];
+      substituters = [
+        "https://nixcache.mado.moe"
+        "https://nix-community.cachix.org"
+        "https://cache.nixos.org/"
+      ];
       trusted-public-keys = config.my.trusts.cache.pubKeys;
     };
   };

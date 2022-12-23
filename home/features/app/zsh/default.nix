@@ -117,6 +117,8 @@ in {
     } // optionalAttrs commonConfig.isNixOs {
       snh = "switch-nix-home.sh";
       sno = "switch-nix-os.sh";
+      bnh = "build-nix-home.sh";
+      bno = "build-nix-os.sh";
     };
   };
 
