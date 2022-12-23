@@ -98,5 +98,5 @@ in {
     configTemplateFile = ./zrepl/zrepl.yaml.jinja;
     sopsCertFile = ./zrepl/asako.machine.mado.moe.crt;
     sopsKeyFile = ./zrepl/asako.machine.mado.moe.key;
-  }
+  };
 }
