@@ -151,7 +151,8 @@
       };
       nixosConfigurations = builtins.mapAttrs (_: v:
         nixpkgs.lib.nixosSystem (v // {
-          modules = v.modules ++ [ ./modules/nixos sops-nix.nixosModules.sops ];
+          modules = v.modules
+            ++ [ ./modules/nixos ./hosts/modules sops-nix.nixosModules.sops ];
           specialArgs = v.specialArgs // {
             mylib = (import ./lib {
               inherit (v) pkgs;

@@ -12,7 +12,8 @@ with lib;
     ../common/zfs
     ../common/zfs/non-root.nix
     ../common/users/sinkerine.nix
-    ../features/app/docker
+    ../features/docker
+    ../features/nix-serve
     ./samba
     ./zrepl
   ];
@@ -42,4 +43,6 @@ with lib;
     # Delegate home firewall to the router.
     firewall.enable = mkForce false;
   };
+
+  my.services.gateway.enable = true;
 }
