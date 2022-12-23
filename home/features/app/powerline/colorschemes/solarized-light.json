@@ -3,12 +3,12 @@
 	"groups": {
       "information:additional": {
         "fg": "solarized:base3",
-        "bg": "cornflowerblue",
+        "bg": "solarized:cyan",
         "attrs": []
       },
       "information:regular": {
         "fg": "white",
-        "bg": "cornflowerblue",
+        "bg": "solarized:cyan",
         "attrs": [
           "bold"
         ]

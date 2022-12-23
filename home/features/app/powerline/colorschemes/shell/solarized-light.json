@@ -85,7 +85,7 @@
         },
         "cwd:divider": {
             "attrs": [],
-            "bg": "cornflowerblue",
+            "bg": "solarized:cyan",
             "fg": "gray10"
         },
         "cwd:current_folder": "information:regular",
