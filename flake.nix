@@ -90,7 +90,7 @@
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
         (builtins.mapAttrs (configName: v:
           v // {
-            modules = v.modules ++ [ ./modules/home-manager ];
+            modules = v.modules ++ [ ./modules/home-manager ./home/modules ];
             extraSpecialArgs = (v.extraSpecialArgs or { }) // rec {
               inherit state;
               nixinfo = {

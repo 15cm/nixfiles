@@ -108,16 +108,18 @@ in {
 
       # Misc
       op = (if isLinux then "xdg-open" else "open");
-      cpy = commonConfig.clipper.copyCommand;
+      cpy = config.my.services.clipper.copyCommand;
       pst = (if isLinux then "xclip -o" else "pbpaste");
       th = (if isLinux then "trash-put" else "trash");
+
+      # Nix Home Manager
+      snh = "switch-nix-home.sh";
+      bnh = "build-nix-home.sh";
     } // optionalAttrs isLinux {
       sc = "sudo systemctl";
       scu = "systemctl --user";
     } // optionalAttrs commonConfig.isNixOs {
-      snh = "switch-nix-home.sh";
       sno = "switch-nix-os.sh";
-      bnh = "build-nix-home.sh";
       bno = "build-nix-os.sh";
     };
   };

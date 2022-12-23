@@ -24,8 +24,8 @@ zpool export -a
 ### 5
 Reboot the matchine. After reboot, switch to tty and setup home manager:
 ```
-nix build --no-link --impure 'path:/nixfiles#homeConfigurations.sinkerine@<hostname>.activationPackage'
-"$(nix path-info --impure 'path:/nixfiles#homeConfigurations.sinkerine@<hostname>.activationPackage')"/activate
+nix build --no-link --impure path:/nixfiles#homeConfigurations.${USER}@$(hostname).activationPackage
+"$(nix path-info --impure path:/nixfiles#homeConfigurations.${USER}@$(hostname).activationPackage)"/activate
 ```
 
 ### 6

@@ -8,7 +8,7 @@ let
     tmuxFzfScriptsDir =
       "${pkgs.tmuxPlugins.tmux-fzf}/share/tmux-plugins/tmux-fzf/scripts";
     inherit (config.home) sessionVariables;
-    copyCommand = "${commonConfig.clipper.copyCommand}";
+    inherit (config.my.services.clipper) copyCommand;
   };
 in {
 

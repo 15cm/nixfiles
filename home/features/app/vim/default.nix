@@ -1,12 +1,11 @@
-args@{ lib, mylib, state, pkgs, ... }:
+args@{ config, lib, mylib, state, pkgs, ... }:
 
 with lib;
 let
   inherit (mylib) templateFile;
-  commonConfig = import ../../../common/config.nix args;
   templateData = {
     inherit (state) theme;
-    inherit (commonConfig.clipper) copyCommand;
+    inherit (config.my.services.clipper) copyCommand;
   };
 in {
   programs.vim = {
@@ -20,11 +19,11 @@ in {
   home.file.".vim/colors/solarized.vim".source = pkgs.fetchurl {
     url =
       "https://raw.githubusercontent.com/altercation/vim-colors-solarized/master/colors/solarized.vim";
-    hash ="sha256-i2NgdR9IIGv0sKRN0v65xIr2VvJmLlv2K0fruHwncAQ=";
+    hash = "sha256-i2NgdR9IIGv0sKRN0v65xIr2VvJmLlv2K0fruHwncAQ=";
   };
   home.file.".vim/colors/Tomorrow-Night.vim".source = pkgs.fetchurl {
     url =
       "https://github.com/chriskempson/tomorrow-theme/raw/master/vim/colors/Tomorrow-Night.vim";
-    hash ="sha256-Nrn/IoBWCpsoI/bVBVbJeY82VxchrEqV8hYn3c7LIgY=";
+    hash = "sha256-Nrn/IoBWCpsoI/bVBVbJeY82VxchrEqV8hYn3c7LIgY=";
   };
 }

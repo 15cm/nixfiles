@@ -3,21 +3,22 @@
 with lib;
 
 let
-  cfg = config.services.clipper;
-  clipperCfg = config.programs.clipper;
-  clipperBinary = "${cfg.package}/bin/clipper";
+  cfg = config.services.my.clipper;
   preStartScript = pkgs.writeShellScript "clipper-pre-start" ''
     mkdir -p ${cfg.logDir}
   '';
+  configFile =
+    pipe cfg.settings [ builtins.toJSON (builtins.toFile "clipper-config") ];
 in {
   meta.maintainers = [ "i@15cm.net" ];
 
-  options.services.clipper = {
+  options.services.my.clipper = {
     enable = mkEnableOption "the clipper daemon";
     package = mkOption {
       type = types.package;
-      default = clipperCfg.package;
-      description = "The Clipper package to use.";
+      default = pkgs.clipper;
+      defaultText = literalExpression "pkgs.clipper";
+      description = "The clipper package to install.";
     };
 
     extraArgs = mkOption {
@@ -36,11 +37,16 @@ in {
         The dir that contains the log file. Will be created before the service starts.
       '';
     };
+
+    settings = mkOption {
+      type = types.attrs;
+      default = { };
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [{
     assertions = [
-      (lib.hm.assertions.assertPlatform "services.clipper" pkgs
+      (lib.hm.assertions.assertPlatform "services.my.clipper" pkgs
         lib.platforms.linux)
     ];
     systemd.user.services.clipper = {
@@ -51,8 +57,12 @@ in {
       };
       Service = {
         Type = "simple";
-        ExecStartPre = "${preStartScript}";
-        ExecStart = "${clipperBinary} ${escapeShellArgs cfg.extraArgs}";
+        ExecStartPre = "{preStartScript}";
+        ExecStart = concatStringsSep " " [
+          "${cfg.package}/bin/clipper"
+          (escapeShellArgs cfg.extraArgs)
+          "-c ${configFile}"
+        ];
         Restart = "on-failure";
         RestartSec = 10;
         SyslogIdentifier = "clipper";

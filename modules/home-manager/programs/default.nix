@@ -1,1 +1,1 @@
-{ imports = [ ./clipper.nix ./powerline.nix ]; }
+{ imports = [ ./powerline.nix ]; }
