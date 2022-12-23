@@ -16,7 +16,7 @@ in {
         description = lib.mdDoc "Which package to use for zrepl";
       };
 
-      configPath = mkOption {
+      configFile = mkOption {
         default = null;
         description = lib.mdDoc ''
           Path to the configuration for zrepl. See <https://zrepl.github.io/configuration.html>
@@ -36,7 +36,7 @@ in {
     # allows the use of e.g. `zrepl signal wakeup <job>` without having
     # to specify the storepath of the config.
     environment.etc."zrepl/zrepl.yml".source =
-      (assert cfg.configPath != null; cfg.configPath);
+      (assert cfg.configFile != null; cfg.configFile);
 
     systemd.packages = [ cfg.package ];
 
@@ -48,7 +48,7 @@ in {
       after = [ "zfs.target" ];
 
       path = [ config.boot.zfs.package ];
-      restartTriggers = [ cfg.configPath ];
+      restartTriggers = [ cfg.configFile ];
 
       serviceConfig = { Restart = "on-failure"; };
     };

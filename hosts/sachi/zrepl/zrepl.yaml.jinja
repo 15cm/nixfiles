@@ -19,11 +19,11 @@ jobs:
     }
     connect:
       type: tls
-      address: "yumiko.machine.15cm.net:38888"
+      address: "yumiko.machine.15cm.net:{{port}}"
       server_cn: "yumiko.machine.15cm.net"
-      ca: {{caCertPath}}
-      cert: {{certPath}}
-      key: {{keyPath}}
+      ca: {{caCertFile}}
+      cert: {{certFile}}
+      key: {{keyFile}}
     snapshotting:
       type: periodic
       prefix: zrepl_
@@ -58,11 +58,11 @@ jobs:
     }
     connect:
       type: tls
-      address: "yumiko.machine.15cm.net:38888"
+      address: "yumiko.machine.15cm.net:{{port}}"
       server_cn: "yumiko.machine.15cm.net"
-      ca: {{caCertPath}}
-      cert: {{certPath}}
-      key: {{keyPath}}
+      ca: {{caCertFile}}
+      cert: {{certFile}}
+      key: {{keyFile}}
     snapshotting:
       type: manual
     send:
@@ -109,10 +109,10 @@ jobs:
     root_fs: "main/backup"
     serve:
       type: tls
-      listen: ":38888"
-      ca: {{caCertPath}}
-      cert: {{certPath}}
-      key: {{keyPath}}
+      listen: ":{{port}}"
+      ca: {{caCertFile}}
+      cert: {{certFile}}
+      key: {{keyFile}}
       client_cns:
         - "kazuki.machine.mado.moe"
         - "asako.machine.mado.moe"

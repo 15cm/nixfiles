@@ -17,11 +17,11 @@ jobs:
     }
     connect:
       type: tls
-      address: "sachi.machine.mado.moe:38888"
+      address: "sachi.machine.mado.moe:{{port}}"
       server_cn: "sachi.machine.mado.moe"
-      ca: {{caCertPath}}
-      cert: {{certPath}}
-      key: {{keyPath}}
+      ca: {{caCertFile}}
+      cert: {{certFile}}
+      key: {{keyFile}}
     snapshotting:
       type: periodic
       prefix: zrepl_

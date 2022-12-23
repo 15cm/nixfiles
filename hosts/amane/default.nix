@@ -11,7 +11,7 @@ with lib;
     ../common/zfs
     ../common/zfs/non-root.nix
     ../common/users.nix
-    # ./zrepl
+    ../common/grub-legacy.nix
   ];
 
   sops = {

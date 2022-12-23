@@ -12,7 +12,6 @@ with lib;
     ../common/zfs
     ../common/zfs/non-root.nix
     ../common/users.nix
-    ./zrepl
   ];
 
   sops = {
@@ -37,5 +36,13 @@ with lib;
     hostName = hostname;
     domain = "15cm.net";
     useDHCP = true;
+  };
+
+  my.services.zrepl = {
+    enable = true;
+    configTemplateFile = ./zrepl/zrepl.yaml.jinja;
+    sopsCertFile = ./zrepl/yumiko.machine.15cm.net.crt;
+    sopsKeyFile = ./zrepl/yumiko.machine.15cm.net.key;
+    openFirewall = true;
   };
 }

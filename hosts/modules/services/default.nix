@@ -1,1 +1,1 @@
-{ imports = [ ./gateway ./nix-serve ]; }
+{ imports = [ ./gateway ./nix-serve ./zrepl ]; }

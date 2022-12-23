@@ -10,10 +10,10 @@ jobs:
     root_fs: "tank"
     serve:
       type: tls
-      listen: ":38888"
-      ca: {{caCertPath}}
-      cert: {{certPath}}
-      key: {{keyPath}}
+      listen: ":{{port}}"
+      ca: {{caCertFile}}
+      cert: {{certFile}}
+      key: {{keyFile}}
       client_cns:
         - "sachi.machine.mado.moe"
     recv:

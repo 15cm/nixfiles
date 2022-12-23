@@ -18,7 +18,6 @@ in {
     ../common/zfs
     ../common/users.nix
     ../common/linux-gui.nix
-    ./zrepl
   ];
 
   environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];
@@ -55,4 +54,11 @@ in {
     "i2c-piix4"
   ];
   services.udev.extraRules = builtins.readFile openrgb-rules;
+
+  my.services.zrepl = {
+    enable = true;
+    configTemplateFile = ./zrepl/zrepl.yaml.jinja;
+    sopsCertFile = ./zrepl/kazuki.machine.mado.moe.crt;
+    sopsKeyFile = ./zrepl/kazuki.machine.mado.moe.key;
+  };
 }

@@ -13,7 +13,6 @@ in {
     ../common/zfs
     ../common/users.nix
     ../common/linux-gui.nix
-    ./zrepl
   ];
 
   environment.systemPackages = with pkgs; [ easyrsa ];
@@ -93,4 +92,11 @@ in {
       ./systemd-suspend-modules.sh
     } /usr/lib/systemd/system-sleep/systemd-suspend-modules.sh
   '';
+
+  my.services.zrepl = {
+    enable = true;
+    configTemplateFile = ./zrepl/zrepl.yaml.jinja;
+    sopsCertFile = ./zrepl/asako.machine.mado.moe.crt;
+    sopsKeyFile = ./zrepl/asako.machine.mado.moe.key;
+  }
 }

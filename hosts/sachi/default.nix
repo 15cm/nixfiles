@@ -14,7 +14,6 @@ with lib;
     ../common/users.nix
     ../features/docker
     ./samba
-    ./zrepl
   ];
 
   sops = {
@@ -45,4 +44,11 @@ with lib;
 
   my.services.gateway.enable = true;
   my.services.nix-serve.enable = true;
+  my.services.zrepl = {
+    enable = true;
+    configTemplateFile = ./zrepl/zrepl.yaml.jinja;
+    sopsCertFile = ./zrepl/sachi.machine.mado.moe.crt;
+    sopsKeyFile = ./zrepl/sachi.machine.mado.moe.key;
+    openFirewall = true;
+  };
 }
