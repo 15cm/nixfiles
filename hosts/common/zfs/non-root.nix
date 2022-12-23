@@ -6,6 +6,19 @@ with lib; {
     description = "Mount all zfs datasets, including encrypted ones";
   };
   systemd.services = {
+    zfs-import-pool = {
+      description = "zfs import pools";
+      wantedBy = [ "zfs.target" ];
+      after = [ "zfs.target" ];
+      requiredBy = [ "zfs-load-key-and-mount.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = ''
+          ${pkgs.zfs}/bin/zpool import -a -f -N
+        '';
+        RemainAfterExit = true;
+      };
+    };
     zfs-load-key = {
       description = "zfs load key for all pools";
       requiredBy = [ "zfs-load-key-and-mount.target" ];
