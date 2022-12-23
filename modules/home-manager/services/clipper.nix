@@ -57,7 +57,7 @@ in {
       };
       Service = {
         Type = "simple";
-        ExecStartPre = "{preStartScript}";
+        ExecStartPre = "${preStartScript}";
         ExecStart = concatStringsSep " " [
           "${cfg.package}/bin/clipper"
           (escapeShellArgs cfg.extraArgs)
