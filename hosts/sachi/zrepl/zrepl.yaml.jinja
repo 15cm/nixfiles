@@ -9,7 +9,6 @@ jobs:
     name: "push"
     filesystems: {
       "main<": true,
-      "main": false,
       # Backups don't need auto snapshots. They are pushed via wakeup viasystemd timer.
       "main/backup<": false,
       "main/backup-old<": false,
