@@ -49,6 +49,5 @@
     "vm.max_map_count" = 262144;
     "fs.inotify.max_user_watches" = 200000;
   };
-
   networking.firewall.enable = true;
 }
