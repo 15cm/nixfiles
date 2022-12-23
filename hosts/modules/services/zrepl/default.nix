@@ -5,10 +5,9 @@ let
   inherit (mylib) templateFile;
   cfg = config.my.services.zrepl;
   templateData = {
-    caCertFile = cfg.caCertFile;
+    inherit (cfg) caCertFile ports;
     certFile = config.sops.secrets.zrepl-cert.path;
     keyFile = config.sops.secrets.zrepl-key.path;
-    port = cfg.port;
   };
 
 in {
@@ -27,9 +26,12 @@ in {
       type = with types; nullOr path;
     };
 
-    port = mkOption {
-      default = 38888;
-      type = types.int;
+    ports = mkOption {
+      default = {
+        sink = 38888;
+        source = 38889;
+      };
+      type = with types; attrsOf int;
     };
     openFirewall = mkEnableOption "open zrepl port";
     caCertFile = mkOption {
@@ -54,6 +56,7 @@ in {
       configFile = templateFile "zrepl-config" templateData
         (assert cfg.configTemplateFile != null; cfg.configTemplateFile);
     };
-    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
+    networking.firewall.allowedTCPPorts =
+      mkIf cfg.openFirewall (attrValues cfg.ports);
   };
 }

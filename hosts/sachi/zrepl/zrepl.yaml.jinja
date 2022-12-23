@@ -19,7 +19,7 @@ jobs:
     }
     connect:
       type: tls
-      address: "yumiko.machine.15cm.net:{{port}}"
+      address: "yumiko.machine.15cm.net:{{ports.sink}}"
       server_cn: "yumiko.machine.15cm.net"
       ca: {{caCertFile}}
       cert: {{certFile}}
@@ -50,36 +50,20 @@ jobs:
         - type: regex
           regex: "^local_zrepl_.*"
 
-  - type: push
-    name: "push_no_snapshot"
-    filesystems: {
-      "main/backup/kazuki.machine.mado.moe/rpool<": true,
-      "main/backup/asako.machine.mado.moe/rpool<": true,
-    }
-    connect:
+  - type: source
+    name: "source_sachi_backup"
+    filesystems:
+      "main/backup<": true
+    serve:
       type: tls
-      address: "yumiko.machine.15cm.net:{{port}}"
-      server_cn: "yumiko.machine.15cm.net"
+      listen: ":{{ports.source}}"
       ca: {{caCertFile}}
       cert: {{certFile}}
       key: {{keyFile}}
+      client_cns:
+        - "yumiko.machine.15cm.net"
     snapshotting:
       type: manual
-    send:
-      encrypted: true
-      compressed: true
-    pruning:
-      keep_sender:
-        - type: regex
-          regex: ".*"
-      keep_receiver:
-        - type: grid
-          grid: 24x1h | 35x1d | 6x30d
-          regex: "^zrepl_.*"
-        - type: regex
-          regex: "^manual_.*"
-        - type: regex
-          regex: "^local_zrepl_.*"
 
   - type: snap
     name: "local_snap"
@@ -109,7 +93,7 @@ jobs:
     root_fs: "main/backup"
     serve:
       type: tls
-      listen: ":{{port}}"
+      listen: ":{{ports.sink}}"
       ca: {{caCertFile}}
       cert: {{certFile}}
       key: {{keyFile}}

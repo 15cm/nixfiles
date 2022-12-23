@@ -7,10 +7,10 @@ global:
 jobs:
   - type: sink
     name: "sink"
-    root_fs: "tank"
+    root_fs: "tank/push"
     serve:
       type: tls
-      listen: ":{{port}}"
+      listen: ":{{ports.sink}}"
       ca: {{caCertFile}}
       cert: {{certFile}}
       key: {{keyFile}}
@@ -19,3 +19,27 @@ jobs:
     recv:
       placeholder:
         encryption: inherit
+
+  - type: pull
+    name: "pull_sachi_backup"
+    connect:
+      type: tls
+      address: "sachi.machine.mado.moe:{{ports.source}}"
+      server_cn: "sachi.machine.mado.moe"
+      ca: {{caCertFile}}
+      cert: {{certFile}}
+      key: {{keyFile}}
+    root_fs: "tank/pull"
+    interval: 1h
+    pruning:
+      # Source does the pruning in its snap job
+      keep_sender:
+        - type: regex
+          regex: '.*'
+      # Receiver-side pruning can be configured as desired on each target server
+      keep_receiver:
+        - type: grid
+          grid: 24x1h | 14x1d | 1x30d
+          regex: "^zrepl_.*"
+        - type: regex
+          regex: "^manual_.*"
