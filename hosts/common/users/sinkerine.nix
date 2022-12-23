@@ -4,7 +4,7 @@ with lib;
 
 let pubCredentials = import (../pub-credentials);
 in {
-  users.groups.sinkerine = { gid = 1000; };
+  users.groups.sinkerine = { gid = config.my.ids.uids.sinkerine; };
   users.users.sinkerine = {
     isNormalUser = true;
     shell = pkgs.zsh;
@@ -19,7 +19,7 @@ in {
       "libvirtd"
       "dockremap"
     ];
-    uid = 1000;
+    uid = config.my.ids.uids.sinkerine;
     home = "/home/sinkerine";
     passwordFile = config.sops.secrets.hashedPassword.path;
     subUidRanges = [{

@@ -3,7 +3,7 @@
 with lib;
 
 {
-  imports = [ ../../../common/users/dockremap.nix ];
+  imports = [ ./users.nix ];
   virtualisation.docker = {
     enable = true;
     enableOnBoot = false;

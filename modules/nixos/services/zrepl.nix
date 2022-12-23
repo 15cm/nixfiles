@@ -3,10 +3,10 @@
 { config, pkgs, lib, ... }:
 
 with lib;
-let cfg = config.services.my-zrepl;
+let cfg = config.services.my.zrepl;
 in {
   options = {
-    services.my-zrepl = {
+    services.my.zrepl = {
       enable = mkEnableOption (lib.mdDoc "zrepl");
 
       package = mkOption {

@@ -3,8 +3,7 @@
 with lib;
 
 {
-  imports =
-    [ ../features/app/autofs ../features/app/docker ../features/app/AriaNg ];
+  imports = [ ../features/autofs ../features/docker ../features/AriaNg ];
   environment.systemPackages = with pkgs; [
     pavucontrol
     pulseaudio
