@@ -18,7 +18,6 @@ in {
     ../common/zfs
     ../common/users/sinkerine.nix
     ../common/linux-gui.nix
-    ../features/nix-serve/users.nix
     ./zrepl
   ];
 

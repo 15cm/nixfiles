@@ -20,8 +20,18 @@ in {
           insecure = true;
         };
         entryPoints = {
-          web = { address = ":80"; };
-          websecure = { address = ":443"; };
+          web = {
+            address = ":80";
+            http.redirections.entryPoint = {
+              to = "websecure";
+              scheme = "https";
+              permanent = false;
+            };
+          };
+          websecure = {
+            address = ":443";
+            http.tls.certResolver = "default";
+          };
         };
         providers = {
           docker = {
@@ -62,6 +72,7 @@ in {
         };
       };
     };
+
     systemd.services.traefik = {
       serviceConfig = {
         EnvironmentFile = config.sops.secrets.traefik-env.path;
@@ -70,4 +81,5 @@ in {
     users.users.traefik = { uid = config.my.ids.uids.traefik; };
     users.groups.traefik.gid = config.my.ids.uids.traefik;
   };
+
 }

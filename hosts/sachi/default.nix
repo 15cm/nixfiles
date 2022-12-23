@@ -13,7 +13,6 @@ with lib;
     ../common/zfs/non-root.nix
     ../common/users/sinkerine.nix
     ../features/docker
-    ../features/nix-serve
     ./samba
     ./zrepl
   ];
@@ -45,4 +44,5 @@ with lib;
   };
 
   my.services.gateway.enable = true;
+  my.services.nix-serve.enable = true;
 }
