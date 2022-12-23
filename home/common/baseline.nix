@@ -16,8 +16,6 @@ in {
     ../features/app/powerline
     ../features/app/fzf
     ../features/app/set-theme
-    (import ../features/app/clipper
-      (args // { templateData = { inherit (commonConfig) clipper; }; }))
     ../features/app/ranger
     ../features/app/tealdeer
     ../features/conf/misc-dotfiles

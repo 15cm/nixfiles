@@ -12,6 +12,8 @@ with lib; {
     ../../../features/app/dunst
     ../../../features/app/unclutter
     ../../../features/app/wallpaper
+    (import ../features/app/clipper
+      (args // { templateData = { inherit (commonConfig) clipper; }; }))
     # Applications
     ../../../features/app/alacritty
     ../../../features/conf/mpv
