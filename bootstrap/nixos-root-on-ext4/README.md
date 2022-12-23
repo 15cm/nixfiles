@@ -31,7 +31,7 @@ umount -Rl /mnt
 
 ### [optional] 4 Create zpool
 ```
-zpool create \
+sudo zpool create \
     -O relatime=on \
     -O acltype=posixacl \
     -O canmount=on \
