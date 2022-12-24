@@ -41,11 +41,15 @@ with lib;
         # Coturn
         3478
         5349
+        # Shadowsocks
+        8388
       ];
       allowedUDPPorts = [
         # Coturn
         3478
         5349
+        # Shadowsocks
+        8388
       ];
       allowedUDPPortRanges = [
         # Coturn
@@ -67,4 +71,5 @@ with lib;
     enable = true;
     waitForManualZfsLoadKey = true;
   };
+  my.services.shadowsocks-server.enable = true;
 }

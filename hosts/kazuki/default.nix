@@ -61,4 +61,8 @@ in {
     sopsCertFile = ./zrepl/kazuki.machine.mado.moe.crt;
     sopsKeyFile = ./zrepl/kazuki.machine.mado.moe.key;
   };
+  my.services.shadowsocks-client = {
+    enable = true;
+    serverAddress = "amane.machine.15cm.net";
+  };
 }
