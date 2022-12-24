@@ -49,13 +49,15 @@ with lib;
     pulse.enable = true;
   };
 
-  # Required by pipewire rt mod.
+  # Required by pipewire rt mod and Flatpak.
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
 
   hardware.bluetooth.enable = true;
+
+  services.flatpak.enable = true;
   # Needed by Nautilus.
   services.gvfs.enable = true;
 

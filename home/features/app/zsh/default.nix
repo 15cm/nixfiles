@@ -43,6 +43,10 @@ in {
           tags = [ "defer:0" ];
         }
         { name = "skywind3000/z.lua"; }
+        {
+          name = "plugins/ssh-agent";
+          tags = [ "from:oh-my-zsh" ];
+        }
       ];
     };
 
@@ -79,6 +83,8 @@ in {
       # This allows us to override the zvm keybindings later.
       # https://github.com/jeffreytse/zsh-vi-mode#initialization-mode
       export ZVM_INIT_MODE=sourcing
+
+      zstyle :omz:plugins:ssh-agent lazy yes
     '';
     initExtraBeforeCompInit = ''
       fpath+=(/usr/share/zsh/site-functions)
@@ -101,7 +107,7 @@ in {
       # Tmux
       ta = "tmux attach -t";
       tad = "tmux attach -d -t";
-      ts = "tmux new-session -s";
+      ts = "tmux new -A -s";
       tl = "tmux list-sessions";
       tksv = "tmux kill-server";
       tkss = "tmux kill-session -t";
