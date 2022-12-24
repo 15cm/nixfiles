@@ -31,6 +31,9 @@ jobs:
       key: {{keyFile}}
     root_fs: "tank/pull"
     interval: 1h
+    recv:
+      placeholder:
+        encryption: inherit
     pruning:
       # Source does the pruning in its snap job
       keep_sender:
