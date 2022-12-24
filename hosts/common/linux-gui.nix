@@ -3,7 +3,7 @@
 with lib;
 
 {
-  imports = [ ../features/autofs ../features/AriaNg ];
+  imports = [ ../features/autofs ];
   environment.systemPackages = with pkgs; [
     pavucontrol
     pulseaudio
@@ -60,9 +60,6 @@ with lib;
   # Needed by Nautilus.
   services.gvfs.enable = true;
 
-  # For web apps.
-  services.nginx.enable = true;
-
   networking.firewall = {
     # https://docs.syncthing.net/users/firewall.html
     allowedTCPPorts = [ 22000 ];
@@ -70,4 +67,6 @@ with lib;
   };
 
   my.services.docker.enable = true;
+  my.services.autofs.enable = true;
+  my.programs.AriaNg.enable = true;
 }
