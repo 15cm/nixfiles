@@ -39,12 +39,6 @@ git clone git@github.com:15cm/spacemacs-config.git ~/.spacemacs.d
 git clone https://github.com/15cm/spacemacs-config.git ~/.spacemacs.d
 ```
 
-Import the gpg of `i@15cm.net` or `share@15cm.net`. Then
-```
-cd ~/.spacemacs.d
-git-secret reveal
-```
-
 ## Notes
 ### 1
 For rescuing an existing system in the live usb, mounts the directories:

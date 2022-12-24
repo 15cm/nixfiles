@@ -27,7 +27,7 @@ Run `BIOS_BOOT=1 bash /nixfiles/bootstrap/nixos-root-on-ext4/install.sh <hostnam
 Follow [steps 4 and 5 in nixos-root-on-zfs](../nixos-root-on-zfs/README.md#5).
 
 ### 6 Create zpool
-#### encrypted-send-to-untrusted-receiver
+#### Untrusted Host
 For the untrusted host where zfs key won't be loaded, create an unencrypted pool to [allow placeholder datasets to be created](https://zrepl.github.io/configuration/sendrecvoptions.html#placeholders).
 
 ```
@@ -46,7 +46,7 @@ sudo zpool create \
     <zfs_partition>
 ```
 
-#### send-plain-encrypt-on-receive
+#### Trusted Host
 For the trusted host where zfs key will be loaded, create an encrypted pool.
 
 ```
