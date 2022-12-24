@@ -36,6 +36,25 @@ with lib;
     hostName = hostname;
     domain = "15cm.net";
     useDHCP = true;
+    firewall = {
+      allowedTCPPorts = [
+        # Coturn
+        3478
+        5349
+      ];
+      allowedUDPPorts = [
+        # Coturn
+        3478
+        5349
+      ];
+      allowedUDPPortRanges = [
+        # Coturn
+        {
+          from = 49160;
+          to = 49200;
+        }
+      ];
+    };
   };
 
   my.services.zrepl = {
