@@ -3,7 +3,7 @@
 with lib;
 
 {
-  imports = [ ../features/autofs ../features/docker ../features/AriaNg ];
+  imports = [ ../features/autofs ../features/AriaNg ];
   environment.systemPackages = with pkgs; [
     pavucontrol
     pulseaudio
@@ -68,4 +68,6 @@ with lib;
     allowedTCPPorts = [ 22000 ];
     allowedUDPPorts = [ 22000 21027 ];
   };
+
+  my.services.docker.enable = true;
 }

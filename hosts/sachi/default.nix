@@ -12,7 +12,6 @@ with lib;
     ../common/zfs
     ../common/zfs/non-root.nix
     ../common/users.nix
-    ../features/docker
     ./samba
   ];
 
@@ -42,6 +41,10 @@ with lib;
     firewall.enable = mkForce false;
   };
 
+  my.services.docker = {
+    enable = true;
+    waitForManualZfsLoadKey = true;
+  };
   my.services.gateway.enable = true;
   my.services.nix-serve.enable = true;
   my.services.zrepl = {

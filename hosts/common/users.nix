@@ -22,11 +22,11 @@ with lib;
     home = "/home/sinkerine";
     passwordFile = config.sops.secrets.hashedPassword.path;
     subUidRanges = [{
-      startUid = 100000;
+      startUid = config.my.ids.uids.dockremap;
       count = 65536;
     }];
     subGidRanges = [{
-      startGid = 100000;
+      startGid = config.my.ids.uids.dockremap;
       count = 65536;
     }];
 
