@@ -58,11 +58,8 @@ in {
       dynamicConfigOptions = {
         http = {
           middlewares = {
-            secure-internal = {
-              chain.middlewares = [ "redirect-to-https" "lan-ipwhitelist" ];
-            };
             redirect-to-https.redirectScheme.scheme = "https";
-            lan-ipwhitelist.ipWhiteList.sourceRange = [ "10.0.0.0/8" ];
+            lan-only.ipWhiteList.sourceRange = [ "10.0.0.0/8" ];
             mastodon-auth-proxy.redirectRegex = {
               permanent = true;
               regex = "^https://mado.moe/\\.well-known/webfinger";
