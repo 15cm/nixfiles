@@ -50,5 +50,9 @@ with lib; {
     createDirectories = true;
   };
 
+  my.programs.emacs = {
+    package = pkgs.emacsUnstable;
+    enableSSHSpacemacsConfigRepo = true;
+  };
   my.services.clipper.enable = true;
 }

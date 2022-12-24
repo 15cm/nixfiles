@@ -8,7 +8,6 @@ in {
 
   imports = [
     ../features/app/git
-    ../features/app/emacs
     ../features/app/vim
     ../features/app/tmux
     ../features/app/zsh
@@ -44,4 +43,6 @@ in {
   ]) ++
     # Packages with overrides.
     [ parallel ];
+
+  my.programs.emacs.enable = true;
 }
