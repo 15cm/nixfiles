@@ -1,6 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, hostname, ... }:
 
-{
+with lib; {
   environment.systemPackages = with pkgs; [
     sops
     acpi
@@ -21,11 +21,10 @@
     };
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      substituters = [
-        "https://nixcache.mado.moe"
-        "https://nix-community.cachix.org"
-        "https://cache.nixos.org/"
-      ];
+      substituters =
+        [ "https://nix-community.cachix.org" "https://cache.nixos.org/" ]
+        ++ (optionals (!(builtins.elem hostname [ "kazuki" "sachi" ]))
+          [ "https://nixcache.mado.moe" ]);
       trusted-public-keys = config.my.trusts.cache.pubKeys;
     };
   };
