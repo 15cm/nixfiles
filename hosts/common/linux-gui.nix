@@ -66,6 +66,6 @@ with lib;
   networking.firewall = {
     # https://docs.syncthing.net/users/firewall.html
     allowedTCPPorts = [ 22000 ];
-    allowedUDPPorts = [ 22000 ];
+    allowedUDPPorts = [ 22000 21027 ];
   };
 }

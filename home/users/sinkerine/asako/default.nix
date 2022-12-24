@@ -5,4 +5,6 @@ args@{ pkgs, ... }:
 
   imports =
     [ ../common ../common/linux-gui.nix ../../../features/app/easyeffects ];
+
+  home.packages = with pkgs; [ radeontop ];
 }

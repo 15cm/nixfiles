@@ -37,10 +37,10 @@ with lib; {
     google-chrome
     trash-cli
     jellyfin-media-player
-    radeontop
     clementine
     gnome.nautilus
     ark
+    postman
   ];
 
   qt.enable = true;
