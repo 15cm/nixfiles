@@ -37,4 +37,9 @@ with lib;
     domain = "15cm.net";
     useDHCP = true;
   };
+
+  my.services.docker = {
+    enable = true;
+    waitForManualZfsLoadKey = true;
+  };
 }
