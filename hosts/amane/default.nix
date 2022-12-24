@@ -38,6 +38,12 @@ with lib;
     useDHCP = true;
   };
 
+  my.services.zrepl = {
+    enable = true;
+    configTemplateFile = ./zrepl/zrepl.yaml.jinja;
+    sopsCertFile = ./zrepl/amane.machine.15cm.net.crt;
+    sopsKeyFile = ./zrepl/amane.machine.15cm.net.key;
+  };
   my.services.docker = {
     enable = true;
     waitForManualZfsLoadKey = true;

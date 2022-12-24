@@ -7,24 +7,19 @@ global:
 jobs:
   - type: push
     name: "push"
-    filesystems: {
-      "rpool": true,
-      "rpool/data<": true,
-      "rpool/data/home/sinkerine/.cache": false,
-      "rpool/data/home/sinkerine/vmware": false,
-      "rpool/data/var-lib-docker<": false,
-    }
+    filesystems:
+      "tank<": true
     connect:
       type: tls
-      address: "sachi.machine.mado.moe:{{ports.sink}}"
-      server_cn: "sachi.machine.mado.moe"
+      address: "yumiko.machine.15cm.net:{{ports.sink}}"
+      server_cn: "yumiko.machine.15cm.net"
       ca: {{caCertFile}}
       cert: {{certFile}}
       key: {{keyFile}}
     snapshotting:
       type: periodic
       prefix: zrepl_
-      interval: 1h
+      interval: 1d
     send:
     pruning:
       keep_sender:
@@ -32,13 +27,13 @@ jobs:
         - type: last_n
           count: 10
         - type: grid
-          grid: 24x1h | 14x1d
+          grid: 14x1d
           regex: "^zrepl_.*"
         - type: regex
           regex: "^manual_.*"
       keep_receiver:
         - type: grid
-          grid: 48x1h | 35x1d | 6x30d
+          grid: 35x1d | 6x30d
           regex: "^zrepl_.*"
         - type: regex
           regex: "^manual_.*"
