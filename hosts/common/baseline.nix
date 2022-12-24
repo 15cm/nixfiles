@@ -11,6 +11,7 @@ with lib; {
     sops
     gnupg
     age
+    ncdu
   ];
 
   nix = {
