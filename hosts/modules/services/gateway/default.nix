@@ -58,13 +58,23 @@ in {
       dynamicConfigOptions = {
         http = {
           middlewares = {
-            redirect-to-https.redirectScheme.scheme = "https";
             lan-only.ipWhiteList.sourceRange = [ "10.0.0.0/8" ];
             mastodon-auth-proxy.redirectRegex = {
               permanent = true;
               regex = "^https://mado.moe/\\.well-known/webfinger";
               replacement = "https://mastodon.mado.moe/.well-known/webfinger";
             };
+          };
+          routers = {
+            traefik-dashboard = {
+              rule = "Host(`gateway.mado.moe`)";
+              middlewares = [ "lan-only@file" ];
+              service = "traefik-dashboard";
+            };
+          };
+          services = {
+            traefik-dashboard.loadBalancer.servers =
+              [{ url = "http://localhost:8080"; }];
           };
         };
       };
