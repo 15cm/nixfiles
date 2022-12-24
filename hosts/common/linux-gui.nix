@@ -3,7 +3,6 @@
 with lib;
 
 {
-  imports = [ ../features/autofs ];
   environment.systemPackages = with pkgs; [
     pavucontrol
     pulseaudio

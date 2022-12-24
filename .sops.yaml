@@ -8,11 +8,11 @@ keys:
     - &yumiko age1g8qxqwmajcpcz46ugnan9hyt5x5wcz9rd09jd5mq6jgvhx443qfq08jcq0
     - &amane age1snfpluv03zwz8t6cxt0a26gpjxum2cad75gqw5k5fjg6y7cgx4zqcjq8fm
 creation_rules:
-  - path_regex: hosts/features/app/autofs/cifs-secrets.txt
+  - path_regex: hosts/modules/services/autofs/cifs-secrets.txt
     # kazuki, asako
     age: "age1sc2gp8d40y7d9engfqhydg5v6mcg0aj40x3yccndzh7ruxvj63cqcpax76,age1kez9h9hmz4amrq5phv8cwv3d04l775ctzaqgrd7q9u70hp6s0ehsjp5wk8"
     pgp: *sinkerine
-  - path_regex: hosts/features/nix-serve/.*\.pem$
+  - path_regex: hosts/modules/services/nix-serve/.*\.pem$
     pgp: *sinkerine
     # kazuki, sachi
     age: "age1sc2gp8d40y7d9engfqhydg5v6mcg0aj40x3yccndzh7ruxvj63cqcpax76,age147zmk06prg2864yym9tcg5z9vl9ldykv5zkwuuefuy85q994qp3sjh3lfd"
