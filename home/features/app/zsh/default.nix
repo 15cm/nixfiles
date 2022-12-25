@@ -117,6 +117,7 @@ in {
       cpy = config.my.services.clipper.copyCommand;
       pst = (if isLinux then "xclip -o" else "pbpaste");
       th = (if isLinux then "trash-put" else "trash");
+      dockerrl = "DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock docker";
 
       # Nix Home Manager
       snh = "switch-nix-home.sh";
