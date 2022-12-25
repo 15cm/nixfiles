@@ -51,7 +51,7 @@ with lib; {
   };
 
   my.programs.emacs = {
-    package = pkgs.emacsUnstable;
+    package = pkgs.myEmacs;
     enableSSHSpacemacsConfigRepo = true;
   };
   my.services.clipper.enable = true;

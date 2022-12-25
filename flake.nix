@@ -7,10 +7,6 @@
       url = "github:15cm/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flake-utils.url = "github:numtide/flake-utils";
     # nixgl is needed for alacritty outside of nixOS
     # refer to https://github.com/NixOS/nixpkgs/issues/122671
@@ -35,8 +31,8 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, emacs-overlay, nixgl, flake-utils, sops-nix
-    , kmonad, nixos-hardware, envfs, ... }@inputs:
+  outputs = { nixpkgs, home-manager, nixgl, flake-utils, sops-nix, kmonad
+    , nixos-hardware, envfs, ... }@inputs:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -49,7 +45,6 @@
           overlays = with overlays; [
             additions
             modifications
-            emacs-overlay.overlay
             nixgl.overlays.default
             kmonad.overlays.default
           ];
