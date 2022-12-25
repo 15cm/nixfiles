@@ -47,7 +47,11 @@ in {
   };
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
-  boot.kernelParams = [ "nvidia-drm.modeset=1" "acpi_enforce_resources=lax" ];
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+    "acpi_enforce_resources=lax"
+    "transparent_hugepage=never"
+  ];
   boot.kernelModules = [
     # Ensure we can access i2c bus for RGB memory
     "i2c-dev"
@@ -64,5 +68,10 @@ in {
   my.services.shadowsocks-client = {
     enable = true;
     serverAddress = "amane.machine.15cm.net";
+  };
+
+  virtualisation.vmware.host = {
+    enable = true;
+    extraPackages = with pkgs; [ open-vm-tools ];
   };
 }

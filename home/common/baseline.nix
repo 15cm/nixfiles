@@ -1,4 +1,4 @@
-args@{ nixpkgs, pkgs, ... }:
+args@{ nixpkgs, pkgs, state, ... }:
 
 let
   commonConfig = (import ./config.nix args);
@@ -25,7 +25,6 @@ in {
     nixfmt
     exa
     fd
-    bottom
     nix-template
     xclip
     htop
@@ -44,4 +43,12 @@ in {
     [ parallel ];
 
   my.programs.emacs.enable = true;
+  programs.bottom = {
+    enable = true;
+    settings = {
+      flags = {
+        color = (if state.theme == "light" then "gruvbox-light" else "gruvbox");
+      };
+    };
+  };
 }
