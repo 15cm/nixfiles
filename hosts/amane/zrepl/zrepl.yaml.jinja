@@ -8,7 +8,7 @@ jobs:
   - type: push
     name: "push"
     filesystems:
-      "tank<": true
+      "tank/encrypted<": true
     connect:
       type: tls
       address: "yumiko.machine.15cm.net:{{ports.sink}}"
@@ -21,6 +21,8 @@ jobs:
       prefix: zrepl_
       interval: 1d
     send:
+      encrypted: true
+      compressed: true
     pruning:
       keep_sender:
         - type: not_replicated

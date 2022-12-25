@@ -41,6 +41,7 @@ with lib; {
     gnome.nautilus
     ark
     postman
+    picard
   ];
 
   qt.enable = true;

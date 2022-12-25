@@ -102,6 +102,7 @@
       ];
 
       nixosConfigurationArgs = {
+        # TODO: migrate to unencrypted pool + encrypted dataset.
         "kazuki" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
@@ -109,6 +110,7 @@
             [ common-gpu-nvidia-nonprime ]);
           specialArgs = { hostname = "kazuki"; };
         };
+        # TODO: migrate to unencrypted pool + encrypted dataset.
         "asako" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
@@ -116,6 +118,7 @@
             ++ (with nixos-hardware.nixosModules; [ lenovo-thinkpad-z13 ]);
           specialArgs = { hostname = "asako"; };
         };
+        # TODO: migrate to unencrypted pool + encrypted dataset.
         "sachi" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
@@ -129,10 +132,7 @@
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
           modules = [ ./hosts/yumiko ];
-          specialArgs = {
-            hostname = "yumiko";
-            encryptedZfsPool = "tank";
-          };
+          specialArgs = { hostname = "yumiko"; };
         };
         "amane" = rec {
           system = "x86_64-linux";
@@ -140,7 +140,7 @@
           modules = [ ./hosts/amane ];
           specialArgs = {
             hostname = "amane";
-            encryptedZfsPool = "tank";
+            encryptedZfsPath = "tank/encrypted";
           };
         };
       };

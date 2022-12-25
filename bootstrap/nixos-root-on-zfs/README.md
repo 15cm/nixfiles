@@ -28,17 +28,6 @@ nix build --no-link --impure path:/nixfiles#homeConfigurations.${USER}@$(hostnam
 "$(nix path-info --impure path:/nixfiles#homeConfigurations.${USER}@$(hostname).activationPackage)"/activate
 ```
 
-### 6
-Pull the configs out side of nixfiles.
-
-#### Emacs
-```
-# For hosts that have access to my git repo, get ssh keys and then:
-git clone git@github.com:15cm/spacemacs-config.git ~/.spacemacs.d
-# Otherwise
-git clone https://github.com/15cm/spacemacs-config.git ~/.spacemacs.d
-```
-
 ## Notes
 ### 1
 For rescuing an existing system in the live usb, mounts the directories:
