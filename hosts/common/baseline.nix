@@ -50,4 +50,5 @@ with lib; {
     "fs.inotify.max_user_watches" = 200000;
   };
   networking.firewall.enable = true;
+  fonts.fontconfig.enable = false;
 }
