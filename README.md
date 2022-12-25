@@ -1,6 +1,6 @@
 ## Use cases
 - [x] NixOS root on ZFS, for machines that run Linux desktop environment. Currently one laptop and one desktop. See [bootstrap/nixos-root-on-zfs/README.md](./bootstrap/nixos-root-on-zfs/README.md) for the bootstrap steps.
-- [ ] NixOS root on EXT4 + ZFS datasets under /mnt, for headless machines like NAS, VPS e.t.c. WIP.
+- [x] NixOS root on EXT4 + ZFS datasets under /mnt, for headless machines like NAS, VPS e.t.c.
 - [ ] Nix Home Manager on non-NixOS systems, for work machines that run Linux or Darwin.
 
 ## Boundary of NixOS and Nix Home Manager
