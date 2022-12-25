@@ -29,7 +29,7 @@ with lib;
     enable = true;
     passwordAuthentication = false;
     kbdInteractiveAuthentication = false;
-    permitRootLogin = "no";
+    permitRootLogin = "prohibit-password";
   };
 
   networking = {
