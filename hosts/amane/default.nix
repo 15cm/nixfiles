@@ -71,5 +71,9 @@ with lib;
     enable = true;
     waitForManualZfsLoadKey = true;
   };
+  my.services.docker-rootless = {
+    enable = true;
+    waitForManualZfsLoadKey = true;
+  };
   my.services.shadowsocks-server.enable = true;
 }

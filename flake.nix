@@ -125,7 +125,7 @@
           modules = [ ./hosts/sachi ];
           specialArgs = {
             hostname = "sachi";
-            encryptedZfsPool = "main";
+            encryptedZfsPath = "main";
           };
         };
         "yumiko" = rec {

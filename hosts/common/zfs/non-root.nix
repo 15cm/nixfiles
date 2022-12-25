@@ -1,4 +1,4 @@
-{ config, pkgs, lib, encryptedZfsPool, ... }:
+{ config, pkgs, lib, encryptedZfsPath, ... }:
 
 with lib; {
   # Usage: sudo systemctl start/stop zfs-load-key-and-mount.target
@@ -26,7 +26,7 @@ with lib; {
       serviceConfig = {
         Type = "oneshot";
         ExecStart = ''
-          ${pkgs.runtimeShell} -c 'until (${config.systemd.package}/bin/systemd-ask-password "Please enter your password for zfs load-key: " --no-tty | ${pkgs.zfs}/bin/zfs load-key ${encryptedZfsPool}); do echo "Try again!"; done'
+          ${pkgs.runtimeShell} -c 'until (${config.systemd.package}/bin/systemd-ask-password "Please enter your password for zfs load-key: " --no-tty | ${pkgs.zfs}/bin/zfs load-key ${encryptedZfsPath}); do echo "Try again!"; done'
         '';
         RemainAfterExit = true;
       };
