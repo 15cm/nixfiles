@@ -26,7 +26,7 @@ with lib; {
       serviceConfig = {
         Type = "oneshot";
         ExecStart = ''
-          ${pkgs.runtimeShell} -c 'until (${config.systemd.package}/bin/systemd-ask-password "Please enter your password for zfs load-key: " --no-tty | ${pkgs.zfs}/bin/zfs load-key ${encryptedZfsPath}); do echo "Try again!"; done'
+          ${pkgs.runtimeShell} -c '${pkgs.zfs}/bin/zfs get keystatus -o value ${encryptedZfsPath} | tail -n 1 | grep -q ^available || until (${config.systemd.package}/bin/systemd-ask-password "Please enter your password for zfs load-key: " --no-tty | ${pkgs.zfs}/bin/zfs load-key ${encryptedZfsPath}); do echo "Try again!"; done'
         '';
         RemainAfterExit = true;
       };
