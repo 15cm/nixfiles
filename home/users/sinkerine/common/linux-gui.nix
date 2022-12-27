@@ -26,7 +26,6 @@ with lib; {
     ../../../features/app/imwheel
     ../../../features/app/nm-applet
     ../../../features/app/playctl
-    ../../../features/app/syncthing
     ../../../features/app/flameshot
   ];
 
@@ -56,4 +55,5 @@ with lib; {
     enableSSHSpacemacsConfigRepo = true;
   };
   my.services.clipper.enable = true;
+  my.services.syncthing.enable = true;
 }
