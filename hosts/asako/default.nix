@@ -37,6 +37,8 @@ in {
     hostName = hostname;
     domain = "mado.moe";
     networkmanager = { enable = true; };
+    # https://nixos.wiki/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
+    firewall.checkReversePath = false;
   };
 
   services.kmonad = {
