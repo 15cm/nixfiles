@@ -5,11 +5,13 @@ let cfg = config.my.services.syncthing;
 in {
   options.my.services.syncthing = { enable = mkEnableOption "Syncthing"; };
 
-  my.services.syncthing = {
-    enable = true;
-    tray = {
+  config = mkIf cfg.enable {
+    services.syncthing = {
       enable = true;
-      command = "syncthingtray --wait";
+      tray = {
+        enable = true;
+        command = "syncthingtray --wait";
+      };
     };
   };
 }
