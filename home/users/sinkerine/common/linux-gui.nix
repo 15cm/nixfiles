@@ -40,6 +40,7 @@ with lib; {
     ark
     postman
     picard
+    kate
   ];
 
   qt.enable = true;
