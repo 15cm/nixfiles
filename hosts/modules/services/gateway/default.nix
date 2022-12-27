@@ -58,7 +58,11 @@ in {
       dynamicConfigOptions = {
         http = {
           middlewares = {
-            lan-only.ipWhiteList.sourceRange = [ "192.168.88.0/24" ];
+            lan-only.ipWhiteList.sourceRange = [
+              "192.168.88.0/24"
+              # Wireguard subnet
+              "192.168.100.0/24"
+            ];
             mastodon-auth-proxy.redirectRegex = {
               permanent = true;
               regex = "^https://mado.moe/\\.well-known/webfinger";
