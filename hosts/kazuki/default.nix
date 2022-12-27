@@ -20,7 +20,12 @@ in {
     ../common/linux-gui.nix
   ];
 
-  environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];
+  environment.systemPackages = with pkgs; [
+    easyrsa
+    i2c-tools
+    wineWowPackages.stable
+    winetricks
+  ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
@@ -44,6 +49,7 @@ in {
     hostName = hostname;
     domain = "mado.moe";
     networkmanager = { enable = true; };
+    firewall.enable = mkForce false;
   };
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
@@ -73,5 +79,13 @@ in {
   virtualisation.vmware.host = {
     enable = true;
     extraPackages = with pkgs; [ open-vm-tools ];
+  };
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall =
+      true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall =
+      true; # Open ports in the firewall for Source Dedicated Server
   };
 }
