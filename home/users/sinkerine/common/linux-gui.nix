@@ -1,4 +1,4 @@
-args@{ pkgs, lib, hostname, ... }:
+{ config, pkgs, lib, hostname, ... }:
 
 with lib; {
   imports = [
@@ -24,7 +24,6 @@ with lib; {
     ../../../features/app/copyq
     ../../../features/app/goldendict
     ../../../features/app/imwheel
-    ../../../features/app/nm-applet
     ../../../features/app/playctl
     ../../../features/app/flameshot
   ];
@@ -56,4 +55,10 @@ with lib; {
   };
   my.services.clipper.enable = true;
   my.services.syncthing.enable = true;
+  my.programs.networkmanager-dmenu = {
+    enable = true;
+    settings = {
+      dmenu.dmenu_command = "${config.programs.rofi.package}/bin/rofi -dmenu";
+    };
+  };
 }
