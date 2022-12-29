@@ -1,6 +1,5 @@
 {
-    "term": "alacritty",
-    "term_command": "nixGL alacritty",
+    "term": "nixGL alacritty -t {title} -e {expanded}",
     "ratio": 0.6,
     "pos": "top",
     "shells": {

@@ -1,14 +1,16 @@
 { pkgs, lib, python3, fetchFromGitHub }:
 
-python3.pkgs.buildPythonPackage rec {
+let
   pname = "i3-quickterm";
-  version = "1.2";
+  version = "1.1";
+in python3.pkgs.buildPythonPackage {
+  inherit pname version;
 
   src = fetchFromGitHub {
-    owner = "15cm";
+    owner = "lbonn";
     repo = "i3-quickterm";
-    rev = "0114be21787349df3de7644026c5f781ab60dddd";
-    hash ="sha256-aTCAEl+eXj20Z7L46x0Et3y37un489mxw+uwtqnuGgY=";
+    rev = "v${version}";
+    hash = "sha256-kHj3hiOm4HvrQ9Xr80wgtX1Tq830XIiFbeet7lLSNCI=";
   };
 
   propagatedBuildInputs = [ pkgs.python3Packages.i3ipc ];
@@ -16,7 +18,7 @@ python3.pkgs.buildPythonPackage rec {
 
   meta = with lib; {
     description = "A small drop-down terminal for i3 and sway ";
-    homepage = "https://github.com/15cm/i3-quickterm";
+    homepage = "https://github.com/lbonn/i3-quickterm";
     license = licenses.mit;
     maintainers = [ "i@15cm.net" ];
   };
