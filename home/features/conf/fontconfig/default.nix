@@ -7,10 +7,11 @@
     noto-fonts-cjk-sans
     noto-fonts-cjk-serif
     noto-fonts-emoji
-    inconsolata-lgc
     font-awesome_4
-    (nerdfonts.override { fonts = [ "Noto" "InconsolataLGC" ]; })
     emacs-all-the-icons-fonts
+    sarasa-gothic
+    sarasa-gothic-nerdfont
+    iosevka
   ];
 
   xdg.configFile."fontconfig/conf.d/90-my-fonts.conf".source = ./fonts.conf;

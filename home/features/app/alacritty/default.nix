@@ -12,19 +12,19 @@ in {
       };
       font = {
         normal = {
-          family = "InconsolataLGC Nerd Font Mono";
+          family = "Sarasa Mono SC Nerd Font";
           style = "Medium";
         };
         bold = {
-          family = "InconsolataLGC Nerd Font Mono";
+          family = "Sarasa Mono SC Nerd Font";
           style = "Bold";
         };
         italic = {
-          family = "InconsolataLGC Nerd Font Mono";
+          family = "Sarasa Mono SC Nerd Font";
           style = "Italic";
         };
         # Point size of the font
-        size = 12;
+        size = 13;
       };
       colors = (if theme == "light" then { # Soloriazed light
         primary = {

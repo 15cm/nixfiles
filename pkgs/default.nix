@@ -8,4 +8,5 @@ with pkgs; {
   myEmacs = emacsWithPackages (epkgs: with epkgs; [ emacsql-sqlite ]);
   myEmacs-nox = (emacsPackagesFor emacs-nox).emacsWithPackages
     (epkgs: with epkgs; [ emacsql-sqlite ]);
+  sarasa-gothic-nerdfont = (callPackage ./sarasa-gothic-nerdfont { });
 }
