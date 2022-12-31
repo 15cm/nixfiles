@@ -53,6 +53,7 @@ with lib; {
   my.programs.emacs = {
     package = pkgs.myEmacs;
     enableSSHSpacemacsConfigRepo = true;
+    startAfterXSession = true;
   };
   my.services.clipper.enable = true;
   my.services.syncthing.enable = true;
