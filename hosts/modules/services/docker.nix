@@ -28,9 +28,10 @@ in {
 
     users.groups.dockremap = { gid = config.my.ids.uids.dockremap; };
     users.users.dockremap = {
-      isSystemUser = true;
+      isNormalUser = true;
       uid = config.my.ids.uids.dockremap;
       group = "dockremap";
+      openssh.authorizedKeys.keys = config.my.trusts.ssh.pubKeys;
     };
 
     systemd.sockets.docker = mkIf cfg.waitForManualZfsLoadKey {
