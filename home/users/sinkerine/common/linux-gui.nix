@@ -41,6 +41,9 @@ with lib; {
     postman
     picard
     kate
+    gwenview
+    nodejs
+    pandoc
   ];
 
   qt.enable = true;
