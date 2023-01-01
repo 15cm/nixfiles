@@ -1,8 +1,6 @@
-args@{ nixpkgs, pkgs, state, ... }:
+{ pkgs, state, ... }:
 
-let
-  commonConfig = (import ./config.nix args);
-  parallel = pkgs.parallel-full.override (old: { willCite = true; });
+let parallel = pkgs.parallel-full.override (old: { willCite = true; });
 in {
   programs.home-manager.enable = true;
 
@@ -18,7 +16,6 @@ in {
     ../features/app/ranger
     ../features/app/tealdeer
     ../features/conf/misc-dotfiles
-    ../features/conf/fontconfig
   ];
 
   home.packages = (with pkgs; [

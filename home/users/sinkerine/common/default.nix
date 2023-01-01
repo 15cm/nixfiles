@@ -29,5 +29,9 @@
     nix build --no-link --print-out-paths "$@" ${osTopLevelFlakeUri}
   '';
 
-  imports = [ ../../../common/baseline.nix ../../../features/app/gpg ];
+  imports = [
+    ../../../common/baseline.nix
+    ../../../common/baseline-linux.nix
+    ../../../features/app/gpg
+  ];
 }

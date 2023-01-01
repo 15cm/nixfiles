@@ -2,7 +2,6 @@ args@{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 let
-  commonConfig = (import ../../../common/config.nix args);
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
 in {
@@ -18,7 +17,6 @@ in {
           name = "zsh-users/zsh-completions";
           tags = [ "defer:0" ];
         }
-
         {
           name = "zsh-users/zsh-autosuggestions";
           tags = [ "defer:2" "on:zsh-users/zsh-completions" ];
@@ -122,12 +120,12 @@ in {
       # Nix Home Manager
       snh = "switch-nix-home.sh";
       bnh = "build-nix-home.sh";
+      # NixOS
+      sno = "switch-nix-os.sh";
+      bno = "build-nix-os.sh";
     } // optionalAttrs isLinux {
       sc = "sudo systemctl";
       scu = "systemctl --user";
-    } // optionalAttrs commonConfig.isNixOs {
-      sno = "switch-nix-os.sh";
-      bno = "build-nix-os.sh";
     };
   };
 
