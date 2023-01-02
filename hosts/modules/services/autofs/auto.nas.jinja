@@ -3,7 +3,7 @@ storage -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=
 music -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsFile}} ://nas.mado.moe/main-music
 picture -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsFile}} ://nas.mado.moe/main-picture
 photo -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsFile}} ://nas.mado.moe/main-photo
-book -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsFile}} ://nas.mado.moe/main-book
+book -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,nobrl,uid=1000,gid=1000,credentials={{cifsCredentialsFile}} ://nas.mado.moe/main-book
 
 ## sub
 aria2 -fstype=cifs,rw,noserverino,forceuid,forcegid,cache=strict,uid=1000,gid=1000,credentials={{cifsCredentialsFile}} ://nas.mado.moe/sub-aria2
