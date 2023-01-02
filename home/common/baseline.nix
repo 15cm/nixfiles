@@ -13,7 +13,6 @@ in {
     ../features/app/powerline
     ../features/app/fzf
     ../features/app/set-theme
-    ../features/app/ranger
     ../features/app/tealdeer
     ../features/conf/misc-dotfiles
   ];
@@ -48,4 +47,5 @@ in {
       };
     };
   };
+  my.programs.ranger.enable = true;
 }

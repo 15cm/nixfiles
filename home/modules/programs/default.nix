@@ -1,1 +1,1 @@
-{ imports = [ ./emacs ./networkmanager-dmenu.nix ]; }
+{ imports = [ ./emacs ./networkmanager-dmenu.nix ./ranger ]; }

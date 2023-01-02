@@ -44,6 +44,8 @@ with lib; {
     gwenview
     nodejs
     pandoc
+    okular
+    calibre
   ];
 
   qt.enable = true;
