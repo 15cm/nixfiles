@@ -27,13 +27,20 @@ in {
     };
 
     ports = mkOption {
-      default = {
-        sink = 38888;
-        source = 38889;
-      };
+      default = { };
       type = with types; attrsOf int;
+      example = literalExpression ''
+        {
+          sink = 38888;
+          source = 38889;
+        }
+      '';
     };
-    openFirewall = mkEnableOption "open zrepl port";
+    openFirewallForPorts = mkOption {
+      default = [ ];
+      type = with types; listOf string;
+      description = "List of port names to open firewall for.";
+    };
     caCertFile = mkOption {
       default = ./zrepl-ca.crt;
       type = types.path;
@@ -51,12 +58,11 @@ in {
         sopsFile = (assert cfg.sopsKeyFile != null; cfg.sopsKeyFile);
       };
     };
-    services.my.zrepl = {
-      enable = true;
-      configFile = templateFile "zrepl-config" templateData
-        (assert cfg.configTemplateFile != null; cfg.configTemplateFile);
-    };
+    services.zrepl = { enable = true; };
+    environment.etc."zrepl/zrepl.yml".source = mkForce
+      (templateFile "zrepl-config" templateData
+        (assert cfg.configTemplateFile != null; cfg.configTemplateFile));
     networking.firewall.allowedTCPPorts =
-      mkIf cfg.openFirewall (attrValues cfg.ports);
+      attrVals cfg.openFirewallForPorts cfg.ports;
   };
 }

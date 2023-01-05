@@ -11,7 +11,7 @@ jobs:
       "tank/encrypted<": true
     connect:
       type: tls
-      address: "yumiko.machine.15cm.net:{{ports.sink}}"
+      address: "yumiko.machine.15cm.net:{{ports.push}}"
       server_cn: "yumiko.machine.15cm.net"
       ca: {{caCertFile}}
       cert: {{certFile}}

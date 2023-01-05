@@ -38,6 +38,7 @@ with lib; {
     clementine
     gnome.nautilus
     ark
+    unrar
     postman
     picard
     kate

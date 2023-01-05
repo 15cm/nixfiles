@@ -49,9 +49,10 @@ with lib;
   my.services.nix-serve.enable = true;
   my.services.zrepl = {
     enable = true;
+    ports = { inherit (config.my.ports.zrepl.sachi) sink source; };
+    openFirewallForPorts = [ "sink" "source" ];
     configTemplateFile = ./zrepl/zrepl.yaml.jinja;
     sopsCertFile = ./zrepl/sachi.machine.mado.moe.crt;
     sopsKeyFile = ./zrepl/sachi.machine.mado.moe.key;
-    openFirewall = true;
   };
 }

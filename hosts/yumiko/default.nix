@@ -40,9 +40,10 @@ with lib;
 
   my.services.zrepl = {
     enable = true;
+    ports = { inherit (config.my.ports.zrepl.yumiko) sink pull; };
+    openFirewallForPorts = [ "sink" ];
     configTemplateFile = ./zrepl/zrepl.yaml.jinja;
     sopsCertFile = ./zrepl/yumiko.machine.15cm.net.crt;
     sopsKeyFile = ./zrepl/yumiko.machine.15cm.net.key;
-    openFirewall = true;
   };
 }

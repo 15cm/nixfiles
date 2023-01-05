@@ -25,7 +25,7 @@ jobs:
     name: "pull_sachi_backup"
     connect:
       type: tls
-      address: "sachi.machine.mado.moe:{{ports.source}}"
+      address: "sachi.machine.mado.moe:{{ports.pull}}"
       server_cn: "sachi.machine.mado.moe"
       ca: {{caCertFile}}
       cert: {{certFile}}

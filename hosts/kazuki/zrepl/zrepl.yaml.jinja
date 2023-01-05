@@ -16,7 +16,7 @@ jobs:
     }
     connect:
       type: tls
-      address: "sachi.machine.mado.moe:{{ports.sink}}"
+      address: "sachi.machine.mado.moe:{{ports.push}}"
       server_cn: "sachi.machine.mado.moe"
       ca: {{caCertFile}}
       cert: {{certFile}}

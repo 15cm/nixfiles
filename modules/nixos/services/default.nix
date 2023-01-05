@@ -1,1 +1,1 @@
-{ imports = [ ./zrepl.nix ./shadowsocks-client.nix ]; }
+{ imports = [ ./shadowsocks-client.nix ]; }
