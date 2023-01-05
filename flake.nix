@@ -155,53 +155,22 @@
 
       deploy = {
         sshUser = "root";
-        nodes = {
-          sachi = {
-            hostname = "sachi";
-            profilesOrder = [ "system" "home" ];
-            profiles = {
-              system = {
-                path = deploy-rs.lib.x86_64-linux.activate.nixos
-                  self.nixosConfigurations.sachi;
-              };
-              home = {
-                path = deploy-rs.lib.x86_64-linux.activate.home-manager
-                  self.homeConfigurations."sinkerine@sachi";
-                user = "sinkerine";
-              };
+        nodes = nixpkgs.lib.genAttrs [ "sachi" "amane" "yumiko" ] (hostname: {
+          inherit hostname;
+          profilesOrder = [ "system" "home" ];
+          profiles = {
+            system = {
+              path = deploy-rs.lib.x86_64-linux.activate.nixos
+                (builtins.getAttr hostname self.nixosConfigurations);
+            };
+            home = {
+              path = deploy-rs.lib.x86_64-linux.activate.home-manager
+                (builtins.getAttr "sinkerine@${hostname}"
+                  self.homeConfigurations);
+              user = "sinkerine";
             };
           };
-          amane = {
-            hostname = "amane";
-            profilesOrder = [ "system" "home" ];
-            profiles = {
-              system = {
-                path = deploy-rs.lib.x86_64-linux.activate.nixos
-                  self.nixosConfigurations.amane;
-              };
-              home = {
-                path = deploy-rs.lib.x86_64-linux.activate.home-manager
-                  self.homeConfigurations."sinkerine@sachi";
-                user = "sinkerine";
-              };
-            };
-          };
-          yumiko = {
-            hostname = "yumiko";
-            profilesOrder = [ "system" "home" ];
-            profiles = {
-              system = {
-                path = deploy-rs.lib.x86_64-linux.activate.nixos
-                  self.nixosConfigurations.yumiko;
-              };
-              home = {
-                path = deploy-rs.lib.x86_64-linux.activate.home-manager
-                  self.homeConfigurations."sinkerine@yumiko";
-                user = "sinkerine";
-              };
-            };
-          };
-        };
+        });
       };
       checks = builtins.mapAttrs
         (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
