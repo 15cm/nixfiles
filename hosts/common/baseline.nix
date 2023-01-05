@@ -30,6 +30,9 @@ with lib; {
     };
   };
 
+  # For zfs to identify machines.
+  networking.hostId = builtins.getAttr hostname config.my.ids.hostIds;
+
   users.mutableUsers = false;
   time.timeZone = "America/Los_Angeles";
   services.acpid.enable = true;
