@@ -39,8 +39,8 @@ fi
 # p2 REST ZFS
 info "Partitioning $DISK"
 sgdisk --zap-all $DISK
-sgdisk -n1:1M:+1G -t1:EF00 -c ESP $DISK
-sgdisk -n2:0:0    -t2:BF00 -c ROOT $DISK
+sgdisk -n1:1M:+1G -t1:EF00 $DISK
+sgdisk -n2:0:0    -t2:BF00 $DISK
 sleep 3
 partprobe $DISK
 
@@ -122,11 +122,11 @@ else
 fi
 export ZDOCKER_DISK=$(readlink -f $ZDOCKER_VOL)
 sgdisk --zap-all $ZDOCKER_DISK
-sgdisk -n1:0:0 -t1:8300 -c DOCKER $ZDOCKER_DISK
+sgdisk -n1:0:0 -t1:8300 $ZDOCKER_DISK
 partprobe $ZDOCKER_DISK
 sleep 1
 export ZDOCKER_PART=${ZDOCKER_DISK}p1
-mkfs.ext4 $ZDOCKER_PART
+mkfs.ext4 -L DOCKER $ZDOCKER_PART
 
 info "Mounting zfs datasets"
 zfs mount -a
@@ -148,40 +148,6 @@ rm -f /mnt/etc/zfs/zpool.cache
 touch /mnt/etc/zfs/zpool.cache
 chmod a-w /mnt/etc/zfs/zpool.cache
 chattr +i /mnt/etc/zfs/zpool.cache
-
-info "Generating nix default configurations"
-nixos-generate-config --root /mnt
-
-info "Copying and updating hardware-configuration.nix"
-export NIXFILES_HOST_DIR=/nixfiles/hosts/${_HOSTNAME}
-mkdir -p ${NIXFILES_HOST_DIR}/generated
-cp -f /mnt/etc/nixos/hardware-configuration.nix ${NIXFILES_HOST_DIR}/generated/hardware-configuration.nix
-sed -i 's|fsType = "zfs";|fsType = "zfs";\n      options = [ "zfsutil" "X-mount.mkdir" ];\n      neededForBoot = true;|g' \
-    ${NIXFILES_HOST_DIR}/generated/hardware-configuration.nix
-
-info "Writing extra-configuration.nix"
-export ZDOCKER_UUID=$(blkid --match-tag UUID --output value $ZDOCKER_PART)
-cat << EOF > ${NIXFILES_HOST_DIR}/generated/extra-configuration.nix
-{ ... }:
-
-{
-  # hostid is required by zfs.
-  networking.hostId = "$(head -c 8 /etc/machine-id)";
-
-  # Additional zfs mont points that are not auto generated.
-  fileSystems."/var/lib/docker" = {
-      device = "/dev/disk/by-uuid/${ZDOCKER_UUID}";
-      fsType = "ext4";
-      options = [
-        "nodev"
-        "nofail"
-      ];
-    };
-}
-EOF
-
-info "Cleaning up useless files in /mnt"
-rm -rf /mnt/etc/nixos
 
 info "Copying necessary files to /mnt"
 rsync -ahP /keys/ /mnt/keys

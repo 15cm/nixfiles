@@ -50,10 +50,10 @@ umount -Rl /mnt || :
 # [optional] p3 ZFS
 info "Partitioning $DISK"
 sgdisk --zap-all $DISK
-if [ -z $BIOS_BOOT ]; then
-sgdisk -n1:1M:+512M -t1:EF00 -c ESP $DISK
+if [ -v BIOS_BOOT ]; then
+  sgdisk -n1:1M:+512M -t1:ef02 -c BIOS $DISK
 else
-sgdisk -n1:1M:+512M -t1:ef02 -c BIOS $DISK
+  sgdisk -n1:1M:+512M -t1:EF00 -c ESP $DISK
 fi
 if [[ -v ROOT_PART_SIZE ]]; then
   sgdisk -n2:0:+${ROOT_PART_SIZE} -t2:8300 -c ROOT $DISK
