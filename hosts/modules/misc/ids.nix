@@ -22,5 +22,6 @@ with lib; {
   config.my.ids.hostIds = {
     kazuki = "9bf23bea";
     asako = "4d3e143f";
+    sachi = "0848402f";
   };
 }

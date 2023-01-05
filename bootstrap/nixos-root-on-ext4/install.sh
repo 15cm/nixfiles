@@ -51,15 +51,15 @@ umount -Rl /mnt || :
 info "Partitioning $DISK"
 sgdisk --zap-all $DISK
 if [ -v BIOS_BOOT ]; then
-  sgdisk -n1:1M:+512M -t1:ef02 -c BIOS $DISK
+  sgdisk -n1:1M:+512M -t1:ef02 $DISK
 else
-  sgdisk -n1:1M:+512M -t1:EF00 -c ESP $DISK
+  sgdisk -n1:1M:+512M -t1:EF00 $DISK
 fi
 if [[ -v ROOT_PART_SIZE ]]; then
-  sgdisk -n2:0:+${ROOT_PART_SIZE} -t2:8300 -c ROOT $DISK
-  sgdisk -n3:0:0 -t3:BF00 -c ZFS $DISK
+  sgdisk -n2:0:+${ROOT_PART_SIZE} -t2:8300 $DISK
+  sgdisk -n3:0:0 -t3:BF00 $DISK
 else
-  sgdisk -n2:0:0 -t2:8300 -c ROOT $DISK
+  sgdisk -n2:0:0 -t2:8300 $DISK
 fi
 partprobe $DISK
 
@@ -75,7 +75,7 @@ for i in {1..10}; do
 done
 
 info "Mounting root"
-mkfs.ext4 $EXT4_PART
+mkfs.ext4 -L ROOT $EXT4_PART
 mkdir -p /mnt
 mount --mkdir $EXT4_PART /mnt
 
@@ -90,27 +90,6 @@ USER_ID=1000
 chown -R 1000:1000 /nixfiles /keys
 chmod 700 /keys /keys/age
 chmod 500 /keys/age/*
-
-info "Generating nix default configurations"
-nixos-generate-config --root /mnt
-
-info "Copying hardware-configuration.nix"
-export NIXFILES_HOST_DIR=/nixfiles/hosts/${_HOSTNAME}
-mkdir -p ${NIXFILES_HOST_DIR}/generated
-cp -f /mnt/etc/nixos/hardware-configuration.nix ${NIXFILES_HOST_DIR}/generated/hardware-configuration.nix
-
-info "Writing extra-configuration.nix"
-cat << EOF > ${NIXFILES_HOST_DIR}/generated/extra-configuration.nix
-{ ... }:
-
-{
-  # hostid is required by zfs.
-  networking.hostId = "$(head -c 8 /etc/machine-id)";
-}
-EOF
-
-info "Cleaning up useless files in /mnt"
-rm -rf /mnt/etc/nixos
 
 info "Copying necessary files to /mnt"
 rsync -ahP /keys/ /mnt/keys
