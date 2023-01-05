@@ -9,7 +9,6 @@ with lib;
     ../common/baseline.nix
     ../common/grub-legacy.nix
     ../common/zfs
-    ../common/zfs/non-root.nix
     ../common/users.nix
   ];
 

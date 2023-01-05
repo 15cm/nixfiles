@@ -9,7 +9,7 @@ with lib;
     ../common/baseline.nix
     ../common/systemd-boot.nix
     ../common/zfs
-    ../common/zfs/non-root.nix
+    ../common/zfs/encrypted-non-root.nix
     ../common/users.nix
     ./samba
   ];

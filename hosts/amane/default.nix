@@ -8,7 +8,7 @@ with lib;
     ./hardware-configuration.nix
     ../common/baseline.nix
     ../common/zfs
-    ../common/zfs/non-root.nix
+    ../common/zfs/encrypted-non-root.nix
     ../common/users.nix
     ../common/grub-legacy.nix
   ];
