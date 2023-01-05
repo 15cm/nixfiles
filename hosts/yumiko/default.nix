@@ -5,8 +5,7 @@ with lib;
 {
   system.stateVersion = "22.05";
   imports = [
-    ./generated/hardware-configuration.nix
-    ./generated/extra-configuration.nix
+    ./hardware-configuration.nix
     ../common/baseline.nix
     ../common/grub-legacy.nix
     ../common/zfs

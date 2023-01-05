@@ -24,5 +24,6 @@ with lib; {
     asako = "4d3e143f";
     sachi = "0848402f";
     amane = "a9bce3f8";
+    yumiko = "b360de3a";
   };
 }
