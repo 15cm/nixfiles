@@ -17,7 +17,7 @@ with lib; {
     amane = { push = yumiko.sink; };
     yumiko = {
       sink = 38888;
-      pull = amane.source;
+      pull = sachi.source;
     };
   };
 }
