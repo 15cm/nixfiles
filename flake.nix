@@ -25,14 +25,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    envfs = {
-      url = "github:Mic92/envfs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, flake-utils, sops-nix, kmonad
-    , nixos-hardware, envfs, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, nixgl, flake-utils, sops-nix, kmonad
+    , nixos-hardware, deploy-rs, ... }:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -155,5 +152,59 @@
             });
           };
         })) nixosConfigurationArgs;
+
+      deploy = {
+        sshUser = "root";
+        nodes = {
+          sachi = {
+            hostname = "sachi";
+            profilesOrder = [ "system" "home" ];
+            profiles = {
+              system = {
+                path = deploy-rs.lib.x86_64-linux.activate.nixos
+                  self.nixosConfigurations.sachi;
+              };
+              home = {
+                path = deploy-rs.lib.x86_64-linux.activate.home-manager
+                  self.homeConfigurations."sinkerine@sachi";
+                user = "sinkerine";
+              };
+            };
+          };
+          amane = {
+            hostname = "amane";
+            profilesOrder = [ "system" "home" ];
+            profiles = {
+              system = {
+                path = deploy-rs.lib.x86_64-linux.activate.nixos
+                  self.nixosConfigurations.amane;
+              };
+              home = {
+                path = deploy-rs.lib.x86_64-linux.activate.home-manager
+                  self.homeConfigurations."sinkerine@sachi";
+                user = "sinkerine";
+              };
+            };
+          };
+          yumiko = {
+            hostname = "yumiko";
+            profilesOrder = [ "system" "home" ];
+            profiles = {
+              system = {
+                path = deploy-rs.lib.x86_64-linux.activate.nixos
+                  self.nixosConfigurations.yumiko;
+              };
+              home = {
+                path = deploy-rs.lib.x86_64-linux.activate.home-manager
+                  self.homeConfigurations."sinkerine@yumiko";
+                user = "sinkerine";
+              };
+            };
+          };
+        };
+      };
+      checks = builtins.mapAttrs
+        (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
     };
 }

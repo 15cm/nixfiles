@@ -10,6 +10,7 @@ with lib;
     evtest
     libinput
     mpv
+    deploy-rs
   ];
 
   services.xserver = {
