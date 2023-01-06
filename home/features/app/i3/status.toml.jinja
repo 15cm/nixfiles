@@ -61,19 +61,6 @@ format = "{icon} {available}"
 
 {%if hostname == "asako"%}
 [[block]]
-block = "backlight"
-{%endif%}
-
-[[block]]
-block = "sound"
-
-[[block]]
-block = "time"
-interval = 60
-format = "%a %m/%d/%Y %R"
-
-{%if hostname == "asako"%}
-[[block]]
 block = "battery"
 driver = "upower"
 format = "{percentage} {time}"
@@ -86,3 +73,16 @@ good_bg = "#2e3440" # nord0
 good_fg = "#81a1c1" # light blue
 {%endif%}
 {%endif%}
+
+{%if hostname == "asako"%}
+[[block]]
+block = "backlight"
+{%endif%}
+
+[[block]]
+block = "sound"
+
+[[block]]
+block = "time"
+interval = 60
+format = "%a %m/%d/%Y %R"
