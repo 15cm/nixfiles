@@ -12,6 +12,7 @@ with lib; {
     gnupg
     age
     ncdu
+    inetutils
   ];
 
   nix = {

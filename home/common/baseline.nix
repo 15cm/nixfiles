@@ -33,7 +33,6 @@ in {
     hunspell
     hunspellDicts.en_US-large
     direnv
-    traceroute
   ]) ++
     # Packages with overrides.
     [ parallel ];
