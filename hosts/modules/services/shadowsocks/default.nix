@@ -4,7 +4,7 @@ with lib;
 let
   serverCfg = config.my.services.shadowsocks-server;
   clientCfg = config.my.services.shadowsocks-client;
-  passwordFile = config.sops.secrets.shadowsocks-password.path;
+  passwordFile = config.sops.secrets.shadowsocksPassword.path;
 in {
   options.my.services = {
     shadowsocks-server = { enable = mkEnableOption "shadowsocks server"; };
@@ -22,7 +22,7 @@ in {
 
   config = mkMerge [
     (mkIf (serverCfg.enable || clientCfg.enable) {
-      sops.secrets.shadowsocks-password = { sopsFile = ./secrets.yaml; };
+      sops.secrets.shadowsocksPassword = { sopsFile = ./secrets.yaml; };
     })
     (mkIf serverCfg.enable {
       services.shadowsocks = {

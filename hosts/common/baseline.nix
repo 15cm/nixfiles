@@ -56,4 +56,26 @@ with lib; {
   };
   networking.firewall.enable = true;
   fonts.fontconfig.enable = false;
+
+  sops.secrets.smtpPassword.sopsFile = ./secrets.yaml;
+  programs.msmtp = {
+    enable = true;
+    setSendmail = true;
+    defaults = {
+      aliases = "/etc/aliases";
+      port = 465;
+      tls_trust_file = "/etc/ssl/certs/ca-certificates.crt";
+      tls = "on";
+      auth = "login";
+      tls_starttls = "off";
+    };
+    accounts = {
+      default = {
+        host = "smtp.gmail.com";
+        passwordeval = "cat ${config.sops.secrets.smtpPassword.path}";
+        user = "admin@15cm.net";
+        from = "noreply@15cm.net";
+      };
+    };
+  };
 }

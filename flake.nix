@@ -35,7 +35,7 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       state = (import ./home/state);
     in rec {
-      overlays = import ./overlays;
+      overlays = import ./overlays { inherit nixpkgs; };
       packages = forAllSystems (system:
         import nixpkgs {
           inherit system;

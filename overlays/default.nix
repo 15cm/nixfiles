@@ -1,10 +1,12 @@
-{
-  # Adds my custom packages
-  additions = final: _prev: import ../pkgs { pkgs = final; };
+{ nixpkgs, ... }:
 
-  modifications = final: prev: {
+with nixpkgs.lib; {
+  # Adds my custom packages
+  additions = self: _super: import ../pkgs { pkgs = self; };
+
+  modifications = self: super: {
     # The original zplug package writes directly to $out/, i.e. .nix-profile/, which causes conflicts.
-    zplug = prev.zplug.overrideAttrs (old: {
+    zplug = super.zplug.overrideAttrs (old: {
       installPhase = ''
         outdir=$out/share/zplug
         mkdir -p $outdir
