@@ -58,6 +58,9 @@ with lib; {
   fonts.fontconfig.enable = false;
 
   sops.secrets.smtpPassword.sopsFile = ./secrets.yaml;
+  environment.etc."aliases".text = ''
+    root: ${hostname}-sysadmin@15cm.net
+  '';
   programs.msmtp = {
     enable = true;
     setSendmail = true;
