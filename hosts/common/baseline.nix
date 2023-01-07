@@ -13,6 +13,7 @@ with lib; {
     age
     ncdu
     inetutils
+    python3
   ];
 
   nix = {
