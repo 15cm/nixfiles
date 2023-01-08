@@ -47,6 +47,7 @@ with lib; {
     pandoc
     okular
     calibre
+    libreoffice
   ];
 
   qt.enable = true;

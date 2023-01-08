@@ -30,7 +30,7 @@ in {
         /misc	${./auto.misc}
 
         +auto.master
-        ${cfg.mountpoint} ${autoNasFile} --timeout=20,browse
+        ${cfg.mountpoint} ${autoNasFile} --timeout=0,browse
       '';
     };
   };
