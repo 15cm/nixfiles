@@ -1,4 +1,4 @@
-args@{ config, lib, pkgs, inputs, ... }:
+args@{ config, lib, pkgs, inputs, nixinfo, ... }:
 
 with lib;
 let
@@ -41,11 +41,10 @@ in {
           tags = [ "defer:0" ];
         }
         { name = "skywind3000/z.lua"; }
-        {
-          name = "plugins/ssh-agent";
-          tags = [ "from:oh-my-zsh" ];
-        }
-      ];
+      ] ++ optionals (nixinfo.configName != "work@desktop") [{
+        name = "plugins/ssh-agent";
+        tags = [ "from:oh-my-zsh" ];
+      }];
     };
 
     history = {
