@@ -43,6 +43,9 @@ with lib; {
     okular
   ];
 
+  xresources.properties."Xft.dpi" = mkForce 120;
+  xresources.properties."Xcursor.size" = mkForce 32;
+
   qt.enable = true;
   gtk.enable = true;
   xdg.userDirs = {
