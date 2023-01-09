@@ -50,11 +50,7 @@ with lib; {
     createDirectories = true;
   };
 
-  my.programs.emacs = {
-    package = pkgs.myEmacs;
-    enableSSHSpacemacsConfigRepo = true;
-    startAfterXSession = true;
-  };
+  my.programs.emacs = { package = pkgs.myEmacs; };
   my.services.clipper.enable = true;
   my.programs.networkmanager-dmenu = {
     enable = true;
