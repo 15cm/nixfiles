@@ -2,6 +2,7 @@
 
 {
   home.packages = with pkgs; [
+    font-manager
     fontconfig
     noto-fonts
     noto-fonts-cjk-sans

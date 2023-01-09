@@ -1,14 +1,19 @@
-{ config, pkgs, lib, hostname, ... }:
+{ config, pkgs, lib, ... }:
 
 with lib; {
+  home.stateVersion = "23.05";
+
+  home = rec {
+    username = null;
+    homeDirectory = null;
+  };
+
   imports = [
-    # Essentials
-    ../../../features/conf/ssh
-    ../../../features/app/gpg
+    ../../../common/baseline.nix
+    ../../../common/baseline-linux.nix
     # XSession related
     ../../../features/conf/xsession
     ../../../features/conf/xresources
-    ../../../features/app/keychain
     ../../../features/app/i3
     ../../../features/app/dunst
     ../../../features/app/unclutter
@@ -18,11 +23,8 @@ with lib; {
     ../../../features/app/redshift
     ../../../features/app/rofi
     ../../../features/app/picom
-    ../../../features/app/aria2
-    ../../../features/app/fcitx5
     ../../../features/app/arandr
     ../../../features/app/copyq
-    ../../../features/app/goldendict
     ../../../features/app/imwheel
     ../../../features/app/playctl
     ../../../features/app/flameshot
@@ -30,23 +32,15 @@ with lib; {
 
   home.packages = with pkgs; [
     keepassxc
-    firefox
-    google-chrome
+    firefox-devedition-bin
     trash-cli
-    jellyfin-media-player
     clementine
     gnome.nautilus
     ark
     unrar
-    postman
-    picard
     kate
     gwenview
-    nodejs
-    pandoc
     okular
-    calibre
-    libreoffice
   ];
 
   qt.enable = true;
@@ -62,7 +56,6 @@ with lib; {
     startAfterXSession = true;
   };
   my.services.clipper.enable = true;
-  my.services.syncthing.enable = true;
   my.programs.networkmanager-dmenu = {
     enable = true;
     settings = {

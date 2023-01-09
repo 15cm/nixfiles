@@ -9,6 +9,4 @@
 
     extraConfig = { pull.rebase = true; };
   };
-
-  home.packages = with pkgs; [ git-secret ];
 }

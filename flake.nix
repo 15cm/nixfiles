@@ -78,6 +78,11 @@
           modules = [ ./home/users/sinkerine/amane ];
           extraSpecialArgs = { hostname = "amane"; };
         };
+        "work@desktop" = {
+          pkgs = packages."x86_64-linux";
+          modules = [ ./home/users/work/desktop/default.nix ];
+          extraSpecialArgs = { hostname = "desktop"; };
+        };
       };
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
         (builtins.mapAttrs (configName: v:
