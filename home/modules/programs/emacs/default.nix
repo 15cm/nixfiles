@@ -23,6 +23,14 @@ in {
         "https://github.com/15cm/spacemacs-config.git";
     };
     startAfterXSession = mkEnableOption "start after xsession";
+    extraOptions = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+      example = [ "-f" "exwm-enable" ];
+      description = ''
+        For service: Extra command-line arguments to pass to <command>emacs</command>.
+      '';
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -34,6 +42,7 @@ in {
       services.emacs = {
         enable = true;
         startWithUserSession = !cfg.startAfterXSession;
+        inherit (cfg) extraOptions;
       };
 
       home.file."local/bin/exec-editor.sh".source =

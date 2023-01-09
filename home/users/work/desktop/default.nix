@@ -50,7 +50,12 @@ with lib; {
     createDirectories = true;
   };
 
-  my.programs.emacs = { package = pkgs.myEmacs; };
+  my.programs.emacs = {
+    package = pkgs.myEmacs;
+    # Fixes non-standard home directory.
+    # https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
+    extraOptions = [ "--user" "''" ];
+  };
   my.services.clipper.enable = true;
   my.programs.networkmanager-dmenu = {
     enable = true;
