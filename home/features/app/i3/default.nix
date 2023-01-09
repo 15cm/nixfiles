@@ -11,6 +11,7 @@ let
       one = "DP-0";
       two = "DP-2";
     };
+    i3statusRustBinary = "${pkgs.i3status-rust}/bin/i3status-rs";
   };
 in {
   xsession.windowManager.i3 = {
