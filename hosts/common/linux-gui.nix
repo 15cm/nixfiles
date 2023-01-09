@@ -72,4 +72,8 @@ with lib;
   my.services.docker.enable = true;
   my.services.autofs.enable = true;
   my.programs.AriaNg.enable = true;
+
+  services.printing.enable = true;
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
 }
