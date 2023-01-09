@@ -49,8 +49,7 @@
                         "function": "powerline.segments.common.net.hostname",
                         "priority": 10,
                         "args": {
-                            "only_if_ssh": false,
-                            "exclude_domain": true
+                            "only_if_ssh": false
                         }
                     },
                     {
