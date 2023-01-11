@@ -88,4 +88,6 @@ in {
     dedicatedServer.openFirewall =
       true; # Open ports in the firewall for Source Dedicated Server
   };
+
+  my.services.prometheus.enable = true;
 }

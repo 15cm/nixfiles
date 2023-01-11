@@ -8,6 +8,7 @@ let
     inherit (cfg) caCertFile ports;
     certFile = config.sops.secrets.zrepl-cert.path;
     keyFile = config.sops.secrets.zrepl-key.path;
+    monitoringPort = config.my.ports.zrepl.global.monitoring;
   };
 
 in {

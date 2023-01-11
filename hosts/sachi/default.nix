@@ -44,6 +44,7 @@ with lib;
     enable = true;
     waitForManualZfsLoadKey = true;
   };
+  config.services.prometheus = { enable = true; };
   my.services.gateway.enable = true;
   my.services.nix-serve.enable = true;
   my.services.zrepl = {
@@ -54,4 +55,5 @@ with lib;
     sopsCertFile = ./zrepl/sachi.machine.mado.moe.crt;
     sopsKeyFile = ./zrepl/sachi.machine.mado.moe.key;
   };
+  my.services.prometheus.enable = true;
 }
