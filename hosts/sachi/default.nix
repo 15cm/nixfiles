@@ -44,9 +44,6 @@ with lib;
     enable = true;
     waitForManualZfsLoadKey = true;
   };
-  config.services.prometheus = { enable = true; };
-  my.services.gateway.enable = true;
-  my.services.nix-serve.enable = true;
   my.services.zrepl = {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.sachi) sink source; };
@@ -55,5 +52,24 @@ with lib;
     sopsCertFile = ./zrepl/sachi.machine.mado.moe.crt;
     sopsKeyFile = ./zrepl/sachi.machine.mado.moe.key;
   };
-  my.services.prometheus.enable = true;
+
+  my.services.prometheus = {
+    enable = true;
+    enableScrapeHeadscale = true;
+  };
+
+  my.services.gateway = {
+    enable = true;
+    internalDomain = "${hostname}.m.mado.moe";
+    enableHeadscale = true;
+    externalDomain = "mado.moe";
+  };
+  services.traefik.dynamicConfigOptions.http.middlewares.mastodon-auth-proxy.redirectRegex =
+    {
+      permanent = true;
+      regex = "^https://mado.moe/\\.well-known/webfinger";
+      replacement = "https://mastodon.mado.moe/.well-known/webfinger";
+    };
+  my.services.headscale.enable = true;
+  my.services.tailscale.enable = true;
 }

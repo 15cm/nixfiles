@@ -1,18 +1,19 @@
-{ lib, ... }:
+{ lib, mylib, ... }:
 
-with lib; {
+with lib;
+let inherit (mylib) attrsOption;
+in {
   options = {
-    my.ports.zrepl = mkOption {
-      default = { };
-      type = types.attrs;
-    };
-    my.ports.prometheus = mkOption {
-      default = { };
-      type = types.attrs;
+    my.ports = {
+      gateway = attrsOption;
+      zrepl = attrsOption;
+      prometheus = attrsOption;
+      headscale = attrsOption;
+      tailscale = attrsOption;
     };
   };
+  config.my.ports.gateway = { listen = 8080; };
   config.my.ports.zrepl = rec {
-    global = { monitoring = 9811; };
     asako = { push = sachi.sink; };
     kazuki = { push = sachi.sink; };
     sachi = {
@@ -25,5 +26,11 @@ with lib; {
       pull = sachi.source;
     };
   };
-  config.my.ports.prometheus = { serve = 9090; };
+  config.my.ports.prometheus = {
+    listen = 9090;
+    headscale = 9812;
+    zrepl = 9811;
+  };
+  config.my.ports.headscale = { listen = 7001; };
+  config.my.ports.tailscale = { listen = 41641; };
 }

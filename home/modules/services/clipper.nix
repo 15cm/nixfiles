@@ -30,7 +30,6 @@ in {
     };
     logFile = mkOption {
       readOnly = true;
-      internal = true;
       type = types.path;
       default = "${cfg.logDir}/${cfg.logFileName}";
     };

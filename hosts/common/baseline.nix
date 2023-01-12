@@ -14,6 +14,8 @@ with lib; {
     ncdu
     inetutils
     python3
+    headscale
+    tailscale
   ];
 
   nix = {
@@ -25,9 +27,7 @@ with lib; {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       substituters =
-        [ "https://nix-community.cachix.org" "https://cache.nixos.org/" ]
-        ++ (optionals (!(builtins.elem hostname [ "kazuki" "sachi" ]))
-          [ "https://nixcache.mado.moe" ]);
+        [ "https://nix-community.cachix.org" "https://cache.nixos.org/" ];
       trusted-public-keys = config.my.trusts.cache.pubKeys;
     };
   };
@@ -58,6 +58,8 @@ with lib; {
   fonts.fontconfig.enable = false;
 
   sops.secrets.smtpPassword.sopsFile = ./secrets.yaml;
+  # Created at 2023-01-12 11:17:01
+  sops.secrets.tailscaleAuthkey.sopsFile = ./secrets.yaml;
   environment.etc."aliases".text = ''
     root: ${hostname}-sysadmin@15cm.net
   '';

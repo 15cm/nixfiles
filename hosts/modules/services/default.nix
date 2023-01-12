@@ -8,5 +8,7 @@
     ./autofs
     ./shadowsocks
     ./monitoring/prometheus.nix
+    ./networking/headscale.nix
+    ./networking/tailscale.nix
   ];
 }

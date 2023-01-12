@@ -37,7 +37,7 @@ in {
           nixcache.loadBalancer = {
             passHostHeader = true;
             servers = [{
-              url = "http://127.0.0.1:${
+              url = "http://localhost:${
                   builtins.toString config.services.nix-serve.port
                 }";
             }];

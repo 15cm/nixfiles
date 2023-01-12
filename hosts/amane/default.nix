@@ -76,4 +76,11 @@ with lib;
     waitForManualZfsLoadKey = true;
   };
   my.services.shadowsocks-server.enable = true;
+
+  my.services.prometheus.enable = true;
+  my.services.tailscale.enable = true;
+  my.services.gateway = {
+    enable = true;
+    internalDomain = "${hostname}.m.mado.moe";
+  };
 }

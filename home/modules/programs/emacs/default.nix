@@ -16,7 +16,6 @@ in {
     spacemacsConfigRepoUrl = mkOption {
       type = types.str;
       readOnly = true;
-      internal = true;
       default = if cfg.enableSSHSpacemacsConfigRepo then
         "git@github.com:15cm/spacemacs-config.git"
       else

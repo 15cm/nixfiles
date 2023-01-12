@@ -5,4 +5,8 @@ with lib; {
     (mkEnableOption name) // {
       default = true;
     };
+  attrsOption = mkOption {
+    default = { };
+    type = types.attrs;
+  };
 }
