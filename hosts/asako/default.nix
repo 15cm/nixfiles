@@ -101,4 +101,12 @@ in {
     sopsCertFile = ./zrepl/asako.m.mado.moe.crt;
     sopsKeyFile = ./zrepl/asako.m.mado.moe.key;
   };
+
+  my.services.tailscale.enable = true;
+  my.services.gateway = {
+    enable = true;
+    enableDocker = true;
+    internalDomain = "${hostname}.m.mado.moe";
+  };
+  my.services.metrics.enable = true;
 }

@@ -34,7 +34,7 @@ in {
         };
       };
 
-      provision = let hostnames = [ "sachi" "kazuki" "amane" "yumiko" ];
+      provision = let hostnames = [ "sachi" "kazuki" "amane" "yumiko" "asako" ];
       in {
         enable = true;
         datasources.settings.datasources = map (host: {

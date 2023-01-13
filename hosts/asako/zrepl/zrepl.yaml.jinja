@@ -4,6 +4,9 @@ global:
     - type: syslog
       format: human
       level: warn
+  monitoring:
+  - type: prometheus
+    listen: ':{{monitoringPort}}'
 
 jobs:
   - type: push
