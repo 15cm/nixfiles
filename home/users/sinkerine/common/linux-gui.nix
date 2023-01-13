@@ -8,7 +8,6 @@ with lib; {
     # XSession related
     ../../../features/conf/xsession
     ../../../features/conf/xresources
-    ../../../features/app/keychain
     ../../../features/app/i3
     ../../../features/app/dunst
     ../../../features/app/unclutter
@@ -77,4 +76,5 @@ with lib; {
       dmenu.dmenu_command = "${config.programs.rofi.package}/bin/rofi -dmenu";
     };
   };
+  my.programs.keychain.enable = true;
 }
