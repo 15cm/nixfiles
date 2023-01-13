@@ -49,8 +49,8 @@ with lib;
     ports = { inherit (config.my.ports.zrepl.sachi) sink source; };
     openFirewallForPorts = [ "sink" "source" ];
     configTemplateFile = ./zrepl/zrepl.yaml.jinja;
-    sopsCertFile = ./zrepl/sachi.machine.mado.moe.crt;
-    sopsKeyFile = ./zrepl/sachi.machine.mado.moe.key;
+    sopsCertFile = ./zrepl/sachi.m.mado.moe.crt;
+    sopsKeyFile = ./zrepl/sachi.m.mado.moe.key;
   };
 
   my.services.prometheus = {

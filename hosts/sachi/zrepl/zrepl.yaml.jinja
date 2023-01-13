@@ -23,8 +23,8 @@ jobs:
     }
     connect:
       type: tls
-      address: "yumiko.machine.15cm.net:{{ports.sink}}"
-      server_cn: "yumiko.machine.15cm.net"
+      address: "yumiko.m.mado.moe:{{ports.sink}}"
+      server_cn: "yumiko.m.mado.moe"
       ca: {{caCertFile}}
       cert: {{certFile}}
       key: {{keyFile}}
@@ -55,8 +55,8 @@ jobs:
   - type: source
     name: "source_sachi_backup"
     filesystems:
-      "main/backup/kazuki.machine.mado.moe/rpool<": true
-      "main/backup/asako.machine.mado.moe/rpool<": true
+      "main/backup/kazuki.m.mado.moe/rpool<": true
+      "main/backup/asako.m.mado.moe/rpool<": true
 
     serve:
       type: tls
@@ -65,7 +65,7 @@ jobs:
       cert: {{certFile}}
       key: {{keyFile}}
       client_cns:
-        - "yumiko.machine.15cm.net"
+        - "yumiko.m.mado.moe"
     snapshotting:
       type: manual
 
@@ -102,8 +102,8 @@ jobs:
       cert: {{certFile}}
       key: {{keyFile}}
       client_cns:
-        - "kazuki.machine.mado.moe"
-        - "asako.machine.mado.moe"
+        - "kazuki.m.mado.moe"
+        - "asako.m.mado.moe"
     recv:
       placeholder:
         encryption: inherit

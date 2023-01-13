@@ -64,8 +64,8 @@ with lib;
     enable = true;
     ports = { inherit (config.my.ports.zrepl.amane) push; };
     configTemplateFile = ./zrepl/zrepl.yaml.jinja;
-    sopsCertFile = ./zrepl/amane.machine.15cm.net.crt;
-    sopsKeyFile = ./zrepl/amane.machine.15cm.net.key;
+    sopsCertFile = ./zrepl/amane.m.mado.moe.crt;
+    sopsKeyFile = ./zrepl/amane.m.mado.moe.key;
   };
   my.services.docker = {
     enable = true;

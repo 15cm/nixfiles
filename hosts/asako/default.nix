@@ -98,7 +98,7 @@ in {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.asako) push; };
     configTemplateFile = ./zrepl/zrepl.yaml.jinja;
-    sopsCertFile = ./zrepl/asako.machine.mado.moe.crt;
-    sopsKeyFile = ./zrepl/asako.machine.mado.moe.key;
+    sopsCertFile = ./zrepl/asako.m.mado.moe.crt;
+    sopsKeyFile = ./zrepl/asako.m.mado.moe.key;
   };
 }

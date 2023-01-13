@@ -68,8 +68,8 @@ in {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.kazuki) push; };
     configTemplateFile = ./zrepl/zrepl.yaml.jinja;
-    sopsCertFile = ./zrepl/kazuki.machine.mado.moe.crt;
-    sopsKeyFile = ./zrepl/kazuki.machine.mado.moe.key;
+    sopsCertFile = ./zrepl/kazuki.m.mado.moe.crt;
+    sopsKeyFile = ./zrepl/kazuki.m.mado.moe.key;
   };
   my.services.shadowsocks-client = {
     enable = true;

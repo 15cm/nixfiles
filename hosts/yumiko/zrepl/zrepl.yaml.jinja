@@ -15,8 +15,8 @@ jobs:
       cert: {{certFile}}
       key: {{keyFile}}
       client_cns:
-        - "sachi.machine.mado.moe"
-        - "amane.machine.15cm.net"
+        - "sachi.m.mado.moe"
+        - "amane.m.mado.moe"
     recv:
       placeholder:
         encryption: inherit
@@ -25,8 +25,8 @@ jobs:
     name: "pull_sachi_backup"
     connect:
       type: tls
-      address: "sachi.machine.mado.moe:{{ports.pull}}"
-      server_cn: "sachi.machine.mado.moe"
+      address: "sachi.m.mado.moe:{{ports.pull}}"
+      server_cn: "sachi.m.mado.moe"
       ca: {{caCertFile}}
       cert: {{certFile}}
       key: {{keyFile}}
