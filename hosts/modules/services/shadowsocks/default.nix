@@ -29,6 +29,10 @@ in {
         enable = true;
         inherit passwordFile;
       };
+      networking.firewall = {
+        allowedTCPPorts = [ 8388 ];
+        allowedUDPPorts = [ 8388 ];
+      };
     })
     (mkIf clientCfg.enable {
       services.my.shadowsocks-client = {

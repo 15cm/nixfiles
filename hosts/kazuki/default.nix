@@ -73,7 +73,7 @@ in {
   };
   my.services.shadowsocks-client = {
     enable = true;
-    serverAddress = "amane.machine.15cm.net";
+    serverAddress = "amane.m.mado.moe";
   };
 
   virtualisation.vmware.host = {

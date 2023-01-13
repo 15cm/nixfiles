@@ -40,15 +40,11 @@ with lib;
         # Coturn
         3478
         5349
-        # Shadowsocks
-        8388
       ];
       allowedUDPPorts = [
         # Coturn
         3478
         5349
-        # Shadowsocks
-        8388
       ];
       allowedUDPPortRanges = [
         # Coturn
