@@ -35,7 +35,7 @@ in {
       services.traefik = {
         enable = true;
         staticConfigOptions = {
-          log.level = "debug";
+          log.level = "info";
           api = {
             dashboard = true;
             insecure = true;

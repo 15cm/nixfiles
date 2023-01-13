@@ -150,7 +150,7 @@
         lineColor = "rgb(31, 120, 193)";
         show = true;
       };
-      tableColumn = "__name__";
+      # tableColumn = "__name__";
       targets = [{
         expr = ''
           zrepl_replication_filesystem_errors{job="zrepl",zrepl_job="$zrepl_job_name"}'';
