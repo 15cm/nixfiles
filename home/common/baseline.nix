@@ -9,7 +9,6 @@ in {
     ../features/app/vim
     ../features/app/tmux
     ../features/app/zsh
-    ../features/app/navi
     ../features/app/powerline
     ../features/app/fzf
     ../features/app/set-theme
@@ -47,6 +46,7 @@ in {
     };
   };
   my.programs.ranger.enable = true;
+  my.programs.navi.enable = true;
 
   home.file."local/bin/switch-nix-home.sh".source =
     let homeFlakeUri = with nixinfo; "path:${projectRoot}#${configName}";

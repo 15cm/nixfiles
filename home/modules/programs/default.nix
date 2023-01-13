@@ -1,1 +1,4 @@
-{ imports = [ ./emacs ./networkmanager-dmenu.nix ./ranger ./keychain.nix ]; }
+{
+  imports =
+    [ ./emacs ./networkmanager-dmenu.nix ./ranger ./keychain.nix ./navi.nix ];
+}
