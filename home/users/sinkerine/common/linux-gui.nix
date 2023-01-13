@@ -76,5 +76,4 @@ with lib; {
       dmenu.dmenu_command = "${config.programs.rofi.package}/bin/rofi -dmenu";
     };
   };
-  my.programs.keychain.enable = true;
 }
