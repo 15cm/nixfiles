@@ -7,9 +7,10 @@ let
 in {
   options.my.services.gateway = {
     enable = mkEnableOption "traefik gateway";
-    enableDashboard = mkDefaultTrueEnableOption "dashboard";
-    enableHeadscale = mkEnableOption "headscale";
-    enablePrometheus = mkDefaultTrueEnableOption "prometheus";
+    enableDocker = mkEnableOption "docker integration";
+    enableDashboardProxy = mkDefaultTrueEnableOption "dashboard proxy";
+    enableHeadscaleProxy = mkEnableOption "headscale proxy";
+    enablePrometheusProxy = mkDefaultTrueEnableOption "prometheus proxy";
     internalDomain = mkOption {
       type = with types; nullOr string;
       default = null;
@@ -31,7 +32,6 @@ in {
       };
       services.traefik = {
         enable = true;
-        group = "docker";
         staticConfigOptions = {
           log.level = "debug";
           api = {
@@ -50,14 +50,6 @@ in {
             websecure = {
               address = ":443";
               http.tls.certResolver = "default";
-            };
-          };
-          providers = {
-            docker = {
-              watch = true;
-              endpoint = "unix:///var/run/docker.sock";
-              exposedbydefault = false;
-              network = "g_proxy";
             };
           };
           certificatesResolvers = {
@@ -95,7 +87,18 @@ in {
       users.users.traefik = { uid = config.my.ids.uids.traefik; };
       users.groups.traefik.gid = config.my.ids.uids.traefik;
     }
-    (mkIf cfg.enableDashboard {
+    (mkIf cfg.enableDocker {
+      services.traefik.staticConfigOptions.providers = {
+        services.traefik.group = "docker";
+        docker = {
+          watch = true;
+          endpoint = "unix:///var/run/docker.sock";
+          exposedbydefault = false;
+          network = "g_proxy";
+        };
+      };
+    })
+    (mkIf cfg.enableDashboardProxy {
       services.traefik.dynamicConfigOptions.http = {
         routers.gatewayApi = {
           rule = "Host(`gateway.${assertNotNull cfg.internalDomain}`)";
@@ -109,7 +112,7 @@ in {
         };
       };
     })
-    (mkIf cfg.enableHeadscale {
+    (mkIf cfg.enableHeadscaleProxy {
       services.traefik.dynamicConfigOptions.http = {
         routers.headscale = {
           rule = "Host(`headscale.${assertNotNull cfg.externalDomain}`)";
@@ -123,7 +126,7 @@ in {
         };
       };
     })
-    (mkIf cfg.enablePrometheus {
+    (mkIf cfg.enablePrometheusProxy {
       services.traefik.dynamicConfigOptions.http = {
         routers.prometheus = {
           rule = "Host(`metrics.${assertNotNull cfg.internalDomain}`)";

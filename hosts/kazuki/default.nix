@@ -93,6 +93,7 @@ in {
   my.services.tailscale.enable = true;
   my.services.gateway = {
     enable = true;
+    enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
   };
 }

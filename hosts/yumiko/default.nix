@@ -44,4 +44,11 @@ with lib;
     sopsCertFile = ./zrepl/yumiko.m.mado.moe.crt;
     sopsKeyFile = ./zrepl/yumiko.m.mado.moe.key;
   };
+
+  my.services.prometheus.enable = true;
+  my.services.tailscale.enable = true;
+  my.services.gateway = {
+    enable = true;
+    internalDomain = "${hostname}.m.mado.moe";
+  };
 }

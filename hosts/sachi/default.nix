@@ -60,8 +60,9 @@ with lib;
 
   my.services.gateway = {
     enable = true;
+    enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
-    enableHeadscale = true;
+    enableHeadscaleProxy = true;
     externalDomain = "mado.moe";
   };
   services.traefik.dynamicConfigOptions.http.middlewares.mastodon-auth-proxy.redirectRegex =
