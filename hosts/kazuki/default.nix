@@ -89,11 +89,11 @@ in {
       true; # Open ports in the firewall for Source Dedicated Server
   };
 
-  my.services.prometheus.enable = true;
   my.services.tailscale.enable = true;
   my.services.gateway = {
     enable = true;
     enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
   };
+  my.services.metrics.enable = true;
 }

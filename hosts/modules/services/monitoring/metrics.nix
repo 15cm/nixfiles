@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.my.services.prometheus;
+  cfg = config.my.services.metrics;
   inherit (mylib) mkDefaultTrueEnableOption;
 in {
-  options.my.services.prometheus = {
-    enable = mkEnableOption "prometheus";
+  options.my.services.metrics = {
+    enable = mkEnableOption "metrics";
     enableScrapeZrepl = mkDefaultTrueEnableOption "zrepl";
     enableScrapeHeadscale = mkEnableOption "headscale";
   };

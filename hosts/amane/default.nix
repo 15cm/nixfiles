@@ -73,7 +73,7 @@ with lib;
   };
   my.services.shadowsocks-server.enable = true;
 
-  my.services.prometheus.enable = true;
+  my.services.metrics.enable = true;
   my.services.tailscale.enable = true;
   my.services.gateway = {
     enable = true;

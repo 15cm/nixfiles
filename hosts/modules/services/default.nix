@@ -7,7 +7,8 @@
     ./docker-rootless.nix
     ./autofs
     ./shadowsocks
-    ./monitoring/prometheus.nix
+    ./monitoring/metrics.nix
+    ./monitoring/monitoring.nix
     ./networking/headscale.nix
     ./networking/tailscale.nix
   ];

@@ -10,6 +10,7 @@ in {
       prometheus = attrsOption;
       headscale = attrsOption;
       tailscale = attrsOption;
+      grafana = attrsOption;
     };
   };
   config.my.ports.gateway = { listen = 8080; };
@@ -31,6 +32,7 @@ in {
     headscale = 9812;
     zrepl = 9811;
   };
+  config.my.ports.grafana = { listen = 9290; };
   config.my.ports.headscale = { listen = 7001; };
   config.my.ports.tailscale = { listen = 41641; };
 }

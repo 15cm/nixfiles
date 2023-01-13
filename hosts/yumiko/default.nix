@@ -45,7 +45,7 @@ with lib;
     sopsKeyFile = ./zrepl/yumiko.m.mado.moe.key;
   };
 
-  my.services.prometheus.enable = true;
+  my.services.metrics.enable = true;
   my.services.tailscale.enable = true;
   my.services.gateway = {
     enable = true;

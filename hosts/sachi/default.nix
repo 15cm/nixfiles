@@ -53,11 +53,6 @@ with lib;
     sopsKeyFile = ./zrepl/sachi.m.mado.moe.key;
   };
 
-  my.services.prometheus = {
-    enable = true;
-    enableScrapeHeadscale = true;
-  };
-
   my.services.gateway = {
     enable = true;
     enableDocker = true;
@@ -73,4 +68,13 @@ with lib;
     };
   my.services.headscale.enable = true;
   my.services.tailscale.enable = true;
+
+  my.services.metrics = {
+    enable = true;
+    enableScrapeHeadscale = true;
+  };
+  my.services.monitoring = {
+    enable = true;
+    domain = "monitoring.${hostname}.m.mado.moe";
+  };
 }

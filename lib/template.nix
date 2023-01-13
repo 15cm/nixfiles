@@ -34,4 +34,6 @@ in rec {
     ];
   writeShellScriptFile = name: file:
     pipe file [ builtins.readFile (pkgs.writeShellScript name) ];
+
+  toJSONFile = name: expr: pipe expr [ builtins.toJSON (builtins.toFile name) ];
 }

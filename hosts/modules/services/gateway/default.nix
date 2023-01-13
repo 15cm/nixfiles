@@ -10,7 +10,8 @@ in {
     enableDocker = mkEnableOption "docker integration";
     enableDashboardProxy = mkDefaultTrueEnableOption "dashboard proxy";
     enableHeadscaleProxy = mkEnableOption "headscale proxy";
-    enablePrometheusProxy = mkDefaultTrueEnableOption "prometheus proxy";
+    enableMetricsProxy = mkDefaultTrueEnableOption "metrics proxy";
+    enableMonitoringProxy = mkDefaultTrueEnableOption "monitoring proxy";
     internalDomain = mkOption {
       type = with types; nullOr string;
       default = null;
@@ -108,7 +109,7 @@ in {
         };
         services = {
           gatewayApi.loadBalancer.servers = [{
-            url = "http://localhost:${toString config.my.ports.gateway.listen}";
+            url = "http://127.0.0.1:${toString config.my.ports.gateway.listen}";
           }];
         };
       };
@@ -122,22 +123,36 @@ in {
         services = {
           headscale.loadBalancer.servers = [{
             url =
-              "http://localhost:${toString config.my.ports.headscale.listen}";
+              "http://127.0.0.1:${toString config.my.ports.headscale.listen}";
           }];
         };
       };
     })
-    (mkIf cfg.enablePrometheusProxy {
+    (mkIf cfg.enableMetricsProxy {
       services.traefik.dynamicConfigOptions.http = {
-        routers.prometheus = {
+        routers.metrics = {
           rule = "Host(`metrics.${assertNotNull cfg.internalDomain}`)";
           middlewares = [ "lan-only@file" ];
-          service = "prometheus";
+          service = "metrics";
         };
         services = {
-          prometheus.loadBalancer.servers = [{
+          metrics.loadBalancer.servers = [{
             url =
-              "http://localhost:${toString config.my.ports.prometheus.listen}";
+              "http://127.0.0.1:${toString config.my.ports.prometheus.listen}";
+          }];
+        };
+      };
+    })
+    (mkIf cfg.enableMonitoringProxy {
+      services.traefik.dynamicConfigOptions.http = {
+        routers.monitoring = {
+          rule = "Host(`monitoring.${assertNotNull cfg.internalDomain}`)";
+          middlewares = [ "lan-only@file" ];
+          service = "monitoring";
+        };
+        services = {
+          monitoring.loadBalancer.servers = [{
+            url = "http://127.0.0.1:${toString config.my.ports.grafana.listen}";
           }];
         };
       };
