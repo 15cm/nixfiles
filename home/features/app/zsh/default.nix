@@ -115,13 +115,6 @@ in {
       pst = (if isLinux then "xclip -o" else "pbpaste");
       th = (if isLinux then "trash-put" else "trash");
       dockerrl = "DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock docker";
-
-      # Nix Home Manager
-      snh = "switch-nix-home.sh";
-      bnh = "build-nix-home.sh";
-      # NixOS
-      sno = "switch-nix-os.sh";
-      bno = "build-nix-os.sh";
     } // optionalAttrs isLinux {
       sc = "sudo systemctl";
       scu = "systemctl --user";
