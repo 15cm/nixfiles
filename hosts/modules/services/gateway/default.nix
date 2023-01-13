@@ -29,6 +29,7 @@ in {
       sops.secrets.traefik-env = {
         format = "binary";
         sopsFile = ./traefik.env.txt;
+        owner = "traefik";
       };
       services.traefik = {
         enable = true;
@@ -88,8 +89,8 @@ in {
       users.groups.traefik.gid = config.my.ids.uids.traefik;
     }
     (mkIf cfg.enableDocker {
+      services.traefik.group = "docker";
       services.traefik.staticConfigOptions.providers = {
-        services.traefik.group = "docker";
         docker = {
           watch = true;
           endpoint = "unix:///var/run/docker.sock";
