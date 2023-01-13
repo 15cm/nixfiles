@@ -3,6 +3,7 @@
 {
   boot.supportedFilesystems = [ "zfs" ];
   boot.kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
+  boot.zfs.forceImportAll = true;
 
   services.zfs = {
     autoScrub.enable = true;
