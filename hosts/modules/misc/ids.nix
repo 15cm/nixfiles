@@ -17,6 +17,7 @@ with lib; {
     traefik = 198;
     nix-serve = 199;
     dockremap = 100000;
+    smtp-secret = 2000;
   };
 
   config.my.ids.hostIds = {

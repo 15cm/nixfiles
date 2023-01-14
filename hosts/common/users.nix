@@ -36,4 +36,6 @@ with lib;
   users.users.root = {
     openssh.authorizedKeys.keys = config.my.trusts.ssh.pubKeys;
   };
+
+  users.groups.smtp-secret = { gid = config.my.ids.uids.smtp-secret; };
 }

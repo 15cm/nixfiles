@@ -11,53 +11,77 @@ in {
       type = with types; nullOr str;
       default = null;
     };
+    dataDir = mkOption {
+      type = with types; nullOr str;
+      default = null;
+    };
+    waitForManualZfsLoadKey =
+      mkEnableOption "wait service for manual zfs load key";
   };
 
-  config = mkIf cfg.enable {
-    sops.secrets.grafanaPassword = {
-      sopsFile = ../../../common/secrets.yaml;
-      owner = "grafana";
-    };
-    services.grafana = {
-      enable = true;
-      settings = {
-        server = {
-          http_addr = "127.0.0.1";
-          http_port = config.my.ports.grafana.listen;
-          domain = assertNotNull cfg.domain;
+  config = mkIf cfg.enable (mkMerge [
+    {
+      services.traefik.dynamicConfigOptions.http = {
+        routers.monitoring = {
+          rule = "Host(`monitoring.${
+              assertNotNull config.my.services.gateway.internalDomain
+            }`)";
+          middlewares = [ "lan-only@file" ];
+          service = "monitoring";
         };
-
-        security = {
-          admin_user = "sinkerine";
-          admin_password =
-            "$__file{${config.sops.secrets.grafanaPassword.path}}";
+        services = {
+          monitoring.loadBalancer.servers = [{
+            url = "http://127.0.0.1:${toString config.my.ports.grafana.listen}";
+          }];
         };
       };
-
-      provision = let hostnames = [ "sachi" "kazuki" "amane" "yumiko" "asako" ];
-      in {
+      users.users.grafana.extraGroups = [ "smtp-secret" ];
+      sops.secrets.grafanaPassword = {
+        sopsFile = ../../../common/secrets.yaml;
+        owner = "grafana";
+      };
+      services.grafana = {
         enable = true;
-        datasources.settings.datasources = map (host: {
-          name = "${host}-metrics";
-          type = "prometheus";
-          url = "https://metrics.${host}.m.mado.moe";
-        }) hostnames;
-        dashboards.settings.providers = let
-          dashboardsDir = pkgs.linkFarm "monitoring-dashboards" (map
-            (host: rec {
-              name = "${host}-metrics-zrepl.json";
-              path = (toJSONFile name (import ./dashboards/zrepl-template.nix {
-                dataSourceName = "${host}-metrics";
-              }));
-            }) hostnames);
-        in [{
-          name = "zrepl";
-          folder = "zrepl";
-          # The option allows us to save the provision dashboards to the database, so the Grafana web page won't ask if you want to leave everytime. The workflow is that we use the dashboard files in nixfiles to bootstrap a new installation of Grafana.
-          allowUiUpdates = true;
-          options.path = dashboardsDir;
-        }];
+        dataDir = assertNotNull cfg.dataDir;
+        settings = {
+          server = {
+            http_addr = "127.0.0.1";
+            http_port = config.my.ports.grafana.listen;
+            domain = assertNotNull cfg.domain;
+          };
+
+          security = {
+            admin_user = "sinkerine";
+            admin_password =
+              "$__file{${config.sops.secrets.grafanaPassword.path}}";
+          };
+
+          smtp = {
+            enabled = true;
+            host = "smtp.gmail.com:465";
+            user = "admin@15cm.net";
+            password = "$__file{${config.sops.secrets.smtpPassword.path}}";
+            from = "monitoring@15cm.net";
+          };
+        };
+
+        provision =
+          let hostnames = [ "sachi" "kazuki" "amane" "yumiko" "asako" ];
+          in {
+            enable = true;
+            datasources.settings.datasources = map (host: {
+              name = "${host}-metrics";
+              type = "prometheus";
+              url = "https://metrics.${host}.m.mado.moe";
+            }) hostnames;
+          };
       };
-    };
-  };
+    }
+    (mkIf cfg.waitForManualZfsLoadKey {
+      systemd.services.grafana = {
+        wantedBy = mkForce [ "zfs-load-key-and-mount.target" ];
+        after = [ "zfs-load-key-and-mount.target" ];
+      };
+    })
+  ]);
 }

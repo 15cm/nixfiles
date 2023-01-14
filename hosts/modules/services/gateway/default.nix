@@ -11,7 +11,6 @@ in {
     enableDashboardProxy = mkDefaultTrueEnableOption "dashboard proxy";
     enableHeadscaleProxy = mkEnableOption "headscale proxy";
     enableMetricsProxy = mkDefaultTrueEnableOption "metrics proxy";
-    enableMonitoringProxy = mkDefaultTrueEnableOption "monitoring proxy";
     internalDomain = mkOption {
       type = with types; nullOr string;
       default = null;
@@ -139,20 +138,6 @@ in {
           metrics.loadBalancer.servers = [{
             url =
               "http://127.0.0.1:${toString config.my.ports.prometheus.listen}";
-          }];
-        };
-      };
-    })
-    (mkIf cfg.enableMonitoringProxy {
-      services.traefik.dynamicConfigOptions.http = {
-        routers.monitoring = {
-          rule = "Host(`monitoring.${assertNotNull cfg.internalDomain}`)";
-          middlewares = [ "lan-only@file" ];
-          service = "monitoring";
-        };
-        services = {
-          monitoring.loadBalancer.servers = [{
-            url = "http://127.0.0.1:${toString config.my.ports.grafana.listen}";
           }];
         };
       };

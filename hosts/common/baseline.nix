@@ -57,7 +57,11 @@ with lib; {
   networking.firewall.enable = true;
   fonts.fontconfig.enable = false;
 
-  sops.secrets.smtpPassword.sopsFile = ./secrets.yaml;
+  sops.secrets.smtpPassword = {
+    sopsFile = ./secrets.yaml;
+    mode = "0440";
+    group = "smtp-secret";
+  };
   # Created at 2023-01-12 11:17:01
   sops.secrets.tailscaleAuthkey.sopsFile = ./secrets.yaml;
   environment.etc."aliases".text = ''
@@ -79,7 +83,7 @@ with lib; {
         host = "smtp.gmail.com";
         passwordeval = "cat ${config.sops.secrets.smtpPassword.path}";
         user = "admin@15cm.net";
-        from = "noreply@15cm.net";
+        from = "noreply.sysadmin@15cm.net";
       };
     };
   };
