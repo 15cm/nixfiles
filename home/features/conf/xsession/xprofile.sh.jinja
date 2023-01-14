@@ -33,8 +33,6 @@ export WINIT_HIDPI_FACTOR=1.25
 {%if hostname == "asako"%}
 # Disable trackpad
 xinput disable "ELAN06A0:00 04F3:3231 Touchpad"
-# TrackPoint flat acceleration 
-xinput set-prop "TPPS/2 Elan TrackPoint" "libinput Accel Profile Enabled" 0, 1
 {%endif%}
 
 # Disable display power management.
