@@ -1,4 +1,4 @@
-{ config, lib, mylib, ... }:
+{ config, pkgs, lib, mylib, ... }:
 
 with lib;
 let
@@ -10,10 +10,16 @@ let
     keyFile = config.sops.secrets.zrepl-key.path;
     monitoringPort = config.my.ports.prometheus.zrepl;
   };
+  configFile = mkForce (templateFile "zrepl-config" templateData
+    (assert cfg.configTemplateFile != null; cfg.configTemplateFile));
 
 in {
   options.my.services.zrepl = {
     enable = mkEnableOption "zrepl";
+    package = mkOption {
+      type = types.package;
+      default = pkgs.zrepl;
+    };
     configTemplateFile = mkOption {
       default = null;
       type = with types; nullOr path;
@@ -59,10 +65,16 @@ in {
         sopsFile = (assert cfg.sopsKeyFile != null; cfg.sopsKeyFile);
       };
     };
-    services.zrepl = { enable = true; };
-    environment.etc."zrepl/zrepl.yml".source = mkForce
-      (templateFile "zrepl-config" templateData
-        (assert cfg.configTemplateFile != null; cfg.configTemplateFile));
+    environment.systemPackages = [ cfg.package ];
+    systemd.packages = [ cfg.package ];
+    systemd.services.zrepl = {
+      # Fork the official zrepl module. Remove the `requires` which causes zrepl.service to always restart on NixOS switch. Pass in the config file genereated from jinja template.
+      wantedBy = [ "zfs.target" ];
+      after = [ "zfs.target" ];
+      path = [ config.boot.zfs.package ];
+      restartTriggers = [ configFile ];
+    };
+    environment.etc."zrepl/zrepl.yml".source = configFile;
     networking.firewall.allowedTCPPorts =
       attrVals cfg.openFirewallForPorts cfg.ports;
   };
