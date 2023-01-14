@@ -53,6 +53,8 @@ in {
         in [{
           name = "zrepl";
           folder = "zrepl";
+          # The option allows us to save the provision dashboards to the database, so the Grafana web page won't ask if you want to leave everytime. The workflow is that we use the dashboard files in nixfiles to bootstrap a new installation of Grafana.
+          allowUiUpdates = true;
           options.path = dashboardsDir;
         }];
       };
