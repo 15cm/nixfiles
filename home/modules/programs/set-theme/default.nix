@@ -1,4 +1,4 @@
-{ pkgs, config, lib, nixinfo, mylib, state, ... }:
+{ pkgs, config, lib, nixinfo, mylib, isLinuxGui, state, ... }:
 
 with lib;
 let
@@ -14,13 +14,11 @@ in {
       pkgs.writeShellScript "set-theme.sh" ''
         sed -i "s/\(theme.*\)\"[^\"]*\"/\1\"$1\"/" ${nixinfo.projectRoot}/home/state/default.nix
         switch-nix-home.sh
-        ${config.home.homeDirectory}/local/bin/reload-theme.sh
       '';
 
     home.file."local/bin/reload-theme.sh".source =
       pkgs.writeShellScript "reload-theme.sh" ''
-        if [ "$#" -eq 1 ] || [ "$1" != cli ]; then
-          # GUI only
+        if [ "$#" -ge 1 ] && [ "$1" = gui ]; then
           ${pkgs.i3}/bin/i3-msg reload
           ${pkgs.killall}/bin/killall -r -USR2 i3status-rs
         fi
@@ -36,7 +34,9 @@ in {
     };
 
     home.activation.reloadTheme = hm.dag.entryAfter [ "writeBoundary" ] ''
-      ${config.home.homeDirectory}/local/bin/reload-theme.sh cli
+      ${config.home.homeDirectory}/local/bin/reload-theme.sh ${
+        if isLinuxGui then "gui" else "cli"
+      }
     '';
   };
 }

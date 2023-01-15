@@ -56,32 +56,50 @@
         "sinkerine@kazuki" = {
           pkgs = packages."x86_64-linux";
           modules = [ ./home/users/sinkerine/kazuki ];
-          extraSpecialArgs = { hostname = "kazuki"; };
+          extraSpecialArgs = {
+            hostname = "kazuki";
+            isLinuxGui = true;
+          };
         };
         "sinkerine@asako" = {
           pkgs = packages."x86_64-linux";
           modules = [ ./home/users/sinkerine/asako ];
-          extraSpecialArgs = { hostname = "asako"; };
+          extraSpecialArgs = {
+            hostname = "asako";
+            isLinuxGui = true;
+          };
         };
         "sinkerine@sachi" = {
           pkgs = packages."x86_64-linux";
           modules = [ ./home/users/sinkerine/sachi ];
-          extraSpecialArgs = { hostname = "sachi"; };
+          extraSpecialArgs = {
+            hostname = "sachi";
+            isLinuxGui = false;
+          };
         };
         "sinkerine@yumiko" = {
           pkgs = packages."x86_64-linux";
           modules = [ ./home/users/sinkerine/yumiko ];
-          extraSpecialArgs = { hostname = "yumiko"; };
+          extraSpecialArgs = {
+            hostname = "yumiko";
+            isLinuxGui = false;
+          };
         };
         "sinkerine@amane" = {
           pkgs = packages."x86_64-linux";
           modules = [ ./home/users/sinkerine/amane ];
-          extraSpecialArgs = { hostname = "amane"; };
+          extraSpecialArgs = {
+            hostname = "amane";
+            isLinuxGui = false;
+          };
         };
         "work@desktop" = {
           pkgs = packages."x86_64-linux";
           modules = [ ./home/users/work/desktop/default.nix ];
-          extraSpecialArgs = { hostname = "desktop"; };
+          extraSpecialArgs = {
+            hostname = "desktop";
+            isLinuxGui = true;
+          };
         };
       };
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
