@@ -10,6 +10,7 @@ in {
     enableScrapeZrepl = mkDefaultTrueEnableOption "zrepl";
     enableScrapeHeadscale = mkEnableOption "headscale";
     enableScrapeNut = mkEnableOption "nut";
+    enableScrapeNode = mkDefaultTrueEnableOption "node";
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -86,6 +87,23 @@ in {
         static_configs = [{
           targets = [
             "localhost:${builtins.toString (config.my.ports.prometheus.nut)}"
+          ];
+        }];
+      }];
+    })
+    (mkIf cfg.enableScrapeNode {
+      services.prometheus.exporters.node = {
+        enable = true;
+        port = config.my.ports.prometheus.node;
+        listenAddress = "127.0.0.1";
+        enabledCollectors = [ "systemd" ];
+        disabledCollectors = [ "textfile" ];
+      };
+      services.prometheus.scrapeConfigs = [{
+        job_name = "node";
+        static_configs = [{
+          targets = [
+            "localhost:${builtins.toString (config.my.ports.prometheus.node)}"
           ];
         }];
       }];

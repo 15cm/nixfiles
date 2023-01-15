@@ -32,6 +32,7 @@ in {
     zrepl = 9811;
     headscale = 9812;
     nut = 9813;
+    node = 9814;
   };
   config.my.ports.grafana = { listen = 9290; };
   config.my.ports.headscale = { listen = 7001; };
