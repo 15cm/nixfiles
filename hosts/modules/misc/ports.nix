@@ -29,8 +29,9 @@ in {
   };
   config.my.ports.prometheus = {
     listen = 9090;
-    headscale = 9812;
     zrepl = 9811;
+    headscale = 9812;
+    nut = 9813;
   };
   config.my.ports.grafana = { listen = 9290; };
   config.my.ports.headscale = { listen = 7001; };

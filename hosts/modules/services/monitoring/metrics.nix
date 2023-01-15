@@ -3,12 +3,13 @@
 with lib;
 let
   cfg = config.my.services.metrics;
-  inherit (mylib) mkDefaultTrueEnableOption;
+  inherit (mylib) mkDefaultTrueEnableOption assertNotNull;
 in {
   options.my.services.metrics = {
     enable = mkEnableOption "metrics";
     enableScrapeZrepl = mkDefaultTrueEnableOption "zrepl";
     enableScrapeHeadscale = mkEnableOption "headscale";
+    enableScrapeNut = mkEnableOption "nut";
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -26,6 +27,22 @@ in {
             ];
           }];
         }];
+      };
+
+      services.traefik.dynamicConfigOptions.http = {
+        routers.metrics = {
+          rule = "Host(`metrics.${
+              assertNotNull config.my.services.gateway.internalDomain
+            }`)";
+          middlewares = [ "lan-only@file" ];
+          service = "metrics";
+        };
+        services = {
+          metrics.loadBalancer.servers = [{
+            url =
+              "http://127.0.0.1:${toString config.my.ports.prometheus.listen}";
+          }];
+        };
       };
     }
     (mkIf cfg.enableScrapeZrepl {
@@ -46,6 +63,29 @@ in {
             "localhost:${
               builtins.toString (config.my.ports.prometheus.headscale)
             }"
+          ];
+        }];
+      }];
+    })
+    (mkIf cfg.enableScrapeNut {
+      users.users.nut-exporter = {
+        uid = config.my.ids.uids.nut-exporter;
+        isSystemUser = true;
+        group = "nut";
+      };
+      services.prometheus.exporters.nut = {
+        enable = true;
+        port = config.my.ports.prometheus.nut;
+        listenAddress = "127.0.0.1";
+        nutUser = "admin";
+        passwordPath = config.sops.secrets.upsAdminPassword.path;
+      };
+      services.prometheus.scrapeConfigs = [{
+        job_name = "nut";
+        metrics_path = "/ups_metrics";
+        static_configs = [{
+          targets = [
+            "localhost:${builtins.toString (config.my.ports.prometheus.nut)}"
           ];
         }];
       }];

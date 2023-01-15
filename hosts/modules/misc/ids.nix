@@ -18,6 +18,8 @@ with lib; {
     nix-serve = 199;
     dockremap = 100000;
     smtp-secret = 2000;
+    nut = 84;
+    nut-exporter = 2001;
   };
 
   config.my.ids.hostIds = {

@@ -11,5 +11,6 @@
     ./monitoring/monitoring.nix
     ./networking/headscale.nix
     ./networking/tailscale.nix
+    ./ups
   ];
 }

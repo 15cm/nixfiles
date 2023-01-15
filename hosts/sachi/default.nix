@@ -57,7 +57,6 @@ with lib;
     enable = true;
     enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
-    enableHeadscaleProxy = true;
     externalDomain = "mado.moe";
   };
   services.traefik.dynamicConfigOptions.http.middlewares.mastodon-auth-proxy.redirectRegex =
@@ -72,6 +71,7 @@ with lib;
   my.services.metrics = {
     enable = true;
     enableScrapeHeadscale = true;
+    enableScrapeNut = true;
   };
   my.services.monitoring = {
     enable = true;
@@ -79,4 +79,5 @@ with lib;
     dataDir = "/pool/main/appdata/grafana";
     waitForManualZfsLoadKey = true;
   };
+  my.services.ups.enable = true;
 }

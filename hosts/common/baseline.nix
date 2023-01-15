@@ -7,6 +7,7 @@ with lib; {
     wget
     killall
     pciutils
+    usbutils
     openssl
     sops
     gnupg

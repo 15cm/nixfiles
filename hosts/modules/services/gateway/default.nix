@@ -9,8 +9,6 @@ in {
     enable = mkEnableOption "traefik gateway";
     enableDocker = mkEnableOption "docker integration";
     enableDashboardProxy = mkDefaultTrueEnableOption "dashboard proxy";
-    enableHeadscaleProxy = mkEnableOption "headscale proxy";
-    enableMetricsProxy = mkDefaultTrueEnableOption "metrics proxy";
     internalDomain = mkOption {
       type = with types; nullOr string;
       default = null;
@@ -109,35 +107,6 @@ in {
         services = {
           gatewayApi.loadBalancer.servers = [{
             url = "http://127.0.0.1:${toString config.my.ports.gateway.listen}";
-          }];
-        };
-      };
-    })
-    (mkIf cfg.enableHeadscaleProxy {
-      services.traefik.dynamicConfigOptions.http = {
-        routers.headscale = {
-          rule = "Host(`headscale.${assertNotNull cfg.externalDomain}`)";
-          service = "headscale";
-        };
-        services = {
-          headscale.loadBalancer.servers = [{
-            url =
-              "http://127.0.0.1:${toString config.my.ports.headscale.listen}";
-          }];
-        };
-      };
-    })
-    (mkIf cfg.enableMetricsProxy {
-      services.traefik.dynamicConfigOptions.http = {
-        routers.metrics = {
-          rule = "Host(`metrics.${assertNotNull cfg.internalDomain}`)";
-          middlewares = [ "lan-only@file" ];
-          service = "metrics";
-        };
-        services = {
-          metrics.loadBalancer.servers = [{
-            url =
-              "http://127.0.0.1:${toString config.my.ports.prometheus.listen}";
           }];
         };
       };
