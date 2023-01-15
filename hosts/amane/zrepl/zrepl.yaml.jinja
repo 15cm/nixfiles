@@ -22,7 +22,7 @@ jobs:
     snapshotting:
       type: periodic
       prefix: zrepl_
-      interval: 1d
+      interval: 1h
     send:
       encrypted: true
       compressed: true
@@ -32,13 +32,13 @@ jobs:
         - type: last_n
           count: 10
         - type: grid
-          grid: 14x1d
+          grid: 24x1h | 14x1d
           regex: "^zrepl_.*"
         - type: regex
           regex: "^manual_.*"
       keep_receiver:
         - type: grid
-          grid: 35x1d | 6x30d
+          grid: 48x1h | 35x1d | 6x30d
           regex: "^zrepl_.*"
         - type: regex
           regex: "^manual_.*"
