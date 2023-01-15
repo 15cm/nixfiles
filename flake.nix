@@ -159,26 +159,25 @@
         })) nixosConfigurationArgs;
 
       deploy = {
-        sshUser = "root";
         nodes = nixpkgs.lib.genAttrs [ "sachi" "amane" "yumiko" ] (hostname: {
           inherit hostname;
           profilesOrder = [ "system" "home" ];
           profiles = {
             system = {
+              sshUser = "root";
               path = deploy-rs.lib.x86_64-linux.activate.nixos
                 (builtins.getAttr hostname self.nixosConfigurations);
             };
             home = {
+              sshUser = "sinkerine";
               path = deploy-rs.lib.x86_64-linux.activate.home-manager
                 (builtins.getAttr "sinkerine@${hostname}"
                   self.homeConfigurations);
-              user = "sinkerine";
             };
           };
         });
       };
       checks = builtins.mapAttrs
         (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
-
     };
 }
