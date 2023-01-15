@@ -11,7 +11,6 @@ in {
     ../features/app/zsh
     ../features/app/powerline
     ../features/app/fzf
-    ../features/app/set-theme
     ../features/app/tealdeer
     ../features/conf/misc-dotfiles
   ];
@@ -37,6 +36,7 @@ in {
     [ parallel ];
 
   my.programs.emacs.enable = true;
+  my.programs.set-theme.enable = true;
   programs.bottom = {
     enable = true;
     settings = {
@@ -70,4 +70,5 @@ in {
   in pkgs.writeShellScript "build-nix-os.sh" ''
     nix build --no-link --print-out-paths "$@" ${osTopLevelFlakeUri}
   '';
+
 }

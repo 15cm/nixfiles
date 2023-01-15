@@ -64,7 +64,7 @@ in {
     # Env vars that are specific to interactive shell.
     initExtraFirst = mkBefore ''
       export TZ="America/Los_Angeles"
-      export PATH="$PATH:$HOME/.local/bin:$HOME/local/bin:/usr/local/bin";
+      export PATH="$PATH:$HOME/local/bin:/usr/local/bin:/usr/bin";
       export EDITOR="${config.home.homeDirectory}/local/bin/exec-editor.sh";
       export TERM="alacritty";
       export TLDR_COLOR_BLANK="blue";
