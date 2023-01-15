@@ -14,7 +14,6 @@ with lib; {
     # XSession related
     ../../../features/conf/xsession
     ../../../features/conf/xresources
-    ../../../features/app/i3
     ../../../features/app/dunst
     ../../../features/app/unclutter
     ../../../features/app/wallpaper
@@ -46,6 +45,10 @@ with lib; {
   xresources.properties."Xft.dpi" = mkForce 120;
   xresources.properties."Xcursor.size" = mkForce 32;
 
+  my.xsession.i3 = {
+    enable = true;
+    musicPlayer = "Sonixd";
+  };
   qt.enable = true;
   gtk.enable = true;
   xdg.userDirs = {

@@ -161,17 +161,17 @@ mode "launcher" {
 
 # Media
 # Sony Headphones sends XF86AudioPause and XF86AudioPlay in turn when connected via bluetooth
-bindsym XF86AudioPause exec "playerctl -p clementine play-pause"
-bindsym XF86AudioPlay exec "playerctl -p clementine play-pause"
-bindsym XF86AudioNext exec "playerctl -p clementine next"
-bindsym XF86AudioPrev exec "playerctl -p clementine previous"
+bindsym XF86AudioPause exec "playerctl -p {{musicPlayer}} play-pause"
+bindsym XF86AudioPlay exec "playerctl -p {{musicPlayer}} play-pause"
+bindsym XF86AudioNext exec "playerctl -p {{musicPlayer}} next"
+bindsym XF86AudioPrev exec "playerctl -p {{musicPlayer}} previous"
 bindsym XF86MonBrightnessUp exec "light -A 5"
 bindsym XF86MonBrightnessDown exec "light -U 5"
 bindsym XF86AudioMute exec "pactl set-sink-mute 0 toggle"
 bindsym XF86AudioRaiseVolume exec "pactl set-sink-mute 0 false"; exec "pactl set-sink-volume 0 +5%"
 bindsym XF86AudioLowerVolume exec "pactl set-sink-volume 0 -5%"
 # fn+F12 on Thinkpad Z13
-bindsym XF86Favorites exec "playerctl -p clementine play-pause"
+bindsym XF86Favorites exec "playerctl -p {{musicPlayer}} play-pause"
 
 # Set shut down, restart and locking features
 bindsym $mod+Shift+z mode "$mode_system"

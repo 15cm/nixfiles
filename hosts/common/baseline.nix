@@ -59,7 +59,6 @@ with lib; {
   };
   networking.firewall.enable = true;
   fonts.fontconfig.enable = false;
-
   sops.secrets.smtpPassword = {
     sopsFile = ./secrets.yaml;
     mode = "0440";

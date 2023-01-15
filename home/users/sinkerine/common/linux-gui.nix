@@ -8,7 +8,6 @@ with lib; {
     # XSession related
     ../../../features/conf/xsession
     ../../../features/conf/xresources
-    ../../../features/app/i3
     ../../../features/app/dunst
     ../../../features/app/unclutter
     ../../../features/app/wallpaper
@@ -46,8 +45,10 @@ with lib; {
     okular
     calibre
     libreoffice
+    sonixd
   ];
 
+  my.xsession.i3.enable = true;
   qt.enable = true;
   gtk.enable = true;
   xdg.userDirs = {
@@ -74,6 +75,17 @@ with lib; {
     enable = true;
     settings = {
       dmenu.dmenu_command = "${config.programs.rofi.package}/bin/rofi -dmenu";
+    };
+  };
+
+  xdg.desktopEntries = {
+    sonixd = {
+      name = "Sonixd";
+      # Not sure why my font config causes tofu in this AppImage.
+      exec =
+        "env FONTCONFIG_FILE=${config.home.homeDirectory}/.config/fontconfig/conf.d/10-hm-fonts.conf ${pkgs.sonixd}/bin/sonixd";
+      terminal = false;
+      categories = [ "Player" ];
     };
   };
 }

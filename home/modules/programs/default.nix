@@ -6,5 +6,6 @@
     ./keychain.nix
     ./navi.nix
     ./set-theme
+    ./i3
   ];
 }
