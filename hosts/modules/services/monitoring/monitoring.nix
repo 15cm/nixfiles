@@ -11,6 +11,10 @@ in {
       type = with types; nullOr str;
       default = null;
     };
+    datasourceHosts = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+    };
     dataDir = mkOption {
       type = with types; nullOr str;
       default = null;
@@ -48,6 +52,7 @@ in {
             http_addr = "127.0.0.1";
             http_port = config.my.ports.grafana.listen;
             domain = assertNotNull cfg.domain;
+            root_url = "https://%(domain)s/";
           };
 
           security = {
@@ -65,16 +70,14 @@ in {
           };
         };
 
-        provision =
-          let hostnames = [ "sachi" "kazuki" "amane" "yumiko" "asako" ];
-          in {
-            enable = true;
-            datasources.settings.datasources = map (host: {
-              name = "${host}-metrics";
-              type = "prometheus";
-              url = "https://metrics.${host}.m.mado.moe";
-            }) hostnames;
-          };
+        provision = {
+          enable = true;
+          datasources.settings.datasources = map (host: {
+            name = "${host}";
+            type = "prometheus";
+            url = "https://metrics.${host}.m.mado.moe";
+          }) cfg.datasourceHosts;
+        };
       };
     }
     (mkIf cfg.waitForManualZfsLoadKey {

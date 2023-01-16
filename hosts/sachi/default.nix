@@ -76,6 +76,7 @@ with lib;
   my.services.monitoring = {
     enable = true;
     domain = "monitoring.${hostname}.m.mado.moe";
+    datasourceHosts = [ "sachi" "kazuki" "amane" "yumiko" "asako" ];
     dataDir = "/pool/main/appdata/grafana";
     waitForManualZfsLoadKey = true;
   };

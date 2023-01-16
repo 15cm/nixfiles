@@ -96,4 +96,11 @@ in {
     internalDomain = "${hostname}.m.mado.moe";
   };
   my.services.metrics.enable = true;
+  # Runs separate monitoring and alerts on machines that are not always online.
+  my.services.monitoring = {
+    enable = true;
+    domain = "monitoring.${hostname}.m.mado.moe";
+    datasourceHosts = [ hostname ];
+    dataDir = "/var/lib/grafana";
+  };
 }
