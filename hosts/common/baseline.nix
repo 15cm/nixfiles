@@ -17,6 +17,7 @@ with lib; {
     python3
     headscale
     tailscale
+    smartmontools
   ];
 
   nix = {

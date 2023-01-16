@@ -101,7 +101,10 @@ in {
       config.my.ip.ranges.tailscale
     ];
   };
-  my.services.metrics.enable = true;
+  my.services.metrics = {
+    enable = true;
+    enableScrapeSmartctl = true;
+  };
   # Runs separate monitoring and alerts on machines that are not always online.
   my.services.monitoring = {
     enable = true;

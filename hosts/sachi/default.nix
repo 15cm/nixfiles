@@ -78,6 +78,7 @@ with lib;
     enable = true;
     enableScrapeHeadscale = true;
     enableScrapeNut = true;
+    enableScrapeSmartctl = true;
   };
   my.services.monitoring = {
     enable = true;

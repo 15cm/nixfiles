@@ -11,6 +11,7 @@ in {
     enableScrapeHeadscale = mkEnableOption "headscale";
     enableScrapeNut = mkEnableOption "nut";
     enableScrapeNode = mkDefaultTrueEnableOption "node";
+    enableScrapeSmartctl = mkEnableOption "smartctl";
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -104,6 +105,23 @@ in {
         static_configs = [{
           targets = [
             "localhost:${builtins.toString (config.my.ports.prometheus.node)}"
+          ];
+        }];
+      }];
+    })
+    (mkIf cfg.enableScrapeSmartctl {
+      services.prometheus.exporters.smartctl = {
+        enable = true;
+        port = config.my.ports.prometheus.smartctl;
+        listenAddress = "127.0.0.1";
+      };
+      services.prometheus.scrapeConfigs = [{
+        job_name = "smartcttl";
+        static_configs = [{
+          targets = [
+            "localhost:${
+              builtins.toString (config.my.ports.prometheus.smartctl)
+            }"
           ];
         }];
       }];
