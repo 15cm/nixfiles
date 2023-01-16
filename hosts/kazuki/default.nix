@@ -94,6 +94,12 @@ in {
     enable = true;
     enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
+    lanOnlyIpRanges = [
+      config.my.ip.ranges.local
+      config.my.ip.ranges.lan
+      config.my.ip.ranges.wireguard
+      config.my.ip.ranges.tailscale
+    ];
   };
   my.services.metrics.enable = true;
   # Runs separate monitoring and alerts on machines that are not always online.

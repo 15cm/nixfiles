@@ -79,5 +79,7 @@ with lib;
     enable = true;
     enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
+    lanOnlyIpRanges =
+      [ config.my.ip.ranges.local config.my.ip.ranges.tailscale ];
   };
 }

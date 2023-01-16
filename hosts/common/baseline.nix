@@ -58,6 +58,12 @@ with lib; {
     "fs.inotify.max_user_watches" = 200000;
   };
   networking.firewall.enable = true;
+  # Hosts doesn't support wildcard but I don't want to introduce a DNS server on each machine.
+  networking.extraHosts = ''
+    127.0.0.1 gateway.${hostname}.m.mado.moe
+    127.0.0.1 metrics.${hostname}.m.mado.moe
+    127.0.0.1 monitoring.${hostname}.m.mado.moe
+  '';
   fonts.fontconfig.enable = false;
   sops.secrets.smtpPassword = {
     sopsFile = ./secrets.yaml;

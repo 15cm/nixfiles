@@ -19,6 +19,10 @@ in {
       default = null;
       description = "domain for access over the internet";
     };
+    lanOnlyIpRanges = mkOption {
+      type = with types; listOf str;
+      default = [ config.my.ip.ranges.local ];
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -68,11 +72,7 @@ in {
         dynamicConfigOptions = {
           http = {
             middlewares = {
-              lan-only.ipWhiteList.sourceRange = [
-                config.my.ip.ranges.lan
-                config.my.ip.ranges.wireguard
-                config.my.ip.ranges.tailscale
-              ];
+              lan-only.ipWhiteList.sourceRange = cfg.lanOnlyIpRanges;
             };
           };
         };

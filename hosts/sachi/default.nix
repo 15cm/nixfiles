@@ -58,6 +58,12 @@ with lib;
     enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
     externalDomain = "mado.moe";
+    lanOnlyIpRanges = [
+      config.my.ip.ranges.local
+      config.my.ip.ranges.lan
+      config.my.ip.ranges.wireguard
+      config.my.ip.ranges.tailscale
+    ];
   };
   services.traefik.dynamicConfigOptions.http.middlewares.mastodon-auth-proxy.redirectRegex =
     {
