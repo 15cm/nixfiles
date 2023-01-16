@@ -109,6 +109,8 @@ in {
     enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
   };
+
+  my.services.smartd.enable = true;
   my.services.metrics.enable = true;
   # Runs separate monitoring and alerts on machines that are not always online.
   my.services.monitoring = {

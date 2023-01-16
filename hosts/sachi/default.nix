@@ -74,6 +74,7 @@ with lib;
   my.services.headscale.enable = true;
   my.services.tailscale.enable = true;
 
+  my.services.smartd.enable = true;
   my.services.metrics = {
     enable = true;
     enableScrapeHeadscale = true;

@@ -12,5 +12,6 @@
     ./networking/headscale.nix
     ./networking/tailscale.nix
     ./ups
+    ./smartd.nix
   ];
 }

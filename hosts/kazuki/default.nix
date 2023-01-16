@@ -101,6 +101,8 @@ in {
       config.my.ip.ranges.tailscale
     ];
   };
+
+  my.services.smartd.enable = true;
   my.services.metrics = {
     enable = true;
     enableScrapeSmartctl = true;
