@@ -48,6 +48,10 @@ with lib; {
   my.xsession.i3 = {
     enable = true;
     musicPlayer = "Sonixd";
+    monitors = {
+      one = "DisplayPort-1";
+      two = "DisplayPort-3";
+    };
   };
   qt.enable = true;
   gtk.enable = true;
