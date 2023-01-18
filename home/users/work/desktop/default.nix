@@ -40,10 +40,18 @@ with lib; {
     kate
     gwenview
     okular
+    sonixd
   ];
 
   xresources.properties."Xft.dpi" = mkForce 120;
   xresources.properties."Xcursor.size" = mkForce 32;
+
+  programs.zsh.shellAliases = {
+    # Nix Home Manager
+    snh = "switch-nix-home.sh";
+    # NixOS
+    sno = "switch-nix-os.sh";
+  };
 
   my.xsession.i3 = {
     enable = true;
@@ -71,6 +79,17 @@ with lib; {
     enable = true;
     settings = {
       dmenu.dmenu_command = "${config.programs.rofi.package}/bin/rofi -dmenu";
+    };
+  };
+
+  xdg.desktopEntries = {
+    sonixd = {
+      name = "Sonixd";
+      # Not sure why my font config causes tofu in this AppImage.
+      exec =
+        "${pkgs.sonixd}/bin/sonixd";
+      terminal = false;
+      categories = [ "Player" ];
     };
   };
 }
