@@ -24,6 +24,8 @@ in {
     i2c-tools
     wineWowPackages.stable
     winetricks
+    dolphin-emu-beta
+    yuzu-mainline
   ];
 
   sops = {

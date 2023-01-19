@@ -43,6 +43,27 @@ with lib; {
   time.timeZone = "America/Los_Angeles";
   services.acpid.enable = true;
 
+  security.pam.loginLimits = [
+    {
+      domain = "@wheel";
+      type = "-";
+      item = "nice";
+      value = "-19";
+    }
+    {
+      domain = "@wheel";
+      type = "-";
+      item = "rtprio";
+      value = "95";
+    }
+    {
+      domain = "@wheel";
+      type = "-";
+      item = "memlock";
+      value = "4194304";
+    }
+  ];
+
   system.activationScripts.systemdZshCompletion = ''
     mkdir -p /usr/share/zsh/site-functions
     ln -sf ${config.systemd.package}/share/zsh/site-functions/* /usr/share/zsh/site-functions/
