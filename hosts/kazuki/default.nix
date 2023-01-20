@@ -25,7 +25,7 @@ in {
     wineWowPackages.stable
     winetricks
     dolphin-emu-beta
-    yuzu-mainline
+    ryujinx
   ];
 
   sops = {

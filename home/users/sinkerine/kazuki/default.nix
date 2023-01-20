@@ -6,9 +6,9 @@ args@{ pkgs, ... }:
   imports = [ ../common ../common/linux-gui.nix ../../../features/app/openrgb ];
 
   xdg.desktopEntries = {
-    yuzu = {
-      name = "yuzu (high priority)";
-      exec = "nice -n -10 yuzu %f";
+    ryujinx = {
+      name = "ryujinx (high priority)";
+      exec = "nice -n -19 ryujinx %f";
       terminal = false;
     };
   };
