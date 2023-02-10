@@ -31,6 +31,7 @@ in {
     hunspell
     hunspellDicts.en_US-large
     direnv
+    neofetch
   ]) ++
     # Packages with overrides.
     [ parallel ];
