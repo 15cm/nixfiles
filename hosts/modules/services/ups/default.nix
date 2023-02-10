@@ -11,8 +11,7 @@ in {
       ups.apc = {
         driver = "usbhid-ups";
         port = "auto";
-        directives =
-          [ "default.battery.charge.low = 50" "battery.charge.warning.75" ];
+        directives = [ "default.battery.charge.low = 50" ];
       };
     };
 
