@@ -74,6 +74,7 @@ with lib;
   my.programs.AriaNg.enable = true;
 
   services.printing.enable = true;
+  services.printing.allowFrom = [ "all" ];
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
 }
