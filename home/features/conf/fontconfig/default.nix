@@ -10,7 +10,7 @@ mkMerge [
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       noto-fonts-emoji
-      font-awesome_4
+      font-awesome_5
       emacs-all-the-icons-fonts
       sarasa-gothic
       sarasa-gothic-nerdfont
