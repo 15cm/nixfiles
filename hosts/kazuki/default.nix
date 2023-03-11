@@ -83,6 +83,13 @@ in {
   virtualisation.vmware.host = {
     enable = true;
     extraPackages = with pkgs; [ open-vm-tools ];
+    extraConfig = ''
+      # Fit all virtual machine memory to be swapped
+      prefvmx.minVmMemPct = "100"
+      # Disable background snapshots
+      mainMem.partialLazySave = "FALSE"
+      mainMem.partialLazyRestore = "FALSE"
+    '';
   };
 
   programs.steam = {

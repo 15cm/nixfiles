@@ -11,5 +11,9 @@ args@{ pkgs, ... }:
       exec = "nice -n -19 ryujinx %f";
       terminal = false;
     };
+    vmware-workstation = {
+      name = "VMware Workstation (high priority)";
+      exec = "nice -n -19 vmware";
+    };
   };
 }
