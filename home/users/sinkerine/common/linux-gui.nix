@@ -46,6 +46,8 @@ with lib; {
     calibre
     libreoffice
     sonixd
+    oxipng
+    osdlyrics
   ];
 
   my.xsession.i3.enable = true;
