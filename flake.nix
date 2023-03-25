@@ -24,12 +24,17 @@
       url = "github:kmonad/kmonad?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     deploy-rs.url = "github:serokell/deploy-rs";
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, flake-utils, sops-nix, kmonad
-    , nixos-hardware, deploy-rs, ... }:
+    , nixos-hardware, deploy-rs, emacs-overlay, ... }:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -44,6 +49,7 @@
             modifications
             nixgl.overlays.default
             kmonad.overlays.default
+            emacs-overlay.overlays.default
           ];
           config.allowUnfree = true;
           config.permittedInsecurePackages = [
