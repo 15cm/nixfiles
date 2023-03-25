@@ -87,6 +87,7 @@ with lib; {
     127.0.0.1 monitoring.${hostname}.m.mado.moe
   '';
   fonts.fonts = with pkgs; [ noto-fonts ];
+  fonts.fontconfig.enable = false;
   sops.secrets.smtpPassword = {
     sopsFile = ./secrets.yaml;
     mode = "0440";
