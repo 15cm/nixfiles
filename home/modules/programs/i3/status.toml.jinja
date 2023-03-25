@@ -1,14 +1,19 @@
+[icons]
 icons = "awesome5"
 
 [theme]
-name = "{{colorScheme}}"
+theme = "{{colorScheme}}"
 [theme.overrides]
 separator = ""
 
 [[block]]
-block = "networkmanager"
-interface_name_exclude = ['br\-[0-9a-f]{12}', 'docker\d+']
-interface_name_include = []
+block = "net"
+{%if hostname == "asako"%}
+device = 'wlp\d+s\d+'
+{%else%}
+device = 'enp\d+s\d+'
+{%endif%}
+format = " $icon $ip ^icon_net_down $speed_down.eng(prefix:M) ^icon_net_up $speed_up.eng(prefix:M) "
 [block.theme_overrides]
 {%if theme == "light"%}
 good_bg = "#fdf6e3" # base3
@@ -20,21 +25,19 @@ good_fg = "#81a1c1" # light blue
 
 [[block]]
 block = "net"
-format = "{speed_down;K} {graph_down;K} {speed_up;K} {graph_up;K}"
-interval = 5
-[block.icons_overrides]
-net_wired = ""
-net_wireless = ""
-net_vpn = ""
-net_loopback = ""
+device = 'tailscale\d+'
+format = " $icon $ip ^icon_net_down $speed_down.eng(prefix:M) ^icon_net_up $speed_up.eng(prefix:M) "
+[block.theme_overrides]
+{%if theme == "light"%}
+good_bg = "#fdf6e3" # base3
+good_fg = "#586e75" # base01
+{%else%}
+good_bg = "#2e3440" # nord0
+good_fg = "#81a1c1" # light blue
+{%endif%}
 
 [[block]]
 block = "memory"
-display_type = "memory"
-format_mem = "{mem_used_percents}"
-format_swap = "{swap_used_percents}"
-# [block.theme_overrides]
-# idle_bg = "ffffff"
 
 # [[block]]
 # block = "temperature"
@@ -51,13 +54,10 @@ interval = 3
 [[block]]
 block = "disk_space"
 path = "/"
-alias = "/"
 info_type = "available"
-unit = "GB"
 interval = 1800
 warning = 20.0
 alert = 10.0
-format = "{icon} {available}"
 
 {%if hostname == "asako"%}
 [[block]]
@@ -86,4 +86,4 @@ block = "sound"
 [[block]]
 block = "time"
 interval = 60
-format = "%a %m/%d/%Y %R"
+format = " $icon $timestamp.datetime(f:'%a %Y-%m-%d %R %Z') "
