@@ -18,6 +18,7 @@ with lib; {
     headscale
     tailscale
     smartmontools
+    nix-index
   ];
 
   nix = {
