@@ -7,6 +7,6 @@
     userEmail = "git@15cm.net";
     lfs = { enable = true; };
 
-    extraConfig = { pull.rebase = true; };
+    extraConfig = { pull.rebase = true; init.defaultBranch = "main";};
   };
 }
