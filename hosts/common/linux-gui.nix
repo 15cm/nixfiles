@@ -38,7 +38,7 @@ with lib;
   };
 
   # Adjust DPIs by myself.
-  hardware.video.hidpi.enable = mkForce false;
+  fonts.optimizeForVeryHighDPI = mkForce false;
 
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
