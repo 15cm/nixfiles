@@ -92,15 +92,12 @@ in {
     '';
   };
 
+  hardware.opengl.driSupport32Bit = true;
+  virtualisation.docker.enableNvidia = true;
+
   programs.steam = {
     enable = true;
-    remotePlay.openFirewall =
-      true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall =
-      true; # Open ports in the firewall for Source Dedicated Server
   };
-
-  virtualisation.docker.enableNvidia = true;
 
   my.services.tailscale.enable = true;
   my.services.gateway = {

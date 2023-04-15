@@ -48,6 +48,7 @@ with lib; {
     sonixd
     oxipng
     osdlyrics
+    dex
   ];
 
   my.xsession.i3.enable = true;

@@ -5,6 +5,7 @@ with lib; {
     sops
     acpi
     wget
+    rename
     killall
     pciutils
     usbutils
@@ -74,6 +75,9 @@ with lib; {
       mkdir -p /usr/share
       ln -sf ${pkgs.tzdata}/share/zoneinfo /usr/share/zoneinfo
     fi
+  '';
+  system.activationScripts.linkBinaries = ''
+      ln -sf ${pkgs.mpv}/bin/mpv /usr/bin/mpv
   '';
 
   boot.kernel.sysctl = {

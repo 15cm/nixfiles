@@ -26,7 +26,7 @@ good_fg = "#81a1c1" # light blue
 [[block]]
 block = "net"
 device = 'tailscale\d+'
-format = " $icon $ip"
+format = " $icon {$ip|unknown ip}"
 [block.theme_overrides]
 {%if theme == "light"%}
 good_bg = "#fdf6e3" # base3
