@@ -74,7 +74,7 @@ in {
   # Trackpoint
   hardware.trackpoint = {
     enable = true;
-    sensitivity = 160;
+    sensitivity = 128;
     emulateWheel = true;
   };
   # ATTR{device/speed} is missing in z13 trackpoint so https://github.com/NixOS/nixpkgs/blob/9805c6163a99a8bfb99e09531e85cb1549899aad/nixos/modules/tasks/trackpoint.nix#LL80C4-L80C22 will fail.
