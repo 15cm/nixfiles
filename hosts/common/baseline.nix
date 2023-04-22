@@ -45,6 +45,7 @@ with lib; {
   users.mutableUsers = false;
   time.timeZone = "America/Los_Angeles";
   services.acpid.enable = true;
+  programs.zsh.enable = true;
 
   security.pam.loginLimits = [
     {

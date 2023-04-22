@@ -37,9 +37,6 @@ with lib;
     };
   };
 
-  # Adjust DPIs by myself.
-  fonts.optimizeForVeryHighDPI = mkForce false;
-
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
   security.rtkit.enable = true;
