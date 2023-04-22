@@ -11,6 +11,7 @@ with lib;
     libinput
     mpv
     deploy-rs
+    glxinfo
   ];
 
   services.xserver = {

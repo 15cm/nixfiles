@@ -55,7 +55,10 @@ in {
     firewall.enable = mkForce false;
   };
 
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+  hardware.nvidia = {
+   package = config.boot.kernelPackages.nvidiaPackages.stable; 
+   open = true;
+  };
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "acpi_enforce_resources=lax"
