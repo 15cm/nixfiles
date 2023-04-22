@@ -42,7 +42,7 @@ in {
   services.screen-locker = {
     enable = true;
     lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen -l";
-    inactiveInterval = (if hostname == "asako" then 60 else 180);
+    inactiveInterval = (if hostname == "asako" then 60 else 360);
   };
 
   # Cursor icons.

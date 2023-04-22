@@ -6,6 +6,7 @@ with lib; {
     acpi
     wget
     rename
+    zip
     killall
     pciutils
     usbutils
