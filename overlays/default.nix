@@ -14,5 +14,18 @@ with nixpkgs.lib; {
         sha256 = "sha256-ORcBYqkloZNWk6RDXVGHfOhFzPI/7RlKNUWBYx+1PUY=";
       };
     });
+    waybar = super.waybar.overrideAttrs (old: {
+      mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ];
+    });
+    flameshot = super.flameshot.overrideAttrs (old: {
+      src = super.fetchFromGitHub {
+        owner = "flameshot-org";
+        repo = "flameshot";
+        rev = "3ededae5745761d23907d65bbaebb283f6f8e3f2";
+        hash = "sha256-4SMg63MndCctpfoOX3OQ1vPoLP/90l/KGLifyUzYD5g=";
+      };
+      buildInputs = old.buildInputs ++ [super.pkgs.libsForQt5.kguiaddons];
+      cmakeFlags = [ "-DUSE_WAYLAND_GRIM=true" ];
+    });
   };
 }

@@ -18,10 +18,6 @@ in {
 
     home.file."local/bin/reload-theme.sh".source =
       pkgs.writeShellScript "reload-theme.sh" ''
-        if [ "$#" -ge 1 ] && [ "$1" = gui ]; then
-          ${pkgs.i3}/bin/i3-msg reload
-        fi
-        ${pkgs.systemd}/bin/systemctl --user restart polybar.service
         ${config.programs.powerline.package}/bin/powerline-daemon --replace
         ${pkgs.tmux}/bin/tmux source ${config.programs.powerline.package}/share/tmux/powerline.conf
         ${config.my.programs.emacs.package}/bin/emacsclient -eun '(load "~/.config/emacs/scripts/load-theme.el")'
