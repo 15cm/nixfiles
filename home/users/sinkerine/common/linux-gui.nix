@@ -49,6 +49,7 @@ with lib; {
     oxipng
     osdlyrics
     dex
+    krita
   ];
 
   my.xsession.i3.enable = true;
