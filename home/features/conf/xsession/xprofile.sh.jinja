@@ -30,10 +30,5 @@ export WINIT_HIDPI_FACTOR=2
 export WINIT_HIDPI_FACTOR=1.25
 {%endif%}
 
-{%if hostname == "asako"%}
-# Disable trackpad
-xinput disable "ELAN06A0:00 04F3:3231 Touchpad"
-{%endif%}
-
 # Disable display power management.
 xset s off -dpms

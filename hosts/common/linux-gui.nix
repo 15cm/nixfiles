@@ -17,7 +17,13 @@ with lib;
   services.xserver = {
     enable = true;
 
-    libinput = { enable = true; };
+    libinput = {
+      enable = true;
+      touchpad = {
+        accelSpeed = "0.5";
+        naturalScrolling = true;
+      };
+    };
 
     displayManager = {
       xserverArgs = [ "-ardelay" "300" "-arinterval" "22" ];
