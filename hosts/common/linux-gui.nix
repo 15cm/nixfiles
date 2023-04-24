@@ -11,7 +11,6 @@ with lib;
     mpv
     deploy-rs
     glxinfo
-    grim
   ];
 
   programs.hyprland.enable = true;
