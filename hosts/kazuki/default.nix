@@ -56,14 +56,11 @@ in {
   };
 
   hardware.nvidia = {
-   package = config.boot.kernelPackages.nvidiaPackages.stable; 
-   open = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    modesetting.enable = true;
   };
-  boot.kernelParams = [
-    "nvidia-drm.modeset=1"
-    "acpi_enforce_resources=lax"
-    "transparent_hugepage=never"
-  ];
+  boot.kernelParams =
+    [ "acpi_enforce_resources=lax" "transparent_hugepage=never" ];
   boot.kernelModules = [
     # Ensure we can access i2c bus for RGB memory
     "i2c-dev"
@@ -98,9 +95,7 @@ in {
   hardware.opengl.driSupport32Bit = true;
   virtualisation.docker.enableNvidia = true;
 
-  programs.steam = {
-    enable = true;
-  };
+  programs.steam = { enable = true; };
 
   my.services.tailscale.enable = true;
   my.services.gateway = {
