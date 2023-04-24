@@ -13,5 +13,16 @@ with nixpkgs.lib; {
         cp -r $src/* $outdir/
       '';
     });
+    calibre = super.calibre.overrideAttrs (old: {
+      patches = old.patches ++ [
+        (super.fetchpatch {
+          name =
+            "0026-TypeError-HistoryLineEdit.__init__-got-an-unexpected.patch";
+          url =
+            "https://raw.githubusercontent.com/debian-calibre/calibre/master/debian/patches/0026-TypeError-HistoryLineEdit.__init__-got-an-unexpected.patch";
+          hash = "sha256-W9W6O2pbOOBk93BhYsVYhaqLs6ymDN82cjFKpltlyIc=";
+        })
+      ];
+    });
   };
 }
