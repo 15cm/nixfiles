@@ -20,8 +20,9 @@ with lib;
     libinput = {
       enable = true;
       touchpad = {
-        accelSpeed = "0.5";
+        accelSpeed = "0.6";
         naturalScrolling = true;
+        tappingDragLock = false;
       };
     };
 
