@@ -22,7 +22,9 @@ with lib;
       touchpad = {
         accelSpeed = "0.6";
         naturalScrolling = true;
-        tappingDragLock = false;
+        additionalOptions = ''
+          Option "TappingDrag" "false"
+        '';
       };
     };
 
