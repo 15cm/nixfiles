@@ -64,11 +64,10 @@ in {
   # Laptop battery
   services.upower.enable = true;
 
-  # Suspend must be triggered when lid is closed. Otherwise the trackpoint will stop working in OS and BIOS. https://www.reddit.com/r/thinkpad/comments/xk999r/trackpoint_issue_with_z13_help_needed_to_verify/
   services.logind = mkForce {
     lidSwitch = "suspend";
-    lidSwitchDocked = "suspend";
-    lidSwitchExternalPower = "suspend";
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "ignore";
   };
 
   # Trackpoint
@@ -83,16 +82,6 @@ in {
     ACTION=="add|change", SUBSYSTEM=="input", ATTR{name}=="${cfg.device}",  ATTR{device/sensitivity}="${
       toString cfg.sensitivity
     }"
-  '';
-
-  # `psmouse` for the trackpoint issue. See the lidSwitch configs for details.
-  # `ath11k_pci` for https://blog.15cm.net/2022/08/21/my_arch_linux_setup_on_thinkpad_z13_gen_1/#power-management---suspendresume-good-with-caveats
-  system.activationScripts.systemdSuspendModules = ''
-    mkdir -p /usr/lib/systemd/system-sleep
-    ln -sf ${
-      writeShellScriptFile "systemd-suspend-modules"
-      ./systemd-suspend-modules.sh
-    } /usr/lib/systemd/system-sleep/systemd-suspend-modules.sh
   '';
 
   my.services.zrepl = {

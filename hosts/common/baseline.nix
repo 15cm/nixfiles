@@ -21,6 +21,7 @@ with lib; {
     tailscale
     smartmontools
     nix-index
+    iperf
   ];
 
   nix = {
@@ -79,7 +80,7 @@ with lib; {
     fi
   '';
   system.activationScripts.linkBinaries = ''
-      ln -sf ${pkgs.mpv}/bin/mpv /usr/bin/mpv
+    ln -sf ${pkgs.mpv}/bin/mpv /usr/bin/mpv
   '';
 
   boot.kernel.sysctl = {
