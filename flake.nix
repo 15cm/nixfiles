@@ -32,7 +32,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     deploy-rs.url = "github:serokell/deploy-rs";
     hyprland.url =
-      "github:hyprwm/Hyprland/2df0d034bc4a18fafb3524401eeeceaa6b23e753";
+      "github:hyprwm/Hyprland";
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, flake-utils, sops-nix, kmonad
