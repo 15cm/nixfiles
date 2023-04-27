@@ -66,7 +66,7 @@ in {
 
   services.logind = mkForce {
     lidSwitch = "suspend";
-    lidSwitchDocked = "ignore";
+    lidSwitchDocked = "suspend";
     lidSwitchExternalPower = "ignore";
   };
 
