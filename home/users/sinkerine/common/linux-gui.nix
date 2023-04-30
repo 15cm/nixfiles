@@ -21,7 +21,6 @@ with lib; {
     ../../../features/app/arandr
     ../../../features/app/copyq
     ../../../features/app/goldendict
-    ../../../features/app/imwheel
     ../../../features/app/playctl
     ../../../features/app/flameshot
   ];

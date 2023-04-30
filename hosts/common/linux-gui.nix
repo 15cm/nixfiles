@@ -8,7 +8,6 @@ with lib;
     pulseaudio
     xorg.xev
     evtest
-    libinput
     mpv
     deploy-rs
     glxinfo
@@ -20,7 +19,7 @@ with lib;
     libinput = {
       enable = true;
       touchpad = {
-        accelSpeed = "0.6";
+        accelSpeed = "0.7";
         naturalScrolling = true;
         disableWhileTyping = true;
         additionalOptions = ''
