@@ -16,17 +16,7 @@ with lib;
   services.xserver = {
     enable = true;
 
-    libinput = {
-      enable = true;
-      touchpad = {
-        accelSpeed = "0.7";
-        naturalScrolling = true;
-        disableWhileTyping = true;
-        additionalOptions = ''
-          Option "TappingDrag" "false"
-        '';
-      };
-    };
+    libinput = { enable = true; };
 
     displayManager = {
       xserverArgs = [ "-ardelay" "300" "-arinterval" "22" ];
