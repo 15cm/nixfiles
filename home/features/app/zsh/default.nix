@@ -7,16 +7,13 @@ let
 in {
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
     zplug = {
       enable = true;
       plugins = [
         {
-          name = "zsh-users/zsh-completions";
-          tags = [ "defer:0" ];
-        }
-        {
           name = "zsh-users/zsh-autosuggestions";
-          tags = [ "defer:2" "on:zsh-users/zsh-completions" ];
+          tags = [ "defer:2" ];
         }
         {
           name = "zsh-users/zsh-syntax-highlighting";
@@ -80,9 +77,6 @@ in {
 
       zstyle :omz:plugins:ssh-agent lazy yes
     '';
-    initExtraBeforeCompInit = ''
-      fpath+=(/usr/share/zsh/site-functions)
-    '';
     initExtra = builtins.readFile ./zshrc;
 
     shellAliases = {
@@ -118,5 +112,5 @@ in {
     };
   };
 
-  home.packages = [ pkgs.lua pkgs.zsh-completions ];
+  home.packages = [ pkgs.lua ];
 }
