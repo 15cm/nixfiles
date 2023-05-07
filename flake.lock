@@ -105,16 +105,16 @@
       },
       "locked": {
         "dir": "nix",
-        "lastModified": 1682527311,
-        "narHash": "sha256-gFiQ62jbBfumg0IR4oXR/DRVunOxMd4lJ5+g+qjz7wA=",
-        "owner": "kmonad",
+        "lastModified": 1683491233,
+        "narHash": "sha256-MsXQMHzoqkY8oZF46eKd4Kupg811XPDt+PevGEY82KQ=",
+        "owner": "15cm",
         "repo": "kmonad",
-        "rev": "3aa2f52536de853efbcb0f6e790c97a3734687ec",
+        "rev": "45de0b79b208f734e502e1dea3a2506f4ca670d5",
         "type": "github"
       },
       "original": {
         "dir": "nix",
-        "owner": "kmonad",
+        "owner": "15cm",
         "repo": "kmonad",
         "type": "github"
       }

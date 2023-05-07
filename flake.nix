@@ -21,7 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     kmonad = {
-      url = "github:kmonad/kmonad?dir=nix";
+      url = "github:15cm/kmonad?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     emacs-overlay = {
