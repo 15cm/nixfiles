@@ -38,7 +38,7 @@ in {
       permitRootLogin = "prohibit-password";
     };
     extraConfig = ''
-      AllowUsers sinkerine@10.1.0.*
+      AllowUsers *@10.1.0.*
     '';
   };
 
