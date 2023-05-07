@@ -30,7 +30,17 @@ in {
   services.fwupd.enable = true;
   services.udisks2.enable = true;
 
-  services.openssh.enable = false;
+  services.openssh = {
+    enable = true;
+    settings = {
+      passwordAuthentication = false;
+      kbdInteractiveAuthentication = false;
+      permitRootLogin = "prohibit-password";
+    };
+    extraConfig = ''
+      AllowUsers sinkerine@10.1.0.*
+    '';
+  };
 
   networking = {
     hostName = hostname;
