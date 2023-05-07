@@ -7,5 +7,6 @@
     ./navi.nix
     ./set-theme
     ./i3
+    ./nixGL.nix
   ];
 }

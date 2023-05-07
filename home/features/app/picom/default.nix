@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 with lib;
 let package = pkgs.picom;
@@ -17,7 +17,7 @@ in rec {
 
     Service = {
       ExecStart = concatStringsSep " " [
-        "${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL"
+        "${config.my.programs.nixGL.package}/bin/nixGL"
         "${package}/bin/picom"
       ];
       Restart = "always";
