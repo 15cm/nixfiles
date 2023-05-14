@@ -53,6 +53,7 @@ with lib; {
   ];
 
   my.xsession.i3.enable = true;
+  my.services.polybar = { enable = true; };
   qt.enable = true;
   gtk.enable = true;
   xdg.userDirs = {
