@@ -21,6 +21,8 @@ in {
           primary = "#ffb300";
           secondary = "#E53935";
           alternate = "#7cb342";
+          warning = "#ff6700";
+          alert = "#e60053";
         };
       in {
 
@@ -34,7 +36,13 @@ in {
           height = "3%";
           modules = {
             left = "i3";
-            right = concatStringsSep " " [ "memory" "cpu" "volume" "date" ];
+            right = concatStringsSep " " [
+              "memory"
+              "cpu"
+              "filesystem"
+              "volume"
+              "date"
+            ];
           };
           tray.position = "center";
           font = [
@@ -186,6 +194,20 @@ in {
           #   %gb_swap_free%
           #   %gb_swap_used%
           label = " %gb_used%/%gb_total%";
+        };
+
+        "module/filesystem" = let
+          zfsBinary = "${pkgs.zfs}/bin/zfs";
+          trBinary = "${pkgs.coreutils}/bin/tr";
+          pool = "rpool";
+        in {
+          type = "custom/script";
+          interval = 30;
+          format = "<label>";
+          exec = pkgs.writeShellScript "polybar-zsh.sh" ''
+            pool_available=$(${zfsBinary} list -o available ${pool} | ${trBinary} -d "AVAIL\n" | ${trBinary} -d " ")
+            echo "󰋊 $pool_available"
+          '';
         };
 
       };
