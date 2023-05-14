@@ -14,7 +14,8 @@ mkMerge [
       sarasa-gothic
       sarasa-gothic-nerdfont
       iosevka
-      material-icons
+      iosevka-nerdfont
+      material-design-icons
     ];
 
     # So that font manager can see the user installed fonts.

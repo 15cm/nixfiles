@@ -23,6 +23,7 @@ in {
           alternate = "#7cb342";
         };
       in {
+
         "bar/top" = {
           monitor = "\${env:MONITOR}";
           # Values in the X resources db can be referenced using:
@@ -33,10 +34,10 @@ in {
           height = "3%";
           modules = {
             left = "i3";
-            right = concatStringsSep " " [ "volume" "date" ];
+            right = concatStringsSep " " [ "cpu" "volume" "date" ];
           };
           tray.position = "center";
-          font = [ "Isevka8;2" "MaterialIcons:size=10" ];
+          font = [ "Isevka8;2" "MaterialDesignIcons:size=10" ];
         };
 
         "module/i3" = {
@@ -81,16 +82,15 @@ in {
             };
           };
           # Only applies if <ramp-volume> is used
-          ramp-volume-0 = "";
-          ramp-volume-1 = "";
-          ramp-volume-2 = "";
-          ramp-volume-3 = "";
-          ramp-volume-4 = "";
+          ramp-volume-0 = "󰸈";
+          ramp-volume-1 = "󰕾";
+          ramp-volume-2 = "󰕾";
+          ramp-volume-3 = "󰕾";
+          ramp-volume-4 = "󰕾";
         };
 
         "module/date" = {
           type = "internal/date";
-          interval = "1.0";
 
           # See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
           # NOTE: if you want to use syntax tags here you need to use %%{...}
@@ -105,8 +105,31 @@ in {
           #   %date%
           #   %time%
           # Default: %date%
-          label = " %time%  %date%";
+          label = "󰅐 %time% 󰃶 %date%";
         };
+
+        "module/cpu" = {
+          type = "internal/cpu";
+
+          # Available tags:
+          #   <label> (default)
+          #   <bar-load>
+          #   <ramp-load>
+          #   <ramp-coreload>
+          # format = <label> <ramp-coreload>
+          format = {
+            text = "<label>";
+            prefix = "󰍛";
+          };
+
+          # Available tokens:
+          #   %percentage% (default) - total cpu load averaged over all cores
+          #   %percentage-sum% - Cumulative load on all cores
+          #   %percentage-cores% - load percentage for each core
+          #   %percentage-core[1-9]% - load percentage for specific core
+          label = " %percentage%%";
+        };
+
       };
 
       script =
