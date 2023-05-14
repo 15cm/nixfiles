@@ -130,6 +130,42 @@ in {
           label = " %percentage%%";
         };
 
+        "module/memory" = {
+          type = "internal/memory";
+
+          # Available tags:
+          #   <label> (default)
+          #   <bar-used>
+          #   <bar-free>
+          #   <ramp-used>
+          #   <ramp-free>
+          #   <bar-swap-used>
+          #   <bar-swap-free>
+          #   <ramp-swap-used>
+          #   <ramp-swap-free>
+          format = "<label>";
+          format-prefix = "󰘚";
+
+          # Available tokens:
+          #   %percentage_used% (default)
+          #   %percentage_free%
+          #   %gb_used%
+          #   %gb_free%
+          #   %gb_total%
+          #   %mb_used%
+          #   %mb_free%
+          #   %mb_total%
+          #   %percentage_swap_used%
+          #   %percentage_swap_free%
+          #   %mb_swap_total%
+          #   %mb_swap_free%
+          #   %mb_swap_used%
+          #   %gb_swap_total%
+          #   %gb_swap_free%
+          #   %gb_swap_used%
+          label = " %mb_used% / %mb_total%";
+        };
+
       };
 
       script =
