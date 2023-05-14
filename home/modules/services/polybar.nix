@@ -37,6 +37,7 @@ in {
           modules = {
             left = "i3";
             right = concatStringsSep " " [
+              "wired-network"
               "memory"
               "cpu"
               "filesystem"
@@ -44,7 +45,7 @@ in {
               "date"
             ];
           };
-          tray.position = "center";
+          tray.position = "right";
           font = [
             "Iosevka:size=10;2"
             "MaterialDesignIcons:size=12;2"
@@ -108,16 +109,13 @@ in {
 
         "module/date" = {
           type = "internal/date";
-
           # See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
           # NOTE: if you want to use syntax tags here you need to use %%{...}
           date = "%Y-%m-%d %a";
           time = "%H:%M";
-
           # Available tags:
           # <label> (default)
           format = "<label>";
-
           # Available tokens:
           #   %date%
           #   %time%
@@ -127,7 +125,6 @@ in {
 
         "module/cpu" = {
           type = "internal/cpu";
-
           # Available tags:
           #   <label> (default)
           #   <bar-load>
@@ -138,18 +135,16 @@ in {
             text = "<label>";
             prefix = "󰍛";
           };
-
           # Available tokens:
           #   %percentage% (default) - total cpu load averaged over all cores
           #   %percentage-sum% - Cumulative load on all cores
           #   %percentage-cores% - load percentage for each core
           #   %percentage-core[1-9]% - load percentage for specific core
-          label = " %percentage%%";
+          label = " %percentage:3%%";
         };
 
         "module/memory" = {
           type = "internal/memory";
-
           # Available tags:
           #   <label> (default)
           #   <bar-used>
@@ -175,7 +170,6 @@ in {
               foreground = "#444444";
             };
           };
-
           # Available tokens:
           #   %percentage_used% (default)
           #   %percentage_free%
@@ -193,7 +187,7 @@ in {
           #   %gb_swap_total%
           #   %gb_swap_free%
           #   %gb_swap_used%
-          label = " %gb_used%/%gb_total%";
+          label = " %gb_used:5%/%gb_total:5%";
         };
 
         "module/filesystem" = let
@@ -208,6 +202,29 @@ in {
             pool_available=$(${zfsBinary} list -o available ${pool} | ${trBinary} -d "AVAIL\n" | ${trBinary} -d " ")
             echo "󰋊 $pool_available"
           '';
+        };
+
+        "module/wired-network" = {
+          type = "internal/network";
+          interface.type = "wired";
+          speed.unit = "B/s";
+          format = {
+            # Available tags:
+            #   <label-connected> (default)
+            #   <ramp-signal>
+            connected = "<label-connected>";
+            disconnected = "<label-disconnected>";
+          };
+          label = {
+            connected = {
+              text = "󰌘 %local_ip% 󰛴 %downspeed:8% 󰛶 %upspeed:8%";
+              foreground = "${color.foreground}";
+            };
+            disconnected = {
+              text = "󰌙";
+              foreground = "${color.primary}";
+            };
+          };
         };
 
       };
