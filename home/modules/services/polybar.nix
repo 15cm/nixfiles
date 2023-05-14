@@ -34,10 +34,19 @@ in {
           height = "3%";
           modules = {
             left = "i3";
-            right = concatStringsSep " " [ "cpu" "volume" "date" ];
+            right = concatStringsSep " " [ "memory" "cpu" "volume" "date" ];
           };
           tray.position = "center";
-          font = [ "Isevka8;2" "MaterialDesignIcons:size=10" ];
+          font = [
+            "Iosevka:size=10;2"
+            "MaterialDesignIcons:size=12;2"
+            "IosevkaNerdFont:size=12;2"
+          ];
+          padding = 1;
+          module = {
+            margin = 1;
+            padding = 1;
+          };
         };
 
         "module/i3" = {
@@ -143,8 +152,21 @@ in {
           #   <bar-swap-free>
           #   <ramp-swap-used>
           #   <ramp-swap-free>
-          format = "<label>";
+          format = "<label> <bar-used>";
           format-prefix = "󰘚";
+          bar.used = {
+            indicator = "";
+            width = 10;
+            foreground-0 = "#55aa55";
+            foreground-1 = "#557755";
+            foreground-2 = "#f5a70a";
+            foreground-3 = "#ff5555";
+            fill = "▐";
+            empty = {
+              text = "▐";
+              foreground = "#444444";
+            };
+          };
 
           # Available tokens:
           #   %percentage_used% (default)
@@ -163,7 +185,7 @@ in {
           #   %gb_swap_total%
           #   %gb_swap_free%
           #   %gb_swap_used%
-          label = " %mb_used% / %mb_total%";
+          label = " %gb_used%/%gb_total%";
         };
 
       };
