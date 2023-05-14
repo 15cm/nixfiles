@@ -33,11 +33,12 @@ in {
           height = "3%";
           modules = {
             left = "i3";
-            right = concatStringsSep " " [ "volume" ];
+            right = concatStringsSep " " [ "volume" "date" ];
           };
           tray.position = "center";
           font = [ "Isevka8;2" "MaterialIcons:size=10" ];
         };
+
         "module/i3" = {
           type = "internal/i3";
           label-mode = "%mode%";
@@ -53,6 +54,7 @@ in {
           label-unfocused = "%index%";
           label-unfocused-padding = "4";
         };
+
         "module/volume" = {
           type = "internal/pulseaudio";
           format = {
@@ -85,13 +87,34 @@ in {
           ramp-volume-3 = "";
           ramp-volume-4 = "";
         };
+
+        "module/date" = {
+          type = "internal/date";
+          interval = "1.0";
+
+          # See "http://en.cppreference.com/w/cpp/io/manip/put_time" for details on how to format the date string
+          # NOTE: if you want to use syntax tags here you need to use %%{...}
+          date = "%Y-%m-%d %a";
+          time = "%H:%M";
+
+          # Available tags:
+          # <label> (default)
+          format = "<label>";
+
+          # Available tokens:
+          #   %date%
+          #   %time%
+          # Default: %date%
+          label = " %time%  %date%";
+        };
       };
+
       script =
         let polybarBinary = "${config.services.polybar.package}/bin/polybar";
         in ''
           for m in $(${polybarBinary} --list-monitors | ${pkgs.coreutils}/bin/cut -d":" -f1); do
               MONITOR=$m ${polybarBinary} top &
-              ${pkgs.coreutils}/bin/sleep 1
+              ${pkgs.coreutils}/bin/sleep 3
           done
         '';
     };
