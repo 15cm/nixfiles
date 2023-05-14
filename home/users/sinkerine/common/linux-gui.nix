@@ -49,6 +49,7 @@ with lib; {
     osdlyrics
     dex
     krita
+    unflac
   ];
 
   my.xsession.i3.enable = true;
