@@ -120,7 +120,7 @@ in {
           #   %date%
           #   %time%
           # Default: %date%
-          label = "󰅐 %time% 󰃶 %date%";
+          label = "󰃶 %date% 󰅐 %time%";
         };
 
         "module/cpu" = {
