@@ -58,6 +58,7 @@ in {
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     modesetting.enable = true;
+    powerManagement.enable = true;
   };
   boot.kernelParams =
     [ "acpi_enforce_resources=lax" "transparent_hugepage=never" ];

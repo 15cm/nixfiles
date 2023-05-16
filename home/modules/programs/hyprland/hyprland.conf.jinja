@@ -17,18 +17,16 @@ monitor=DP-2, highres, auto, 2
 exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 exec-once = xrdb -merge ~/.Xresources
 
-wsbind=1,$monitor_1
-wsbind=2,$monitor_1
-wsbind=3,$monitor_1
-wsbind=4,$monitor_1
-wsbind=5,$monitor_1
-wsbind=6,$monitor_2
-wsbind=7,$monitor_2
-wsbind=8,$monitor_2
-wsbind=9,$monitor_2
-wsbind=0,$monitor_2
-workspace = $monitor_1, 1
-workspace = $monitor_2, 6
+workspace = 1, monitor:$monitor_1, default:true
+workspace = 2, monitor:$monitor_1
+workspace = 3, monitor:$monitor_1
+workspace = 4, monitor:$monitor_1
+workspace = 5, monitor:$monitor_1
+workspace = 6, monitor:$monitor_2, default:true
+workspace = 7, monitor:$monitor_2
+workspace = 8, monitor:$monitor_2
+workspace = 9, monitor:$monitor_2
+workspace = 0, monitor:$monitor_2
 
 animations {
   enabled = true
@@ -140,6 +138,7 @@ bind = $mainMod, P, pin
 bind = $mainMod, mouse_up, workspace, e+1
 bind = $mainMod, mouse_down, workspace, e-1
 
-# Resize windows with mainMod + RMB and dragging
-bindm = $mainMod SHIFT, mouse:272, movewindow
-bindm = $mainMod SHIFT, mouse:273, resizewindow
+# Move windows with mainMod + shift + right mouse button and dragging
+bindm = $mainMod SHIFT, mouse:273, movewindow
+# Resize windows with mainMod + shift + left mouse button and dragging
+bindm = $mainMod SHIFT, mouse:272, resizewindow

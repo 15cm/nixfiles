@@ -26,6 +26,7 @@ in {
         enable = true;
         hidpi = true;
       };
+      systemdIntegration = true;
       extraConfig = pipe ./hyprland.conf.jinja [
         (templateFile "hyprland.conf" templateData)
         builtins.readFile
