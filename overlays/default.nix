@@ -16,6 +16,7 @@ with nixpkgs.lib; {
     });
     waybar = super.waybar.overrideAttrs
       (old: { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
+    trash-cli = super.trash-cli.overrideAttrs (old: { postInstall = ""; });
     # flameshot = super.flameshot.overrideAttrs (old: {
     #   src = super.fetchFromGitHub {
     #     owner = "flameshot-org";
