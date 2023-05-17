@@ -75,6 +75,14 @@ bind = , M, submap, reset
 bind = , escape, submap, reset
 submap = reset
 
+# System power management
+bind = $mainMod SHIFT, Z, submap, power-management
+submap = power-management
+bind = , S, exec, systemctl suspend
+bind = , S, submap, reset
+bind = , escape, submap, reset
+submap = reset
+
 general {
   # See https://wiki.hyprland.org/Configuring/Variables/ for more
 

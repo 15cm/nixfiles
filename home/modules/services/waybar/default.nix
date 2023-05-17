@@ -114,8 +114,8 @@ in {
             interval = 3;
             interface = "enp4s0";
             format = " {bandwidthDownBytes}  {bandwidthUpBytes}";
-            min-length = 20;
-            max-length = 20;
+            min-length = 25;
+            max-length = 30;
           };
           "custom/zfs" = {
             format = "{} ";
