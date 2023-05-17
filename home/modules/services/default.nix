@@ -1,1 +1,1 @@
-{ imports = [ ./clipper.nix ./syncthing.nix ./polybar.nix ]; }
+{ imports = [ ./clipper.nix ./syncthing.nix ./polybar.nix ./hyprpaper.nix ]; }

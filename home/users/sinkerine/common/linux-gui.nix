@@ -63,6 +63,15 @@ with lib; {
     enable = true;
     zfsRootPoolName = "rpool";
   };
+  my.services.hyprpaper = {
+    enable = true;
+    monitorToWallPapers = {
+      "DP-1" =
+        "${config.home.homeDirectory}/Pictures/wallpapers/yande.re_455471_armor_fate_grand_order_heels_landscape_shielder_(fate_grand_order)_thighhighs_thkani@2x.png";
+      "DP-2" =
+        "${config.home.homeDirectory}/Pictures/wallpapers/yande_128733_dress_kagome_keroq_minakami_yuki_smoking_subarashiki_hibi_thighhighs@2x.png";
+    };
+  };
 
   # my.xsession.i3.enable = true;
   qt.enable = true;

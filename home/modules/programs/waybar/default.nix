@@ -35,6 +35,7 @@ in {
           "wlr/workspaces" = {
             format = "{icon}";
             all-outputs = true;
+            on-click = "activate";
           };
           "tray" = { "spacing" = 10; };
           "clock#time" = {
