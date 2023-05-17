@@ -59,24 +59,9 @@ with lib; {
     };
   };
   programs.wofi.enable = true;
-  programs.waybar = {
+  my.programs.waybar = {
     enable = true;
-    systemd.enable = true;
-    settings = {
-      mainBar = {
-        layer = "top";
-        output = [ "DP-1" "DP-2" ];
-        position = "top";
-        height = 30;
-        modules-left = [ "wlr/workspaces" ];
-        modules-right = [ "tray" ];
-        "wlr/workspaces" = {
-          format = "{icon}";
-          all-outputs = true;
-        };
-        "tray" = { "spacing" = 10; };
-      };
-    };
+    zfsRootPoolName = "rpool";
   };
 
   # my.xsession.i3.enable = true;

@@ -16,6 +16,8 @@ mkMerge [
       iosevka
       iosevka-nerdfont
       material-design-icons
+      # Not sure why Font Manager doesn't work well with FontAwesome v6
+      font-awesome_5
     ];
 
     # So that font manager can see the user installed fonts.
