@@ -57,7 +57,10 @@ with lib; {
       one = "DP-1";
       two = "DP-2";
     };
-    nightLightTemperature = (if state.theme == "light" then 4000 else 3400);
+    nightLightTemperature = (if state.enableNightLight then
+      (if state.theme == "light" then 4000 else 3400)
+    else
+      null);
   };
   programs.wofi.enable = true;
   my.services.waybar = {
