@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hostname, ... }:
+{ config, pkgs, lib, hostname, state, ... }:
 
 with lib; {
   imports = [
@@ -57,9 +57,10 @@ with lib; {
       one = "DP-1";
       two = "DP-2";
     };
+    nightLightTemperature = (if state.theme == "light" then 4000 else 3400);
   };
   programs.wofi.enable = true;
-  my.programs.waybar = {
+  my.services.waybar = {
     enable = true;
     zfsRootPoolName = "rpool";
   };

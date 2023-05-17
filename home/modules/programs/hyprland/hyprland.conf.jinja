@@ -143,3 +143,9 @@ bind = $mainMod, mouse_down, workspace, e-1
 bindm = $mainMod SHIFT, mouse:273, movewindow
 # Resize windows with mainMod + shift + left mouse button and dragging
 bindm = $mainMod SHIFT, mouse:272, resizewindow
+
+{%if enableNightLightShader %}
+decoration {
+  screen_shader = {{nightLightShaderPath}}
+}
+{%endif%}

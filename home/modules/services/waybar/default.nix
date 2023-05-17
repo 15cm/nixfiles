@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.my.programs.waybar;
+  cfg = config.my.services.waybar;
   inherit (mylib) templateFile;
   templateData = { };
 in {
-  options.my.programs.waybar = {
+  options.my.services.waybar = {
     enable = mkEnableOption "waybar";
     zfsRootPoolName = mkOption {
       type = types.str;
