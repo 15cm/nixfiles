@@ -51,6 +51,15 @@ with lib; {
     xorg.xrdb
   ];
 
+  home.sessionVariables = {
+    PATH = "${config.home.homeDirectory}/.nix-profile/bin:$PATH";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
+    # Hyprland
+    XDG_SESSION_TYPE = "wayland";
+    GDK_BACKEND = "wayland,x11";
+    QT_QPA_PLATFORM = "wayland;xcb";
+  };
+
   my.programs.hyprland = {
     enable = true;
     monitors = {
@@ -112,16 +121,17 @@ with lib; {
     sonixd = {
       name = "Sonixd";
       exec =
-        "env GDK_DPI_SCALE=0.5 XCURSOR_SIZE=48 ${pkgs.sonixd}/bin/sonixd --platform=xcb";
+        "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} ${pkgs.sonixd}/bin/sonixd --platform=xcb";
     };
     google-chrome = {
       name = "Google Chrome";
-      exec = "env GDK_DPI_SCALE=0.5 XCURSOR_SIZE=48 google-chrome-stable";
+      exec =
+        "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} google-chrome-stable";
     };
     "com.github.iwalton3.jellyfin-media-player" = {
       name = "Jellyfin Media Player";
       exec =
-        "env GDK_DPI_SCALE=0.5 XCURSOR_SIZE=48 jellyfinmediaplayer --platform=xcb";
+        "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} jellyfinmediaplayer --platform=xcb";
     };
   };
 

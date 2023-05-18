@@ -8,4 +8,12 @@ args@{ pkgs, ... }:
 
   home.packages = with pkgs; [ radeontop ];
   my.programs.nixGL.package = with pkgs.nixgl; (nixGLCommon nixGLIntel);
+
+  # Only pass scale env variables for XWayland apps.
+  my.env = {
+    QT_SCREEN_SCALE_FACTORS = "1.25";
+    GDK_SCALE = "1.25";
+    GDK_DPI_SCALE = "1";
+    XCURSOR_SIZE = "36";
+  };
 }

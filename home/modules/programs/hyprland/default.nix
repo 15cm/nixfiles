@@ -38,11 +38,40 @@ in {
         enable = true;
         hidpi = true;
       };
-      systemdIntegration = true;
-      extraConfig = pipe ./hyprland.conf.jinja [
+      # Write my own systemd integration to import all needed variables into systemd first.
+      systemdIntegration = false;
+      extraConfig = let
+        sessionImportVariables =
+          (builtins.attrNames config.home.sessionVariables) ++ [
+            "SSH_AGENT_PID"
+            "SSH_AUTH_SOCK"
+            "WAYLAND_DISPLAY"
+            "HYPRLAND_INSTANCE_SIGNATURE"
+            "XDG_CURRENT_DESKTOP"
+          ];
+        sessionInitCommand =
+          "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd ${
+            escapeShellArgs sessionImportVariables
+          } && systemctl --user import-environment ${
+            escapeShellArgs sessionImportVariables
+          } && systemctl --user start hyprland-session.target";
+      in ''
+        exec-once = ${sessionInitCommand}
+        exec-once = hyprctl setcursor Vanilla-DMZ 24
+      '' +
+      (pipe ./hyprland.conf.jinja [
         (templateFile "hyprland.conf" templateData)
         builtins.readFile
-      ];
+      ]);
+    };
+    systemd.user.targets.hyprland-session = {
+      Unit = {
+        Description = "hyprland compositor session";
+        Documentation = [ "man:systemd.special(7)" ];
+        BindsTo = [ "graphical-session.target" ];
+        Wants = [ "graphical-session-pre.target" ];
+        After = [ "graphical-session-pre.target" ];
+      };
     };
   };
 }
