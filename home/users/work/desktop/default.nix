@@ -86,10 +86,12 @@ with lib; {
     sonixd = {
       name = "Sonixd";
       # Not sure why my font config causes tofu in this AppImage.
-      exec =
-        "${pkgs.sonixd}/bin/sonixd";
+      exec = "${pkgs.sonixd}/bin/sonixd";
       terminal = false;
       categories = [ "Player" ];
     };
   };
+
+  my.programs.nixGL.enable = true;
+  my.programs.hmSwitch.useImpure = true;
 }

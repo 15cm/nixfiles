@@ -92,7 +92,6 @@ with lib; {
     enable = true;
     createDirectories = true;
   };
-  my.programs.nixGL.enable = true;
 
   programs.zsh.shellAliases = {
     # Nix Home Manager

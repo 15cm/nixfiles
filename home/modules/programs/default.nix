@@ -9,5 +9,6 @@
     ./i3
     ./nixGL.nix
     ./hyprland
+    ./hm-switch.nix
   ];
 }

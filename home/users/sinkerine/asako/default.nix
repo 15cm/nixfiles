@@ -7,7 +7,6 @@ args@{ pkgs, ... }:
     [ ../common ../common/linux-gui.nix ../../../features/app/easyeffects ];
 
   home.packages = with pkgs; [ radeontop ];
-  my.programs.nixGL.package = with pkgs.nixgl; (nixGLCommon nixGLIntel);
 
   # Only pass scale env variables for XWayland apps.
   my.env = {
