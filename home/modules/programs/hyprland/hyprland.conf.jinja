@@ -135,6 +135,24 @@ bind = $mainMod, P, pin
 
 bind = $mainMod, mouse_up, workspace, e+1
 bind = $mainMod, mouse_down, workspace, e-1
+bind = $mainMod, H, workspace, e-1
+bind = $mainMod, L, workspace, e+1
+bind = $mainMod SHIFT, H, movetoworkspace, e-1
+bind = $mainMod SHIFT, L, movetoworkspace, e+1
+
+# App launcher.
+bind = $mainMod, R, submap, resize
+submap = resize
+binde=,L,resizeactive,10 0
+binde=SHIFT,L,resizeactive,20 0
+binde=,H,resizeactive,-10 0
+binde=SHIFT,H,resizeactive,-20 0
+binde=,K,resizeactive,0 -10
+binde=SHIFT,K,resizeactive,0 -20
+binde=,J,resizeactive,0 10
+binde=SHIFT,J,resizeactive,0 20
+bind=,escape,submap,reset
+submap = reset
 
 # Move windows with mainMod + shift + right mouse button and dragging
 bindm = $mainMod SHIFT, mouse:273, movewindow
