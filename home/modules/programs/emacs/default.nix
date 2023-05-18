@@ -21,7 +21,8 @@ in {
       else
         "https://github.com/15cm/spacemacs-config.git";
     };
-    startAfterXSession = mkEnableOption "start after xsession";
+    startAfterGraphicalSession =
+      mkEnableOption "start after systemd graphical-session.target";
     extraOptions = mkOption {
       type = with types; listOf str;
       default = [ ];
@@ -40,7 +41,7 @@ in {
       };
       services.emacs = {
         enable = true;
-        startWithUserSession = !cfg.startAfterXSession;
+        startWithUserSession = !cfg.startAfterGraphicalSession;
         inherit (cfg) extraOptions;
       };
 
@@ -66,7 +67,7 @@ in {
           fi
         '';
     }
-    (mkIf cfg.startAfterXSession {
+    (mkIf cfg.startAfterGraphicalSession {
       systemd.user.services.emacs = {
         Unit = {
           After = [ "graphical-session-pre.target" ];

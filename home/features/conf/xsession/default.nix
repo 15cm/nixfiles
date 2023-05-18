@@ -13,10 +13,6 @@ in {
     ];
   };
 
-  home.sessionVariables = {
-    PATH = "${config.home.homeDirectory}/.nix-profile/bin:$PATH";
-  };
-
   xsession.importedVariables = [
     "PATH"
     "DISPLAY"

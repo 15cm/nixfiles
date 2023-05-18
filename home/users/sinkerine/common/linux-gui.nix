@@ -7,8 +7,8 @@ with lib; {
     ../../../features/app/gpg
     # XSession related
     ../../../features/conf/xresources
-    ../../../features/app/dunst
     # Applications
+    ../../../features/app/dunst
     ../../../features/app/alacritty
     ../../../features/app/aria2
     ../../../features/app/fcitx5
@@ -77,7 +77,6 @@ with lib; {
     };
   };
 
-  # my.xsession.i3.enable = true;
   qt.enable = true;
   gtk.enable = true;
   xdg.userDirs = {
@@ -97,7 +96,7 @@ with lib; {
   my.programs.emacs = {
     package = pkgs.myEmacs;
     enableSSHSpacemacsConfigRepo = true;
-    startAfterXSession = true;
+    startAfterGraphicalSession = true;
   };
   # my.services.clipper.enable = true;
   # my.services.syncthing.enable = true;

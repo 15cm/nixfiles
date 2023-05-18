@@ -14,29 +14,6 @@ with lib;
   ];
 
   hardware.opengl.enable = true;
-  # services.xserver = {
-  #   enable = true;
-
-  #   libinput = { enable = true; };
-
-  #   displayManager = {
-  #     xserverArgs = [ "-ardelay" "300" "-arinterval" "22" ];
-  #     autoLogin = {
-  #       enable = true;
-  #       user = "sinkerine";
-  #     };
-  #     lightdm = { enable = true; };
-  #     defaultSession = "none+i3";
-  #     session = [{
-  #       manage = "window";
-  #       name = "i3";
-  #       start = ''
-  #         ${pkgs.runtimeShell} $HOME/.xsession &
-  #         waitPID=$!
-  #       '';
-  #     }];
-  #   };
-  # };
 
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;

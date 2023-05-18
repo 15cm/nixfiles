@@ -8,10 +8,9 @@ let
     inherit (cfg) musicPlayer monitors;
     enableNightLightShader = (cfg.nightLightTemperature != null);
   } // optionalAttrs (cfg.nightLightTemperature != null) {
-    nightLightShaderPath = # ./night-light-shader.glsl.jinja;
-      templateFile "hyprland-shader.gsls" {
-        temperature = cfg.nightLightTemperature;
-      } ./night-light-shader.glsl.jinja;
+    nightLightShaderPath = templateFile "hyprland-shader.gsls" {
+      temperature = cfg.nightLightTemperature;
+    } ./night-light-shader.glsl.jinja;
   };
 in {
   options.my.programs.hyprland = {
