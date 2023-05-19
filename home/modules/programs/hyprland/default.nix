@@ -58,19 +58,28 @@ in {
       in ''
         exec-once = ${sessionInitCommand}
         exec-once = hyprctl setcursor Vanilla-DMZ 24
-      '' +
-      (pipe ./hyprland.conf.jinja [
+      '' + (pipe ./hyprland.conf.jinja [
         (templateFile "hyprland.conf" templateData)
         builtins.readFile
       ]);
     };
-    systemd.user.targets.hyprland-session = {
-      Unit = {
-        Description = "hyprland compositor session";
-        Documentation = [ "man:systemd.special(7)" ];
-        BindsTo = [ "graphical-session.target" ];
-        Wants = [ "graphical-session-pre.target" ];
-        After = [ "graphical-session-pre.target" ];
+    systemd.user = {
+      targets = {
+        hyprland-session = {
+          Unit = {
+            Description = "hyprland compositor session";
+            Documentation = [ "man:systemd.special(7)" ];
+            BindsTo = [ "graphical-session.target" "tray.target" ];
+            Wants = [ "graphical-session-pre.target" ];
+            After = [ "graphical-session-pre.target" ];
+          };
+        };
+        tray = {
+          Unit = {
+            Description = "Home Manager System Tray";
+            Requires = [ "graphical-session-pre.target" ];
+          };
+        };
       };
     };
   };

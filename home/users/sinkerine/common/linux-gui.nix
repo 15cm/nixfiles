@@ -113,7 +113,7 @@ with lib; {
       flags = "-n";
     };
   };
-  # my.services.syncthing.enable = true;
+  my.services.syncthing.enable = true;
   my.programs.networkmanager-dmenu = {
     enable = true;
     settings = {
