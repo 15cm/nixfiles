@@ -38,7 +38,7 @@ input {
   repeat_delay = 200
 }
 
-# Frequently used apps.
+# Frequently used shortcuts
 $mainMod = SUPER
 bind = $mainMod, Q, killactive
 bind = $mainMod, return, exec, alacritty
@@ -49,6 +49,7 @@ bind = $mainMod, U, focuswindow, ^(GoldenDict)$
 bind = $mainMod, I, exec, keepassxc
 bind = $mainMod, I, focuswindow, ^(org.keepassxc.KeePassXC)$
 bind = $mainMod, C, exec, copyq menu
+bind = $mainMod, T, togglefloating
 
 # App launcher.
 bind = $mainMod, O, submap, open
