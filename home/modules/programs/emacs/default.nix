@@ -10,7 +10,7 @@ in {
     enable = mkEnableOption "emacs";
     package = mkOption {
       type = types.package;
-      default = pkgs.myEmacs-nox;
+      default = pkgs.emacsUnstable-nox;
     };
     enableSSHSpacemacsConfigRepo = mkEnableOption "ssh url in ~/.spacemacs.d";
     spacemacsConfigRepoUrl = mkOption {

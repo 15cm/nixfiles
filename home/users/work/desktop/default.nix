@@ -14,7 +14,6 @@ with lib; {
     # XSession related
     ../../../features/conf/xsession
     ../../../features/conf/xresources
-    ../../../features/app/dunst
     ../../../features/app/unclutter
     ../../../features/app/wallpaper
     # Applications
@@ -69,12 +68,13 @@ with lib; {
   };
 
   my.programs.emacs = {
-    package = pkgs.myEmacs;
+    package = pkgs.emacsUnstable;
     # Fixes non-standard home directory.
     # https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
     extraOptions = [ "--user" "''" ];
   };
   my.services.clipper.enable = true;
+  services.dunst.enable = true;
   my.programs.networkmanager-dmenu = {
     enable = true;
     settings = {

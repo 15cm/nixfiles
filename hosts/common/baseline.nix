@@ -22,6 +22,7 @@ with lib; {
     smartmontools
     nix-index
     iperf
+    jq
   ];
 
   nix = {
