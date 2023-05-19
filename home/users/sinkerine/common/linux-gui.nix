@@ -66,10 +66,8 @@ with lib; {
       one = "DP-1";
       two = "DP-2";
     };
-    nightLightTemperature = (if state.enableNightLight then
-      (if state.theme == "light" then 4000 else 3400)
-    else
-      null);
+    inherit (state) enableNightLightShader;
+    nightLightTemperature = (if state.theme == "light" then 4000 else 3400);
   };
   programs.wofi.enable = true;
   my.services.waybar = {

@@ -4,12 +4,11 @@ with lib;
 let
   cfg = config.my.programs.hyprland;
   inherit (mylib) templateFile templateShellScriptFile writeShellScriptFile;
-  templateData = rec {
-    inherit (cfg) musicPlayer monitors;
-    enableNightLightShader = (cfg.nightLightTemperature != null);
-  } // optionalAttrs (cfg.nightLightTemperature != null) {
+  templateData = {
+    inherit (cfg) musicPlayer monitors enableNightLightShader;
+  } // optionalAttrs cfg.enableNightLightShader {
     nightLightShaderPath = templateFile "hyprland-shader.gsls" {
-      temperature = cfg.nightLightTemperature;
+      inherit (cfg) nightLightTemperature;
     } ./night-light-shader.glsl.jinja;
   };
 in {
@@ -24,9 +23,10 @@ in {
       default = { };
     };
     # Work around of https://github.com/NVIDIA/open-gpu-kernel-modules/issues/162 before nvidia supports GAMMA_LUT for gammastep to work.
+    enableNightLightShader = mkEnableOption "night light shader";
     nightLightTemperature = mkOption {
       type = with types; nullOr int;
-      default = null;
+      default = 3400;
     };
   };
 

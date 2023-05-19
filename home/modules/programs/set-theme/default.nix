@@ -28,9 +28,9 @@ in {
     home.file."local/bin/night-light-control.sh".source =
       pkgs.writeShellScript "night-light-control.sh" ''
         if [ $1 = "off" ]; then
-          sed -i "s/.*enableNightLight.*/  enableNightLight = false;/" ${nixinfo.projectRoot}/home/state/default.nix
+          sed -i "s/.*enableNightLightShader.*/  enableNightLightShader = false;/" ${nixinfo.projectRoot}/home/state/default.nix
         else
-          sed -i "s/.*enableNightLight.*/  enableNightLight = true;/" ${nixinfo.projectRoot}/home/state/default.nix
+          sed -i "s/.*enableNightLightShader.*/  enableNightLightShader = true;/" ${nixinfo.projectRoot}/home/state/default.nix
         fi
         switch-nix-home.sh
       '';
