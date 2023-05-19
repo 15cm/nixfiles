@@ -53,10 +53,6 @@
             emacs-overlay.overlays.default
           ];
           config.allowUnfree = true;
-          config.permittedInsecurePackages = [
-            # For goldendict
-            "qtwebkit-5.212.0-alpha4"
-          ];
         });
 
       homeConfigurationArgs = {
