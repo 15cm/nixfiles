@@ -180,10 +180,12 @@ bindm = $mainMod SHIFT, mouse:273, movewindow
 # Resize windows with mainMod + shift + left mouse button and dragging
 bindm = $mainMod SHIFT, mouse:272, resizewindow
 
-windowrulev2 = float, class:^(com.github.hluk.copyq)$, title:^(CopyQ)$
-
 {%if enableNightLightShader %}
 decoration {
   screen_shader = {{nightLightShaderPath}}
 }
 {%endif%}
+
+windowrulev2 = float, class:^(com.github.hluk.copyq)$, title:^(CopyQ)$
+windowrulev2 = opacity 0.9 0.9, class:^(emacs)$
+windowrulev2 = opacity 0.9 0.9, class:^(Alacritty)$
