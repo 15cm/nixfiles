@@ -106,7 +106,13 @@ with lib; {
     enableSSHSpacemacsConfigRepo = true;
     startAfterGraphicalSession = true;
   };
-  # my.services.clipper.enable = true;
+  my.services.clipper = {
+    enable = true;
+    extraSettings = {
+      executable = "/home/sinkerine/.nix-profile/bin/wl-copy";
+      flags = "-n";
+    };
+  };
   # my.services.syncthing.enable = true;
   my.programs.networkmanager-dmenu = {
     enable = true;

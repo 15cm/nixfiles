@@ -45,7 +45,7 @@ in {
       settings = {
         inherit (cfg) address port;
         logfile = cfg.logFile;
-      };
+      } // cfg.extraSettings;
       inherit (cfg) logDir;
     };
   };
