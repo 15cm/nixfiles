@@ -1,8 +1,8 @@
 $monitor_1 = {{monitors.one}}
 $monitor_2 = {{monitors.two}}
 
-monitor=DP-1, highres, auto, 2
-monitor=DP-2, highres, auto, 2
+monitor={{monitors.one}}, highres, 0x0, 2
+monitor={{monitors.two}}, highres, 1920x0, 2
 exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 exec-once = xrdb -merge ~/.Xresources
 
@@ -128,8 +128,10 @@ bind = $mainMod, y, layoutmsg, focusmaster
 bind = $mainMod SHIFT, y, layoutmsg, swapwithmaster master
 bind = $mainMod, n, focusmonitor, DP-1
 bind = $mainMod, m, focusmonitor, DP-2
-bind = $mainMod SHIFT, n, movewindow, mon:DP-1
-bind = $mainMod SHIFT, m, movewindow, mon:DP-2
+bind = $mainMod SHIFT, n, movewindow, monitor:{{monitors.one}}
+bind = $mainMod SHIFT, m, movewindow, monitor:{{monitors.two}}
+bind = $mainMod ALT, n, movecurrentworkspacetomonitor, {{monitors.one}}
+bind = $mainMod ALT, m, movecurrentworkspacetomonitor, {{monitors.two}}
 
 # Window dispatchers
 bind = $mainMod, F, fullscreen, 1
