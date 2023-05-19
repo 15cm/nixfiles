@@ -62,6 +62,11 @@ bind = , E, exec, emacsclient -c
 bind = , E, submap, reset
 bind = , M, exec, {{musicPlayer}}
 bind = , M, submap, reset
+bind = , N, exec, dunstctl close-all
+bind = , N, submap, reset
+bind = SHIFT, N, exec, dunstctl history-pop
+bind = SHIFT, N, submap, reset
+
 bind = , escape, submap, reset
 submap = reset
 
@@ -147,7 +152,7 @@ bind = $mainMod, L, workspace, e+1
 bind = $mainMod SHIFT, H, movetoworkspace, e-1
 bind = $mainMod SHIFT, L, movetoworkspace, e+1
 
-# App launcher.
+# Resize window
 bind = $mainMod, R, submap, resize
 submap = resize
 binde=,L,resizeactive,10 0

@@ -5,14 +5,12 @@ with lib; {
     # Essentials
     ../../../features/conf/ssh
     ../../../features/app/gpg
-    # XSession related
+    # XSession related. Needed by xWayland as well.
     ../../../features/conf/xresources
     # Applications
-    ../../../features/app/dunst
     ../../../features/app/alacritty
     ../../../features/app/aria2
     ../../../features/app/fcitx5
-    ../../../features/app/copyq
     ../../../features/app/goldendict
     ../../../features/app/playctl
   ];
@@ -111,6 +109,7 @@ with lib; {
       flags = "-n";
     };
   };
+  my.services.copyq.enable = true;
   my.services.syncthing.enable = true;
   my.programs.networkmanager-dmenu = {
     enable = true;
@@ -118,6 +117,7 @@ with lib; {
       dmenu.dmenu_command = "${config.programs.rofi.package}/bin/rofi -dmenu";
     };
   };
+  services.dunst.enable = true;
 
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {
