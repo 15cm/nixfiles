@@ -6,6 +6,7 @@ let
   inherit (mylib) templateFile templateShellScriptFile writeShellScriptFile;
   templateData = {
     inherit (cfg) musicPlayer monitors enableNightLightShader;
+    windowSwitcherScript = "python " + ./window_switcher.py;
   } // optionalAttrs cfg.enableNightLightShader {
     nightLightShaderPath = templateFile "hyprland-shader.gsls" {
       inherit (cfg) nightLightTemperature;

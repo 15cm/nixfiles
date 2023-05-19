@@ -47,6 +47,12 @@ with lib; {
     # For tweaking XWayland config.
     xorg.xprop
     xorg.xrdb
+
+    # Development
+    pyright
+    black
+    isort
+    python3Packages.docformatter
   ];
 
   home.sessionVariables = {
@@ -98,7 +104,7 @@ with lib; {
     bno = "build-nix-os.sh";
   };
   my.programs.emacs = {
-    package = pkgs.myEmacs;
+    package = pkgs.emacsUnstablePgtk;
     enableSSHSpacemacsConfigRepo = true;
     startAfterGraphicalSession = true;
   };
@@ -114,7 +120,7 @@ with lib; {
   my.programs.networkmanager-dmenu = {
     enable = true;
     settings = {
-      dmenu.dmenu_command = "${config.programs.rofi.package}/bin/rofi -dmenu";
+      dmenu.dmenu_command = "${config.programs.wofi.package}/bin/wofi -dmenu";
     };
   };
   services.dunst.enable = true;

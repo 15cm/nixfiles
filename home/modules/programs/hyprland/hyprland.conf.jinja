@@ -42,7 +42,8 @@ input {
 $mainMod = SUPER
 bind = $mainMod, Q, killactive
 bind = $mainMod, return, exec, alacritty
-bind = $mainMod, D, exec, wofi -i --show drun
+bind = $mainMod, D, exec, wofi -iI --show drun
+bind = $mainMod, W, exec, {{windowSwitcherScript}}
 bind = $mainMod, U, exec, goldendict
 bind = $mainMod, U, focuswindow, ^(GoldenDict)$
 bind = $mainMod, I, exec, keepassxc
