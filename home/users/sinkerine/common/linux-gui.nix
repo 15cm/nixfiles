@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hostname, state, ... }:
+{ config, pkgs, lib, hostname, ... }:
 
 with lib; {
   imports = [
@@ -41,7 +41,6 @@ with lib; {
     krita
     unflac
     wl-clipboard
-    spectacle
     grim
     slurp
     # For tweaking XWayland config.
@@ -66,26 +65,17 @@ with lib; {
 
   my.programs.hyprland = {
     enable = true;
-    monitors = {
-      one = "DP-1";
-      two = "DP-2";
-    };
-    inherit (state) enableNightLightShader;
-    nightLightTemperature = (if state.theme == "light" then 4000 else 3400);
+    inherit (config.my.hardware) monitors;
   };
   programs.wofi.enable = true;
   my.services.waybar = {
     enable = true;
     zfsRootPoolName = "rpool";
+    inherit (config.my.hardware) monitors;
   };
   my.services.hyprpaper = {
     enable = true;
-    monitorToWallPapers = {
-      "DP-1" =
-        "${config.home.homeDirectory}/Pictures/wallpapers/yande.re_455471_armor_fate_grand_order_heels_landscape_shielder_(fate_grand_order)_thighhighs_thkani@2x.png";
-      "DP-2" =
-        "${config.home.homeDirectory}/Pictures/wallpapers/yande_128733_dress_kagome_keroq_minakami_yuki_smoking_subarashiki_hibi_thighhighs@2x.png";
-    };
+    inherit (config.my.hardware) monitors;
   };
 
   qt.enable = true;
@@ -124,7 +114,11 @@ with lib; {
     };
   };
   services.dunst.enable = true;
-  my.services.swaylock.enable = true;
+  my.services.swaylock = {
+    enable = true;
+    image =
+      "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
+  };
 
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {

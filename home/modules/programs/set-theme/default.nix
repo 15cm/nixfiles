@@ -25,20 +25,9 @@ in {
         exit 0
       '';
 
-    home.file."local/bin/night-light-control.sh".source =
-      pkgs.writeShellScript "night-light-control.sh" ''
-        if [ $1 = "off" ]; then
-          sed -i "s/.*enableNightLightShader.*/  enableNightLightShader = false;/" ${nixinfo.projectRoot}/home/state/default.nix
-        else
-          sed -i "s/.*enableNightLightShader.*/  enableNightLightShader = true;/" ${nixinfo.projectRoot}/home/state/default.nix
-        fi
-        switch-nix-home.sh
-      '';
     programs.zsh.shellAliases = {
       stl = "set-theme.sh light";
       std = "set-theme.sh dark";
-      nlon = "night-light-control.sh on";
-      nloff = "night-light-control.sh off";
     };
 
     home.activation.reloadTheme = hm.dag.entryAfter [ "writeBoundary" ] ''

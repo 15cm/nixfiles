@@ -1,10 +1,20 @@
-$monitor_1 = {{monitors.one}}
-$monitor_2 = {{monitors.two}}
-
-monitor={{monitors.one}}, highres, 0x0, 2
-monitor={{monitors.two}}, highres, 1920x0, 2
 exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 exec-once = xrdb -merge ~/.Xresources
+
+$mainMod = SUPER
+
+$monitor_1 = {{monitors.one.output}}
+
+{%if hostname == "kazuki" %}
+$monitor_2 = {{monitors.two.output}}
+
+monitor=$monitor_1, highres, 0x0, 2
+monitor=$monitor_2, highres, 1920x0, 2
+
+bind = $mainMod SHIFT, n, movewindow, mon:$monitor_1
+bind = $mainMod SHIFT, m, movewindow, mon:$monitor_2
+bind = $mainMod ALT, n, movecurrentworkspacetomonitor, $monitor_1
+bind = $mainMod ALT, m, movecurrentworkspacetomonitor, $monitor_2
 
 workspace = 1, monitor:$monitor_1, default:true
 workspace = 2, monitor:$monitor_1
@@ -16,6 +26,10 @@ workspace = 7, monitor:$monitor_2
 workspace = 8, monitor:$monitor_2
 workspace = 9, monitor:$monitor_2
 workspace = 0, monitor:$monitor_2
+
+{%elif hostname == "asako" %}
+monitor=$monitor_1, highres, 0x0, 1.25
+{%endif%}
 
 animations {
   enabled = true
@@ -36,10 +50,13 @@ input {
   follow_mouse = 2
   repeat_rate = 20
   repeat_delay = 200
+
+  touchpad {
+    natural_scroll = true
+  }
 }
 
 # Frequently used shortcuts
-$mainMod = SUPER
 bind = $mainMod, Q, killactive
 bind = $mainMod, return, exec, alacritty
 bind = $mainMod, D, exec, wofi -iI --show drun
@@ -49,6 +66,7 @@ bind = $mainMod, U, focuswindow, ^(GoldenDict)$
 bind = $mainMod, I, exec, keepassxc
 bind = $mainMod, I, focuswindow, ^(org.keepassxc.KeePassXC)$
 bind = $mainMod, C, exec, copyq menu
+bind = $mainMod SHIFT, C, exec, copyq show
 bind = $mainMod, T, togglefloating
 
 # App launcher.
@@ -68,6 +86,8 @@ bind = , N, exec, dunstctl close-all
 bind = , N, submap, reset
 bind = SHIFT, N, exec, dunstctl history-pop
 bind = SHIFT, N, submap, reset
+bind = , W, exec, networkmanager_dmenu
+bind = , W, submap, reset
 
 bind = , escape, submap, reset
 submap = reset
@@ -89,9 +109,9 @@ submap = reset
 general {
   # See https://wiki.hyprland.org/Configuring/Variables/ for more
 
-  gaps_in = 3
+  gaps_in = 5
   gaps_out = 5
-  border_size = 4
+  border_size = 5
   col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
   col.inactive_border = rgba(595959aa)
   cursor_inactive_timeout = 300
@@ -138,10 +158,6 @@ bind = $mainMod, y, layoutmsg, focusmaster
 bind = $mainMod SHIFT, y, layoutmsg, swapwithmaster master
 bind = $mainMod, n, focusmonitor, DP-1
 bind = $mainMod, m, focusmonitor, DP-2
-bind = $mainMod SHIFT, n, movewindow, mon:{{monitors.one}}
-bind = $mainMod SHIFT, m, movewindow, mon:{{monitors.two}}
-bind = $mainMod ALT, n, movecurrentworkspacetomonitor, {{monitors.one}}
-bind = $mainMod ALT, m, movecurrentworkspacetomonitor, {{monitors.two}}
 
 # Window dispatchers
 bind = $mainMod, F, fullscreen, 1
@@ -149,8 +165,8 @@ bind = $mainMod SHIFT, F, fullscreen, 0
 bind = $mainMod, X, togglefloating
 bind = $mainMod, P, pin
 
-bind = $mainMod, mouse_up, workspace, e+1
-bind = $mainMod, mouse_down, workspace, e-1
+bind = $mainMod SHIFT, mouse_up, workspace, e+1
+bind = $mainMod SHIFT, mouse_down, workspace, e-1
 bind = $mainMod, H, workspace, e-1
 bind = $mainMod, L, workspace, e+1
 bind = $mainMod SHIFT, H, movetoworkspace, e-1

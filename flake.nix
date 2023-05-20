@@ -69,7 +69,10 @@
         };
         "sinkerine@asako" = {
           pkgs = packages."x86_64-linux";
-          modules = [ ./home/users/sinkerine/asako ];
+          modules = [
+            ./home/users/sinkerine/asako
+            hyprland.homeManagerModules.default
+          ];
           extraSpecialArgs = {
             hostname = "asako";
             isLinuxGui = true;

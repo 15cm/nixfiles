@@ -13,8 +13,8 @@ in {
       duskTime = "19:00";
       provider = "geoclue2";
       temperature = {
-        day = 3000;
-        night = 3000;
+        day = 4000;
+        night = 3400;
       };
       tray = true;
     };

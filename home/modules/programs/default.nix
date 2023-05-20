@@ -10,5 +10,6 @@
     ./nixGL.nix
     ./hyprland
     ./hm-switch.nix
+    ./night-light-switch.nix
   ];
 }

@@ -12,6 +12,14 @@ in {
       type = types.str;
       default = null;
     };
+    monitors = mkOption {
+      type = types.attrs;
+      default = [ ];
+    };
+    networkInterface = mkOption {
+      type = types.str;
+      default = null;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -21,14 +29,16 @@ in {
       settings = {
         mainBar = {
           layer = "top";
-          output = [ "DP-1" "DP-2" ];
+          output = (mapAttrsToList (name: value: value.output) cfg.monitors);
           position = "top";
           height = 30;
-          modules-left = [ "clock" "pulseaudio" "network" "network#speed" ];
+          modules-left = [ "cpu" "memory" "network" "network#speed" ];
           modules-center = [ "wlr/workspaces" "custom/isMaximized" ];
-          modules-right = [ "cpu" "memory" ]
-            ++ optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ]
-            ++ [ "tray" ];
+          modules-right =
+            optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ]
+            ++ [ "pulseaudio" ]
+            ++ optionals (hostname == "asako") [ "backlight" "battery" ]
+            ++ [ "clock" "tray" ];
           "wlr/workspaces" = {
             format = "{icon}";
             all-outputs = true;
@@ -65,9 +75,26 @@ in {
             on-click = "pavucontrol";
             ignored-sinks = [ "Easy Effects Sink" ];
           };
+          "battery" = {
+            interval = 60;
+            states = {
+              warning = 30;
+              critical = 15;
+            };
+            format = "{icon} {capacity}%";
+            format-icons = [ "" "" "" "" "" ];
+            min-length = 6;
+            max-length = 25;
+          };
+          "backlight" = {
+            # device = "intel_backlight";
+            format = "{icon} {percent}%";
+            format-icons = [ "" "" ];
+            min-length = 6;
+          };
           "network" = {
             interval = 30;
-            interface = "enp4s0";
+            interface = cfg.networkInterface;
             format = "{ifname}";
             format-wifi = "{essid} ({signalStrength}%) ";
             format-ethernet = "{ipaddr}/{cidr} ";
@@ -80,7 +107,7 @@ in {
           };
           "network#speed" = {
             interval = 3;
-            interface = "enp4s0";
+            interface = cfg.networkInterface;
             format = " {bandwidthDownBytes}  {bandwidthUpBytes}";
             min-length = 25;
             max-length = 30;

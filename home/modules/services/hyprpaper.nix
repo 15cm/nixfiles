@@ -9,25 +9,19 @@ in {
       type = types.package;
       default = pkgs.hyprpaper;
     };
-    monitorToWallPapers = mkOption {
+    monitors = mkOption {
       type = types.attrs;
       default = { };
-      example = literalExpression ''
-        {
-          monitor = "DP-0";
-          imagePath = /home/user/Pictures/1.png;
-        }
-      '';
     };
   };
 
   config = mkIf cfg.enable {
     home.packages = [ cfg.package ];
     xdg.configFile."hypr/hyprpaper.conf".text = concatStringsSep "\n"
-      (mapAttrsToList (monitor: imagePath: ''
-        preload = ${imagePath}
-        wallpaper = ${monitor},${imagePath}
-      '') cfg.monitorToWallPapers);
+      (mapAttrsToList (name: value: ''
+        preload = ${value.wallpaper}
+        wallpaper = ${value.output},${value.wallpaper}
+      '') cfg.monitors);
     systemd.user.services.hyprpaper = {
       Unit = {
         Description = "Hyprpaper";

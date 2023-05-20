@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, state, ... }:
 
 {
   home.stateVersion = "22.05";
@@ -35,4 +35,24 @@
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     WLR_NO_HARDWARE_CURSORS = "1";
   };
+
+  my.hardware.monitors = {
+    one = {
+      output = "DP-1";
+      wallpaper =
+        "${config.home.homeDirectory}/Pictures/wallpapers/yande.re_455471_armor_fate_grand_order_heels_landscape_shielder_(fate_grand_order)_thighhighs_thkani@2x.png";
+    };
+    two = {
+      output = "DP-2";
+      wallpaper =
+        "${config.home.homeDirectory}/Pictures/wallpapers/yande_128733_dress_kagome_keroq_minakami_yuki_smoking_subarashiki_hibi_thighhighs@2x.png";
+    };
+  };
+  my.programs.night-light-switch.enable = true;
+  my.programs.hyprland = {
+    inherit (config.my.hardware) monitors;
+    inherit (state) enableNightLightShader;
+    nightLightTemperature = (if state.theme == "light" then 4000 else 3400);
+  };
+  my.services.waybar.networkInterface = "enp4s0";
 }
