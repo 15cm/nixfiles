@@ -27,7 +27,7 @@ in {
           output = [ "DP-1" "DP-2" ];
           position = "top";
           height = 30;
-          modules-left = [ "wlr/workspaces" ];
+          modules-left = [ "wlr/workspaces" "custom/isMaximized" ];
           modules-center = [ "clock#time" "clock#date" ];
           modules-right = [ "network" "network#speed" "cpu" "memory" ]
             ++ optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ]
@@ -120,11 +120,21 @@ in {
           "custom/zfs" = {
             format = "{} ";
             exec = pkgs.writeShellScript "waybar-custom-zfs.sh" ''
-              ${pkgs.zfs}/bin/zfs list -o available ${cfg.zfsRootPoolName} | ${pkgs.coreutils}/bin/tr -d "AVAIL\n" | ${pkgs.coreutils}/bin/tr -d " "
+              zfs list -o available ${cfg.zfsRootPoolName} | tr -d "AVAIL\n" | tr -d " "
             '';
             interval = 30;
             min-length = 8;
             max-length = 10;
+          };
+          "custom/isMaximized" = {
+            format = "{}";
+            interval = 1;
+            exec = pkgs.writeShellScript "waybar-custom-is-maximized.sh" ''
+              result=$(hyprctl activewindow -j | jq ". | select(.fullscreen and .fullscreenMode == 1)")
+              if [ -n "$result" ]; then
+                echo "M"
+              fi
+            '';
           };
         };
       };
