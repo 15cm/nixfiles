@@ -5,8 +5,10 @@ set -g @continuum-restore 'on'
 set -g @jump-key 't'
 
 # Key bindings
+bind R source-file ~/.config/tmux/tmux.conf\; display-message "~/.config/tmux/tmux.conf reloaded"
 bind z confirm-before "kill-window"
-bind C-c new-session
+bind Z confirm-before "kill-session"
+bind S command-prompt -p "New Session:" "new-session -A -s '%%'"
 bind ^D detach
 # Pane movement
 bind '@' command-prompt -p "join pane from:"  "join-pane -s '%%'"
