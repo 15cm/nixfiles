@@ -69,6 +69,11 @@ with lib; {
       value = "4194304";
     }
   ];
+  security.pam.services.swaylock = {
+    text = ''
+      auth include login
+    '';
+  };
 
   system.activationScripts.linkTzdata = ''
     if ! [ -L /usr/share/zoneinfo ]; then

@@ -75,12 +75,14 @@ submap = reset
 # System power management
 bind = $mainMod SHIFT, Z, submap, power-management
 submap = power-management
+bind = , L, exec, swaylock
+bind = , L, submap, reset
+bind = , S, exec, systemctl suspend
+bind = , S, submap, reset
 bind = SHIFT, R, exec, reboot
 bind = SHIFT, R, submap, reset
 bind = SHIFT, S, exec, shutdown -h now
 bind = SHIFT, S, submap, reset
-bind = , S, exec, systemctl suspend
-bind = , S, submap, reset
 bind = , escape, submap, reset
 submap = reset
 
@@ -136,8 +138,8 @@ bind = $mainMod, y, layoutmsg, focusmaster
 bind = $mainMod SHIFT, y, layoutmsg, swapwithmaster master
 bind = $mainMod, n, focusmonitor, DP-1
 bind = $mainMod, m, focusmonitor, DP-2
-bind = $mainMod SHIFT, n, movewindow, monitor:{{monitors.one}}
-bind = $mainMod SHIFT, m, movewindow, monitor:{{monitors.two}}
+bind = $mainMod SHIFT, n, movewindow, mon:{{monitors.one}}
+bind = $mainMod SHIFT, m, movewindow, mon:{{monitors.two}}
 bind = $mainMod ALT, n, movecurrentworkspacetomonitor, {{monitors.one}}
 bind = $mainMod ALT, m, movecurrentworkspacetomonitor, {{monitors.two}}
 

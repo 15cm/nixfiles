@@ -48,6 +48,7 @@ with lib;
   my.services.docker.enable = true;
   my.services.autofs.enable = true;
   my.programs.AriaNg.enable = true;
+  my.services.swaylock.enable = true;
 
   services.printing.enable = true;
   services.printing.allowFrom = [ "all" ];

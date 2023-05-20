@@ -8,5 +8,6 @@
     ./waybar
     ./mako.nix
     ./copyq.nix
+    ./swaylock.nix
   ];
 }

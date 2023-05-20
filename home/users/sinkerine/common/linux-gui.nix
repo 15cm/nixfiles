@@ -124,6 +124,7 @@ with lib; {
     };
   };
   services.dunst.enable = true;
+  my.services.swaylock.enable = true;
 
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {
