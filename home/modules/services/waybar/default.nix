@@ -15,10 +15,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    programs.waybar = let
-      hyprctlBinary =
-        "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
-    in {
+    programs.waybar = {
       enable = true;
       systemd.enable = true;
       settings = {
@@ -27,47 +24,18 @@ in {
           output = [ "DP-1" "DP-2" ];
           position = "top";
           height = 30;
-          modules-left = [ "wlr/workspaces" "custom/isMaximized" ];
-          modules-center = [ "clock#time" "clock#date" ];
-          modules-right = [ "network" "network#speed" "cpu" "memory" ]
+          modules-left = [ "clock" "pulseaudio" "network" "network#speed" ];
+          modules-center = [ "wlr/workspaces" "custom/isMaximized" ];
+          modules-right = [ "cpu" "memory" ]
             ++ optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ]
-            ++ [ "pulseaudio" "tray" ];
+            ++ [ "tray" ];
           "wlr/workspaces" = {
             format = "{icon}";
             all-outputs = true;
             on-click = "activate";
           };
           "tray" = { "spacing" = 10; };
-          "clock#time" = {
-            interval = 30;
-            format = "{:%H:%M}  ";
-          };
-          "clock#date" = {
-            interval = 30;
-            format = "  {:%Y/%m/%d}";
-            # It is not working at this point with hyprland. The on-click does not work.
-            calendar = {
-              mode = "year";
-              mode-mon-col = 3;
-              weeks-pos = "right";
-              on-scroll = 1;
-              on-click-right = "mode";
-              format = {
-                months = "<span color='#ffead3'><b>{}</b></span>";
-                days = "<span color='#ecc6d9'><b>{}</b></span>";
-                weeks = "<span color='#99ffdd'><b>W{}</b></span>";
-                weekdays = "<span color='#ffcc66'><b>{}</b></span>";
-                today = "<span color='#ff6699'><b><u>{}</u></b></span>";
-              };
-            };
-            actions = {
-              on-click-right = "mode";
-              on-click-forward = "tz_up";
-              on-click-backward = "tz_down";
-              on-scroll-up = "shift_up";
-              on-scroll-down = "shift_down";
-            };
-          };
+          "clock" = { format = "{: %H:%M  %Y/%m/%d}"; };
           "cpu" = {
             interval = 10;
             format = "{usage}% ";
