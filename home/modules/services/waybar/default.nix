@@ -1,4 +1,4 @@
-{ pkgs, config, lib, mylib, ... }:
+{ pkgs, config, lib, mylib, hostname, ... }:
 
 with lib;
 let

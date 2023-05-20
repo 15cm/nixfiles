@@ -51,6 +51,7 @@
   my.programs.night-light-switch.enable = true;
   my.programs.hyprland = {
     inherit (config.my.hardware) monitors;
+    scale = 2.0;
     inherit (state) enableNightLightShader;
     nightLightTemperature = (if state.theme == "light" then 4000 else 3400);
   };

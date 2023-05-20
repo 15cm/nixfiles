@@ -1,15 +1,15 @@
-exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
+exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE {{scale}}
 exec-once = xrdb -merge ~/.Xresources
 
 $mainMod = SUPER
 
 $monitor_1 = {{monitors.one.output}}
 
-{%if hostname == "kazuki" %}
+{%if monitors | length > 1 %}
 $monitor_2 = {{monitors.two.output}}
 
-monitor=$monitor_1, highres, 0x0, 2
-monitor=$monitor_2, highres, 1920x0, 2
+monitor=$monitor_1, highres, 0x0, {{scale}}
+monitor=$monitor_2, highres, 1920x0, {{scale}}
 
 bind = $mainMod SHIFT, n, movewindow, mon:$monitor_1
 bind = $mainMod SHIFT, m, movewindow, mon:$monitor_2
@@ -27,8 +27,8 @@ workspace = 8, monitor:$monitor_2
 workspace = 9, monitor:$monitor_2
 workspace = 0, monitor:$monitor_2
 
-{%elif hostname == "asako" %}
-monitor=$monitor_1, highres, 0x0, 1.25
+{%else%}
+monitor=$monitor_1, highres, 0x0, {{scale}}
 {%endif%}
 
 animations {

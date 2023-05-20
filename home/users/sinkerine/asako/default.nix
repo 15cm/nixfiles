@@ -23,6 +23,7 @@
         "${config.home.homeDirectory}/Pictures/wallpapers/yande_128733_dress_kagome_keroq_minakami_yuki_smoking_subarashiki_hibi_thighhighs@2x.png";
     };
   };
+  my.programs.hyprland.scale = 1.25;
   my.services.waybar.networkInterface = "wlp1s0";
   my.services.gammastep.enable = true;
 }
