@@ -52,6 +52,7 @@ with lib; {
     black
     isort
     python3Packages.docformatter
+    ccls
   ];
 
   home.sessionVariables = {

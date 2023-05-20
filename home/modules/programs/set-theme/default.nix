@@ -21,7 +21,6 @@ in {
         ${config.programs.powerline.package}/bin/powerline-daemon --replace
         ${pkgs.tmux}/bin/tmux source ${config.programs.powerline.package}/share/tmux/powerline.conf
         ${config.my.programs.emacs.package}/bin/emacsclient -eun '(load "~/.config/emacs/scripts/load-theme.el")'
-        ${pkgs.systemd}/bin/systemctl --user restart waybar.service
         exit 0
       '';
 
