@@ -25,7 +25,7 @@ workspace = 6, monitor:$monitor_2, default:true
 workspace = 7, monitor:$monitor_2
 workspace = 8, monitor:$monitor_2
 workspace = 9, monitor:$monitor_2
-workspace = 0, monitor:$monitor_2
+workspace = 10, monitor:$monitor_2
 
 {%else%}
 monitor=$monitor_1, highres, 0x0, {{scale}}
@@ -117,6 +117,10 @@ general {
   cursor_inactive_timeout = 300
 
   layout = master
+}
+
+binds {
+  allow_workspace_cycles = true;
 }
 
 master {
