@@ -68,6 +68,12 @@ with lib; {
       item = "memlock";
       value = "4194304";
     }
+    {
+      domain = "*";
+      type = "soft";
+      item = "nofile";
+      value = "10240";
+    }
   ];
   security.pam.services.swaylock = {
     text = ''
