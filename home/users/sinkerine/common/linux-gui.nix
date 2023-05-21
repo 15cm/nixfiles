@@ -10,9 +10,6 @@ with lib; {
     # Applications
     ../../../features/app/alacritty
     ../../../features/app/aria2
-    ../../../features/app/fcitx5
-    ../../../features/app/goldendict
-    ../../../features/app/playctl
   ];
 
   home.packages = with pkgs; [
@@ -158,4 +155,8 @@ with lib; {
   };
   home.file.".icons/default".source =
     "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ";
+
+  my.services.fcitx5.enable = true;
+  my.services.playerctld.enable = true;
+  my.programs.goldendict.enable = true;
 }

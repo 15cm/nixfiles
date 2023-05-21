@@ -9,5 +9,7 @@
     ./mako.nix
     ./copyq.nix
     ./swaylock.nix
+    ./fcitx5.nix
+    ./playerctld.nix
   ];
 }

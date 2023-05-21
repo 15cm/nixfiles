@@ -23,7 +23,6 @@ with lib; {
     ../../../features/app/arandr
     ../../../features/app/copyq
     ../../../features/app/imwheel
-    ../../../features/app/playctl
     ../../../features/app/flameshot
   ];
 
@@ -94,4 +93,5 @@ with lib; {
 
   my.programs.nixGL.enable = true;
   my.programs.hmSwitch.useImpure = true;
+  my.services.playerctld.enable = true;
 }
