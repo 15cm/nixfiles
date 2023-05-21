@@ -11,5 +11,6 @@
     ./hyprland
     ./hm-switch.nix
     ./night-light-switch.nix
+    ./fontconfig
   ];
 }

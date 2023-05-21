@@ -1,8 +1,18 @@
-{ config, lib, pkgs, nixinfo, ... }:
+{ pkgs, config, lib, nixinfo, ...}:
 
 with lib;
-mkMerge [
-  {
+let cfg = config.my.programs.fontconfig;
+in {
+  options.my.programs.fontconfig = {
+    enable = mkEnableOption "fontconfig";
+    enableGui = mkEnableOption "gui";
+  };
+
+  config = mkIf cfg.enable (mkMerge [{
+    home.packages = with pkgs; [
+      sarasa-gothic-nerdfont
+    ];
+  } (mkIf cfg.enableGui {
     home.packages = with pkgs; [
       font-manager
       fontconfig
@@ -12,19 +22,16 @@ mkMerge [
       noto-fonts-emoji
       emacs-all-the-icons-fonts
       sarasa-gothic
-      sarasa-gothic-nerdfont
       iosevka
       iosevka-nerdfont
       material-design-icons
       # Not sure why Font Manager doesn't work well with FontAwesome v6
       font-awesome_5
     ];
-
     # So that font manager can see the user installed fonts.
     home.file.".local/share/fonts".source = "${config.home.path}/share/fonts";
     fonts.fontconfig.enable = true;
-  }
-  (mkIf (nixinfo.configName != "work@desktop") {
+  }) (mkIf (cfg.enableGui && nixinfo.configName != "work@desktop") {
     xdg.configFile."fontconfig/conf.d/90-my-fonts.conf".source = ./fonts.conf;
-  })
-]
+  })]);
+}

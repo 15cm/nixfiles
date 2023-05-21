@@ -6,5 +6,5 @@
     homeDirectory = "/home/${username}";
   };
 
-  imports = [ ../../../common/baseline.nix ../../../common/baseline-linux.nix ];
+  imports = [ ../../../common/baseline.nix  ];
 }

@@ -85,6 +85,7 @@ with lib; {
     enable = true;
     createDirectories = true;
   };
+  my.programs.fontconfig.enableGui = true;
 
   programs.zsh.shellAliases = {
     # Nix Home Manager

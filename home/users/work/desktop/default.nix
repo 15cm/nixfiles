@@ -10,7 +10,6 @@ with lib; {
 
   imports = [
     ../../../common/baseline.nix
-    ../../../common/baseline-linux.nix
     # XSession related
     ../../../features/conf/xsession
     ../../../features/conf/xresources
@@ -66,6 +65,7 @@ with lib; {
     enable = true;
     createDirectories = true;
   };
+  my.programs.fontconfig.enableGui = true;
 
   my.programs.emacs = {
     package = pkgs.emacsUnstable;

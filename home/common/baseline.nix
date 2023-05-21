@@ -36,6 +36,7 @@ in {
     # Packages with overrides.
     [ parallel ];
 
+  my.programs.fontconfig.enable = true;
   my.programs.emacs.enable = true;
   my.programs.set-theme.enable = true;
   programs.bottom = {
@@ -49,4 +50,5 @@ in {
   my.programs.ranger.enable = true;
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
+
 }
