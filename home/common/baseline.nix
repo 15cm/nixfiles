@@ -8,7 +8,6 @@ in {
     ../features/app/git
     ../features/app/vim
     ../features/app/tmux
-    ../features/app/zsh
     ../features/app/powerline
     ../features/app/fzf
     ../features/app/tealdeer
@@ -36,6 +35,7 @@ in {
     # Packages with overrides.
     [ parallel ];
 
+  my.programs.zsh.enable = true;
   my.programs.fontconfig.enable = true;
   my.programs.emacs.enable = true;
   my.programs.set-theme.enable = true;

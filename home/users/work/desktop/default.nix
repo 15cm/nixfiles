@@ -43,6 +43,7 @@ with lib; {
   xresources.properties."Xft.dpi" = mkForce 120;
   xresources.properties."Xcursor.size" = mkForce 32;
 
+  my.programs.zsh.isXorg = true;
   programs.zsh.shellAliases = {
     # Nix Home Manager
     snh = "switch-nix-home.sh";

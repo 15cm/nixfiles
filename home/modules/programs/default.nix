@@ -13,5 +13,6 @@
     ./night-light-switch.nix
     ./fontconfig
     ./goldendict.nix
+    ./zsh
   ];
 }
