@@ -80,7 +80,13 @@ with lib; {
   };
 
   qt.enable = true;
-  gtk.enable = true;
+  gtk = {
+    enable = true;
+    iconTheme = {
+      package = pkgs.gnome.gnome-themes-extra;
+      name = "Adwaita";
+    };
+  };
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
