@@ -16,6 +16,10 @@ with lib; {
   ];
 
   home.packages = with pkgs; [
+    # For tweaking XWayland config.
+    xorg.xprop
+    xorg.xrdb
+
     keepassxc
     firefox
     google-chrome
@@ -43,9 +47,7 @@ with lib; {
     wl-clipboard
     grim
     slurp
-    # For tweaking XWayland config.
-    xorg.xprop
-    xorg.xrdb
+    xdg-utils
 
     # Development
     pyright
