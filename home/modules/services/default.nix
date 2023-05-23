@@ -8,7 +8,7 @@
     ./waybar
     ./mako.nix
     ./copyq.nix
-    ./swaylock.nix
+    ./gtklock.nix
     ./fcitx5.nix
     ./playerctld.nix
   ];

@@ -75,7 +75,7 @@ with lib; {
       value = "10240";
     }
   ];
-  security.pam.services.swaylock = {
+  security.pam.services.gtklock = {
     text = ''
       auth include login
     '';

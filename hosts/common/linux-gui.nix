@@ -48,7 +48,10 @@ with lib;
   my.services.docker.enable = true;
   my.services.autofs.enable = true;
   my.programs.AriaNg.enable = true;
-  my.services.swaylock.enable = true;
+  my.services.lock = {
+    enable = true;
+    lockService = "gtklock.service";
+  };
 
   services.printing.enable = true;
   services.printing.allowFrom = [ "all" ];

@@ -13,6 +13,6 @@
     ./networking/tailscale.nix
     ./ups
     ./smartd.nix
-    ./swaylock.nix
+    ./lock.nix
   ];
 }

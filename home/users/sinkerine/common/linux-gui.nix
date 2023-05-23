@@ -121,7 +121,7 @@ with lib; {
     };
   };
   services.dunst.enable = true;
-  my.services.swaylock = {
+  my.services.gtklock = {
     enable = true;
     image =
       "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
