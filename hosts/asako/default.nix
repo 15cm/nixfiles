@@ -60,6 +60,7 @@ in {
           fallthrough = true;
           allowCommands = false;
         };
+        enableRestart = true;
         config = builtins.readFile ./kmonad/laptop.kbd;
       };
     };
