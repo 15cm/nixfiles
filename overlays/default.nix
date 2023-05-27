@@ -36,15 +36,5 @@ with nixpkgs.lib; {
     waybar = super.waybar.overrideAttrs
       (old: { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
     trash-cli = super.trash-cli.overrideAttrs (old: { postInstall = ""; });
-    # flameshot = super.flameshot.overrideAttrs (old: {
-    #   src = super.fetchFromGitHub {
-    #     owner = "flameshot-org";
-    #     repo = "flameshot";
-    #     rev = "3ededae5745761d23907d65bbaebb283f6f8e3f2";
-    #     hash = "sha256-4SMg63MndCctpfoOX3OQ1vPoLP/90l/KGLifyUzYD5g=";
-    #   };
-    #   buildInputs = old.buildInputs ++ [ super.pkgs.libsForQt5.kguiaddons ];
-    #   cmakeFlags = [ "-DUSE_WAYLAND_GRIM=true" ];
-    # });
   };
 }
