@@ -45,6 +45,7 @@ with lib; {
     grim
     slurp
     xdg-utils
+    khinsider
 
     # Development
     pyright
