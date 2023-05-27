@@ -46,14 +46,5 @@ with nixpkgs.lib; {
     #   buildInputs = old.buildInputs ++ [ super.pkgs.libsForQt5.kguiaddons ];
     #   cmakeFlags = [ "-DUSE_WAYLAND_GRIM=true" ];
     # });
-    # goldendict = super.goldendict.overrideAttrs (old: {
-    #   version = "2023-04-01";
-    #   src = super.fetchFromGitHub {
-    #     owner = "goldendict";
-    #     repo = "goldendict";
-    #     rev = "8834e4a2924d143751870f4b943c3ce608b10a7d";
-    #     sha256 = "sha256-DkgDrk8aa52PfX8jIO0w+JDdqexfCPxAXYrvVE+Legg=";
-    #   };
-    # });
   };
 }
