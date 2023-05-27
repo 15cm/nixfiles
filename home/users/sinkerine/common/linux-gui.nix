@@ -46,6 +46,7 @@ with lib; {
     slurp
     xdg-utils
     khinsider
+    transgui
 
     # Development
     pyright
@@ -144,6 +145,12 @@ with lib; {
       name = "Jellyfin Media Player";
       exec =
         "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} jellyfinmediaplayer --platform=xcb";
+    };
+    "transgui" = {
+      icon = "transgui";
+      name = "Transmission Remote GUI";
+      exec =
+        "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} transgui";
     };
   };
 
