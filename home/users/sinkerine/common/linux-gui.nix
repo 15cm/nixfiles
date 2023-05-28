@@ -103,7 +103,8 @@ with lib; {
     bno = "build-nix-os.sh";
   };
   my.programs.emacs = {
-    package = pkgs.emacsUnstablePgtk;
+    # With optimization, lsp-mode crashes emacs pgtk with seg fault, even with dontStrip = true. Has to compile with -O0.
+    package = (pkgs.enableDebugging pkgs.emacsUnstablePgtk);
     enableSSHSpacemacsConfigRepo = true;
     startAfterGraphicalSession = true;
   };
