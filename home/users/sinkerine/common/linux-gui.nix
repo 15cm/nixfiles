@@ -1,6 +1,9 @@
 { config, pkgs, lib, hostname, ... }:
 
-with lib; {
+let
+  applyGdkEnvsToDesktopExec = exec:
+    "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} ${exec}";
+in with lib; {
   imports = [
     # Essentials
     ../../../features/conf/ssh
@@ -26,7 +29,7 @@ with lib; {
     gnome.nautilus
     ark
     unrar
-    postman
+    insomnia
     picard
     kate
     gwenview
@@ -35,7 +38,7 @@ with lib; {
     okular
     calibre
     libreoffice
-    sonixd
+    feishin
     oxipng
     osdlyrics
     dex
@@ -132,26 +135,34 @@ with lib; {
 
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {
-    sonixd = {
-      name = "Sonixd";
-      exec =
-        "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} ${pkgs.sonixd}/bin/sonixd --platform=xcb";
-    };
     google-chrome = {
       name = "Google Chrome";
-      exec =
-        "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} google-chrome-stable";
+      exec = applyGdkEnvsToDesktopExec "google-chrome-stable"
+        + " --ozone-platform=x11";
     };
     "com.github.iwalton3.jellyfin-media-player" = {
       name = "Jellyfin Media Player";
-      exec =
-        "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} jellyfinmediaplayer --platform=xcb";
+      exec = applyGdkEnvsToDesktopExec "jellyfinmediaplayer" + "--platform=xcb";
     };
     "transgui" = {
       icon = "transgui";
       name = "Transmission Remote GUI";
-      exec =
-        "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} transgui";
+      exec = applyGdkEnvsToDesktopExec "transgui";
+    };
+    "insomnia" = {
+      icon = "insomnia";
+      name = "Insomnia";
+      exec = "insomnia --ozone-platform=wayland --enable-wayland-ime";
+    };
+    "AriaNg" = {
+      name = "AriaNg";
+      exec = "firefox --new-window http://localhost:3001";
+    };
+    "feishin" = {
+      name = "feishin";
+      icon = "feishin";
+      exec = applyGdkEnvsToDesktopExec "feishin"
+        + " --disable-gpu-sandbox --ozone-platform=x11";
     };
   };
 
