@@ -163,6 +163,11 @@ bind = $mainMod, u, layoutmsg, focusmaster
 bind = $mainMod SHIFT, u, layoutmsg, swapwithmaster master
 bind = $mainMod, n, focusmonitor, DP-1
 bind = $mainMod, m, focusmonitor, DP-2
+# Workaround of toggle special workspace with multi monitor https://github.com/hyprwm/Hyprland/issues/1151
+bind = $mainMod, y, togglespecialworkspace
+bind = $mainMod, y, focusmonitor, +1
+bind = $mainMod, y, focusmonitor, -1
+bind = $mainMod, y, togglespecialworkspace
 bind = $mainMod, y, togglespecialworkspace
 
 # Window dispatchers
