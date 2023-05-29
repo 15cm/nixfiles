@@ -104,7 +104,7 @@ with lib; {
   };
   my.programs.emacs = {
     # With optimization, lsp-mode crashes emacs pgtk with seg fault, even with dontStrip = true. Has to compile with -O0.
-    package = (pkgs.enableDebugging pkgs.emacsUnstablePgtk);
+    package = pkgs.emacsUnstablePgtk;
     enableSSHSpacemacsConfigRepo = true;
     startAfterGraphicalSession = true;
   };
