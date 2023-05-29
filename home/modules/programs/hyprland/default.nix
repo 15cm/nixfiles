@@ -7,6 +7,7 @@ let
   templateData = {
     inherit (cfg) musicPlayer monitors scale enableNightLightShader;
     windowSwitcherScript = "python " + ./window_switcher.py;
+    focusMonitorScript = "python " + ./focus_monitor.py;
   } // optionalAttrs cfg.enableNightLightShader {
     nightLightShaderPath = templateFile "hyprland-shader.gsls" {
       inherit (cfg) nightLightTemperature;
@@ -38,6 +39,18 @@ in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
+      package = (pkgs.hyprland.override {
+        enableXWayland = true;
+        hidpiXWayland = true;
+        nvidiaPatches = true;
+      }).overrideAttrs (old: {
+        src = pkgs.fetchFromGitHub {
+          owner = "15cm";
+          repo = "hyprland";
+          rev = "726218b823abfdfa38c568cafb140e0ded41de36";
+          hash = "sha256-5lB4qesrn74UFJbh+uExnn6qTPrIwSxS9XCz+LanaBY=";
+        };
+      });
       nvidiaPatches = true;
       xwayland = {
         enable = true;
