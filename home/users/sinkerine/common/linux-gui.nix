@@ -54,6 +54,8 @@ in with lib; {
     xdg-utils
     khinsider
     transgui
+    imagemagick
+    dsf2flac
 
     # Development
     pyright
@@ -168,6 +170,11 @@ in with lib; {
       icon = "feishin";
       exec = applyXwaylandEnvsToDesktopExec "feishin"
         + " --disable-gpu-sandbox --ozone-platform=x11";
+    };
+    "calibre-gui" = {
+      name = "Calibre";
+      icon = "calibre-gui";
+      exec = "env QT_IM_MODULE=wayland calibre --detach %U";
     };
   };
 
