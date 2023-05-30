@@ -135,7 +135,10 @@ in {
             format-paused = "{status_icon} <i>{dynamic}</i>";
             player-icons = { "default" = ""; };
             status-icons = { "paused" = ""; };
-            max-length = 15;
+            artist-len = 0;
+            album-len = 0;
+            title-len = 35;
+            dynamic-length = 50;
           };
         };
       };
