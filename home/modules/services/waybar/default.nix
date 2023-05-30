@@ -34,10 +34,12 @@ in {
           height = 30;
           modules-left = [ "cpu" "memory" ]
             ++ optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ]
-            ++ [ "network" "network#speed" ]
-            ++ optionals (hostname == "asako") [ "backlight" "battery" ];
+            ++ [ "network" "network#speed" "pulseaudio" ]
+            ++ optionals (hostname == "asako") [ "backlight" ];
           modules-center = [ "wlr/workspaces" "custom/isMaximized" ];
-          modules-right = [ "mpris" "pulseaudio" ] ++ [ "clock" "tray" ];
+          modules-right = [ "mpris" ]
+            ++ optionals (hostname == "asako") [ "battery" ]
+            ++ [ "clock" "tray" ];
           "wlr/workspaces" = {
             format = "{icon}";
             all-outputs = true;
@@ -47,19 +49,19 @@ in {
           "clock" = { format = "{: %H:%M  %Y/%m/%d}"; };
           "cpu" = {
             interval = 10;
-            format = "{usage}% ";
+            format = " {usage}%";
             min-length = 6;
             max-length = 8;
           };
           "memory" = {
             interval = 10;
-            format = "{percentage}% ";
+            format = " {percentage}%";
             min-length = 6;
             max-length = 10;
           };
           "pulseaudio" = {
             format = "{volume}% {icon}";
-            format-bluetooth = "{volume}% {icon} ";
+            format-bluetooth = " {volume}% {icon}";
             format-muted = "";
             format-icons = {
               headphone = "";
@@ -95,24 +97,25 @@ in {
             interval = 30;
             interface = cfg.networkInterface;
             format = "{ifname}";
-            format-wifi = "{essid} ({signalStrength}%) ";
+            format-wifi = " {essid} ({signalStrength}%)";
             format-ethernet = "{ipaddr}/{cidr} ";
             format-disconnected = "";
             tooltip-format = "{ifname} via {gwaddr} ";
-            tooltip-format-wifi = "{essid} ({signalStrength}%) ";
+            tooltip-format-wifi =
+              " {essid} ({signalStrength}%) {ipaddr}/{cidr} via {gwaddr}";
             tooltip-format-ethernet = "{ifname} via {gwaddr} ";
             tooltip-format-disconnected = "Disconnected";
-            max-length = 50;
+            max-length = 20;
           };
           "network#speed" = {
             interval = 3;
             interface = cfg.networkInterface;
             format = " {bandwidthDownBytes}  {bandwidthUpBytes}";
-            min-length = 25;
-            max-length = 30;
+            min-length = 22;
+            max-length = 25;
           };
           "custom/zfs" = {
-            format = "{} ";
+            format = " {}";
             exec = pkgs.writeShellScript "waybar-custom-zfs.sh" ''
               zfs list -o available ${cfg.zfsRootPoolName} | tr -d "AVAIL\n" | tr -d " "
             '';
@@ -137,8 +140,8 @@ in {
             status-icons = { "paused" = ""; };
             artist-len = 0;
             album-len = 0;
-            title-len = 35;
-            dynamic-length = 50;
+            title-len = if (hostname == "asako") then 20 else 40;
+            dynamic-length = if (hostname == "asako") then 30 else 50;
           };
         };
       };
