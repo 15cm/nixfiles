@@ -42,9 +42,9 @@ in {
   services.openssh = {
     enable = true;
     settings = {
-      passwordAuthentication = false;
-      kbdInteractiveAuthentication = false;
-      permitRootLogin = "no";
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "no";
     };
   };
 

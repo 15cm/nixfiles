@@ -29,9 +29,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    deploy-rs.url = "github:serokell/deploy-rs";
-    hyprland.url = "github:hyprwm/Hyprland";
+    nixos-hardware = { url = "github:NixOS/nixos-hardware/master"; };
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, flake-utils, sops-nix, kmonad

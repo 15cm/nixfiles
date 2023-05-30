@@ -33,9 +33,20 @@ with nixpkgs.lib; {
       ];
       qmakeFlags = old.qmakeFlags ++ [ "CONFIG+=use_qtwebengine" ];
     });
-    waybar = super.waybar.overrideAttrs
-      (old: { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
+    waybar = super.waybar.overrideAttrs (old: rec {
+      # TODO: remove the version and src override when 0.9.18 is in nixpkgs.
+      version = "0.9.18";
+      src = super.fetchFromGitHub {
+        owner = "Alexays";
+        repo = "Waybar";
+        rev = version;
+        hash = "sha256-bnaYNa1jb7kZ1mtMzeOQqz4tmBG1w5YXlQWoop1Q0Yc=";
+      };
+      mesonFlags = old.mesonFlags
+        ++ [ "-Dexperimental=true" "-Dcava=disabled" ];
+    });
     trash-cli = super.trash-cli.overrideAttrs (old: { postInstall = ""; });
+    # transgui overlays starts.
     # v3.2.3 fixes branch for the CJK characters issue of transgui
     # https://github.com/transmission-remote-gui/transgui/issues/1378
     fpc = super.fpc.overrideAttrs (old: rec {
@@ -59,5 +70,6 @@ with nixpkgs.lib; {
           --replace '/usr/fpcsrc' "$out/share/fpcsrc"
       '';
     });
+    # transgui overlays ends.
   };
 }
