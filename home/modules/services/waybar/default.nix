@@ -32,12 +32,12 @@ in {
           output = (mapAttrsToList (name: value: value.output) cfg.monitors);
           position = "top";
           height = 30;
-          modules-left = [ "cpu" "memory" "network" "network#speed" ]
-            ++ optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ];
+          modules-left = [ "cpu" "memory" ]
+            ++ optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ]
+            ++ [ "network" "network#speed" ]
+            ++ optionals (hostname == "asako") [ "backlight" "battery" ];
           modules-center = [ "wlr/workspaces" "custom/isMaximized" ];
-          modules-right = [ "mpris" "pulseaudio" ]
-            ++ optionals (hostname == "asako") [ "backlight" "battery" ]
-            ++ [ "clock" "tray" ];
+          modules-right = [ "mpris" "pulseaudio" ] ++ [ "clock" "tray" ];
           "wlr/workspaces" = {
             format = "{icon}";
             all-outputs = true;
