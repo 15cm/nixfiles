@@ -1,7 +1,7 @@
 { config, pkgs, lib, hostname, ... }:
 
 let
-  applyGdkEnvsToDesktopExec = exec:
+  applyXwaylandEnvsToDesktopExec = exec:
     "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} XCURSOR_SIZE=${config.my.env.XCURSOR_SIZE} ${exec}";
 in with lib; {
   imports = [
@@ -19,6 +19,10 @@ in with lib; {
     # For tweaking XWayland config.
     xorg.xprop
     xorg.xrdb
+
+    # Wayland env
+    qt6.qtwayland
+    qt5.qtwayland
 
     keepassxc
     firefox
@@ -137,17 +141,18 @@ in with lib; {
   xdg.desktopEntries = {
     google-chrome = {
       name = "Google Chrome";
-      exec = applyGdkEnvsToDesktopExec "google-chrome-stable"
+      exec = applyXwaylandEnvsToDesktopExec "google-chrome-stable"
         + " --ozone-platform=x11";
     };
     "com.github.iwalton3.jellyfin-media-player" = {
       name = "Jellyfin Media Player";
-      exec = applyGdkEnvsToDesktopExec "jellyfinmediaplayer" + "--platform=xcb";
+      exec = applyXwaylandEnvsToDesktopExec "jellyfinmediaplayer"
+        + "--platform=xcb";
     };
     "transgui" = {
       icon = "transgui";
       name = "Transmission Remote GUI";
-      exec = applyGdkEnvsToDesktopExec "transgui";
+      exec = applyXwaylandEnvsToDesktopExec "transgui";
     };
     "insomnia" = {
       icon = "insomnia";
@@ -161,7 +166,7 @@ in with lib; {
     "feishin" = {
       name = "feishin";
       icon = "feishin";
-      exec = applyGdkEnvsToDesktopExec "feishin"
+      exec = applyXwaylandEnvsToDesktopExec "feishin"
         + " --disable-gpu-sandbox --ozone-platform=x11";
     };
   };
