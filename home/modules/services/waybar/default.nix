@@ -32,11 +32,10 @@ in {
           output = (mapAttrsToList (name: value: value.output) cfg.monitors);
           position = "top";
           height = 30;
-          modules-left = [ "cpu" "memory" "network" "network#speed" ];
+          modules-left = [ "cpu" "memory" "network" "network#speed" ]
+            ++ optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ];
           modules-center = [ "wlr/workspaces" "custom/isMaximized" ];
-          modules-right =
-            optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ]
-            ++ [ "pulseaudio" ]
+          modules-right = [ "mpris" "pulseaudio" ]
             ++ optionals (hostname == "asako") [ "backlight" "battery" ]
             ++ [ "clock" "tray" ];
           "wlr/workspaces" = {
@@ -130,6 +129,13 @@ in {
                 echo "M"
               fi
             '';
+          };
+          "mpris" = {
+            "format" = "{player_icon} {dynamic}";
+            format-paused = "{status_icon} <i>{dynamic}</i>";
+            player-icons = { "default" = ""; };
+            status-icons = { "paused" = ""; };
+            max-length = 15;
           };
         };
       };
