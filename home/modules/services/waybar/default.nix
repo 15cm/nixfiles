@@ -44,6 +44,7 @@ in {
             format = "{icon}";
             all-outputs = true;
             on-click = "activate";
+            sort-by-number = true;
           };
           "tray" = { "spacing" = 10; };
           "clock" = { format = "{: %H:%M  %Y/%m/%d}"; };
