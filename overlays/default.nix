@@ -4,6 +4,8 @@ with nixpkgs.lib; {
   # Adds my custom packages
   additions = self: _super: import ../pkgs { pkgs = self; };
   modifications = self: super: rec {
+    waybar = super.waybar.overrideAttrs
+      (old: rec { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
     goldendict = super.goldendict.overrideAttrs (old: {
       version = "2023-03-30";
       src = super.fetchFromGitHub {
@@ -32,18 +34,6 @@ with nixpkgs.lib; {
         zstd
       ];
       qmakeFlags = old.qmakeFlags ++ [ "CONFIG+=use_qtwebengine" ];
-    });
-    waybar = super.waybar.overrideAttrs (old: rec {
-      # TODO: remove the version and src override when 0.9.18 is in nixpkgs.
-      version = "0.9.18";
-      src = super.fetchFromGitHub {
-        owner = "Alexays";
-        repo = "Waybar";
-        rev = version;
-        hash = "sha256-bnaYNa1jb7kZ1mtMzeOQqz4tmBG1w5YXlQWoop1Q0Yc=";
-      };
-      mesonFlags = old.mesonFlags
-        ++ [ "-Dexperimental=true" "-Dcava=disabled" ];
     });
     trash-cli = super.trash-cli.overrideAttrs (old: { postInstall = ""; });
     # transgui overlays starts.

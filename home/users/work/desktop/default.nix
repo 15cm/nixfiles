@@ -68,7 +68,7 @@ with lib; {
   my.programs.fontconfig.enableGui = true;
 
   my.programs.emacs = {
-    package = pkgs.emacsUnstable;
+    package = pkgs.emacs-unstable;
     # Fixes non-standard home directory.
     # https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
     extraOptions = [ "--user" "''" ];
