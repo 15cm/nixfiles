@@ -149,7 +149,7 @@ in with lib; {
     "com.github.iwalton3.jellyfin-media-player" = {
       name = "Jellyfin Media Player";
       exec = applyXwaylandEnvsToDesktopExec "jellyfinmediaplayer"
-        + "--platform=xcb";
+        + " --platform=xcb";
     };
     "transgui" = {
       icon = "transgui";
