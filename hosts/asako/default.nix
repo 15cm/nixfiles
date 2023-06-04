@@ -121,15 +121,4 @@ in {
     datasourceHosts = [ hostname ];
     dataDir = "/var/lib/grafana";
   };
-  systemd.services.wireless-driver-on-resume = {
-    enable = true;
-    description = "Reload the wireless driver on system resumt";
-    serviceConfig = {
-      ExecStartPre = "${pkgs.kmod}/bin/modprobe --remove ath11k_pci";
-      ExecStart = "${pkgs.kmod}/bin/modprobe ath11k_pci";
-      Type = "oneshot";
-    };
-    after = [ "systemd-suspend.service" "systemd-hibernate.service" ];
-    requiredBy = [ "systemd-suspend.service" "systemd-hibernate.service" ];
-  };
 }

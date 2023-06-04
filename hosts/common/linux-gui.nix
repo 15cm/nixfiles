@@ -57,4 +57,16 @@ with lib;
   services.printing.allowFrom = [ "all" ];
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
+
+  systemd.services.restart-network-manager-on-resume = {
+    enable = true;
+    description = "Restart network manager on system resume";
+    serviceConfig = {
+      ExecStart =
+        "${pkgs.systemd}/bin/systemctl restart NetworkManager.service";
+      Type = "oneshot";
+    };
+    after = [ "systemd-suspend.service" "systemd-hibernate.service" ];
+    requiredBy = [ "systemd-suspend.service" "systemd-hibernate.service" ];
+  };
 }
