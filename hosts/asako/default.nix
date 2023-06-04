@@ -60,7 +60,6 @@ in {
           fallthrough = true;
           allowCommands = false;
         };
-        enableRestart = true;
         config = builtins.readFile ./kmonad/laptop.kbd;
       };
     };
@@ -121,4 +120,9 @@ in {
     datasourceHosts = [ hostname ];
     dataDir = "/var/lib/grafana";
   };
+
+  # Otherwise the keyboard will be frozen on nixos switch.
+  system.activationScripts.kmonadServiceRestart = ''
+    ${pkgs.systemd}/bin/systemctl restart kmonad-laptop.service
+  '';
 }
