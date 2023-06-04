@@ -38,6 +38,7 @@ with lib; {
     gwenview
     okular
     sonixd
+    xclip
   ];
 
   xresources.properties."Xft.dpi" = mkForce 120;

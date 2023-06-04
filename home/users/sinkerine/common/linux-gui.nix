@@ -56,6 +56,8 @@ in with lib; {
     transgui
     imagemagick
     dsf2flac
+    neofetch
+    cloc
 
     # Development
     pyright

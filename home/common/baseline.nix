@@ -18,22 +18,16 @@ in {
     nixfmt
     exa
     fd
-    nix-template
-    xclip
     htop
     lsof
     ripgrep
     silver-searcher
-    ueberzug
     bind
-    cloc
     hunspell
     hunspellDicts.en_US-large
     direnv
-    neofetch
-  ]) ++
-    # Packages with overrides.
-    [ parallel ];
+    parallel
+  ]);
 
   my.services.nix-home-manager-gc.enable = true;
   my.programs.zsh.enable = true;
