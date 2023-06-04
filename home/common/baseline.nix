@@ -35,6 +35,7 @@ in {
     # Packages with overrides.
     [ parallel ];
 
+  my.services.nix-home-manager-gc.enable = true;
   my.programs.zsh.enable = true;
   my.programs.fontconfig.enable = true;
   my.programs.emacs.enable = true;
@@ -50,5 +51,4 @@ in {
   my.programs.ranger.enable = true;
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
-
 }

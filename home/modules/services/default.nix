@@ -11,5 +11,6 @@
     ./gtklock.nix
     ./fcitx5.nix
     ./playerctld.nix
+    ./nix-home-manager-gc.nix
   ];
 }
