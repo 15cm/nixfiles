@@ -9,7 +9,6 @@ in {
     ./hardware-configuration.nix
     ../common/baseline.nix
     ../common/systemd-boot.nix
-    ../common/zfs
     ../common/users.nix
     ../common/linux-gui.nix
   ];
@@ -27,9 +26,6 @@ in {
     gnupg.sshKeyPaths = [ ];
   };
 
-  services.fwupd.enable = true;
-  services.udisks2.enable = true;
-
   services.openssh = {
     enable = true;
     settings = {
@@ -42,6 +38,11 @@ in {
     '';
   };
 
+  my.essentials.zfs = {
+    enable = true;
+    enableZed = true;
+  };
+
   networking = {
     hostName = hostname;
     domain = "mado.moe";
@@ -50,6 +51,8 @@ in {
     firewall.checkReversePath = false;
   };
 
+  services.fwupd.enable = true;
+  services.udisks2.enable = true;
   services.kmonad = {
     enable = true;
     keyboards = {

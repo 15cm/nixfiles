@@ -7,8 +7,6 @@ with lib;
   imports = [
     ./hardware-configuration.nix
     ../common/baseline.nix
-    ../common/zfs
-    ../common/zfs/encrypted-non-root.nix
     ../common/users.nix
     ../common/grub-legacy.nix
   ];
@@ -31,6 +29,15 @@ with lib;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "prohibit-password";
     };
+  };
+
+  my.essentials.zfs = {
+    enable = true;
+    enableNonRootEncryption = true;
+    enableZed = true;
+    nonRootPools = [ "tank" ];
+    encryptedZfsPath = "tank/encrypted";
+    devNodesOverride = "/dev/disk/by-path";
   };
 
   networking = {

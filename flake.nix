@@ -156,10 +156,7 @@
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
           modules = [ ./hosts/sachi ];
-          specialArgs = {
-            hostname = "sachi";
-            encryptedZfsPath = "main";
-          };
+          specialArgs = { hostname = "sachi"; };
         };
         "yumiko" = rec {
           system = "x86_64-linux";
@@ -171,10 +168,7 @@
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
           modules = [ ./hosts/amane ];
-          specialArgs = {
-            hostname = "amane";
-            encryptedZfsPath = "tank/encrypted";
-          };
+          specialArgs = { hostname = "amane"; };
         };
       };
       nixosConfigurations = builtins.mapAttrs (_: v:

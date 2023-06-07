@@ -8,8 +8,6 @@ with lib;
     ./hardware-configuration.nix
     ../common/baseline.nix
     ../common/systemd-boot.nix
-    ../common/zfs
-    ../common/zfs/encrypted-non-root.nix
     ../common/users.nix
     ./samba
   ];
@@ -32,6 +30,14 @@ with lib;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "prohibit-password";
     };
+  };
+
+  my.essentials.zfs = {
+    enable = true;
+    enableNonRootEncryption = true;
+    enableZed = true;
+    nonRootPools = [ "main" "sub" ];
+    encryptedZfsPath = "main";
   };
 
   networking = {

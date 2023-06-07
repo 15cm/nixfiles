@@ -8,7 +8,6 @@ with lib;
     ./hardware-configuration.nix
     ../common/baseline.nix
     ../common/grub-legacy.nix
-    ../common/zfs
     ../common/users.nix
   ];
 
@@ -30,6 +29,13 @@ with lib;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "prohibit-password";
     };
+  };
+
+  my.essentials.zfs = {
+    enable = true;
+    enableZed = true;
+    nonRootPools = [ "tank" ];
+    devNodesOverride = "/dev/disk/by-path";
   };
 
   networking = {
