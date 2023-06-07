@@ -37,8 +37,8 @@ with lib;
     enableZed = true;
     nonRootPools = [ "tank" ];
     encryptedZfsPath = "tank/encrypted";
-    devNodesOverride = "/dev/disk/by-path";
   };
+  boot.zfs.devNodes = "/dev/disk/by-path";
 
   networking = {
     hostName = hostname;
@@ -72,14 +72,8 @@ with lib;
     sopsCertFile = ./zrepl/amane.m.mado.moe.crt;
     sopsKeyFile = ./zrepl/amane.m.mado.moe.key;
   };
-  my.services.docker = {
-    enable = true;
-    waitForManualZfsLoadKey = true;
-  };
-  my.services.docker-rootless = {
-    enable = true;
-    waitForManualZfsLoadKey = true;
-  };
+  my.services.docker = { enable = true; };
+  my.services.docker-rootless = { enable = true; };
   my.services.shadowsocks-server.enable = true;
 
   my.services.metrics.enable = true;

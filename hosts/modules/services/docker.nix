@@ -4,16 +4,12 @@ with lib;
 
 let cfg = config.my.services.docker;
 in {
-  options.my.services.docker = {
-    enable = mkEnableOption "docker";
-    waitForManualZfsLoadKey = mkEnableOption
-      "Do not start docker on boot but along with the zfs-load-key-and-mount target";
-  };
+  options.my.services.docker = { enable = mkEnableOption "docker"; };
 
   config = mkIf cfg.enable {
     virtualisation.docker = {
       enable = true;
-      enableOnBoot = !cfg.waitForManualZfsLoadKey;
+      enableOnBoot = true;
       storageDriver = "overlay2";
       daemon.settings = {
         userns-remap = "sinkerine:sinkerine";
@@ -34,11 +30,6 @@ in {
       openssh.authorizedKeys.keys = config.my.trusts.ssh.pubKeys;
     };
 
-    systemd.sockets.docker = mkIf cfg.waitForManualZfsLoadKey {
-      wantedBy = mkForce [ "zfs-load-key-and-mount.target" ];
-      partOf = mkForce [ "zfs-load-key-and-mount.target" ];
-      after = mkForce [ "socket.target" "zfs-load-key-and-mount.target" ];
-    };
     systemd.services.createDockerNetowrk = {
       enable = true;
       description = "Create Docker network";

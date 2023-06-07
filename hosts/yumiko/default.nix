@@ -35,8 +35,9 @@ with lib;
     enable = true;
     enableZed = true;
     nonRootPools = [ "tank" ];
-    devNodesOverride = "/dev/disk/by-path";
   };
+  boot.zfs.devNodes = "/dev/disk/by-path";
+  boot.zfs.requestEncryptionCredentials = false;
 
   networking = {
     hostName = hostname;

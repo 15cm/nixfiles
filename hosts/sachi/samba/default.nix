@@ -45,11 +45,6 @@ with lib; {
       "sub-movie" = { path = "/pool/sub/media/movie"; };
     };
   };
-  systemd.targets.samba = {
-    wantedBy = mkForce [ "zfs-load-key-and-mount.target" ];
-    partOf = mkForce [ "zfs-load-key-and-mount.target" ];
-    after = mkForce [ "network.target" "zfs-load-key-and-mount.target" ];
-  };
   # Initialize smb password following https://serverfault.com/questions/1104310/how-do-i-import-an-smbpasswd-file-into-a-different-samba-server
   # The smbpasswd is generated via:
   # pdbedit -a -u <username>

@@ -48,10 +48,7 @@ with lib;
     firewall.enable = mkForce false;
   };
 
-  my.services.docker = {
-    enable = true;
-    waitForManualZfsLoadKey = true;
-  };
+  my.services.docker = { enable = true; };
   my.services.zrepl = {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.sachi) sink source; };
@@ -94,7 +91,6 @@ with lib;
     domain = "monitoring.${hostname}.m.mado.moe";
     datasourceHosts = [ "sachi" "kazuki" "amane" "yumiko" "asako" ];
     dataDir = "/pool/main/appdata/grafana";
-    waitForManualZfsLoadKey = true;
   };
   my.services.ups.enable = true;
 }
