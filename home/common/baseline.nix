@@ -25,7 +25,6 @@ in {
     bind
     hunspell
     hunspellDicts.en_US-large
-    direnv
     parallel
   ]);
 

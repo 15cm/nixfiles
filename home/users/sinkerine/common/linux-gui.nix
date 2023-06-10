@@ -65,6 +65,7 @@ in with lib; {
     isort
     python3Packages.docformatter
     ccls
+    ruby
   ];
 
   home.sessionVariables = {
@@ -118,6 +119,9 @@ in with lib; {
     enableSSHSpacemacsConfigRepo = true;
     startAfterGraphicalSession = true;
   };
+  programs.direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
+
   my.services.clipper = {
     enable = true;
     extraSettings = {

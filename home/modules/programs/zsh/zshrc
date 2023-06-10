@@ -79,67 +79,8 @@ ranger-cd() {
 bindkey -s '^u' 'ranger .^m'
 bindkey -s '^U' 'ranger-cd^m'
 
-# --------------------- Version Management ---------------------
-# Lazy Load to speed up zsh start
-# Source:
-#   https://github.com/xcv58/prezto/blob/master/modules/lazy-load/init.zsh
-
-function lazy_load() {
-  local load_func=${1}
-  local lazy_func="lazy_${load_func}"
-
-  shift
-  for i in ${@}; do
-    alias ${i}="${lazy_func} ${i}"
-  done
-
-  eval "
-          function ${lazy_func}() {
-              unset -f ${lazy_func}
-              lazy_load_clean $@
-              eval ${load_func}
-              unset -f ${load_func}
-              eval \$@
-          }
-          "
-}
-
-function lazy_load_clean() {
-  for i in ${@}; do
-    unalias ${i}
-  done
-}
-
-# pyenv
-if which pyenv > /dev/null; then eval "$(pyenv init - --no-rehash)"; fi
-
-# pyenv-virtualenv
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
-
-# nodenv(lazy load)
-function load_nodenv() {
-  which nodenv > /dev/null && eval "$(nodenv init -)"
-}
-
-lazy_load load_nodenv nodenv npm node hexo
-
-# jenv(lazy load)
-function load_jenv() {
-  if which jenv > /dev/null; then eval "$(jenv init -)"; fi
-}
-
-lazy_load load_jenv jenv java javac
-
-# rbenv
-function load_rbenv() {
-  if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-}
-
-lazy_load load_rbenv rbenv ruby gem pry t
-
 # direnv
 if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi
-# _____________________ Version Management _____________________
 
 # --------------------- exa ---------------------
 if which exa > /dev/null; then
