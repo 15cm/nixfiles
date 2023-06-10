@@ -28,7 +28,7 @@ with lib; {
   nix = {
     gc = {
       automatic = true;
-      options = "--delete-older-than 14d";
+      options = "--delete-older-than 7d";
       dates = "weekly";
     };
     settings = {
