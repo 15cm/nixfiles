@@ -1,7 +1,7 @@
+# Shell
+.direnv/
+.envrc
+
 # Emacs
 .dir-locals.el
 *.~undo-tree~
-
-# Python
-.python-version
-

@@ -14,5 +14,6 @@
     ./fontconfig
     ./goldendict.nix
     ./zsh
+    ./git
   ];
 }

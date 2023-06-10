@@ -5,7 +5,6 @@ in {
   programs.home-manager.enable = true;
 
   imports = [
-    ../features/app/git
     ../features/app/vim
     ../features/app/tmux
     ../features/app/powerline
@@ -29,6 +28,7 @@ in {
   ]);
 
   my.services.nix-home-manager-gc.enable = true;
+  my.programs.git.enable = true;
   my.programs.zsh.enable = true;
   my.programs.fontconfig.enable = true;
   my.programs.emacs.enable = true;
