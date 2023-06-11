@@ -5,6 +5,8 @@
 
   imports = [ ../common ../common/linux-gui.nix ../../../features/app/openrgb ];
 
+  home.packages = with pkgs; [ handbrake ];
+
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {
     ryujinx = {
