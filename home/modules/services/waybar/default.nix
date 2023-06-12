@@ -23,6 +23,16 @@ in {
   };
 
   config = mkIf cfg.enable {
+    systemd.user = {
+      targets.tray = {
+        Unit = {
+          Description = "Home Manager System Tray";
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" "waybar.service" ];
+        };
+        Install = { WantedBy = [ "graphical-session.target" ]; };
+      };
+    };
     programs.waybar = {
       enable = true;
       systemd.enable = true;

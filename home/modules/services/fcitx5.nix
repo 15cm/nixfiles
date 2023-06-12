@@ -16,5 +16,6 @@ in {
           "https://raw.githubusercontent.com/hosxy/Fcitx5-Material-Color/2256feeae48dcc87f19a3cfe98f171862f8fcace/theme-pink.conf";
         hash = "sha256-VbYvwAb3pxyReFzl7j3eqqUsMuSY32+XlEhBNb12ZRc=";
       };
+    systemd.user.services.fcitx5-daemon = { Unit.After = [ "tray.target" ]; };
   };
 }

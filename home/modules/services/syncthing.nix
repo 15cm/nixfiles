@@ -13,5 +13,6 @@ in {
         command = "syncthingtray --wait";
       };
     };
+    systemd.user.services.syncthingtray = { Unit.After = [ "tray.target" ]; };
   };
 }
