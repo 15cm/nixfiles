@@ -15,6 +15,9 @@ rsync -ahP --relative /keys/age/<hostname>.txt root@<host>:/
 SSH into the target host as root and run `bash /nixfiles/bootstrap/nixos-root-on-zfs/install.sh <hostname> <disk_path>`.
 
 ### 4
+For hosts that need vmware, follow the instructions in `install.sh` to create EXT4 zvol for vmware.
+
+### 5
 Verify the content of /mnt. Then export the zfs pool:
 ```
 umount -Rl /mnt

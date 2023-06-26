@@ -99,7 +99,6 @@ zfs create -o canmount=on $RPOOL/data/keys
 zfs create -o canmount=on $RPOOL/data/home
 zfs create -o canmount=on $RPOOL/data/home/sinkerine
 zfs create -o canmount=on $RPOOL/data/home/sinkerine/.cache
-zfs create -o canmount=on $RPOOL/data/home/sinkerine/vmware
 
 info "Creating a zfs zvol for the docker mount point"
 zfs create \

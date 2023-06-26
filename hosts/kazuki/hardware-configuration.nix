@@ -58,13 +58,6 @@
     neededForBoot = true;
   };
 
-  fileSystems."/home/sinkerine/vmware" = {
-    device = "rpool/data/home/sinkerine/vmware";
-    fsType = "zfs";
-    options = [ "zfsutil" "X-mount.mkdir" ];
-    neededForBoot = true;
-  };
-
   fileSystems."/boot" = {
     device = "/dev/disk/by-label/ESP";
     fsType = "vfat";
@@ -72,6 +65,12 @@
 
   fileSystems."/var/lib/docker" = {
     device = "/dev/disk/by-label/DOCKER";
+    fsType = "ext4";
+    options = [ "nodev" "nofail" ];
+  };
+
+  fileSystems."/home/sinkerine/vmware" = {
+    device = "/dev/disk/by-label/VMWARE";
     fsType = "ext4";
     options = [ "nodev" "nofail" ];
   };
