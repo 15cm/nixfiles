@@ -58,6 +58,7 @@ in with lib; {
     dsf2flac
     neofetch
     cloc
+    antimicrox
 
     # Development
     pyright
@@ -137,7 +138,7 @@ in with lib; {
       dmenu.dmenu_command = "${config.programs.wofi.package}/bin/wofi -dmenu";
     };
   };
-  services.network-manager-applet.enable = true;
+  my.services.network-manager-applet.enable = true;
   services.dunst.enable = true;
   my.services.gtklock = {
     enable = true;

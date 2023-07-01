@@ -13,6 +13,13 @@ in {
         command = "syncthingtray --wait";
       };
     };
-    systemd.user.services.syncthingtray = { Unit.After = [ "tray.target" ]; };
+    systemd.user.services.syncthingtray = {
+      Unit = {
+        Requires = mkForce [ ];
+        PartOf = mkForce [ "tray.target" ];
+        After = mkForce [ "tray.target" ];
+      };
+      Install.WantedBy = mkForce [ "tray.target" ];
+    };
   };
 }

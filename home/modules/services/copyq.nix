@@ -18,10 +18,10 @@ in {
     systemd.user.services.copyq = {
       Unit = {
         Description = "Copyq";
-        PartOf = [ "graphical-session.target" ];
+        PartOf = [ "tray.target" ];
         After = [ "tray.target" ];
       };
-      Install = { WantedBy = [ "graphical-session.target" ]; };
+      Install = { WantedBy = [ "tray.target" ]; };
       Service = {
         Type = "simple";
         ExecStart = "${cfg.package}/bin/copyq";

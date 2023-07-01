@@ -27,10 +27,16 @@ in {
       targets.tray = {
         Unit = {
           Description = "Home Manager System Tray";
-          PartOf = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" "waybar.service" ];
+          PartOf = [ "waybar.service" ];
+          After = [ "waybar.service" ];
         };
-        Install = { WantedBy = [ "graphical-session.target" ]; };
+        Install.WantedBy = [ "waybar.service" ];
+      };
+      services.waybar = {
+        Service = {
+          # Wait for the waybar tray to be ready for the auto start GUI apps.
+          ExecStartPost = "${pkgs.coreutils}/bin/sleep 5";
+        };
       };
     };
     programs.waybar = {
