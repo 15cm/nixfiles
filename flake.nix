@@ -224,5 +224,10 @@
       };
       checks = builtins.mapAttrs
         (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+      devShells = forAllSystems (system: {
+        python-dev = import ./shell/python-dev.nix {
+          pkgs = builtins.getAttr system packages;
+        };
+      });
     };
 }
