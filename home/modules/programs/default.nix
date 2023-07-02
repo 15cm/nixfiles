@@ -15,5 +15,6 @@
     ./goldendict.nix
     ./zsh
     ./git
+    ./python-dev-tools
   ];
 }

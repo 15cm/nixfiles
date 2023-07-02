@@ -61,10 +61,6 @@ in with lib; {
     antimicrox
 
     # Development
-    pyright
-    black
-    isort
-    python3Packages.docformatter
     ccls
     ruby
   ];
@@ -199,4 +195,6 @@ in with lib; {
   my.services.playerctld.enable = true;
   my.programs.goldendict.enable = true;
   programs.obs-studio.enable = true;
+
+  my.programs.pythonDevTools.enable = true;
 }
