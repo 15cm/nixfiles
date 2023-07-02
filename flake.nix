@@ -12,6 +12,10 @@
     # nixgl is needed for alacritty outside of nixOS
     # refer to https://github.com/NixOS/nixpkgs/issues/122671
     # https://github.com/guibou/nixGL/#use-an-overlay
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
     nixgl = {
       inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,10 +40,16 @@
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
     };
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    xdph = {
+      url = "github:hyprwm/xdg-desktop-portal-hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprland-protocols.follows = "hyprland/hyprland-protocols";
     };
   };
 
@@ -75,7 +85,8 @@
         };
         "sinkerine@asako" = {
           pkgs = packages."x86_64-linux";
-          modules = [ ./home/users/sinkerine/asako ];
+          modules =
+            [ ./home/users/sinkerine/asako hyprland.nixosModules.default ];
           extraSpecialArgs = {
             hostname = "asako";
             isLinuxGui = true;
@@ -142,16 +153,20 @@
         "kazuki" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
-          modules = [ ./hosts/kazuki ] ++ (with nixos-hardware.nixosModules;
-            [ common-gpu-nvidia-nonprime ]);
+          modules = [ ./hosts/kazuki hyprland.nixosModules.default ]
+            ++ (with nixos-hardware.nixosModules;
+              [ common-gpu-nvidia-nonprime ]);
           specialArgs = { hostname = "kazuki"; };
         };
         # TODO: migrate to unencrypted pool + encrypted dataset.
         "asako" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
-          modules = [ ./hosts/asako kmonad.nixosModules.default ]
-            ++ (with nixos-hardware.nixosModules; [ lenovo-thinkpad-z13 ]);
+          modules = [
+            ./hosts/asako
+            hyprland.nixosModules.default
+            kmonad.nixosModules.default
+          ] ++ (with nixos-hardware.nixosModules; [ lenovo-thinkpad-z13 ]);
           specialArgs = { hostname = "asako"; };
         };
         # TODO: migrate to unencrypted pool + encrypted dataset.
@@ -179,6 +194,7 @@
           modules = v.modules
             ++ [ ./modules/nixos ./hosts/modules sops-nix.nixosModules.sops ];
           specialArgs = v.specialArgs // {
+            inherit (self) inputs;
             mylib = (import ./lib {
               inherit (v) pkgs;
               inherit (v.pkgs) lib;

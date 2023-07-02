@@ -13,8 +13,6 @@ with lib;
     glxinfo
   ];
 
-  hardware.opengl.enable = true;
-
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
   programs.dconf.enable = true;
   security.rtkit.enable = true;
@@ -26,9 +24,16 @@ with lib;
   };
 
   # Required by pipewire rt mod and Flatpak.
+  programs.hyprland = {
+    enable = true;
+    xwayland = {
+      enable = true;
+      hidpi = true;
+    };
+  };
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    extraPortals = with pkgs; [ xdg-desktop-portal-gtk xdg-desktop-portal-kde ];
   };
 
   hardware.bluetooth.enable = true;
