@@ -4,23 +4,29 @@ set -g @continuum-restore 'on'
 # Tmux jump
 set -g @jump-key 't'
 
-# Key bindings
 bind R source-file ~/.config/tmux/tmux.conf\; display-message "~/.config/tmux/tmux.conf reloaded"
 bind z confirm-before "kill-window"
 bind Z confirm-before "kill-session"
 bind S command-prompt -p "New Session:" "new-session -A -s '%%'"
 bind ^D detach
+
 # Pane movement
 bind '@' command-prompt -p "join pane from:"  "join-pane -s '%%'"
 bind '#' command-prompt -p "send pane to:" "join-pane -t '%%'"
-# pane rotation
-bind ^K rotate -U
-bind ^J rotate -D
+# Pane rotation
+bind K rotate -U
+bind J rotate -D
+# Pane resize
+bind-key -r -T prefix M-k resize-pane -U 5
+bind-key -r -T prefix M-j resize-pane -D 5
+bind-key -r -T prefix M-l resize-pane -L 5
+bind-key -r -T prefix M-r resize-pane -R 5
+# Zoom pane to maximum size.
+bind a "resize-pane -Z"
+
 # Window reordering
 bind < swap-window -t -1\; select-window -t -1
 bind > swap-window -t +1\; select-window -t +1
-# Zoom pane to maximum size.
-bind a "resize-pane -Z"
 # clean history
 bind , send-keys -R \; run "sleep 0.1" \; clear-history
 

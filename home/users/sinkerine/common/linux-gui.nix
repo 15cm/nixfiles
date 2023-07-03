@@ -61,6 +61,8 @@ in with lib; {
     antimicrox
 
     # Development
+    postgresql
+    nodePackages.js-beautify
     ccls
     ruby
   ];

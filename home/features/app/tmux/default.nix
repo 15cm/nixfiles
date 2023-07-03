@@ -27,7 +27,6 @@ in {
       sensible
       resurrect
       continuum
-      pain-control
       extrakto
       jump
       tmux-fzf
