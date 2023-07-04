@@ -18,5 +18,12 @@ in {
       };
       tray = true;
     };
+    systemd.user.services.gammastep = {
+      Unit = {
+        PartOf = mkForce [ "tray.target" ];
+        After = [ "tray.target" ];
+      };
+      Install = { WantedBy = mkForce [ "tray.target" ]; };
+    };
   };
 }
