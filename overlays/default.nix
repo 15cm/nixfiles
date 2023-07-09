@@ -11,7 +11,7 @@ with nixpkgs.lib; {
       src = super.fetchFromGitHub {
         owner = "vedgy";
         repo = "goldendict";
-        rev = "d4d9a0b3dca90be426e5a6dbbf466a0c08d5bdea";
+        rev = "7b4a8328806ff2d71c43b229359b2f10724f7e6d";
         sha256 = "sha256-D+eZT7cjH4gEB3aczX5JBj9GxU7vbUYrIJo8tZ+JEgw=";
       };
       buildInputs = let pkgs = nixpkgs.legacyPackages.x86_64-linux;

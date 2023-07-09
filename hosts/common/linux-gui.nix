@@ -67,6 +67,7 @@ with lib;
     enable = true;
     description = "Restart network manager on system resume";
     serviceConfig = {
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
       ExecStart =
         "${pkgs.systemd}/bin/systemctl restart NetworkManager.service";
       Type = "oneshot";
