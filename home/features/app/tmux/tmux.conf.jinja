@@ -10,12 +10,24 @@ bind Z confirm-before "kill-session"
 bind S command-prompt -p "New Session:" "new-session -A -s '%%'"
 bind ^D detach
 
+# Pane navigation
+bind-key h   select-pane -L
+bind-key j   select-pane -D
+bind-key k   select-pane -U
+bind-key l   select-pane -R
 # Pane movement
 bind '@' command-prompt -p "join pane from:"  "join-pane -s '%%'"
 bind '#' command-prompt -p "send pane to:" "join-pane -t '%%'"
 # Pane rotation
 bind K rotate -U
 bind J rotate -D
+# Pane split
+bind-key "|" split-window -h -c "#{pane_current_path}"
+bind-key "\\" split-window -fh -c "#{pane_current_path}"
+bind-key "-" split-window -v -c "#{pane_current_path}"
+bind-key "_" split-window -fv -c "#{pane_current_path}"
+bind-key "%" split-window -h -c "#{pane_current_path}"
+bind-key '"' split-window -v -c "#{pane_current_path}"
 # Pane resize
 bind-key -r -T prefix M-k resize-pane -U 5
 bind-key -r -T prefix M-j resize-pane -D 5
