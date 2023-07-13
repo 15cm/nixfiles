@@ -18,6 +18,9 @@ in {
 
     xdg.configFile."pdm/config.toml".text = ''
       check_update = false
+
+      [python]
+      use_venv = false
     '';
   };
 }

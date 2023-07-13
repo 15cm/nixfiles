@@ -77,10 +77,7 @@
       homeConfigurationArgs = {
         "sinkerine@kazuki" = {
           pkgs = packages."x86_64-linux";
-          modules = [
-            ./home/users/sinkerine/kazuki
-            hyprland.homeManagerModules.default
-          ];
+          modules = [ ./home/users/sinkerine/kazuki ];
           extraSpecialArgs = {
             hostname = "kazuki";
             isLinuxGui = true;
@@ -88,10 +85,7 @@
         };
         "sinkerine@asako" = {
           pkgs = packages."x86_64-linux";
-          modules = [
-            ./home/users/sinkerine/asako
-            hyprland.homeManagerModules.default
-          ];
+          modules = [ ./home/users/sinkerine/asako ];
           extraSpecialArgs = {
             hostname = "asako";
             isLinuxGui = true;
@@ -133,7 +127,11 @@
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
         (builtins.mapAttrs (configName: v:
           v // {
-            modules = v.modules ++ [ ./modules/home-manager ./home/modules ];
+            modules = v.modules ++ [
+              ./modules/home-manager
+              ./home/modules
+              hyprland.homeManagerModules.default
+            ];
             extraSpecialArgs = (v.extraSpecialArgs or { }) // rec {
               inherit state;
               nixinfo = {
