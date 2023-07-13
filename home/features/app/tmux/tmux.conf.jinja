@@ -36,6 +36,9 @@ bind-key -r -T prefix M-r resize-pane -R 5
 # Zoom pane to maximum size.
 bind a "resize-pane -Z"
 
+# New window
+bind c new-window -c "#{pane_current_path}"
+
 # Window reordering
 bind < swap-window -t -1\; select-window -t -1
 bind > swap-window -t +1\; select-window -t +1
