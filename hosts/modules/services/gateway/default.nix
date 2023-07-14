@@ -79,7 +79,9 @@ in {
       };
 
       systemd.services.traefik = {
-        serviceConfig = { environment = config.sops.secrets.traefik-env.path; };
+        serviceConfig = {
+          EnvironmentFile = [ config.sops.secrets.traefik-env.path ];
+        };
       };
       users.users.traefik = { uid = config.my.ids.uids.traefik; };
       users.groups.traefik.gid = config.my.ids.uids.traefik;
