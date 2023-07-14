@@ -114,6 +114,7 @@ with lib; {
   boot.kernel.sysctl = {
     "vm.max_map_count" = 262144;
     "fs.inotify.max_user_watches" = 200000;
+    "fs.inotify.max_user_instances" = 8192;
   };
   networking.firewall.enable = true;
   # Hosts doesn't support wildcard but I don't want to introduce a DNS server on each machine.
