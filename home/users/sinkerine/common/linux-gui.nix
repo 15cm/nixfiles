@@ -59,6 +59,7 @@ in with lib; {
     neofetch
     cloc
     antimicrox
+    unzip
 
     # Development
     postgresql

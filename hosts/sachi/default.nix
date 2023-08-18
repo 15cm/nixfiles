@@ -68,6 +68,7 @@ with lib;
       config.my.ip.ranges.lan
       config.my.ip.ranges.wireguard
       config.my.ip.ranges.tailscale
+      config.my.ip.ranges.docker
     ];
   };
   services.traefik.dynamicConfigOptions.http.middlewares.mastodon-auth-proxy.redirectRegex =
