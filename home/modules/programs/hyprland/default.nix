@@ -40,22 +40,10 @@ in {
       enable = true;
       package = (pkgs.hyprland.override {
         enableXWayland = true;
-        hidpiXWayland = true;
-        nvidiaPatches = true;
-      }).overrideAttrs (old: {
-        src = pkgs.fetchFromGitHub rec {
-          owner = "hyprwm";
-          repo = "hyprland";
-          version = "0.26.0";
-          rev = "v${version}";
-          hash = "sha256-LPih0Q//p8IurXG9kGRVGAqV4AUKVYj9xkk3sYYAj6I=";
-        };
+        enableNvidiaPatches = true;
       });
-      nvidiaPatches = true;
-      xwayland = {
-        enable = true;
-        hidpi = true;
-      };
+      enableNvidiaPatches = true;
+      xwayland = { enable = true; };
       # Write my own systemd integration to import all needed variables into systemd first.
       systemdIntegration = false;
       extraConfig = let

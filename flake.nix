@@ -46,11 +46,6 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    xdph = {
-      url = "github:hyprwm/xdg-desktop-portal-hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.hyprland-protocols.follows = "hyprland/hyprland-protocols";
-    };
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, flake-utils, sops-nix, kmonad

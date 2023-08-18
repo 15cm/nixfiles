@@ -26,10 +26,7 @@ with lib;
   # Required by pipewire rt mod and Flatpak.
   programs.hyprland = {
     enable = true;
-    xwayland = {
-      enable = true;
-      hidpi = true;
-    };
+    xwayland = { enable = true; };
   };
   xdg.portal = {
     enable = true;

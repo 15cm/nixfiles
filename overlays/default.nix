@@ -4,15 +4,15 @@ with nixpkgs.lib; {
   # Adds my custom packages
   additions = self: _super: import ../pkgs { pkgs = self; };
   modifications = self: super: rec {
-    waybar = super.waybar.overrideAttrs
-      (old: rec { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
+    # waybar = super.waybar.overrideAttrs
+    #   (old: rec { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
     goldendict = super.goldendict.overrideAttrs (old: {
       version = "2023-03-30";
       src = super.fetchFromGitHub {
         owner = "vedgy";
         repo = "goldendict";
         rev = "7b4a8328806ff2d71c43b229359b2f10724f7e6d";
-        sha256 = "sha256-D+eZT7cjH4gEB3aczX5JBj9GxU7vbUYrIJo8tZ+JEgw=";
+        sha256 = "sha256-ZQjGpwsWDbWRQkgCt7rMuazt345P+G7XiEjsShulBBs=";
       };
       buildInputs = let pkgs = nixpkgs.legacyPackages.x86_64-linux;
       in with pkgs; [
