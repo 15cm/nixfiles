@@ -10,12 +10,12 @@ in {
     enableDocker = mkEnableOption "docker integration";
     enableDashboardProxy = mkDefaultTrueEnableOption "dashboard proxy";
     internalDomain = mkOption {
-      type = with types; nullOr string;
+      type = with types; nullOr str;
       default = null;
       description = "domain for access inside the internal tailscale network";
     };
     externalDomain = mkOption {
-      type = with types; nullOr string;
+      type = with types; nullOr str;
       default = null;
       description = "domain for access over the internet";
     };

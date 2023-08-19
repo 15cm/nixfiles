@@ -4,8 +4,8 @@ with nixpkgs.lib; {
   # Adds my custom packages
   additions = self: _super: import ../pkgs { pkgs = self; };
   modifications = self: super: rec {
-    # waybar = super.waybar.overrideAttrs
-    #   (old: rec { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
+    waybar = super.waybar.overrideAttrs
+      (old: rec { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
     goldendict = super.goldendict.overrideAttrs (old: {
       version = "2023-03-30";
       src = super.fetchFromGitHub {

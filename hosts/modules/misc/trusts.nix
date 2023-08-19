@@ -4,11 +4,11 @@ with lib; {
   options.my.trusts = {
     cache.pubKeys = mkOption {
       default = [ ];
-      type = with types; listOf string;
+      type = with types; listOf str;
     };
     ssh.pubKeys = mkOption {
       default = [ ];
-      type = with types; listOf string;
+      type = with types; listOf str;
     };
   };
 

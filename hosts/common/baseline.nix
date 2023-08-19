@@ -112,7 +112,7 @@ with lib; {
   '';
 
   boot.kernel.sysctl = {
-    "vm.max_map_count" = 262144;
+    "vm.max_map_count" = 524288;
     "fs.inotify.max_user_watches" = 200000;
     "fs.inotify.max_user_instances" = 8192;
   };
@@ -123,7 +123,7 @@ with lib; {
     127.0.0.1 metrics.${hostname}.m.mado.moe
     127.0.0.1 monitoring.${hostname}.m.mado.moe
   '';
-  fonts.fonts = with pkgs; [ noto-fonts ];
+  fonts.packages = with pkgs; [ noto-fonts ];
   fonts.fontconfig.enable = false;
   sops.secrets.smtpPassword = {
     sopsFile = ./secrets.yaml;

@@ -45,7 +45,7 @@ in {
     };
     openFirewallForPorts = mkOption {
       default = [ ];
-      type = with types; listOf string;
+      type = with types; listOf str;
       description = "List of port names to open firewall for.";
     };
     caCertFile = mkOption {
