@@ -64,6 +64,7 @@ in {
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     modesetting.enable = true;
     powerManagement.enable = true;
+    forceFullCompositionPipeline = true;
   };
   boot.kernelParams =
     [ "acpi_enforce_resources=lax" "transparent_hugepage=never" ];
