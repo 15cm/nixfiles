@@ -13,7 +13,6 @@
     QT_SCREEN_SCALE_FACTORS = "1.25";
     GDK_SCALE = "1.25";
     GDK_DPI_SCALE = "1";
-    XCURSOR_SIZE = "24";
   };
 
   my.hardware.monitors = {

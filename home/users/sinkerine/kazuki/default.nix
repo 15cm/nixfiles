@@ -26,7 +26,6 @@
     GDK_SCALE = "2";
     GDK_DPI_SCALE = "0.5";
     QT_SCREEN_SCALE_FACTORS = "2";
-    XCURSOR_SIZE = "48";
   };
 
   # Host specific session variables.
