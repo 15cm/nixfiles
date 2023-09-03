@@ -13,7 +13,7 @@ in {
     home.file."local/bin/set-theme.sh".source =
       pkgs.writeShellScript "set-theme.sh" ''
         sed -i "s/\(theme.*\)\"[^\"]*\"/\1\"$1\"/" ${nixinfo.projectRoot}/home/state/default.nix
-        switch-nix-home.sh
+        switch-nix-home.sh --option substitute false
       '';
 
     home.file."local/bin/reload-theme.sh".source =

@@ -15,7 +15,7 @@ in {
         else
           sed -i "s/.*enableNightLightShader.*/  enableNightLightShader = true;/" ${nixinfo.projectRoot}/home/state/default.nix
         fi
-        switch-nix-home.sh
+        switch-nix-home.sh --option substitute false
       '';
     programs.zsh.shellAliases = {
       nlon = "night-light-control.sh on";
