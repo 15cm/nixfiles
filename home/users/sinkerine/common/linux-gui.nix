@@ -2,7 +2,7 @@
 
 let
   applyXwaylandEnvsToDesktopExec = exec:
-    "env GDK_SCALE=${config.my.env.GDK_SCALE} env GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} ${exec}";
+    "env GDK_SCALE=${config.my.env.GDK_SCALE} GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} ${exec}";
 in with lib; {
   imports = [
     # Essentials
