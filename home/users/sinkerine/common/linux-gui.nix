@@ -109,9 +109,11 @@ in with lib; {
   programs.zsh.shellAliases = {
     # Nix Home Manager
     snh = "switch-nix-home.sh";
+    snho = "switch-nix-home.sh --option substitute false";
     bnh = "build-nix-home.sh";
     # NixOS
     sno = "switch-nix-os.sh";
+    snoo = "switch-nix-os.sh --option substitute false";
     bno = "build-nix-os.sh";
   };
   my.programs.emacs = {
