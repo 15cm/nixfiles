@@ -16,5 +16,6 @@
     ./zsh
     ./git
     ./python-dev-tools
+    ./joshuto
   ];
 }
