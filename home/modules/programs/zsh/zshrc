@@ -178,3 +178,5 @@ bindkey '^x' __fzf_dir_widget
 # Remove alt bindings of fzf because it conflicts with zsh vi mode. Esc and Alt sends the same key code '^['.
 bindkey -r viins '^[c'
 bindkey -r vicmd '^[c'
+
+# zprof

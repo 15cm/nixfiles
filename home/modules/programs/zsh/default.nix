@@ -24,7 +24,7 @@ in {
   config = mkIf cfg.enable ({
     programs.zsh = {
       enable = true;
-      enableCompletion = true;
+      enableCompletion = false;
       zplug = {
         enable = true;
         plugins = [
@@ -74,6 +74,7 @@ in {
       } // optionalAttrs isDarwin { HOMEBREW_NO_AUTO_UPDATE = "1"; };
       # Env vars that are specific to interactive shell.
       initExtraFirst = mkBefore ''
+        # zmodload zsh/zprof
         export TZ="America/Los_Angeles"
         export PATH="$PATH:$HOME/local/bin:/usr/local/bin:/usr/bin";
         export EDITOR="${config.home.homeDirectory}/local/bin/exec-editor.sh";
@@ -87,6 +88,13 @@ in {
         export KEYTIMEOUT=1
         # Only the chars in this list are skipped in word operations.
         export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+        # Only check zcompdump per day
+        autoload -Uz compinit
+        if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+          compinit;
+        else
+          compinit -C;
+        fi;
 
         # This allows us to override the zvm keybindings later.
         # https://github.com/jeffreytse/zsh-vi-mode#initialization-mode
