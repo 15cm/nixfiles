@@ -35,6 +35,7 @@ in {
         OnCalendar = cfg.onCalendar;
         Persistent = cfg.persistent;
       };
+      Install = { WantedBy = [ "timers.target" ]; };
     };
   };
 }

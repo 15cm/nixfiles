@@ -124,9 +124,9 @@ in {
     dataDir = "/var/lib/grafana";
   };
 
-  # Otherwise the keyboard will be frozen on nixos switch.
-  system.activationScripts.kmonadServiceRestart = ''
-    ${pkgs.coreutils}/bin/sleep 5
-    ${pkgs.systemd}/bin/systemctl restart kmonad-laptop.service
-  '';
+  # The keyboard is frozen after a nixos switch. Even the activation script below doesn't help.
+  # system.activationScripts.kmonadServiceRestart = ''
+  #   ${pkgs.coreutils}/bin/sleep 5
+  #   ${pkgs.systemd}/bin/systemctl restart kmonad-laptop.service
+  # '';
 }
