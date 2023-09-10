@@ -78,7 +78,10 @@ with lib;
       replacement = "https://mastodon.mado.moe/.well-known/webfinger";
     };
   my.services.headscale.enable = true;
-  my.services.tailscale.enable = true;
+  my.services.tailscale = {
+    enable = true;
+    asExitNode = true;
+  };
 
   my.services.smartd.enable = true;
   my.services.metrics = {

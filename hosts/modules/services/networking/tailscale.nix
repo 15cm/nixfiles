@@ -12,12 +12,14 @@ in {
       type = types.str;
       default = "https://headscale.mado.moe";
     };
+    asExitNode = mkEnableOption "work as an exit node";
   };
 
   config = mkIf cfg.enable {
     services.tailscale = {
       enable = true;
       port = config.my.ports.tailscale.listen;
+      useRoutingFeatures = mkIf cfg.asExitNode "server";
     };
     systemd.services.tailscale-autoauth = mkIf cfg.enableAutoauth {
       description = "Tailscale autoauth hack";
