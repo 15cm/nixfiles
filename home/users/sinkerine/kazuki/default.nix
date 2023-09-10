@@ -10,7 +10,7 @@
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {
     ryujinx = {
-      name = "ryujinx (high priority)";
+      name = "Ryujinx (high priority)";
       exec = "nice -n -19 ryujinx %f";
       terminal = false;
     };
@@ -18,6 +18,12 @@
       name = "VMware Workstation (high priority)";
       exec =
         "env GDK_SCALE=${config.my.env.GDK_SCALE} GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} nice -n -19 vmware";
+    };
+    steam-fc-override = {
+      name = "Steam (fc override)";
+      exec =
+        "env FONTCONFIG_FILE=${config.home.homeDirectory}/.config/fontconfig/conf.d/10-hm-fonts.conf steam";
+      terminal = false;
     };
   };
 

@@ -23,6 +23,7 @@ in {
         iosevka
         iosevka-nerdfont
         material-design-icons
+        wqy_zenhei
         # Not sure why Font Manager doesn't work well with FontAwesome v6
         font-awesome_5
       ];
