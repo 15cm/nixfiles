@@ -34,7 +34,8 @@ in {
       PermitRootLogin = "prohibit-password";
     };
     extraConfig = ''
-      AllowUsers *@10.1.0.*
+      AllowUsers *@100.64.*.*
+      AllowUsers *@192.168.88.*
     '';
   };
 
