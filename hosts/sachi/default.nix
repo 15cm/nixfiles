@@ -80,7 +80,7 @@ with lib;
   my.services.headscale.enable = true;
   my.services.tailscale = {
     enable = true;
-    asExitNode = true;
+    useRoutingFeatures = "server";
   };
 
   my.services.smartd.enable = true;

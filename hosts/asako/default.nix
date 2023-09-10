@@ -48,8 +48,6 @@ in {
     hostName = hostname;
     domain = "mado.moe";
     networkmanager = { enable = true; };
-    # https://nixos.wiki/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
-    firewall.checkReversePath = false;
   };
 
   services.fwupd.enable = true;
@@ -106,7 +104,14 @@ in {
     sopsKeyFile = ./zrepl/asako.m.mado.moe.key;
   };
 
-  my.services.tailscale.enable = true;
+  my.services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+  };
+  my.services.shadowsocks-client = {
+    enable = true;
+    serverAddress = "amane.m.mado.moe";
+  };
   my.services.gateway = {
     enable = true;
     enableDocker = true;

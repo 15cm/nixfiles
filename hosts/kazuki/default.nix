@@ -104,7 +104,10 @@ in {
 
   programs.steam = { enable = true; };
 
-  my.services.tailscale.enable = true;
+  my.services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+  };
   my.services.gateway = {
     enable = true;
     enableDocker = true;
