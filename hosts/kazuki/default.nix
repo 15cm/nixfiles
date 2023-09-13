@@ -25,6 +25,7 @@ in {
     winetricks
     dolphin-emu-beta
     ryujinx
+    rpcs3
   ];
 
   sops = {
