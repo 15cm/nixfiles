@@ -130,8 +130,6 @@ with lib; {
     mode = "0440";
     group = "smtp-secret";
   };
-  # Created at 2023-01-12 11:17:01
-  sops.secrets.tailscaleAuthkey.sopsFile = ./secrets.yaml;
   environment.etc."aliases".text = ''
     root: ${hostname}-sysadmin@15cm.net
   '';
