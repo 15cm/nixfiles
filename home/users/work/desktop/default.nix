@@ -21,8 +21,6 @@ with lib; {
     ../../../features/app/rofi
     ../../../features/app/picom
     ../../../features/app/arandr
-    ../../../features/app/copyq
-    ../../../features/app/imwheel
     ../../../features/app/flameshot
   ];
 
@@ -74,6 +72,7 @@ with lib; {
     # https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
     extraOptions = [ "--user" "''" ];
   };
+  my.services.copyq.enable = true;
   my.services.clipper.enable = true;
   services.dunst.enable = true;
   my.programs.networkmanager-dmenu = {
