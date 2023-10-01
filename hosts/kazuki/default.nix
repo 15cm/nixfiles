@@ -26,6 +26,7 @@ in {
     dolphin-emu-beta
     ryujinx
     rpcs3
+    citra
   ];
 
   sops = {

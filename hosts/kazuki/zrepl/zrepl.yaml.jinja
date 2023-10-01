@@ -12,6 +12,7 @@ jobs:
     name: "push"
     filesystems: {
       "rpool": true,
+      "rpool/tmp<": false,
       "rpool/data<": true,
       "rpool/data/home/sinkerine/.cache": false,
       "rpool/data/home/sinkerine/vmware": false,
