@@ -13,7 +13,7 @@ in {
   imports = [
     ./hardware-configuration.nix
     ../common/baseline.nix
-    ../common/systemd-boot.nix
+    ../common/boot-loader.nix
     ../common/users.nix
     ../common/linux-gui.nix
   ];
