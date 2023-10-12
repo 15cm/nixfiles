@@ -41,6 +41,7 @@ info "Partitioning $DISK"
 sgdisk --zap-all $DISK
 sgdisk -n1:1M:+1G -t1:EF00 $DISK
 sgdisk -n2:0:0    -t2:BF00 $DISK
+# TODO: add windows partitions
 sleep 3
 partprobe $DISK
 
@@ -48,7 +49,7 @@ export ESP_PART=${DISK}-part1
 export ZFS_PART=${DISK}-part2
 
 for i in {1..10}; do
-  info "Waiting for esp and zfs partitions to be ready. $i out of 10 reties"
+  info "Waiting for esp and zfs partitions to be ready. $i out of 10 retries"
   sleep 3
   if [ -e $ESP_PART ] && [ -e $ZFS_PART ]; then
     break

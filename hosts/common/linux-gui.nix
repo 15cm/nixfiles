@@ -11,6 +11,7 @@ with lib;
     mpv
     deploy-rs
     glxinfo
+    ventoy
   ];
 
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
