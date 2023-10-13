@@ -26,7 +26,7 @@ cp /nixfiles/home/state/default.example.nix /nixfiles/home/state/default.nix
 
 ## 4 Initialize Home Manager
 ```
-nix build --no-link --impure path:/nixfiles#homeConfigurations.<username>@<hostname>.activationPackage
-"$(nix path-info --impure path:/nixfiles#homeConfigurations.<username>@<hostname>.activationPackage)"/activate
+nix build --no-link path:/nixfiles#homeConfigurations.<username>@<hostname>.activationPackage
+"$(nix path-info path:/nixfiles#homeConfigurations.<username>@<hostname>.activationPackage)"/activate
 ```
 

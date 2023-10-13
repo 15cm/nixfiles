@@ -29,8 +29,8 @@ TODO: test if deploy-rs work for home manager bootstrap.
 
 Reboot the machine. After reboot, switch to tty and setup home manager:
 ```
-nix build --no-link --impure path:/nixfiles#homeConfigurations.${USER}@$(hostname).activationPackage
-"$(nix path-info --impure path:/nixfiles#homeConfigurations.${USER}@$(hostname).activationPackage)"/activate
+nix build --no-link path:/nixfiles#homeConfigurations.${USER}@$(hostname).activationPackage
+"$(nix path-info path:/nixfiles#homeConfigurations.${USER}@$(hostname).activationPackage)"/activate
 ```
 
 If the machine is a remote headless machine, we always want to deploy it via deploy-rs, so remove the nixfiles (/keys shouldn't be removed because sops decrypt in activation scripts):
