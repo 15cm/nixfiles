@@ -70,9 +70,10 @@
   };
 
   fileSystems."/home/sinkerine/vmware" = {
-    device = "/dev/disk/by-label/VMWARE";
-    fsType = "ext4";
-    options = [ "nodev" "nofail" ];
+    device = "rpool/data/home/sinkerine/vmware";
+    fsType = "zfs";
+    options = [ "zfsutil" "X-mount.mkdir" ];
+    neededForBoot = true;
   };
 
   swapDevices = [ ];
