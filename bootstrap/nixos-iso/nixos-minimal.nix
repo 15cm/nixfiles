@@ -10,6 +10,8 @@ with lib;
 
   boot.supportedFilesystems = mkForce [ "ext4" "fat32" "zfs" ];
 
+  environment.systemPackages = with pkgs; [ ntfs3g ];
+
   networking.networkmanager.enable = true;
   networking.wireless.enable = mkForce false;
 }
