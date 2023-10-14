@@ -46,6 +46,11 @@ with lib;
     useDHCP = true;
     # Delegate home firewall to the router.
     firewall.enable = mkForce false;
+    # Disable the 1G NIC to make sure the 10G NIC is always used.
+    interfaces.eno1.useDHCP = false;
+    interfaces.eno2.useDHCP = false;
+    interfaces.eno3.useDHCP = false;
+    interfaces.eno4.useDHCP = false;
   };
 
   my.services.docker = { enable = true; };
