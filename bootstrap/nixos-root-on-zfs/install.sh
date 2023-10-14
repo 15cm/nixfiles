@@ -40,9 +40,9 @@ fi
 info "Partitioning $DISK"
 sgdisk --zap-all $DISK
 sgdisk -n1:1M:+1G        -t1:EF00 $DISK
-sgdisk -n2:0:+830G       -t2:BF00 $DISK
+sgdisk -n2:0:+650G       -t2:BF00 $DISK
 sgdisk -n3:0:+16M        -t3:0C01 $DISK
-sgdisk -n4:0:+100G       -t4:0700 $DISK
+sgdisk -n4:0:+280G       -t4:0700 $DISK
 sgdisk -n5:0:+300M       -t5:2700 $DISK
 sleep 3
 partprobe $DISK
@@ -61,8 +61,8 @@ for i in {1..10}; do
 done
 
 info "Formatting Windows partitions"
-mkntfs -L WINDOWS_BASIC -f /dev/disk/by-id/nvme-Samsung_SSD_980_PRO_1TB_S5P2NG0R857387X-part4
-mkntfs -L WINDOWS_RE -f /dev/disk/by-id/nvme-Samsung_SSD_980_PRO_1TB_S5P2NG0R857387X-part5
+mkntfs -L WINDOWS_BASIC -f ${DISK}-part4
+mkntfs -L WINDOWS_RE -f ${DISK}-part5
 
 info "Unmounting /mnt"
 umount -Rl /mnt || :
