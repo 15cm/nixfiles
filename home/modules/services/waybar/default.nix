@@ -47,12 +47,12 @@ in {
           layer = "top";
           output = (mapAttrsToList (name: value: value.output) cfg.monitors);
           position = "top";
-          height = 30;
+          height = 36;
           modules-left = [ "cpu" "memory" ]
             ++ optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ]
             ++ [ "network" "network#speed" "pulseaudio" ]
             ++ optionals (hostname == "asako") [ "backlight" ];
-          modules-center = [ "wlr/workspaces" "custom/isMaximized" ];
+          modules-center = [ "hyprland/workspaces" "custom/isMaximized" ];
           modules-right = [ "mpris" ]
             ++ optionals (hostname == "asako") [ "battery" ]
             ++ [ "clock" "tray" ];
