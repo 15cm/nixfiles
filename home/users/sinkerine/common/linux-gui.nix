@@ -60,6 +60,8 @@ in with lib; {
     cloc
     antimicrox
     unzip
+    yazi
+    ueberzugpp
 
     # Development
     postgresql
