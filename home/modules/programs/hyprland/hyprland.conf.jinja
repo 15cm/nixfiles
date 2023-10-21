@@ -171,7 +171,10 @@ bind = $mainMod, u, layoutmsg, focusmaster
 bind = $mainMod SHIFT, u, layoutmsg, swapwithmaster master
 bind = $mainMod, n, focusmonitor, DP-1
 bind = $mainMod, m, focusmonitor, DP-2
-bind = $mainMod, y, togglespecialworkspace
+bind = $mainMod SHIFT, y, movetoworkspace, special:default
+bind = $mainMod, y, togglespecialworkspace, default
+bind = $mainMod SHIFT, s, movetoworkspace, special:search
+bind = $mainMod, s, togglespecialworkspace, search
 
 # Window dispatchers
 bind = $mainMod, F, fullscreen, 1
@@ -185,7 +188,7 @@ bind = $mainMod, H, workspace, r-1
 bind = $mainMod, L, workspace, r+1
 bind = $mainMod SHIFT, H, movetoworkspace, r-1
 bind = $mainMod SHIFT, L, movetoworkspace, r+1
-bind = $mainMod, COMMA, movetoworkspace, special
+bind = $mainMod, COMMA, movetoworkspace, empty
 bind = $mainMod, PERIOD, movetoworkspace, previous
 
 # Resize window
