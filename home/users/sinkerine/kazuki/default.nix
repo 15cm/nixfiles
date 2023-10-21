@@ -27,6 +27,23 @@
     };
   };
 
+  systemd = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      Unit = {
+        Description = "polkit-gnome-authentication-agent-1";
+        PartOf = [ "graphical-session.target" ];
+      };
+      Service = {
+        Type = "simple";
+        ExecStart =
+          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+    };
+  };
+
   # Only pass scale env variables for XWayland apps.
   my.env = {
     GDK_SCALE = "2";
