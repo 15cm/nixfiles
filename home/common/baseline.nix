@@ -15,7 +15,7 @@ in {
 
   home.packages = (with pkgs; [
     nixfmt
-    exa
+    eza
     fd
     htop
     lsof

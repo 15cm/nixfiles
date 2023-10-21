@@ -84,7 +84,7 @@ if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi
 
 # --------------------- exa ---------------------
 if which exa > /dev/null; then
-  _ls_cmd="exa --color always --group-directories-first --sort extension"
+  _ls_cmd="eza --color always --group-directories-first --sort extension"
   alias ls="$_ls_cmd"
   alias la="$_ls_cmd -al --git --group --header"
   alias ll="$_ls_cmd -l --git --group --header"
