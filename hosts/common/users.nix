@@ -20,7 +20,7 @@ with lib;
     ];
     uid = config.my.ids.uids.sinkerine;
     home = "/home/sinkerine";
-    passwordFile = config.sops.secrets.hashedPassword.path;
+    hashedPasswordFile = config.sops.secrets.hashedPassword.path;
     subUidRanges = [{
       startUid = config.my.ids.uids.dockremap;
       count = 65536;
