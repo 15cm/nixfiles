@@ -26,6 +26,7 @@ in {
         wqy_zenhei
         # Not sure why Font Manager doesn't work well with FontAwesome v6
         font-awesome_5
+        symbola
       ];
       # So that font manager can see the user installed fonts.
       home.file.".local/share/fonts".source = "${config.home.path}/share/fonts";
