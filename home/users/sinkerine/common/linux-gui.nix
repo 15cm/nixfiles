@@ -60,7 +60,6 @@ in with lib; {
     cloc
     antimicrox
     unzip
-    yazi
     ueberzugpp
 
     # Development
@@ -68,6 +67,7 @@ in with lib; {
     nodePackages.js-beautify
     ccls
     ruby
+    rust-analyzer
   ];
 
   home.sessionVariables = {
