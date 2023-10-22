@@ -10,6 +10,7 @@
 from __future__ import absolute_import, division, print_function
 
 import distutils.spawn
+
 # You can import any python module as needed.
 import os
 import os.path
@@ -145,7 +146,7 @@ class fzf_z(Command):
     def execute(self):
         global tree_cmd
         command = (
-            'eval "$(lua $HOME/.zplug/repos/skywind3000/z.lua/z.lua --init zsh)"; _zlua -i 2>&1 | sed "s/^[0-9,.]* *//" | '
+            "zoxide query -l | "
             + fzf_default_cmd
             + '--tac --reverse --preview "{0} {{}} | head -200" --preview-window right:30%'.format(
                 tree_cmd

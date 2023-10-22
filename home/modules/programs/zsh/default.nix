@@ -51,7 +51,6 @@ in {
             name = "jeffreytse/zsh-vi-mode";
             tags = [ "defer:0" ];
           }
-          { name = "skywind3000/z.lua"; }
         ] ++ optionals (nixinfo.configName != "work@desktop") [{
           name = "plugins/ssh-agent";
           tags = [ "from:oh-my-zsh" ];

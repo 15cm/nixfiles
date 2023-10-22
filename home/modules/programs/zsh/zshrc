@@ -115,43 +115,8 @@ _fzf_compgen_dir() {
   fd -H --no-ignore-vcs -t d . "$1"
 }
 
-# fzf z binding
-__fzf_z() {
-  z -i | sed 's/^[0-9,.]* *//' \
-    | fzf --tac --reverse --preview "$_tree_cmd {} | head -200" --preview-window right:30%
-}
-
-__fzf_z_arg() {
-  __fzf_z | while read item; do printf ' %q/' "$item"; done
-  echo
-}
-
-__fzf_z_arg_widget() {
-  LBUFFER="${LBUFFER}$(__fzf_z_arg)"
-  local ret=$?
-  zle redisplay
-  typeset -f zle-line-init >/dev/null && zle zle-line-init
-  return $ret
-}
-
-zle -N __fzf_z_arg_widget
-
-# fzf z arg
-bindkey '^J' __fzf_z_arg_widget
-
-__fzf_z_cd_widget() {
-  local dir=$(__fzf_z)
-  cd "$dir"
-  local ret=$?
-  zle reset-prompt
-  typeset -f zle-line-init >/dev/null && zle zle-line-init
-  return $ret
-}
-
-zle -N __fzf_z_cd_widget
-
 # fzf z cd
-bindkey '^j' __fzf_z_cd_widget
+bindkey -s '^j' '__zoxide_zi^m'
 
 # fzf dirs under current dir
 __fzf_dir() {

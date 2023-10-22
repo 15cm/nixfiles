@@ -25,6 +25,7 @@ in {
     hunspell
     hunspellDicts.en_US-large
     parallel
+    tree
   ]);
 
   my.services.nix-home-manager-gc.enable = true;
@@ -44,4 +45,5 @@ in {
   my.programs.ranger.enable = true;
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
+  programs.zoxide = { enable = true; };
 }
