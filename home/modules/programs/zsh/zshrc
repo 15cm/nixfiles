@@ -64,20 +64,7 @@ bindkey -M viins "^[[4~" end-of-line
 # zce
 bindkey -M vicmd 't' zce
 
-# ranger
-# Automatically change the directory in zsh after closing ranger
-ranger-cd() {
-  tempfile="$(mktemp -t tmp.XXXXXX)"
-  ranger --choosedir="$tempfile" "${@:-$(pwd)}"
-  test -f "$tempfile" &&
-    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
-      cd -- "$(cat "$tempfile")"
-    fi
-  rm -f -- "$tempfile"
-}
-
-bindkey -s '^u' 'ranger .^m'
-bindkey -s '^U' 'ranger-cd^m'
+bindkey -s '^u' 'ya^m'
 
 # direnv
 if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi

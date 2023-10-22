@@ -37,7 +37,6 @@ in {
             tags = [ "defer:3" "on:zsh-users/zsh-autosuggestions" ];
           }
           { name = "mollifier/cd-gitroot"; }
-          { name = "15cm/yadm-zsh"; }
           { name = "15cm/zce.zsh"; }
           {
             name = "plugins/fzf";

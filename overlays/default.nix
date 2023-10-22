@@ -36,6 +36,7 @@ with nixpkgs.lib; {
       qmakeFlags = old.qmakeFlags ++ [ "CONFIG+=use_qtwebengine" ];
     });
     trash-cli = super.trash-cli.overrideAttrs (old: { postInstall = ""; });
+
     # transgui overlays starts.
     # v3.2.3 fixes branch for the CJK characters issue of transgui
     # https://github.com/transmission-remote-gui/transgui/issues/1378
@@ -61,23 +62,19 @@ with nixpkgs.lib; {
       '';
     });
     # transgui overlays ends.
-    ranger_scale_2 = super.ranger.overrideAttrs (old: rec {
-      preConfigure = old.preConfigure + ''
-        substituteInPlace ranger/ext/img_display.py \
-        --replace "x=start_x" "x=(start_x + 1)/2" \
-        --replace "y=start_y" "y=(start_y + 1)/2" \
-        --replace "max_width=width" "max_width=width/2 - 1" \
-        --replace "max_height=height" "max_height=height/2 - 1"
-      '';
-    });
-    ranger_scale_1p25 = super.ranger.overrideAttrs (old: rec {
-      preConfigure = old.preConfigure + ''
-        substituteInPlace ranger/ext/img_display.py \
-        --replace "x=start_x" "x=(start_x + 1)/1.25" \
-        --replace "y=start_y" "y=(start_y + 1)/1.25" \
-        --replace "max_width=width" "max_width=width/1.25 - 1" \
-        --replace "max_height=height" "max_height=height/1.25 - 1"
-      '';
+
+    yazi = super.yazi.overrideAttrs (old: rec {
+      version = "0.1.5";
+      src = super.fetchFromGitHub {
+        owner = "15cm";
+        repo = "yazi";
+        rev = "main";
+        sha256 = "sha256-AjH+Y/6xpP9lhTiwIOfluMJX2ZTHK5/aZIW0V8tn6cg=";
+      };
+      cargoDeps = super.pkgs.rustPlatform.fetchCargoTarball {
+        inherit src;
+        hash = "sha256-tuaxom7GgA3kfJBKuwaPfvletbVAKqDCcSENNMt6pok=";
+      };
     });
   };
 }

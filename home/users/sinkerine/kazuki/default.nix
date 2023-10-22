@@ -80,5 +80,5 @@
     nightLightTemperature = (if state.theme == "light" then 4000 else 3400);
   };
   my.services.waybar.networkInterface = "enp4s0";
-  my.programs.ranger.package = pkgs.ranger_scale_2;
+  my.programs.yazi.scale = 2.0;
 }

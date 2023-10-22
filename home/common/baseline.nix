@@ -42,7 +42,7 @@ in {
       };
     };
   };
-  my.programs.ranger.enable = true;
+  my.programs.yazi.enable = true;
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
   programs.zoxide = { enable = true; };

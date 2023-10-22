@@ -17,5 +17,6 @@
     ./git
     ./python-dev-tools
     ./joshuto
+    ./yazi
   ];
 }
