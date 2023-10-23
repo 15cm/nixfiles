@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, state, ... }:
 
 with lib;
 let cfg = config.my.programs.yazi;
@@ -30,5 +30,9 @@ in {
         };
       };
     };
+    xdg.configFile."yazi/theme.toml".source = if state.theme == "light" then
+      ./themes/catppuccin-latte.toml
+    else
+      ./themes/catppuccin-mocha.toml;
   };
 }
