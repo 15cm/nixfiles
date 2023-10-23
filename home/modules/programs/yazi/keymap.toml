@@ -1,0 +1,69 @@
+[input]
+
+keymap = [
+	{ on = [ "<C-q>" ],       exec = "close",          desc = "Cancel input" },
+	{ on = [ "<Enter>" ],     exec = "close --submit", desc = "Submit the input" },
+	{ on = [ "<Esc>" ],       exec = "close",          desc = "Cancel input" },
+
+	# Mode
+	{ on = [ "i" ], exec = "insert",                              desc = "Enter insert mode" },
+	{ on = [ "a" ], exec = "insert --append",                     desc = "Enter append mode" },
+	{ on = [ "v" ], exec = "visual",                              desc = "Enter visual mode" },
+	{ on = [ "V" ], exec = [ "move -999", "visual", "move 999" ], desc = "Enter visual mode and select all" },
+
+	# Navigation
+	{ on = [ "h" ], exec = "move -1", desc = "Move cursor left" },
+	{ on = [ "l" ], exec = "move 1",  desc = "Move cursor right" },
+
+	{ on = [ "0" ], exec = "move -999",                       desc = "Move to the BOL" },
+	{ on = [ "$" ], exec = "move 999",                        desc = "Move to the EOL" },
+	{ on = [ "I" ], exec = [ "move -999", "insert" ],         desc = "Move to the BOL, and enter insert mode" },
+	{ on = [ "A" ], exec = [ "move 999", "insert --append" ], desc = "Move to the EOL, and enter append mode" },
+
+	{ on = [ "<Left>" ],  exec = "move -1", desc = "Move cursor left" },
+	{ on = [ "<Right>" ], exec = "move 1",  desc = "Move cursor right" },
+
+	{ on = [ "b" ], exec = "backward",              desc = "Move to the beginning of the previous word" },
+	{ on = [ "w" ], exec = "forward",               desc = "Move to the beginning of the next word" },
+	{ on = [ "e" ], exec = "forward --end-of-word", desc = "Move to the end of the next word" },
+
+	# Deletion
+	{ on = [ "d" ], exec = "delete --cut",                              desc = "Cut the selected characters" },
+	{ on = [ "D" ], exec = [ "delete --cut", "move 999" ],              desc = "Cut until the EOL" },
+	{ on = [ "c" ], exec = "delete --cut --insert",                     desc = "Cut the selected characters, and enter insert mode" },
+	{ on = [ "C" ], exec = [ "delete --cut --insert", "move 999" ],     desc = "Cut until the EOL, and enter insert mode" },
+	{ on = [ "x" ], exec = [ "delete --cut", "move 1 --in-operating" ], desc = "Cut the current character" },
+
+	# Yank/Paste
+	{ on = [ "y" ], exec = "yank",           desc = "Copy the selected characters" },
+	{ on = [ "p" ], exec = "paste",          desc = "Paste the copied characters after the cursor" },
+	{ on = [ "P" ], exec = "paste --before", desc = "Paste the copied characters before the cursor" },
+
+	# Undo/Redo
+	{ on = [ "u" ],     exec = "undo", desc = "Undo the last operation" },
+	{ on = [ "<C-r>" ], exec = "redo", desc = "Redo the last operation" },
+
+	# Help
+	{ on = [ "~" ], exec = "help", desc = "Open help" }
+]
+
+[help]
+
+keymap = [
+	{ on = [ "<Esc>" ], exec = "escape", desc = "Clear the filter, or hide the help" },
+	{ on = [ "q" ],     exec = "close",  desc = "Exit the process" },
+	{ on = [ "<C-q>" ], exec = "close",  desc = "Hide the help" },
+
+	# Navigation
+	{ on = [ "k" ], exec = "arrow -1", desc = "Move cursor up" },
+	{ on = [ "j" ], exec = "arrow 1",  desc = "Move cursor down" },
+
+	{ on = [ "K" ], exec = "arrow -5", desc = "Move cursor up 5 lines" },
+	{ on = [ "J" ], exec = "arrow 5",  desc = "Move cursor down 5 lines" },
+
+	{ on = [ "<Up>" ],   exec = "arrow -1", desc = "Move cursor up" },
+	{ on = [ "<Down>" ], exec = "arrow 1",  desc = "Move cursor down" },
+
+	# Filtering
+	{ on = [ "/" ], exec = "filter", desc = "Apply a filter for the help items" },
+]

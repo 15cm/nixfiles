@@ -41,5 +41,7 @@ in {
         syntectTheme = ./themes/catppuccin-mocha.tmTheme;
       };
     in templateFile "yazi-theme.toml" templateData templateData.theme;
+
+    xdg.configFile."yazi/keymap.toml".source = ./keymap.toml;
   };
 }
