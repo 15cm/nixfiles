@@ -1,7 +1,9 @@
-{ config, lib, pkgs, state, ... }:
+{ config, lib, pkgs, state, mylib, ... }:
 
 with lib;
-let cfg = config.my.programs.yazi;
+let
+  cfg = config.my.programs.yazi;
+  inherit (mylib) templateFile;
 in {
   options.my.programs.yazi = {
     enable = mkEnableOption "Yazi";
@@ -30,9 +32,14 @@ in {
         };
       };
     };
-    xdg.configFile."yazi/theme.toml".source = if state.theme == "light" then
-      ./themes/catppuccin-latte.toml
-    else
-      ./themes/catppuccin-mocha.toml;
+    xdg.configFile."yazi/theme.toml".source = let
+      templateData = if state.theme == "light" then {
+        theme = ./themes/catppuccin-latte.toml.jinja;
+        syntectTheme = ./themes/catppuccin-latte.tmTheme;
+      } else {
+        theme = ./themes/catppuccin-mocha.toml.jinja;
+        syntectTheme = ./themes/catppuccin-mocha.tmTheme;
+      };
+    in templateFile "yazi-theme.toml" templateData templateData.theme;
   };
 }

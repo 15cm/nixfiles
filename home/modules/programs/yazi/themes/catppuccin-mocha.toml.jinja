@@ -1,6 +1,6 @@
 # vim:fileencoding=utf-8:foldmethod=marker
 
-# : Manager {{{
+# : Manager BEGINS
 
 [manager]
 cwd = { fg = "#94e2d5" }
@@ -28,12 +28,12 @@ border_symbol = "\u2502"
 border_style  = { fg = "#7f849c" }
 
 # Highlighting
-# syntect_theme = "~/.config/bat/themes/Catppuccin-mocha.tmTheme"
+syntect_theme = "{{syntectTheme}}"
 
-# : }}}
+# : Manager ENDS
 
 
-# : Status {{{
+# : Status BEGINS
 
 [status]
 separator_open  = "\ue0b6"
@@ -57,10 +57,10 @@ permissions_w = { fg = "#f38ba8" }
 permissions_x = { fg = "#a6e3a1" }
 permissions_s = { fg = "#7f849c" }
 
-# : }}}
+# : ENDS
 
 
-# : Input {{{
+# : Input BEGINS
 
 [input]
 border   = { fg = "#89b4fa" }
@@ -68,30 +68,30 @@ title    = {}
 value    = {}
 selected = { reversed = true }
 
-# : }}}
+# : ENDS
 
 
-# : Select {{{
+# : Select BEGINS
 
 [select]
 border   = { fg = "#89b4fa" }
 active   = { fg = "#f5c2e7" }
 inactive = {}
 
-# : }}}
+# : ENDS
 
 
-# : Tasks {{{
+# : Tasks BEGINS
 
 [tasks]
 border  = { fg = "#89b4fa" }
 title   = {}
 hovered = { underline = true }
 
-# : }}}
+# : ENDS
 
 
-# : Which {{{
+# : Which BEGINS
 
 [which]
 mask            = { bg = "#313244" }
@@ -101,10 +101,10 @@ desc            = { fg = "#f5c2e7" }
 separator       = " \uea9c "
 separator_style = { fg = "#585b70" }
 
-# : }}}
+# : ENDS
 
 
-# : Help {{{
+# : Help BEGINS
 
 [help]
 on      = { fg = "#f5c2e7" }
@@ -113,10 +113,10 @@ desc    = { fg = "#9399b2" }
 hovered = { bg = "#585b70", bold = true }
 footer  = { fg = "#45475a", bg = "#cdd6f4" }
 
-# : }}}
+# : ENDS
 
 
-# : File-specific styles {{{
+# : File-specific styles BEGINS
 
 [filetype]
 
@@ -142,4 +142,4 @@ rules = [
 	{ name = "*/", fg = "#89b4fa" }
 ]
 
-# : }}}
+# : ENDS
