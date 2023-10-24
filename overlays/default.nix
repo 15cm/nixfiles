@@ -66,10 +66,10 @@ with nixpkgs.lib; {
     yazi = super.yazi.overrideAttrs (old: rec {
       version = "0.1.5";
       src = super.fetchFromGitHub {
-        owner = "sxyazi";
+        owner = "15cm";
         repo = "yazi";
-        rev = "2df1dae5af6dde80c5e6cb7622980c38fbcfdaca";
-        sha256 = "sha256-KgTI6givkgRb//znGCsfuu5HPkwEnL8AOh083geunx8=";
+        rev = "main";
+        sha256 = "sha256-GFL9+WKBCtBeLeSxK8qKZXQgcYcVisMZquTubGaftWc=";
       };
       cargoDeps = super.pkgs.rustPlatform.fetchCargoTarball {
         inherit src;
