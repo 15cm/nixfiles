@@ -13,7 +13,7 @@ in {
     };
     scale = mkOption {
       type = types.float;
-      default = 1.0;
+      default = 1;
     };
   };
   config = mkIf cfg.enable {
@@ -22,13 +22,14 @@ in {
       inherit (cfg) package;
       enableZshIntegration = true;
       settings = {
-        preview.ueberzug = let offset = builtins.div 1.0 cfg.scale;
+        preview = let scaleDown = builtins.div 1.0 cfg.scale;
         in {
-          scale_down_factor = cfg.scale;
-          x_offset = offset;
-          y_offset = offset;
-          width_offset = -offset;
-          height_offset = -offset;
+          ueberzug_scale = scaleDown;
+          # First two elements: x, y
+          # Shift the preview away from the left and top border.
+          # Last two elements: w, h
+          # Reduce the preview size to keep it away from the right and bottom border.
+          ueberzug_offset = [ scaleDown scaleDown (-scaleDown) (-scaleDown) ];
         };
       };
     };
