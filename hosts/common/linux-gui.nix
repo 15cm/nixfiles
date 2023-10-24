@@ -29,7 +29,6 @@ with lib;
     enable = true;
     xwayland = { enable = true; };
   };
-  xdg.portal = { enable = true; };
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;

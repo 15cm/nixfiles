@@ -68,8 +68,8 @@ with nixpkgs.lib; {
       src = super.fetchFromGitHub {
         owner = "15cm";
         repo = "yazi";
-        rev = "main";
-        sha256 = "sha256-GFL9+WKBCtBeLeSxK8qKZXQgcYcVisMZquTubGaftWc=";
+        rev = "edba481c37c1e2af63aabf3a07fd13957a4cbd40";
+        sha256 = "sha256-iu4uzal40SsVPG2Fts+157W9TtO1XVPyxQrpBa30kxE=";
       };
       cargoDeps = super.pkgs.rustPlatform.fetchCargoTarball {
         inherit src;

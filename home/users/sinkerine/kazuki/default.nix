@@ -81,4 +81,8 @@
   };
   my.services.waybar.networkInterface = "enp4s0";
   my.programs.yazi.scale = 2.0;
+  programs.obs-studio = {
+    enable = true;
+    plugins = with pkgs.obs-studio-plugins; [ wlrobs ];
+  };
 }

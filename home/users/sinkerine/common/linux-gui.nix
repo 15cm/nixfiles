@@ -201,7 +201,6 @@ in with lib; {
   my.services.fcitx5.enable = true;
   my.services.playerctld.enable = true;
   my.programs.goldendict.enable = true;
-  programs.obs-studio.enable = true;
 
   my.programs.pythonDevTools.enable = true;
 
