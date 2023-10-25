@@ -24,6 +24,8 @@ in {
       settings = {
         preview = let scaleDown = builtins.div 1.0 cfg.scale;
         in {
+          max_width = 1200;
+          max_height = 1800;
           ueberzug_scale = scaleDown;
           # First two elements: x, y
           # Shift the preview away from the left and top border.
