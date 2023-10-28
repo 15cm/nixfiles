@@ -5,7 +5,6 @@ in {
   programs.home-manager.enable = true;
 
   imports = [
-    ../features/app/vim
     ../features/app/tmux
     ../features/app/powerline
     ../features/app/fzf
@@ -33,6 +32,7 @@ in {
   my.programs.zsh.enable = true;
   my.programs.fontconfig.enable = true;
   my.programs.emacs.enable = true;
+  my.programs.vim.enable = true;
   my.programs.set-theme.enable = true;
   programs.bottom = {
     enable = true;

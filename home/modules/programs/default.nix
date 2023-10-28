@@ -17,5 +17,6 @@
     ./python-dev-tools
     ./yazi
     ./alacritty.nix
+    ./vim
   ];
 }
