@@ -23,6 +23,5 @@
   };
   my.programs.hyprland.scale = 1.25;
   my.services.waybar.networkInterface = "wlp1s0";
-  my.services.gammastep.enable = true;
   my.services.easyeffects.enable = true;
 }

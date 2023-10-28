@@ -204,6 +204,7 @@ in with lib; {
   my.services.playerctld.enable = true;
   my.programs.goldendict.enable = true;
   my.programs.alacritty.enable = true;
+  my.services.gammastep.enable = true;
 
   my.programs.pythonDevTools.enable = true;
 
