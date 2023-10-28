@@ -66,6 +66,8 @@ in {
     package = config.boot.kernelPackages.nvidiaPackages.beta;
     powerManagement.enable = true;
     forceFullCompositionPipeline = true;
+    # Open nvidia has issue with suspend. Ensure to use the proprietary drivers.
+    open = false;
   };
   # http://wiki.hyprland.org/Nvidia/#fixing-random-flickering-method-2-nuclear
   boot.extraModprobeConfig = ''
