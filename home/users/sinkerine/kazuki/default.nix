@@ -85,4 +85,5 @@
     enable = true;
     plugins = with pkgs.obs-studio-plugins; [ wlrobs ];
   };
+  my.services.gammastep.enable = true;
 }
