@@ -13,7 +13,6 @@ in {
   options.my.programs.vim = { enable = mkEnableOption "Vim"; };
 
   config = mkIf cfg.enable {
-
     programs.vim = {
       enable = true;
       extraConfig = pipe ./vimrc.jinja [

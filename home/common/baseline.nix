@@ -5,9 +5,7 @@ in {
   programs.home-manager.enable = true;
 
   imports = [
-    ../features/app/tmux
     ../features/app/powerline
-    ../features/app/fzf
     ../features/app/tealdeer
     ../features/conf/misc-dotfiles
   ];
@@ -33,6 +31,8 @@ in {
   my.programs.fontconfig.enable = true;
   my.programs.emacs.enable = true;
   my.programs.vim.enable = true;
+  my.programs.tmux.enable = true;
+  my.programs.fzf.enable = true;
   my.programs.set-theme.enable = true;
   programs.bottom = {
     enable = true;

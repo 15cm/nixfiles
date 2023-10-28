@@ -17,5 +17,7 @@
     ./yazi
     ./alacritty.nix
     ./vim
+    ./tmux
+    ./fzf.nix
   ];
 }
