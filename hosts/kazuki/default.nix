@@ -64,16 +64,12 @@ in {
   programs.hyprland.enableNvidiaPatches = true;
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.beta;
+    modesetting.enabale = true;
     powerManagement.enable = true;
     forceFullCompositionPipeline = true;
     # Open nvidia has issue with suspend. Ensure to use the proprietary drivers.
     open = false;
   };
-  # http://wiki.hyprland.org/Nvidia/#fixing-random-flickering-method-2-nuclear
-  boot.extraModprobeConfig = ''
-    options nvidia NVreg_RegistryDwords="PowerMizerEnable=0x1; PerfLevelSrc=0x2222; PowerMizerLevel=0x3; PowerMizerDefault=0x3; PowerMizerDefaultAC=0x3"
-    options nvidia_drm modeset=1 fbdev=1
-  '';
 
   boot.kernelParams =
     [ "acpi_enforce_resources=lax" "transparent_hugepage=never" ];
