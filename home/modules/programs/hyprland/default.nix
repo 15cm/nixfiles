@@ -38,10 +38,6 @@ in {
   config = mkIf cfg.enable {
     wayland.windowManager.hyprland = {
       enable = true;
-      package = (pkgs.hyprland.override {
-        enableXWayland = true;
-        enableNvidiaPatches = true;
-      });
       enableNvidiaPatches = true;
       xwayland = { enable = true; };
       # Write my own systemd integration to import all needed variables into systemd first.

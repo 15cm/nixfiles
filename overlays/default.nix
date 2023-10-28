@@ -62,19 +62,5 @@ with nixpkgs.lib; {
       '';
     });
     # transgui overlays ends.
-
-    yazi = super.yazi.overrideAttrs (old: rec {
-      version = "0.1.5";
-      src = super.fetchFromGitHub {
-        owner = "15cm";
-        repo = "yazi";
-        rev = "edba481c37c1e2af63aabf3a07fd13957a4cbd40";
-        sha256 = "sha256-iu4uzal40SsVPG2Fts+157W9TtO1XVPyxQrpBa30kxE=";
-      };
-      cargoDeps = super.pkgs.rustPlatform.fetchCargoTarball {
-        inherit src;
-        hash = "sha256-tuaxom7GgA3kfJBKuwaPfvletbVAKqDCcSENNMt6pok=";
-      };
-    });
   };
 }

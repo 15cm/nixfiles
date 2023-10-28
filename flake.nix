@@ -46,10 +46,15 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    yazi = {
+      url = "github:15cm/yazi";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, nixgl, flake-utils, sops-nix, kmonad
-    , nixos-hardware, deploy-rs, emacs-overlay, hyprland, ... }:
+    , nixos-hardware, deploy-rs, emacs-overlay, hyprland, yazi, ... }:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -65,6 +70,7 @@
             nixgl.overlays.default
             kmonad.overlays.default
             emacs-overlay.overlays.default
+            yazi.overlays.default
           ];
           config.allowUnfree = true;
         });
