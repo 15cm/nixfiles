@@ -66,6 +66,7 @@ in {
       };
     };
   };
+  systemd.services.kmonad-laptop.serviceConfig.Restart = "always";
 
   # Removes the unused rocm opencl packages in https://github.com/NixOS/nixos-hardware/blob/master/common/gpu/amd/default.nix
   hardware.opengl.extraPackages = with pkgs; mkForce [ amdvlk ];
