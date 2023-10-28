@@ -3,7 +3,7 @@
 {
   home.stateVersion = "23.05";
 
-  imports = [ ../common ../common/linux-gui.nix ../../../features/app/openrgb ];
+  imports = [ ../common ../common/linux-gui.nix ];
 
   home.packages = with pkgs; [ handbrake ];
 

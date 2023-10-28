@@ -17,5 +17,6 @@
     ./easyeffects.nix
     ./flameshot.nix
     ./redshift
+    ./openrgb.nix
   ];
 }
