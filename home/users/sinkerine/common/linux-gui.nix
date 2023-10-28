@@ -11,7 +11,6 @@ in with lib; {
     # XSession related. Needed by xWayland as well.
     ../../../features/conf/xresources
     # Applications
-    ../../../features/app/alacritty
     ../../../features/app/aria2
   ];
 
@@ -205,6 +204,7 @@ in with lib; {
   my.services.fcitx5.enable = true;
   my.services.playerctld.enable = true;
   my.programs.goldendict.enable = true;
+  my.programs.alacritty.enable = true;
 
   my.programs.pythonDevTools.enable = true;
 

@@ -16,5 +16,6 @@
     ./git
     ./python-dev-tools
     ./yazi
+    ./alacritty.nix
   ];
 }

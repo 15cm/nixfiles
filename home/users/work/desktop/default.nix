@@ -16,7 +16,6 @@ with lib; {
     ../../../features/app/unclutter
     ../../../features/app/wallpaper
     # Applications
-    ../../../features/app/alacritty
     ../../../features/app/redshift
     ../../../features/app/rofi
     ../../../features/app/picom
@@ -95,4 +94,5 @@ with lib; {
   my.programs.nixGL.enable = true;
   my.programs.hmSwitch.useImpure = true;
   my.services.playerctld.enable = true;
+  my.programs.alacritty.enable = true;
 }
