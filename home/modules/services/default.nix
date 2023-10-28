@@ -15,5 +15,6 @@
     ./network-manager-applet.nix
     ./aria2
     ./easyeffects.nix
+    ./flameshot.nix
   ];
 }

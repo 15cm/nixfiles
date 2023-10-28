@@ -20,7 +20,6 @@ with lib; {
     ../../../features/app/rofi
     ../../../features/app/picom
     ../../../features/app/arandr
-    ../../../features/app/flameshot
   ];
 
   home.packages = with pkgs; [
@@ -95,4 +94,5 @@ with lib; {
   my.programs.hmSwitch.useImpure = true;
   my.services.playerctld.enable = true;
   my.programs.alacritty.enable = true;
+  my.services.flameshot.enable = true;
 }
