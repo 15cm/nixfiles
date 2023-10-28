@@ -10,8 +10,6 @@ in with lib; {
     ../../../features/app/gpg
     # XSession related. Needed by xWayland as well.
     ../../../features/conf/xresources
-    # Applications
-    ../../../features/app/aria2
   ];
 
   home.packages = with pkgs; [
@@ -201,6 +199,7 @@ in with lib; {
   home.file.".icons/default".source =
     "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ";
 
+  my.services.aria2.enable = true;
   my.services.fcitx5.enable = true;
   my.services.playerctld.enable = true;
   my.programs.goldendict.enable = true;
