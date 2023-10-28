@@ -3,8 +3,7 @@
 {
   home.stateVersion = "23.05";
 
-  imports =
-    [ ../common ../common/linux-gui.nix ../../../features/app/easyeffects ];
+  imports = [ ../common ../common/linux-gui.nix ];
 
   home.packages = with pkgs; [ radeontop ];
 
@@ -25,4 +24,5 @@
   my.programs.hyprland.scale = 1.25;
   my.services.waybar.networkInterface = "wlp1s0";
   my.services.gammastep.enable = true;
+  my.services.easyeffects.enable = true;
 }

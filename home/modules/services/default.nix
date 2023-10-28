@@ -14,5 +14,6 @@
     ./nix-home-manager-gc.nix
     ./network-manager-applet.nix
     ./aria2
+    ./easyeffects.nix
   ];
 }
