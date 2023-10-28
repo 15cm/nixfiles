@@ -44,14 +44,6 @@
     };
   };
 
-  # Only pass scale env variables for XWayland apps.
-  my.env = {
-    GDK_SCALE = builtins.toString config.my.hardware.display.scale;
-    GDK_DPI_SCALE = "0.5";
-    QT_SCREEN_SCALE_FACTORS =
-      builtins.toString config.my.hardware.display.scale;
-  };
-
   # Host specific session variables.
   home.sessionVariables = {
     # Hyprland Nvidia

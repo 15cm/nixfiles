@@ -81,6 +81,16 @@ in with lib; {
     inherit (config.my.hardware) monitors;
     inherit (config.my.hardware.display) scale;
   };
+
+  # Only pass scale env variables for XWayland apps.
+  my.env = {
+    QT_SCREEN_SCALE_FACTORS =
+      builtins.toString config.my.hardware.display.scale;
+    GDK_SCALE = builtins.toString config.my.hardware.display.scale;
+    GDK_DPI_SCALE =
+      builtins.toString (builtins.div 1 config.my.hardware.display.scale);
+  };
+
   programs.wofi.enable = true;
   my.services.waybar = {
     enable = true;

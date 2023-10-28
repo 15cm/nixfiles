@@ -7,14 +7,6 @@
 
   home.packages = with pkgs; [ radeontop ];
 
-  # Only pass scale env variables for XWayland apps.
-  my.env = {
-    QT_SCREEN_SCALE_FACTORS =
-      builtins.toString config.my.hardware.display.scale;
-    GDK_SCALE = builtins.toString config.my.hardware.display.scale;
-    GDK_DPI_SCALE = "1";
-  };
-
   my.hardware.monitors = {
     one = {
       output = "eDP-1";
