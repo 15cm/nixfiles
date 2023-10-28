@@ -64,13 +64,13 @@ in {
   programs.hyprland.enableNvidiaPatches = true;
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    modesetting.enable = true;
     powerManagement.enable = true;
     forceFullCompositionPipeline = true;
   };
   # http://wiki.hyprland.org/Nvidia/#fixing-random-flickering-method-2-nuclear
   boot.extraModprobeConfig = ''
     options nvidia NVreg_RegistryDwords="PowerMizerEnable=0x1; PerfLevelSrc=0x2222; PowerMizerLevel=0x3; PowerMizerDefault=0x3; PowerMizerDefaultAC=0x3"
+    options nvidia_drm modeset=1 fbdev=1
   '';
 
   boot.kernelParams =
