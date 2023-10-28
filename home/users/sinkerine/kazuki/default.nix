@@ -46,9 +46,10 @@
 
   # Only pass scale env variables for XWayland apps.
   my.env = {
-    GDK_SCALE = "2";
+    GDK_SCALE = builtins.toString config.my.hardware.display.scale;
     GDK_DPI_SCALE = "0.5";
-    QT_SCREEN_SCALE_FACTORS = "2";
+    QT_SCREEN_SCALE_FACTORS =
+      builtins.toString config.my.hardware.display.scale;
   };
 
   # Host specific session variables.
@@ -72,14 +73,10 @@
         "${config.home.homeDirectory}/Pictures/wallpapers/yande_128733_dress_kagome_keroq_minakami_yuki_smoking_subarashiki_hibi_thighhighs@2x.png";
     };
   };
+  my.hardware.display.scale = 2.0;
 
-  my.programs.hyprland = {
-    inherit (config.my.hardware) monitors;
-    scale = 2.0;
-
-  };
   my.services.waybar.networkInterface = "enp4s0";
-  my.programs.yazi.scale = 2.0;
+  my.programs.openrgb.enable = true;
   programs.obs-studio = {
     enable = true;
     plugins = with pkgs.obs-studio-plugins; [ wlrobs ];

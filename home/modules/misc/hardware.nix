@@ -20,5 +20,9 @@ with lib; {
           };
         });
     };
+    my.hardware.display.scale = mkOption {
+      type = types.float;
+      default = 1.0;
+    };
   };
 }

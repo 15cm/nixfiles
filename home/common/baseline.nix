@@ -1,5 +1,6 @@
-{ config, pkgs, state, nixinfo, hostname, ... }:
+{ config, pkgs, lib, state, nixinfo, hostname, ... }:
 
+with lib;
 let parallel = pkgs.parallel-full.override (old: { willCite = true; });
 in {
   programs.home-manager.enable = true;
@@ -30,7 +31,10 @@ in {
   my.programs.tmux.enable = true;
   my.programs.fzf.enable = true;
   my.programs.set-theme.enable = true;
-  my.programs.yazi.enable = true;
+  my.programs.yazi = {
+    enable = true;
+    inherit (config.my.hardware.display) scale;
+  };
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
   my.programs.powerline.enable = true;

@@ -79,6 +79,7 @@ in with lib; {
   my.programs.hyprland = {
     enable = true;
     inherit (config.my.hardware) monitors;
+    inherit (config.my.hardware.display) scale;
   };
   programs.wofi.enable = true;
   my.services.waybar = {
