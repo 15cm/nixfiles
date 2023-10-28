@@ -33,8 +33,6 @@ in {
     "DBUS_SESSION_BUS_ADDRESS"
   ];
 
-  home.file.".imwheelrc".source = ./imwheelrc;
-
   services.screen-locker = {
     enable = true;
     lockCmd = "${pkgs.betterlockscreen}/bin/betterlockscreen -l";

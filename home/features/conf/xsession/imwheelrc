@@ -1,4 +1,0 @@
-".*"
-# Presses mouse left/right btn X more times.
-None, Left, Button6, 5
-None, Right, Button7, 5
