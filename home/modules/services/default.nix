@@ -16,5 +16,6 @@
     ./aria2
     ./easyeffects.nix
     ./flameshot.nix
+    ./redshift
   ];
 }

@@ -16,7 +16,6 @@ with lib; {
     ../../../features/app/unclutter
     ../../../features/app/wallpaper
     # Applications
-    ../../../features/app/redshift
     ../../../features/app/rofi
     ../../../features/app/picom
     ../../../features/app/arandr
@@ -95,4 +94,5 @@ with lib; {
   my.services.playerctld.enable = true;
   my.programs.alacritty.enable = true;
   my.services.flameshot.enable = true;
+  my.services.redshift.enable = true;
 }
