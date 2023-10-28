@@ -19,5 +19,6 @@
     ./vim
     ./tmux
     ./fzf.nix
+    ./powerline
   ];
 }

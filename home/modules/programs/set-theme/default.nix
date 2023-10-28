@@ -18,8 +18,8 @@ in {
 
     home.file."local/bin/reload-theme.sh".source =
       pkgs.writeShellScript "reload-theme.sh" ''
-        ${config.programs.powerline.package}/bin/powerline-daemon --replace
-        ${pkgs.tmux}/bin/tmux source ${config.programs.powerline.package}/share/tmux/powerline.conf
+        ${config.my.programs.powerline.package}/bin/powerline-daemon --replace
+        ${pkgs.tmux}/bin/tmux source ${config.my.programs.powerline.package}/share/tmux/powerline.conf
         ${config.my.programs.emacs.package}/bin/emacsclient -eun '(load "~/.config/emacs/scripts/load-theme.el")'
         exit 0
       '';

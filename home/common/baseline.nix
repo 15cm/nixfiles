@@ -4,7 +4,7 @@ let parallel = pkgs.parallel-full.override (old: { willCite = true; });
 in {
   programs.home-manager.enable = true;
 
-  imports = [ ../features/app/powerline ../features/conf/misc-dotfiles ];
+  imports = [ ../features/conf/misc-dotfiles ];
 
   home.packages = (with pkgs; [
     nixfmt
@@ -33,6 +33,7 @@ in {
   my.programs.yazi.enable = true;
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
+  my.programs.powerline.enable = true;
   programs.bottom = {
     enable = true;
     settings = {
