@@ -72,12 +72,11 @@
         "${config.home.homeDirectory}/Pictures/wallpapers/yande_128733_dress_kagome_keroq_minakami_yuki_smoking_subarashiki_hibi_thighhighs@2x.png";
     };
   };
-  my.programs.night-light-switch.enable = true;
+
   my.programs.hyprland = {
     inherit (config.my.hardware) monitors;
     scale = 2.0;
-    inherit (state) enableNightLightShader;
-    nightLightTemperature = (if state.theme == "light" then 4000 else 3400);
+
   };
   my.services.waybar.networkInterface = "enp4s0";
   my.programs.yazi.scale = 2.0;

@@ -1,4 +1,1 @@
-{
-  theme = "dark";
-  enableNightLightShader = true;
-}
+{ theme = "dark"; }

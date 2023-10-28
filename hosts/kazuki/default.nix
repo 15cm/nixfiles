@@ -63,7 +63,7 @@ in {
 
   programs.hyprland.enableNvidiaPatches = true;
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
     powerManagement.enable = true;
     forceFullCompositionPipeline = true;
   };
