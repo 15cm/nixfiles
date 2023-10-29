@@ -39,7 +39,6 @@ in with lib; {
     okular
     calibre
     libreoffice
-    feishin
     oxipng
     osdlyrics
     dex
@@ -58,6 +57,7 @@ in with lib; {
     antimicrox
     unzip
     ueberzugpp
+    feishin
 
     # Development
     postgresql

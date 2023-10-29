@@ -2,19 +2,19 @@
 
 with nixpkgs.lib; {
   # Adds my custom packages
-  additions = self: _super: import ../pkgs { pkgs = self; };
-  modifications = self: super: rec {
-    waybar = super.waybar.overrideAttrs
+  additions = final: _prev: import ../pkgs { pkgs = final; };
+  modifications = final: prev: rec {
+    waybar = prev.waybar.overrideAttrs
       (old: rec { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
-    goldendict = super.goldendict.overrideAttrs (old: {
+    goldendict = prev.goldendict.overrideAttrs (old: {
       version = "2023-03-30";
-      src = super.fetchFromGitHub {
+      src = prev.fetchFromGitHub {
         owner = "vedgy";
         repo = "goldendict";
         rev = "7b4a8328806ff2d71c43b229359b2f10724f7e6d";
         sha256 = "sha256-ZQjGpwsWDbWRQkgCt7rMuazt345P+G7XiEjsShulBBs=";
       };
-      buildInputs = let pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      buildInputs = let pkgs = final;
       in with pkgs; [
         qt5.qtbase
         qt5.qtsvg
@@ -35,14 +35,14 @@ with nixpkgs.lib; {
       ];
       qmakeFlags = old.qmakeFlags ++ [ "CONFIG+=use_qtwebengine" ];
     });
-    trash-cli = super.trash-cli.overrideAttrs (old: { postInstall = ""; });
+    trash-cli = prev.trash-cli.overrideAttrs (old: { postInstall = ""; });
 
     # transgui overlays starts.
     # v3.2.3 fixes branch for the CJK characters issue of transgui
     # https://github.com/transmission-remote-gui/transgui/issues/1378
-    fpc = super.fpc.overrideAttrs (old: rec {
+    fpc = prev.fpc.overrideAttrs (old: rec {
       version = "3.2.3";
-      src = super.fetchFromGitLab {
+      src = prev.fetchFromGitLab {
         owner = "fpc";
         repo = "source";
         group = "freepascal.org";
@@ -52,7 +52,7 @@ with nixpkgs.lib; {
       patches = [ ./fpc/mark-paths.patch ];
       postPatch = builtins.replaceStrings [ "fpcsrc/" ] [ "" ] old.postPatch;
     });
-    lazarus = super.lazarus.overrideAttrs (old: rec {
+    lazarus = prev.lazarus.overrideAttrs (old: rec {
       version = "2.2.6-0";
       preBuild = ''
         mkdir -p $out/share "$out/lazarus"
@@ -64,3 +64,4 @@ with nixpkgs.lib; {
     # transgui overlays ends.
   };
 }
+

@@ -32,8 +32,8 @@ with lib; {
     kate
     gwenview
     okular
-    sonixd
     xclip
+    feishin
   ];
 
   xresources.properties."Xft.dpi" = mkForce 120;
@@ -49,7 +49,6 @@ with lib; {
 
   my.xsession.i3 = {
     enable = true;
-    musicPlayer = "Sonixd";
     monitors = {
       one = "DisplayPort-1";
       two = "DisplayPort-3";
@@ -76,16 +75,6 @@ with lib; {
     enable = true;
     settings = {
       dmenu.dmenu_command = "${config.programs.rofi.package}/bin/rofi -dmenu";
-    };
-  };
-
-  xdg.desktopEntries = {
-    sonixd = {
-      name = "Sonixd";
-      # Not sure why my font config causes tofu in this AppImage.
-      exec = "${pkgs.sonixd}/bin/sonixd";
-      terminal = false;
-      categories = [ "Player" ];
     };
   };
 

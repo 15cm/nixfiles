@@ -6,6 +6,7 @@ let
   inherit (mylib) templateFile templateShellScriptFile writeShellScriptFile;
   templateData = {
     inherit (cfg) musicPlayer monitors scale;
+    musicPlayerLower = toLower cfg.musicPlayer;
     windowSwitcherScript = "python " + ./window_switcher.py;
   };
 in {
@@ -13,7 +14,7 @@ in {
     enable = mkEnableOption "hyprland";
     musicPlayer = mkOption {
       type = types.str;
-      default = "clementine";
+      default = "Feishin";
     };
     monitors = mkOption {
       type = types.attrs;
