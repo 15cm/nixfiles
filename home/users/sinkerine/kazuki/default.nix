@@ -53,7 +53,7 @@
     WLR_NO_HARDWARE_CURSORS = "1";
   };
 
-  my.hardware.monitors = {
+  my.display.monitors = {
     one = {
       output = "DP-1";
       wallpaper =
@@ -65,7 +65,7 @@
         "${config.home.homeDirectory}/Pictures/wallpapers/yande_128733_dress_kagome_keroq_minakami_yuki_smoking_subarashiki_hibi_thighhighs@2x.png";
     };
   };
-  my.hardware.display.scale = 2.0;
+  my.display.scale = 2.0;
 
   my.services.waybar.networkInterface = "enp4s0";
   my.programs.openrgb.enable = true;

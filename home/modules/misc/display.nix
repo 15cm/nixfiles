@@ -2,7 +2,7 @@
 
 with lib; {
   options = {
-    my.hardware.monitors = mkOption {
+    my.display.monitors = mkOption {
       default = { };
       type = with types;
         attrsOf (submodule {
@@ -20,9 +20,13 @@ with lib; {
           };
         });
     };
-    my.hardware.display.scale = mkOption {
+    my.display.scale = mkOption {
       type = types.float;
       default = 1.0;
+    };
+    my.display.cursorSize = mkOption {
+      type = types.int;
+      default = 24;
     };
   };
 }

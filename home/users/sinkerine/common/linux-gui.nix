@@ -78,40 +78,47 @@ in with lib; {
 
   my.programs.hyprland = {
     enable = true;
-    inherit (config.my.hardware) monitors;
-    inherit (config.my.hardware.display) scale;
+    inherit (config.my.display) monitors;
+    inherit (config.my.display) scale;
   };
 
   # Only pass scale env variables for XWayland apps.
   my.env = {
-    QT_SCREEN_SCALE_FACTORS =
-      builtins.toString config.my.hardware.display.scale;
-    GDK_SCALE = builtins.toString config.my.hardware.display.scale;
-    GDK_DPI_SCALE =
-      builtins.toString (builtins.div 1 config.my.hardware.display.scale);
+    QT_SCREEN_SCALE_FACTORS = builtins.toString config.my.display.scale;
+    GDK_SCALE = builtins.toString config.my.display.scale;
+    GDK_DPI_SCALE = builtins.toString (builtins.div 1 config.my.display.scale);
   };
 
   programs.wofi.enable = true;
   my.services.waybar = {
     enable = true;
     zfsRootPoolName = "rpool";
-    inherit (config.my.hardware) monitors;
+    inherit (config.my.display) monitors;
   };
   my.services.hyprpaper = {
     enable = true;
-    inherit (config.my.hardware) monitors;
+    inherit (config.my.display) monitors;
   };
 
-  qt.enable = true;
+  qt = {
+    enable = true;
+    platformTheme = "kde";
+    style.name = "breeze";
+  };
   gtk = {
     enable = true;
     theme = {
-      package = pkgs.flat-remix-gtk;
-      name = "Flat-Remix-GTK";
+      package = pkgs.breeze-gtk;
+      name = "Breeze";
     };
     iconTheme = {
-      package = pkgs.libsForQt5.breeze-icons;
+      package = pkgs.breeze-icons;
       name = "breeze";
+    };
+    cursorTheme = {
+      package = pkgs.breeze-qt5;
+      name = "breeze_cursors";
+      size = config.my.display.cursorSize;
     };
   };
   xdg.userDirs = {
@@ -201,14 +208,12 @@ in with lib; {
   };
 
   home.pointerCursor = {
-    name = "Vanilla-DMZ";
-    package = pkgs.vanilla-dmz;
-    size = 24;
+    name = "breeze_cursors";
+    package = pkgs.breeze-qt5;
+    size = config.my.display.cursorSize;
     x11.enable = true;
     gtk.enable = true;
   };
-  home.file.".icons/default".source =
-    "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ";
 
   my.services.aria2.enable = true;
   my.services.fcitx5.enable = true;

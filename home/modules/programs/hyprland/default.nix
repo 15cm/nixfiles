@@ -50,7 +50,9 @@ in {
           } && systemctl --user start hyprland-session.target";
       in ''
         exec-once = ${sessionInitCommand}
-        exec-once = hyprctl setcursor Vanilla-DMZ 24
+        exec-once = hyprctl setcursor breeze_cursors ${
+          builtins.toString config.my.display.cursorSize
+        }
       '' + (pipe ./hyprland.conf.jinja [
         (templateFile "hyprland.conf" templateData)
         builtins.readFile

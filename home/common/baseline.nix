@@ -33,7 +33,7 @@ in {
   my.programs.set-theme.enable = true;
   my.programs.yazi = {
     enable = true;
-    inherit (config.my.hardware.display) scale;
+    inherit (config.my.display) scale;
   };
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
