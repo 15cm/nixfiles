@@ -58,6 +58,7 @@ in with lib; {
     unzip
     ueberzugpp
     feishin
+    sqlite
 
     # Development
     postgresql

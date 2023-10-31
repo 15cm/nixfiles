@@ -1,10 +1,8 @@
-(when spacemacs--cur-theme
-  (disable-theme spacemacs--cur-theme))
+(mapcar #'disable-theme custom-enabled-themes)
 {%if theme == "light"%}
-(spacemacs/load-theme 'solarized-light)
-(setq frame-background-mode 'light)
+(load-theme 'doom-nord-light t)
 {%else%}
-(spacemacs/load-theme 'sanityinc-tomorrow-night)
-(setq frame-background-mode 'dark)
+(load-theme 'sanityinc-tomorrow-night t)
 {%endif%}
+(setq frame-background-mode 'dark)
 (mapc 'frame-set-background-mode (frame-list))
