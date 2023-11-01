@@ -1,8 +1,9 @@
 (mapcar #'disable-theme custom-enabled-themes)
 {%if theme == "light"%}
 (load-theme 'solarized-light t)
+(setq frame-background-mode 'light)
 {%else%}
 (load-theme 'sanityinc-tomorrow-night t)
-{%endif%}
 (setq frame-background-mode 'dark)
+{%endif%}
 (mapc 'frame-set-background-mode (frame-list))
