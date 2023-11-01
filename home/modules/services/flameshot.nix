@@ -1,9 +1,9 @@
 { pkgs, config, lib, ... }:
 
 with lib;
-let cfg = config.my.programs.flameshot;
+let cfg = config.my.services.flameshot;
 in {
-  options.my.programs.flameshot = { enable = mkEnableOption "Flameshot"; };
+  options.my.services.flameshot = { enable = mkEnableOption "Flameshot"; };
   config = mkIf cfg.enable {
     services.flameshot = {
       enable = true;

@@ -3,9 +3,9 @@
 with lib;
 let
   package = pkgs.redshift;
-  cfg = config.my.programs.redshift;
+  cfg = config.my.services.redshift;
 in {
-  options.my.programs.redshift = { enable = mkEnableOption "Redshift"; };
+  options.my.services.redshift = { enable = mkEnableOption "Redshift"; };
 
   config = mkIf cfg.enable {
 
