@@ -66,6 +66,7 @@ in with lib; {
     ccls
     ruby
     rust-analyzer
+    pyright
   ];
 
   home.sessionVariables = {
@@ -140,7 +141,7 @@ in with lib; {
   };
   my.programs.emacs = {
     package = pkgs.emacs-unstable-pgtk;
-    enableSSHSpacemacsConfigRepo = true;
+    enableSSHConfigRepo = true;
     startAfterGraphicalSession = true;
   };
   programs.direnv.enable = true;

@@ -64,4 +64,3 @@ with nixpkgs.lib; {
     # transgui overlays ends.
   };
 }
-

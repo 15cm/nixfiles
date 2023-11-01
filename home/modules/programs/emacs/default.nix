@@ -12,14 +12,15 @@ in {
       type = types.package;
       default = pkgs.emacs-unstable-nox;
     };
-    enableSSHSpacemacsConfigRepo = mkEnableOption "ssh url in ~/.spacemacs.d";
-    spacemacsConfigRepoUrl = mkOption {
+    enableSSHConfigRepo =
+      mkEnableOption "use ssh url for the git emacs config repo";
+    configRepoUrl = mkOption {
       type = types.str;
       readOnly = true;
-      default = if cfg.enableSSHSpacemacsConfigRepo then
-        "git@github.com:15cm/spacemacs-config.git"
+      default = if cfg.enableSSHConfigRepo then
+        "git@github.com:15cm/doomemacs-config.git"
       else
-        "https://github.com/15cm/spacemacs-config.git";
+        "https://github.com/15cm/doomemacs-config.git";
     };
     startAfterGraphicalSession =
       mkEnableOption "start after systemd graphical-session.target";
@@ -47,23 +48,21 @@ in {
 
       home.file."local/bin/exec-editor.sh".source =
         writeShellScriptFile "exec-editor.sh" ./exec-editor.sh;
-      xdg.configFile."emacs/scripts/load-theme.el".source =
+      xdg.configFile."emacs-scripts/load-theme.el".source =
         templateFile "emacs-scripts-load-theme.el" templateData
         ./scripts/load-theme.el.jinja;
 
-      home.activation.gitCloneSpacemacs =
+      home.activation.gitCloneDoomemacs =
         hm.dag.entryAfter [ "writeBoundary" ] ''
           if ! [ -d $HOME/.emacs.d ]; then
-            ${pkgs.git}/bin/git clone https://github.com/syl20bnr/spacemacs $HOME/.emacs.d
-            cd $HOME/.emacs.d
-            ${pkgs.git}/bin/git switch develop
+            ${pkgs.git}/bin/git clone https://github.com/doomemacs/doomemacs.git $HOME/.emacs.d
           fi
         '';
 
-      home.activation.gitCloneSpacemacsConfig =
+      home.activation.gitCloneEmacsConfig =
         hm.dag.entryAfter [ "writeBoundary" ] ''
-          if ! [ -d $HOME/.spacemacs.d ]; then
-            ${pkgs.git}/bin/git clone ${cfg.spacemacsConfigRepoUrl} $HOME/.spacemacs.d
+          if ! [ -d $HOME/.doom.d ]; then
+            ${pkgs.git}/bin/git clone ${cfg.configRepoUrl} $HOME/.doom.d
           fi
         '';
     }

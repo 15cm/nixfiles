@@ -5,5 +5,5 @@ args@{ pkgs, ... }:
 
   imports = [ ../common ];
 
-  my.programs.emacs = { enableSSHSpacemacsConfigRepo = true; };
+  my.programs.emacs = { enableSSHConfigRepo = true; };
 }
