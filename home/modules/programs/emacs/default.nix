@@ -14,14 +14,6 @@ in {
     };
     enableSSHConfigRepo =
       mkEnableOption "use ssh url for the git emacs config repo";
-    configRepoUrl = mkOption {
-      type = types.str;
-      readOnly = true;
-      default = if cfg.enableSSHConfigRepo then
-        "git@github.com:15cm/doomemacs-config.git"
-      else
-        "https://github.com/15cm/doomemacs-config.git";
-    };
     startAfterGraphicalSession =
       mkEnableOption "start after systemd graphical-session.target";
     extraOptions = mkOption {
@@ -59,12 +51,17 @@ in {
           fi
         '';
 
-      home.activation.gitCloneEmacsConfig =
-        hm.dag.entryAfter [ "writeBoundary" ] ''
-          if ! [ -d $HOME/.doom.d ]; then
-            ${pkgs.git}/bin/git clone ${cfg.configRepoUrl} $HOME/.doom.d
-          fi
-        '';
+      # Change the remote url after git clone to avoid dependency on `ssh` when cloning.
+      home.activation.gitCloneEmacsConfig = let
+        changeRemoteCmd = optionalString cfg.enableSSHConfigRepo
+          "${pkgs.git}/bin/git remote set-url origin git@github.com:15cm/doomemacs-config.git";
+      in hm.dag.entryAfter [ "writeBoundary" ] ''
+        if ! [ -d $HOME/.doom.d ]; then
+            ${pkgs.git}/bin/git clone https://github.com/15cm/doomemacs-config.git $HOME/.doom.d
+            cd $HOME/.doom.d
+            ${changeRemoteCmd}
+        fi
+      '';
     }
     (mkIf cfg.startAfterGraphicalSession {
       systemd.user.services.emacs = {
