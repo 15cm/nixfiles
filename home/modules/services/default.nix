@@ -18,5 +18,6 @@
     ./flameshot.nix
     ./redshift
     ./openrgb.nix
+    ./dunst
   ];
 }

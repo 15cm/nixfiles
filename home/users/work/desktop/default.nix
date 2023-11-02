@@ -70,7 +70,7 @@ with lib; {
   };
   my.services.copyq.enable = true;
   my.services.clipper.enable = true;
-  services.dunst.enable = true;
+  my.services.dunst.enable = true;
   my.programs.networkmanager-dmenu = {
     enable = true;
     settings = {

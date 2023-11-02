@@ -59,6 +59,7 @@ in with lib; {
     ueberzugpp
     feishin
     sqlite
+    kooha
 
     # Development
     postgresql
@@ -163,7 +164,7 @@ in with lib; {
     };
   };
   my.services.network-manager-applet.enable = true;
-  services.dunst.enable = true;
+  my.services.dunst.enable = true;
   my.services.gtklock = {
     enable = true;
     image =
