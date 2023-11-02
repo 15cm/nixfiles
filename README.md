@@ -3,7 +3,7 @@
 - [x] NixOS root on EXT4 + ZFS datasets under /pool, for headless machines like NAS, VPS e.t.c.
 - [ ] Nix Home Manager on non-NixOS systems, for work machines that run Linux or Darwin.
 
-## Boundary of NixOS and Nix Home Manager
+## Boundary between NixOS and Nix Home Manager
 The NixOS modules and Home Manager modules are isolated as much as possible. The Home Manager is installed in standalone mode via flake. This setup allows us to rely on NixOS as less as possible to avoid breaking the Home Manager experience on non NixOS systems.
 
 From a packages point of view, NixOS modules cover the minimum softwares that are either required for system bootstrap or shipped with most of the distros and don't require customizations. All other packages go to Home Manager modules.
