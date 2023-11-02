@@ -8,4 +8,4 @@ The NixOS modules and Home Manager modules are isolated as much as possible. The
 
 From a packages point of view, NixOS modules cover the minimum softwares that are either required for system bootstrap or shipped with most of the distros and don't require customizations. All other packages go to Home Manager modules.
 
-From a Linux desktop environment point of view, NixOS modules control system wise and hardware wise configs. It delegates controls to Home Manager modules right after the display mananger. That's to say, ~/.xsession is the (inclusive) boundary where we enter the Home Manager world.
+From a Linux desktop environment point of view, NixOS modules control system wise and hardware wise configs. It delegates controls to Home Manager modules right after the display mananger.
