@@ -19,7 +19,7 @@ in {
     home.file."local/bin/reload-theme.sh".source =
       pkgs.writeShellScript "reload-theme.sh" ''
         ${config.my.programs.powerline.package}/bin/powerline-daemon --replace
-        ${pkgs.tmux}/bin/tmux source ${config.my.programs.powerline.package}/share/tmux/powerline.conf
+        ${config.my.programs.powerline.package}/bin/powerline-config tmux setup
         ${config.my.programs.emacs.package}/bin/emacsclient -eun '(load "~/.config/emacs-scripts/load-theme.el")'
         exit 0
       '';
@@ -30,6 +30,7 @@ in {
     };
 
     home.activation.reloadTheme = hm.dag.entryAfter [ "writeBoundary" ] ''
+      export PATH="${config.home.homeDirectory}/.nix-profile/bin:$PATH";
       ${config.home.homeDirectory}/local/bin/reload-theme.sh ${
         if isLinuxGui then "gui" else "cli"
       }
