@@ -44,7 +44,7 @@ in {
 
     # Other i3 related packages.
     home.packages = [ pkgs.i3status-rust pkgs.i3-quickterm ];
-    xdg.configFile."i3/status.toml".source =
+    xdg.configFile."i3status-rust/config.toml".source =
       templateFile "i3status-rust" templateData ./status.toml.jinja;
     xdg.configFile."i3/i3-quickterm.json".source = ./i3-quickterm.json;
   };

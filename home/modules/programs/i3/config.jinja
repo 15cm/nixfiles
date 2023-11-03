@@ -137,7 +137,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 bindsym $mod+v exec wmfocus
 
 # Launcher
-bindsym $mod+Return exec nixGL alacritty
+bindsym $mod+Return exec alacritty
 bindsym $mod+i exec keepassxc
 bindsym $mod+y exec i3-quickterm shell
 bindsym $mod+e exec splatmoji type
@@ -145,13 +145,13 @@ bindsym $mod+e exec splatmoji type
 bindsym $mod+o mode "launcher"
 
 mode "launcher" {
-     bindsym f exec nixGL firefox; mode "default"
+     bindsym f exec firefox; mode "default"
      bindsym e exec emacsclient -c; mode "default"
      bindsym s exec flameshot gui; mode "default"
      # On the 4K display of desktop, 2x scale is too large. Fractional scaling are not honored by nautilus.
      bindsym d exec {%if hostname == "kazuki"%} GDK_SCALE=1 {%endif%} nautilus -w ~; mode "default"
      bindsym r exec rambox; mode "default"
-     bindsym c exec nixGL google-chrome-stable; mode "default"
+     bindsym c exec google-chrome-stable; mode "default"
      bindsym m exec clementine; mode "default"
      bindsym n exec dunstctl close-all; mode "default"
      bindsym Shift+n exec dunstctl history-pop; mode "default"
@@ -233,6 +233,49 @@ for_window [class="^Anki$"] floating enable, resize set 600 300, move position c
 for_window [class="Clementine"] floating disable;
 for_window [instance="^copyq$" class="^Copyq$"] border pixel 0, floating enable, move position center
 for_window [class="antimicrox"] floating disable;
+
+bar {
+    id bar-1
+    font pango:Iosevka, FontAwesome 12
+    i3bar_command i3bar --transparency
+    status_command {{i3statusRustBinary}}
+    position top
+
+## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
+    tray_output primary
+
+    bindsym button4 nop
+    bindsym button5 nop
+    strip_workspace_numbers yes
+
+    colors {
+{%if theme == "light"%}
+        background #f5f5f5
+# Text color to be used for the statusline.
+        statusline #454947
+        separator #55ffff
+
+#                      border  backgr. text
+        focused_workspace #454947 #212121 #00ff00
+        active_workspace #454947 #212121 #e5f6ff
+        inactive_workspace #454947 #212121 #ffffff99
+        binding_mode #454947 #fff7e6 #00aaff
+        urgent_workspace #454947 #fb4934 #ffffff99
+{%else%}
+        background #222d31
+# Text color to be used for the statusline.
+        statusline #f9faf9
+        separator #454947
+
+#                      border  backgr. text
+        focused_workspace #4c7899 #93c789 #ffffff
+        active_workspace #333333 #285577 #ffffff
+        inactive_workspace #595B5B #222d31 #eee8d5
+        binding_mode #16a085 #2c2c2c #f9faf9
+        urgent_workspace #16a085 #fdf6e3 #e5201d
+{%endif%}
+    }
+}
 
 # Border Colors
 # class                 border  backgr. text    indicator child_border
