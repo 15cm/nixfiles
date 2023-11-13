@@ -246,6 +246,21 @@
         "type": "github"
       }
     },
+    "nur": {
+      "locked": {
+        "lastModified": 1699829219,
+        "narHash": "sha256-6SMSRpM5TL9UG/Vrt821YKe894WcIzu40nvbxkGxP0U=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "076a620318b0b53f159538414025b3dacada784f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "deploy-rs": "deploy-rs",
@@ -259,6 +274,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-stable": "nixpkgs-stable",
+        "nur": "nur",
         "sops-nix": "sops-nix",
         "yazi": "yazi"
       }

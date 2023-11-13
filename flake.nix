@@ -8,6 +8,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur = { url = "github:nix-community/NUR"; };
     flake-utils.url = "github:numtide/flake-utils";
     # nixgl is needed for alacritty outside of nixOS
     # refer to https://github.com/NixOS/nixpkgs/issues/122671
@@ -53,8 +54,8 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, nixgl, flake-utils, sops-nix, kmonad
-    , nixos-hardware, deploy-rs, emacs-overlay, hyprland, yazi, ... }:
+  outputs = { self, nixpkgs, home-manager, nur, nixgl, flake-utils, sops-nix
+    , kmonad, nixos-hardware, deploy-rs, emacs-overlay, hyprland, yazi, ... }:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -133,6 +134,7 @@
               ./modules/home-manager
               ./home/modules
               hyprland.homeManagerModules.default
+              { imports = [ nur.hmModules.nur ]; }
             ];
             extraSpecialArgs = (v.extraSpecialArgs or { }) // rec {
               inherit state;

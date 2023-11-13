@@ -64,7 +64,7 @@ in {
   programs.hyprland.enableNvidiaPatches = true;
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.beta;
-    modesetting.enabale = true;
+    modesetting.enable = true;
     powerManagement.enable = true;
     forceFullCompositionPipeline = true;
     # Open nvidia has issue with suspend. Ensure to use the proprietary drivers.
