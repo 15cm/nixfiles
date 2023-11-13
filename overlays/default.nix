@@ -62,33 +62,5 @@ with nixpkgs.lib; {
       '';
     });
     # transgui overlays ends.
-    fcitx5 = prev.fcitx5.overrideAttrs (old: rec {
-      pname = "fcitx5";
-      version = "5.0.23";
-      src = prev.fetchFromGitHub {
-        owner = "fcitx";
-        repo = pname;
-        rev = version;
-        hash = "sha256-zS25XeNtBN7QIi+Re/p1uLoH/Q4xKAsFrEmgk2LYRu8=";
-      };
-      patches = [
-        # Fix compatiblity with fmt 10.0. Remove with the next release
-        (prev.fetchpatch {
-          url =
-            "https://github.com/fcitx/fcitx5/commit/7fb3a5500270877d93b61b11b2a17b9b8f6a506b.patch";
-          hash = "sha256-Z4Sqdyp/doJPTB+hEUrG9vncUP29L/b0yJ/u5ldpnds=";
-        })
-      ];
-    });
-    fcitx5-rime = prev.fcitx5-rime.overrideAttrs (old: rec {
-      pname = "fcitx5-rime";
-      version = "5.0.16";
-      src = prev.fetchFromGitHub {
-        owner = "fcitx";
-        repo = pname;
-        rev = version;
-        hash = "sha256-YAunuxdMlv1KOj2/xXstb/Uhm97G9D9rxb35AbNgMaE=";
-      };
-    });
   };
 }
