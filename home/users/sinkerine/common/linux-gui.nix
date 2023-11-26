@@ -1,7 +1,10 @@
 { config, pkgs, lib, hostname, mylib, ... }:
 
 with lib;
-let inherit (mylib) applyXwaylandEnvsToDesktopExec;
+let
+  inherit (mylib)
+    applyXwaylandEnvsToDesktopExec applyChromeFlagsToDesktopExec
+    applyElectronFlagsToDesktopExec;
 in {
   imports = [
     # Essentials
@@ -174,13 +177,12 @@ in {
   xdg.desktopEntries = {
     google-chrome = {
       name = "Google Chrome";
-      exec = applyXwaylandEnvsToDesktopExec config "google-chrome-stable"
-        + " --ozone-platform=x11";
+      exec = applyChromeFlagsToDesktopExec "google-chrome-stable";
     };
     "com.github.iwalton3.jellyfin-media-player" = {
       name = "Jellyfin Media Player";
-      exec = applyXwaylandEnvsToDesktopExec config "jellyfinmediaplayer"
-        + " --platform=xcb";
+      exec = applyXwaylandEnvsToDesktopExec config
+        "jellyfinmediaplayer --platform=xcb";
     };
     "insomnia" = {
       icon = "insomnia";
@@ -194,8 +196,7 @@ in {
     "feishin" = {
       name = "feishin";
       icon = "feishin";
-      exec = applyXwaylandEnvsToDesktopExec config "feishin"
-        + " --disable-gpu-sandbox --ozone-platform=x11";
+      exec = applyElectronFlagsToDesktopExec "feishin";
     };
     "calibre-gui" = {
       name = "Calibre";
