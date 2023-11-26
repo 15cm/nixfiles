@@ -1,6 +1,7 @@
-{ config, pkgs, state, ... }:
+{ config, pkgs, state, mylib, ... }:
 
-{
+let inherit (mylib) applyXwaylandEnvsToDesktopExec;
+in {
   home.stateVersion = "23.05";
 
   imports = [ ../common ../common/linux-gui.nix ];
@@ -16,8 +17,7 @@
     };
     vmware-workstation = {
       name = "VMware Workstation (high priority)";
-      exec =
-        "env GDK_SCALE=${config.my.env.GDK_SCALE} GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} nice -n -19 vmware";
+      exec = applyXwaylandEnvsToDesktopExec config "nice -n -19 vmware";
     };
     steam-fc-override = {
       name = "Steam (fc override)";

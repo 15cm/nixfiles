@@ -1,9 +1,8 @@
-{ config, pkgs, lib, hostname, ... }:
+{ config, pkgs, lib, hostname, mylib, ... }:
 
-let
-  applyXwaylandEnvsToDesktopExec = exec:
-    "env GDK_SCALE=${config.my.env.GDK_SCALE} GDK_DPI_SCALE=${config.my.env.GDK_DPI_SCALE} ${exec}";
-in with lib; {
+with lib;
+let inherit (mylib) applyXwaylandEnvsToDesktopExec;
+in {
   imports = [
     # Essentials
     ../../../features/conf/ssh
@@ -175,12 +174,12 @@ in with lib; {
   xdg.desktopEntries = {
     google-chrome = {
       name = "Google Chrome";
-      exec = applyXwaylandEnvsToDesktopExec "google-chrome-stable"
+      exec = applyXwaylandEnvsToDesktopExec config "google-chrome-stable"
         + " --ozone-platform=x11";
     };
     "com.github.iwalton3.jellyfin-media-player" = {
       name = "Jellyfin Media Player";
-      exec = applyXwaylandEnvsToDesktopExec "jellyfinmediaplayer"
+      exec = applyXwaylandEnvsToDesktopExec config "jellyfinmediaplayer"
         + " --platform=xcb";
     };
     "insomnia" = {
@@ -195,7 +194,7 @@ in with lib; {
     "feishin" = {
       name = "feishin";
       icon = "feishin";
-      exec = applyXwaylandEnvsToDesktopExec "feishin"
+      exec = applyXwaylandEnvsToDesktopExec config "feishin"
         + " --disable-gpu-sandbox --ozone-platform=x11";
     };
     "calibre-gui" = {
@@ -214,7 +213,10 @@ in with lib; {
   };
 
   my.services.aria2.enable = true;
-  my.services.fcitx5.enable = true;
+  my.services.fcitx5 = {
+    enable = true;
+    enableWaylandEnv = true;
+  };
   my.services.playerctld.enable = true;
   my.programs.goldendict.enable = true;
   my.programs.alacritty.enable = true;

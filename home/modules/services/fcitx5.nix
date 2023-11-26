@@ -18,13 +18,16 @@ in {
         ];
       };
     };
+
+    enableWaylandEnv =
+      mkEnableOption "https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland";
   };
 
   config = mkIf cfg.enable {
 
     home.sessionVariables = {
       GLFW_IM_MODULE = "ibus"; # IME support in kitty
-      GTK_IM_MODULE = "fcitx";
+      GTK_IM_MODULE = (if cfg.enableWaylandEnv then "wayland" else "fcitx5");
       QT_IM_MODULE = "fcitx";
       XMODIFIERS = "@im=fcitx";
       QT_PLUGIN_PATH =
