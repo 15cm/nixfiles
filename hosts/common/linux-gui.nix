@@ -30,7 +30,10 @@ with lib;
     xwayland = { enable = true; };
   };
 
-  xdg.portal.config.common.default = "*";
+  xdg.portal = {
+    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    config.common.default = "*";
+  };
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
