@@ -15,6 +15,7 @@ with lib;
   ];
 
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
+  # Required by pipewire rt mod and Flatpak.
   programs.dconf.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -24,11 +25,12 @@ with lib;
     pulse.enable = true;
   };
 
-  # Required by pipewire rt mod and Flatpak.
   programs.hyprland = {
     enable = true;
     xwayland = { enable = true; };
   };
+
+  xdg.portal.config.common.default = "*";
 
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;

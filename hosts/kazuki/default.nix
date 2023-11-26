@@ -61,7 +61,6 @@ in {
     firewall.enable = mkForce false;
   };
 
-  programs.hyprland.enableNvidiaPatches = true;
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.beta;
     modesetting.enable = true;
