@@ -14,7 +14,7 @@ in {
     enable = mkEnableOption "hyprland";
     musicPlayer = mkOption {
       type = types.str;
-      default = "Feishin";
+      default = "clementine";
     };
     monitors = mkOption {
       type = types.attrs;

@@ -33,7 +33,6 @@ with lib; {
     gwenview
     okular
     xclip
-    feishin
   ];
 
   xresources.properties."Xft.dpi" = mkForce 120;

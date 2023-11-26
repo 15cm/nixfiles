@@ -66,10 +66,10 @@ in {
     antimicrox
     unzip
     ueberzugpp
-    feishin
     sqlite
     kooha
     tremotesf
+    discord
   ];
 
   home.sessionVariables = {
@@ -193,16 +193,11 @@ in {
       name = "AriaNg";
       exec = "firefox --new-window http://localhost:3001";
     };
-    "feishin" = {
-      name = "feishin";
-      icon = "feishin";
-      exec = applyElectronFlagsToDesktopExec "feishin";
-    };
-    "calibre-gui" = {
-      name = "Calibre";
-      icon = "calibre-gui";
-      exec = "env QT_IM_MODULE=wayland calibre --detach %U";
-    };
+    # "calibre-gui" = {
+    #   name = "Calibre";
+    #   icon = "calibre-gui";
+    #   exec = "env QT_IM_MODULE=wayland calibre --detach %U";
+    # };
   };
 
   home.pointerCursor = {
