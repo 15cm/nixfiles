@@ -74,7 +74,6 @@ bind = $mainMod, I, exec, keepassxc
 bind = $mainMod, I, focuswindow, ^(org.keepassxc.KeePassXC)$
 bind = $mainMod, C, exec, copyq menu
 bind = $mainMod SHIFT, C, exec, copyq show
-bind = $mainMod, T, togglefloating
 
 # App launcher.
 bind = $mainMod, O, submap, open
@@ -175,6 +174,8 @@ bind = $mainMod SHIFT, y, movetoworkspace, special:default
 bind = $mainMod, y, togglespecialworkspace, default
 bind = $mainMod SHIFT, s, movetoworkspace, special:search
 bind = $mainMod, s, togglespecialworkspace, search
+bind = $mainMod SHIFT, t, movetoworkspace, special:todo
+bind = $mainMod, t, togglespecialworkspace, todo
 
 # Window dispatchers
 bind = $mainMod, F, fullscreen, 1
