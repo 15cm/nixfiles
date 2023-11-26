@@ -21,6 +21,14 @@ in with lib; {
     qt6.qtwayland
     qt5.qtwayland
 
+    # Development
+    postgresql
+    nodePackages.js-beautify
+    ccls
+    ruby
+    rust-analyzer
+    pyright
+
     keepassxc
     firefox
     google-chrome
@@ -49,7 +57,6 @@ in with lib; {
     slurp
     xdg-utils
     khinsider
-    transgui
     imagemagick
     dsf2flac
     neofetch
@@ -60,14 +67,7 @@ in with lib; {
     feishin
     sqlite
     kooha
-
-    # Development
-    postgresql
-    nodePackages.js-beautify
-    ccls
-    ruby
-    rust-analyzer
-    pyright
+    tremotesf
   ];
 
   home.sessionVariables = {
@@ -182,11 +182,6 @@ in with lib; {
       name = "Jellyfin Media Player";
       exec = applyXwaylandEnvsToDesktopExec "jellyfinmediaplayer"
         + " --platform=xcb";
-    };
-    "transgui" = {
-      icon = "transgui";
-      name = "Transmission Remote GUI";
-      exec = applyXwaylandEnvsToDesktopExec "transgui";
     };
     "insomnia" = {
       icon = "insomnia";
