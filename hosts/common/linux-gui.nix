@@ -57,7 +57,10 @@ with lib;
     lockService = "gtklock.service";
   };
 
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [ hplip ];
+  };
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
 
