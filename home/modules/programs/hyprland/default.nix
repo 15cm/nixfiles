@@ -7,6 +7,7 @@ let
   templateData = {
     inherit (cfg) musicPlayer monitors scale;
     musicPlayerLower = toLower cfg.musicPlayer;
+    musicPlayerDesktopFileName = cfg.musicPlayerDesktopFileName;
     windowSwitcherScript = "python " + ./window_switcher.py;
   };
 in {
@@ -15,6 +16,10 @@ in {
     musicPlayer = mkOption {
       type = types.str;
       default = "clementine";
+    };
+    musicPlayerDesktopFileName = mkOption {
+      type = types.str;
+      default = "org.clementine_player.Clementine.desktop";
     };
     monitors = mkOption {
       type = types.attrs;
