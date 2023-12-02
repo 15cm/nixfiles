@@ -25,9 +25,10 @@ in {
 
   config = mkIf cfg.enable {
 
+    home.packages = with pkgs; [ fcitx5-gtk libsForQt5.fcitx5-qt ];
+
     home.sessionVariables = {
-      GLFW_IM_MODULE = "ibus"; # IME support in kitty
-      GTK_IM_MODULE = (if cfg.enableWaylandEnv then "wayland" else "fcitx5");
+      GTK_IM_MODULE = (if cfg.enableWaylandEnv then "wayland" else "fcitx");
       QT_IM_MODULE = "fcitx";
       XMODIFIERS = "@im=fcitx";
       QT_PLUGIN_PATH =
