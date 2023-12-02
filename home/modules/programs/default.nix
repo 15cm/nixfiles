@@ -10,7 +10,6 @@
     ./hyprland
     ./hm-switch.nix
     ./fontconfig
-    ./goldendict.nix
     ./zsh
     ./git
     ./python-dev-tools

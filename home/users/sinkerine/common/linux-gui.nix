@@ -22,6 +22,7 @@ in {
     # Wayland env
     qt6.qtwayland
     qt5.qtwayland
+    libsForQt5.qt5ct
 
     # Development
     postgresql
@@ -69,7 +70,7 @@ in {
     sqlite
     kooha
     tremotesf
-    discord
+    goldendict-ng
   ];
 
   home.sessionVariables = {
@@ -182,8 +183,7 @@ in {
     };
     "com.github.iwalton3.jellyfin-media-player" = {
       name = "Jellyfin Media Player";
-      exec = applyXwaylandEnvsToDesktopExec config
-        "jellyfinmediaplayer --platform=xcb";
+      exec = "jellyfinmediaplayer --platform=xcb";
     };
     "insomnia" = {
       icon = "insomnia";
@@ -194,11 +194,10 @@ in {
       name = "AriaNg";
       exec = "firefox --new-window http://localhost:3001";
     };
-    # "calibre-gui" = {
-    #   name = "Calibre";
-    #   icon = "calibre-gui";
-    #   exec = "env QT_IM_MODULE=wayland calibre --detach %U";
-    # };
+    "io.github.xiaoyifang.goldendict_ng" = {
+      name = "GoldenDict-ng";
+      exec = "env GOLDENDICT_FORCE_WAYLAND=1 goldendict";
+    };
   };
 
   home.pointerCursor = {
@@ -215,7 +214,6 @@ in {
     enableWaylandEnv = true;
   };
   my.services.playerctld.enable = true;
-  my.programs.goldendict.enable = true;
   my.programs.alacritty.enable = true;
   my.services.gammastep.enable = true;
 
