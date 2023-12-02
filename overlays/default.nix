@@ -7,12 +7,12 @@ with nixpkgs.lib; {
     waybar = prev.waybar.overrideAttrs
       (old: rec { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
     goldendict = prev.goldendict.overrideAttrs (old: {
-      version = "2023-03-30";
+      version = "2023-09-24";
       src = prev.fetchFromGitHub {
         owner = "vedgy";
         repo = "goldendict";
-        rev = "7b4a8328806ff2d71c43b229359b2f10724f7e6d";
-        sha256 = "sha256-ZQjGpwsWDbWRQkgCt7rMuazt345P+G7XiEjsShulBBs=";
+        rev = "2fbca0adfb27427e24c6814c7af650e37bdb7ccb";
+        sha256 = "sha256-51wwqo0KfM+GE+LZnpVjdheoqOZWwP5U6TZ7SY8az+Q=";
       };
       buildInputs = let pkgs = final;
       in with pkgs; [
