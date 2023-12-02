@@ -4,8 +4,6 @@ with nixpkgs.lib; {
   # Adds my custom packages
   additions = final: _prev: import ../pkgs { pkgs = final; };
   modifications = final: prev: rec {
-    waybar = prev.waybar.overrideAttrs
-      (old: rec { mesonFlags = old.mesonFlags ++ [ "-Dexperimental=true" ]; });
     goldendict = prev.goldendict.overrideAttrs (old: {
       version = "2023-09-24";
       src = prev.fetchFromGitHub {
