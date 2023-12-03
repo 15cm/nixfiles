@@ -65,7 +65,7 @@ while (("$#")); do
   esac
 done
 
-if [[ -n $help || -z $disk || -z $part_start_num ]]; then
+if [[ -n "$help" || -z "$disk" || -z "$part_start_num" ]]; then
   usage
   exit 0
 fi
@@ -75,15 +75,15 @@ part_num_microsoft_reserved=$(($part_start_num))
 part_num_windows_re=$(($part_start_num + 1))
 part_num_microsoft_basic_data=$(($part_start_num + 2))
 info "Partitioning $disk"
-if [ -n $should_zap ]; then
+if [ -n "$should_zap" ]; then
   sgdisk --zap-all $disk
 fi
-if [ -n $separate_esp ]; then
+if [ -n "$separate_esp" ]; then
   sgdisk -n1:1M:+128M                                   -t1:0700 $disk
 fi
 sgdisk -n${part_num_microsoft_reserved}:0:+16M          -t${part_num_microsoft_reserved}:0C01 $disk
 sgdisk -n${part_num_windows_re}:0:+300M                 -t${part_num_windows_re}:2700 $disk
-if [ -n $size ]; then
+if [ -n "$size" ]; then
   sgdisk -n${part_num_microsoft_basic_data}:0:+${size}  -t${part_num_microsoft_basic_data}:0700 $disk
 else
   sgdisk -n${part_num_microsoft_basic_data}::           -t${part_num_microsoft_basic_data}:0700 $disk
@@ -100,9 +100,9 @@ for i in {1..10}; do
   info "Waiting for windows partitions to be ready. $i out of 10 retries"
   sleep 3
   if [[
-    -e ${disk_part_microsoft_reserved} \
-    && -e ${disk_part_microsoft_basic_data} \
-    && -e ${disk_part_windows_re} ]]; then
+    -e "${disk_part_microsoft_reserved}" \
+    && -e "${disk_part_microsoft_basic_data}" \
+    && -e "${disk_part_windows_re}" ]]; then
   break
   fi
 done

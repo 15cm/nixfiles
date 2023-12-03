@@ -69,7 +69,7 @@ export EXT4_PART=${DISK}-part2
 for i in {1..10}; do
   info "Waiting for esp and ext4 partitions to be ready. $i out of 10 retries"
   sleep 3
-  if [ -e $ESP_PART ] && [ -e $EXT4_PART ]; then
+  if [ -e "$ESP_PART" ] && [ -e "$EXT4_PART" ]; then
     break
   fi
 done
@@ -81,7 +81,7 @@ mount --mkdir $EXT4_PART /mnt
 
 info "Formatting and mounting the esp"
 mkfs.vfat -n ESP $ESP_PART
-if [ -z $BIOS_BOOT ]; then
+if [ -z "$BIOS_BOOT" ]; then
 mount --mkdir -t vfat $ESP_PART /mnt/boot
 fi
 

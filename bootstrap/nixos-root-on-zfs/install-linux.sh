@@ -65,7 +65,7 @@ while (("$#")); do
   esac
 done
 
-if [[ -n $help || -z $host_name || -z $disk ]]; then
+if [[ -n "$help" || -z "$host_name" || -z "$disk" ]]; then
   usage
   exit 0
 fi
@@ -76,7 +76,7 @@ fi
 info "Partitioning $disk"
 sgdisk --zap-all $disk
 sgdisk -n1:1M:+1G        -t1:EF00 $disk
-if [ -n $size ]; then
+if [ -n "$size" ]; then
   sgdisk -n2:0:+${size}  -t2:BF00 $disk
 else
   sgdisk -n2::           -t2:BF00 $disk
@@ -90,7 +90,7 @@ zfs_part=${disk}-part2
 for i in {1..10}; do
   info "Waiting for esp and zfs partitions to be ready. $i out of 10 retries"
   sleep 3
-  if [[ -e $esp_part && -e $zfs_part ]]; then
+  if [[ -e "$esp_part" && -e "$zfs_part" ]]; then
     break
   fi
 done
@@ -99,7 +99,7 @@ info "Unmounting /mnt"
 umount -Rl /mnt || :
 
 rpool="rpool"
-if zpool list -o name | tail -n +2 | grep -q $rpool ; then
+if zpool list -o name | tail -n +2 | grep -q "$rpool" ; then
   info "ZFS root pool '$RPOOL' already exists. Destroying it."
   zpool destroy -f $rpool
 fi
@@ -150,11 +150,11 @@ zdocker_vol=/dev/zvol/$rpool/data/var-lib-docker
 for i in {1..5}; do
   info "Waiting for $zdocker_vol to appear. $i out of 5 times..."
   sleep 2
-  if [ -e $zdocker_vol ]; then
+  if [ -e "$zdocker_vol" ]; then
     break
   fi
 done
-if [ -e $zdocker_vol ]; then
+if [ -e "$zdocker_vol" ]; then
   info "$zdocker_vol is found."
 else
   err "$zdocker_vol not found. Abort."
