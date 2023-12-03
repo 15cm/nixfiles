@@ -99,7 +99,7 @@ info "Unmounting /mnt"
 umount -Rl /mnt || :
 
 rpool="rpool"
-if [ zpool list -o name | tail -n +2 | grep -q $rpool ]; then
+if zpool list -o name | tail -n +2 | grep -q $rpool ; then
   info "ZFS root pool '$RPOOL' already exists. Destroying it."
   zpool destroy -f $rpool
 fi
