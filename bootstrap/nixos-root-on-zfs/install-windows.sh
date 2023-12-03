@@ -28,6 +28,7 @@ Options:
                       WARNING: - If on the same disk as the Linux Installation, it must be greater than the last Linux partition number
                                - If on the different disk, it must be greater than 1 to be after the separate dummy esp for Windows.
   [-s, --size]        <size> of the windows data partition in sgdisk end section format. Default value: use all remaining space of the partition.
+  [-z, --zap]         If specified, destroy the existing partition table of the disk. Usually used for a multiple disks setup.
   [--separate_esp]    For dual boot on different disks. Create a dummy ESP partition for Windows to install.
 EOF
 }
@@ -45,6 +46,10 @@ while (("$#")); do
     -s|--size)
       size="$2"
       shift 2
+      ;;
+    -z|--zap)
+      should_zap=true
+      shift
       ;;
     --separate_esp)
       separate_esp=true
@@ -70,7 +75,9 @@ part_num_microsoft_reserved=$(($part_start_num))
 part_num_windows_re=$(($part_start_num + 1))
 part_num_microsoft_basic_data=$(($part_start_num + 2))
 info "Partitioning $disk"
-sgdisk --zap-all $disk
+if [ -n $should_zap ]; then
+  sgdisk --zap-all $disk
+fi
 if [ -n $separate_esp ]; then
   sgdisk -n1:1M:+128M                                   -t1:0700 $disk
 fi
