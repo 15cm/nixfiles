@@ -18,10 +18,30 @@ SSH into the target host as root and run the install script for help and then fi
 bash /nixfiles/bootstrap/nixos-root-on-zfs/install-linux.sh
 ```
 
+### 3.1 Windows dual boot on the same disk
 Optionally, create the windows partitions:
 
 ``` sh
 bash /nixfiles/bootstrap/nixos-root-on-zfs/install-windows.sh
+```
+
+### 3.2 Windows dual boot on the 2nd disk
+
+``` sh
+bash /nixfiles/bootstrap/nixos-root-on-zfs/install-windows.sh --separate_esp
+```
+
+After installing Windows on the 2nd disk, if Windows format and label the dummy ESP partition as ESP,
+
+``` sh
+fatlabel <2st_disk_esp_partition> ESP2
+fatlabel <1st_disk_esp_partition> ESP
+```
+
+and consider using efibootmgr to clean up the entries like
+
+``` sh
+efibootmgr -b <entry_number> -B
 ```
 
 ### 4

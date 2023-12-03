@@ -24,8 +24,11 @@ Usage: ${0} [OPTIONS] [ARGUMENTS]
 Options:
   --help              Display this help and exit
   -d, --disk          </dev/disk/by-path/disk> of the disk for installation.
-  -p, --partition     The start partition number of the Windows resevered partition. It must be greater than 1 because the 1st part is for ESP. Example "2".
+  -p, --partition     The start partition number of the Windows resevered partition. Example "1".
+                      WARNING: - If on the same disk as the Linux Installation, it must be greater than the last Linux partition number
+                               - If on the different disk, it must be greater than 1 to be after the separate dummy esp for Windows.
   [-s, --size]        <size> of the windows data partition in sgdisk end section format. Default value: use all remaining space of the partition.
+  [--separate_esp]    For dual boot on different disks. Create a dummy ESP partition for Windows to install.
 EOF
 }
 
@@ -42,6 +45,10 @@ while (("$#")); do
     -s|--size)
       size="$2"
       shift 2
+      ;;
+    --separate_esp)
+      separate_esp=true
+      shift
       ;;
     --help)
       help=true
@@ -64,7 +71,9 @@ part_num_windows_re=$(($part_start_num + 1))
 part_num_microsoft_basic_data=$(($part_start_num + 2))
 info "Partitioning $disk"
 sgdisk --zap-all $disk
-sgdisk -n1:1M:+1G                                       -t1:EF00 $disk
+if [ -n $separate_esp ]; then
+  sgdisk -n1:1M:+128M                                   -t1:0700 $disk
+fi
 sgdisk -n${part_num_microsoft_reserved}:0:+16M          -t${part_num_microsoft_reserved}:0C01 $disk
 sgdisk -n${part_num_windows_re}:0:+300M                 -t${part_num_windows_re}:2700 $disk
 if [ -n $size ]; then
@@ -83,7 +92,8 @@ disk_part_windows_re=${disk}-part${part_num_windows_re}
 for i in {1..10}; do
   info "Waiting for windows partitions to be ready. $i out of 10 retries"
   sleep 3
-  if [[ -e ${disk_part_microsoft_reserved} \
+  if [[
+    -e ${disk_part_microsoft_reserved} \
     && -e ${disk_part_microsoft_basic_data} \
     && -e ${disk_part_windows_re} ]]; then
   break
