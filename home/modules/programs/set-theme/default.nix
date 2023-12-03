@@ -14,6 +14,7 @@ in {
       pkgs.writeShellScript "set-theme.sh" ''
         sed -i "s/\(theme.*\)\"[^\"]*\"/\1\"$1\"/" ${nixinfo.projectRoot}/home/state/default.nix
         switch-nix-home.sh --option substitute false
+        $HOME/local/bin/reload-theme.sh
       '';
 
     home.file."local/bin/reload-theme.sh".source =
@@ -28,12 +29,5 @@ in {
       stl = "set-theme.sh light";
       std = "set-theme.sh dark";
     };
-
-    home.activation.reloadTheme = hm.dag.entryAfter [ "writeBoundary" ] ''
-      export PATH="${config.home.homeDirectory}/.nix-profile/bin:$PATH";
-      ${config.home.homeDirectory}/local/bin/reload-theme.sh ${
-        if isLinuxGui then "gui" else "cli"
-      }
-    '';
   };
 }
