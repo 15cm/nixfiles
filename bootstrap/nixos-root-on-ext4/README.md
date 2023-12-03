@@ -35,7 +35,7 @@ sudo zpool create \
     -O relatime=on \
     -O acltype=posixacl \
     -O canmount=off \
-    -O compression=lz4 \
+    -O compression=zstd \
     -O dnodesize=auto \
     -O normalization=formD \
     -O xattr=sa \

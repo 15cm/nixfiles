@@ -12,21 +12,20 @@ rsync -ahP --relative /keys/age/<hostname>.txt root@<host>:/
 ```
 
 ### 3
-SSH into the target host as root and run `bash /nixfiles/bootstrap/nixos-root-on-zfs/install.sh <hostname> <disk_path>`.
+SSH into the target host as root and run 
+
+``` sh
+bash /nixfiles/bootstrap/nixos-root-on-zfs/install-linux.sh -h <host_name> -d </dev/disk/by-path/disk_path> [-s] <size>
+```
 
 ### 4
-For hosts that need vmware, follow the instructions in `install.sh` to create EXT4 zvol for vmware.
-
-### 5
 Verify the content of /mnt. Then export the zfs pool:
 ```
 umount -Rl /mnt
 zpool export -a
 ```
 
-### 5
-TODO: test if deploy-rs work for home manager bootstrap.
-
+### 4
 Reboot the machine. After reboot, switch to tty and setup home manager:
 ```
 nix build --no-link path:/nixfiles#homeConfigurations.${USER}@$(hostname).activationPackage
@@ -53,7 +52,7 @@ mount -t vfat $ESP_PART /mnt/boot
 ```
 
 ### 2
-In `install.sh`, before `nixos-install`, you might want to verify the configuration first by
+In `install-linux.sh`, before `nixos-install`, you might want to verify the configuration first by
 ```
 nix build --experimental-features 'nix-command flakes' "path:/nixfiles#nixosConfigurations.<target_hostname>.config.system.build.toplevel"
 ```
