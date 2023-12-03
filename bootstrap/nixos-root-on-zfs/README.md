@@ -64,7 +64,7 @@ rm -rf /nixfiles
 ```
 
 ## Notes
-### 1
+### Mount the existing system
 For rescuing an existing system in the live usb, mounts the directories:
 ```
 export DISK=</dev/disk/by-id/...>
@@ -77,17 +77,16 @@ mkdir -p /mnt/boot
 mount -t vfat $ESP_PART /mnt/boot
 ```
 
-### 2
+### Verify configuration
 In `install-linux.sh`, before `nixos-install`, you might want to verify the configuration first by
 ```
 nix build --experimental-features 'nix-command flakes' "path:/nixfiles#nixosConfigurations.<target_hostname>.config.system.build.toplevel"
 ```
 
-### 3
+### neededForBoot
 The `neededForBoot=true` in the sed replacement of hardware-configuration.nix is important to allow sops-nix to access the encryption keys in its activation script. ([ref](https://github.com/Mic92/sops-nix/issues/24))
 
-### 4
-To restore from an existing snapshot data:
+### To restore from an existing snapshot data
 
 On the new machine, destroy the existing dataset:
 ``` sh
@@ -106,7 +105,8 @@ zfs create -o canmount=on rpool/data/home/sinkerine/.cache
 zfs create -o canmount=on rpool/data/home/sinkerine/vmware
 chown -R 1000:1000 /mnt/home
 ```
-
+### More than one matching pool found
+zpool can find more than one matching pool by the pool name if there are leftover zpool label on the disk with old data. Considering using `zpool labelclear` or `wipefs -a` to destroy the labels on the disk.
 
 ## Ref
 - [gist -- NixOS with ZFS](https://gist.github.com/lucasvo/35e0745b72dd384dcb9b9ee5bae5fecb)

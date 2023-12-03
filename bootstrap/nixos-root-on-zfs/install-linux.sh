@@ -74,6 +74,7 @@ fi
 # p1 1GB ESP+EFI
 # p2 REST ZFS
 info "Partitioning $disk"
+wipefs -a $disk
 sgdisk --zap-all $disk
 sgdisk -n1:1M:+1G        -t1:EF00 $disk
 if [ -n "$size" ]; then
