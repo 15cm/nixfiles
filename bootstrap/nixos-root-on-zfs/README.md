@@ -12,10 +12,16 @@ rsync -ahP --relative /keys/age/<hostname>.txt root@<host>:/
 ```
 
 ### 3
-SSH into the target host as root and run 
+SSH into the target host as root and run the install script for help and then fill in the params.
 
 ``` sh
-bash /nixfiles/bootstrap/nixos-root-on-zfs/install-linux.sh -h <host_name> -d </dev/disk/by-path/disk_path> [-s] <size>
+bash /nixfiles/bootstrap/nixos-root-on-zfs/install-linux.sh
+```
+
+Optionally, create the windows partitions:
+
+``` sh
+bash /nixfiles/bootstrap/nixos-root-on-zfs/install-windows.sh
 ```
 
 ### 4
@@ -59,6 +65,27 @@ nix build --experimental-features 'nix-command flakes' "path:/nixfiles#nixosConf
 
 ### 3
 The `neededForBoot=true` in the sed replacement of hardware-configuration.nix is important to allow sops-nix to access the encryption keys in its activation script. ([ref](https://github.com/Mic92/sops-nix/issues/24))
+
+### 4
+To restore from an existing snapshot data:
+
+On the new machine, destroy the existing dataset:
+``` sh
+zfs destroy -r rpool/data/home/sinkerine
+```
+
+On the machine that has the backup, run:
+``` sh
+sudo zfs send -c <backup@snapshot> | ssh <root@new_machine_host> "zfs recv rpool/data/home/sinkerine"
+```
+
+Create the backup-disabled datasets back as needed:
+
+``` sh
+zfs create -o canmount=on rpool/data/home/sinkerine/.cache
+zfs create -o canmount=on rpool/data/home/sinkerine/vmware
+chown -R 1000:1000 /mnt/home
+```
 
 
 ## Ref
