@@ -67,7 +67,7 @@ in {
   };
   my.display.scale = 2.0;
 
-  my.services.waybar.networkInterface = "enp4s0";
+  my.services.waybar.networkInterface = "enp5s0";
   my.programs.openrgb.enable = true;
   programs.obs-studio = {
     enable = true;
