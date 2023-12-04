@@ -67,12 +67,12 @@ rm -rf /nixfiles
 ### Mount the existing system
 For rescuing an existing system in the live usb, mounts the directories:
 ```
-export DISK=</dev/disk/by-id/...>
+DISK=</dev/disk/by-path/...>
 
 zpool import -a -f -N -R /mnt
 zfs load-key rpool
 zfs mount -a
-export ESP_PART=${DISK}-part1
+ESP_PART=${DISK}-part1
 mkdir -p /mnt/boot
 mount -t vfat $ESP_PART /mnt/boot
 ```
@@ -106,7 +106,11 @@ zfs create -o canmount=on rpool/data/home/sinkerine/vmware
 chown -R 1000:1000 /mnt/home
 ```
 ### More than one matching pool found
-zpool can find more than one matching pool by the pool name if there are leftover zpool label on the disk with old data. Considering using `zpool labelclear` or `wipefs -a` to destroy the labels on the disk.
+zpool can find more than one matching pool by the pool name if there are leftover zpool label on the disk with old data. It's probably caused by forgetting to `zpool labelclear` or `wipefs -a` on the existing zpool device and then create a new partition table on the device. dd zero to the device to clear all data:
+
+``` sh
+dd if=/dev/zero of=</dev/disk/by-path/disk> bs=1M status=progress
+```
 
 ## Ref
 - [gist -- NixOS with ZFS](https://gist.github.com/lucasvo/35e0745b72dd384dcb9b9ee5bae5fecb)

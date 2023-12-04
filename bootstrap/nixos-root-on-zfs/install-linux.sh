@@ -70,10 +70,19 @@ if [[ -n "$help" || -z "$host_name" || -z "$disk" ]]; then
   exit 0
 fi
 
+rpool="rpool"
+if zpool list -o name | tail -n +2 | grep -q "$rpool" ; then
+  umount -Rl /mnt
+  zpool export -a
+  info "ZFS root pool '$RPOOL' already exists. Destroying it."
+  zpool destroy -f $rpool || :
+fi
+
 # Partition the disk:
 # p1 1GB ESP+EFI
 # p2 REST ZFS
 info "Partitioning $disk"
+zpool labelclear -f $disk || :
 wipefs -a $disk
 sgdisk --zap-all $disk
 sgdisk -n1:1M:+1G        -t1:EF00 $disk
@@ -99,11 +108,6 @@ done
 info "Unmounting /mnt"
 umount -Rl /mnt || :
 
-rpool="rpool"
-if zpool list -o name | tail -n +2 | grep -q "$rpool" ; then
-  info "ZFS root pool '$RPOOL' already exists. Destroying it."
-  zpool destroy -f $rpool
-fi
 info "Creating zfs root pool"
 zpool create \
     -o autotrim=on \

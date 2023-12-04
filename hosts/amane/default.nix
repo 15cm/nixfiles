@@ -38,7 +38,6 @@ with lib;
     nonRootPools = [ "tank" ];
     encryptedZfsPath = "tank/encrypted";
   };
-  boot.zfs.devNodes = "/dev/disk/by-path";
 
   networking = {
     hostName = hostname;

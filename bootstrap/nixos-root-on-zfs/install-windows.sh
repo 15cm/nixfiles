@@ -76,6 +76,7 @@ part_num_windows_re=$(($part_start_num + 1))
 part_num_microsoft_basic_data=$(($part_start_num + 2))
 info "Partitioning $disk"
 if [ -n "$should_zap" ]; then
+  zpool labelclear -f $disk || :
   wipefs -a $disk
   sgdisk --zap-all $disk
 fi

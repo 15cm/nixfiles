@@ -27,6 +27,7 @@ in {
         config.boot.zfs.package.latestCompatibleLinuxPackages;
       boot.zfs.forceImportAll = true;
       boot.zfs.extraPools = cfg.nonRootPools;
+      boot.zfs.devNodes = "/dev/disk/by-path";
       services.zfs.autoScrub.enable = true;
     }
     (mkIf cfg.enableZed {
