@@ -14,7 +14,7 @@ with lib; {
 
   config.my.trusts = {
     ssh.pubKeys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIp+lvf7SQBnU+zC/uEwG/uerIdqjDzRtC1LLFsNrvwH sinkerine@kazuki"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIp+lvf7SQBnU+zC/uEwG/uerIdqjDzRtC1LLFsNrvwH sinkerine@id"
     ];
 
     cache.pubKeys = [

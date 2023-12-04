@@ -112,6 +112,17 @@ zpool can find more than one matching pool by the pool name if there are leftove
 dd if=/dev/zero of=</dev/disk/by-path/disk> bs=1M status=progress
 ```
 
+### Troubleshottings when initialization home manger
+
+> Nix-env error opening lock file
+
+Solution: `rm ~/.nix-profile`. [ref](https://discourse.nixos.org/t/nix-env-error-opening-lock-file/3556/1)
+
+> Activating dconfSettings.
+> Error receiving data: Connection reste by peer
+
+Solution: `sudo systemctl restart user@1000.service`
+
 ## Ref
 - [gist -- NixOS with ZFS](https://gist.github.com/lucasvo/35e0745b72dd384dcb9b9ee5bae5fecb)
 - [ZFS Datasets for NixOS](https://grahamc.com/blog/nixos-on-zfs)
