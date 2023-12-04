@@ -1,1 +1,1 @@
-{ imports = [ ./aria-ng.nix ]; }
+{ imports = [ ./aria-ng.nix ./proxychains.nix ]; }

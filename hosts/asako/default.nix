@@ -130,4 +130,5 @@ in {
     datasourceHosts = [ hostname ];
     dataDir = "/var/lib/grafana";
   };
+  my.programs.proxychains.enable = true;
 }
