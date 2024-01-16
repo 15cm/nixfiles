@@ -16,5 +16,4 @@
   };
   my.display.scale = 1.25;
   my.services.waybar.networkInterface = "wlp1s0";
-  my.services.easyeffects.enable = true;
 }
