@@ -69,8 +69,4 @@ in {
 
   my.services.waybar.networkInterface = "enp5s0";
   my.programs.openrgb.enable = true;
-  programs.obs-studio = {
-    enable = true;
-    plugins = with pkgs.obs-studio-plugins; [ wlrobs ];
-  };
 }
