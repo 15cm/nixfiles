@@ -95,7 +95,7 @@ in {
           animation = "EaseOutExpo";
           duration = 0;
         };
-        key_bindings = (if pkgs.stdenv.isLinux then [
+        keyboard.bindings = (if pkgs.stdenv.isLinux then [
           {
             key = "V";
             mods = "Control|Shift";

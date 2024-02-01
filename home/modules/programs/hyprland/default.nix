@@ -36,7 +36,7 @@ in {
       enable = true;
       xwayland = { enable = true; };
       # Write my own systemd integration to import all needed variables into systemd first.
-      systemdIntegration = false;
+      systemd.enable = false;
       extraConfig = let
         sessionImportVariables =
           (builtins.attrNames config.home.sessionVariables) ++ [

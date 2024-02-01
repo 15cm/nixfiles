@@ -72,7 +72,7 @@ with lib;
     drivers = with pkgs; [ hplip ];
   };
   services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  services.avahi.nssmdns4 = true;
 
   systemd.services.restart-network-manager-on-resume = {
     enable = true;
