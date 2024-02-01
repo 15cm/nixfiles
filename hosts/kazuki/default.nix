@@ -24,7 +24,6 @@ in {
     wineWowPackages.stable
     winetricks
     dolphin-emu-beta
-    ryujinx
     rpcs3
     citra
   ];
@@ -105,8 +104,6 @@ in {
 
   hardware.opengl.driSupport32Bit = true;
   virtualisation.docker.enableNvidia = true;
-
-  programs.steam = { enable = true; };
 
   my.services.tailscale = {
     enable = true;

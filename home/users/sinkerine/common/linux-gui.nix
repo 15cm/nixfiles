@@ -199,6 +199,12 @@ in {
       name = "GoldenDict-ng";
       exec = "env GOLDENDICT_FORCE_WAYLAND=1 goldendict";
     };
+    steam-fc-override = {
+      name = "Steam (fc override)";
+      exec =
+        "env FONTCONFIG_FILE=${config.home.homeDirectory}/.config/fontconfig/conf.d/10-hm-fonts.conf steam";
+      terminal = false;
+    };
   };
 
   home.pointerCursor = {

@@ -12,7 +12,17 @@ with lib;
     deploy-rs
     glxinfo
     ventoy
+    # support both 32- and 64-bit applications
+    wineWowPackages.stable
+    # winetricks (all versions)
+    winetricks
+    # native wayland support (unstable)
+    wineWowPackages.waylandFull
+    ryujinx
+    yuzu
   ];
+
+  programs.steam = { enable = true; };
 
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
   # Required by pipewire rt mod and Flatpak.
