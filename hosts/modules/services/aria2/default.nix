@@ -3,7 +3,7 @@
 with lib;
 let
   cfg = config.my.services.aria2;
-  inherit (mylib) templateFile;
+  inherit (mylib) templateFile assertNotNull;
   templateData = { inherit (cfg) downloadDir; };
   aria2Config = templateFile "aria2-conf" templateData ./aria2.conf.jinja;
   sessionFile = "${cfg.programDir}/aria2.session";
@@ -27,6 +27,7 @@ in {
       default = "/home/${cfg.user}/.local/share/aria2";
     };
     enableSession = mkEnableOption "Session file";
+    enableReverseProxy = mkEnableOption "Reverse proxy";
   };
   config = mkIf cfg.enable (mkMerge [
     {
@@ -64,6 +65,22 @@ in {
         if [[ ! -e "${sessionFile}" ]]; then touch "${sessionFile}"; fi
         chown -R ${cfg.user}:${cfg.user} ${cfg.programDir}
       '';
+    })
+    (mkIf cfg.enableReverseProxy {
+      services.traefik.dynamicConfigOptions.http = {
+        routers.aria2 = {
+          rule = "Host(`aria2.${
+              assertNotNull config.my.services.gateway.internalDomain
+            }`)";
+          middlewares = [ "lan-only@file" ];
+          service = "aria2";
+        };
+        services = {
+          aria2.loadBalancer.servers = [{
+            url = "http://127.0.0.1:${toString config.my.ports.aria2.listen}";
+          }];
+        };
+      };
     })
   ]);
 }

@@ -102,4 +102,10 @@ with lib;
     dataDir = "/pool/main/appdata/grafana";
   };
   my.services.ups.enable = true;
+  my.services.aria2 = {
+    enable = true;
+    downloadDir = "/pool/sub/download/aria2";
+    enableSession = true;
+    enableReverseProxy = true;
+  };
 }

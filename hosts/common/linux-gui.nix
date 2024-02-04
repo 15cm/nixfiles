@@ -65,6 +65,7 @@ with lib;
     enable = true;
     downloadDir = "/home/sinkerine/Downloads";
     enableSession = true;
+    enableReverseProxy = true;
   };
   my.programs.AriaNg.enable = true;
   my.services.lock = {

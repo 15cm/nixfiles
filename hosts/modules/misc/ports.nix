@@ -11,6 +11,7 @@ in {
       headscale = attrsOption;
       tailscale = attrsOption;
       grafana = attrsOption;
+      aria2 = attrsOption;
     };
   };
   config.my.ports.gateway = { listen = 8080; };
@@ -38,4 +39,5 @@ in {
   config.my.ports.grafana = { listen = 9290; };
   config.my.ports.headscale = { listen = 7001; };
   config.my.ports.tailscale = { listen = 41641; };
+  config.my.ports.aria2 = { listen = 6800; };
 }
