@@ -85,10 +85,6 @@ in {
     sopsCertFile = ./zrepl/kazuki.m.mado.moe.crt;
     sopsKeyFile = ./zrepl/kazuki.m.mado.moe.key;
   };
-  my.services.shadowsocks-client = {
-    enable = true;
-    serverAddress = "direct.15cm.net";
-  };
 
   virtualisation.vmware.host = {
     enable = true;

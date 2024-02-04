@@ -109,10 +109,6 @@ in {
     enable = true;
     useRoutingFeatures = "client";
   };
-  my.services.shadowsocks-client = {
-    enable = true;
-    serverAddress = "amane.m.mado.moe";
-  };
   my.services.gateway = {
     enable = true;
     enableDocker = true;
