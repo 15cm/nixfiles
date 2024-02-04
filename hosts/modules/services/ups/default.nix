@@ -13,26 +13,24 @@ in {
         port = "auto";
         directives = [ "default.battery.charge.low = 50" ];
       };
+      users.admin = {
+        passwordFile = config.sops.secrets.upsAdminPassword.path;
+        instcmds = [ "all" ];
+        actions = [ "set" "fsd" ];
+      };
+      upsmon = {
+        monitor."apc@localhost" = {
+          user = "admin";
+          passwordFile = config.sops.secrets.upsAdminPassword.path;
+        };
+      };
     };
 
-    sops.secrets.upsd-users = {
-      format = "binary";
-      sopsFile = ./upsd.users;
-    };
-    sops.secrets.upsmon-conf = {
-      format = "binary";
-      sopsFile = ./upsmon.conf;
-    };
     sops.secrets.upsAdminPassword = {
       sopsFile = ./secrets.yaml;
       mode = "0440";
       group = "nut";
     };
-    environment.etc."nut/upsd.users".source =
-      config.sops.secrets.upsd-users.path;
-    environment.etc."nut/upsmon.conf".source =
-      config.sops.secrets.upsmon-conf.path;
-    environment.etc."nut/upsd.conf".text = "LISTEN 127.0.0.1";
 
     users.users.nut = {
       uid = 84;
