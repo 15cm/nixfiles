@@ -61,6 +61,11 @@ with lib;
 
   my.services.docker.enable = true;
   my.services.autofs.enable = true;
+  my.services.aria2 = {
+    enable = true;
+    downloadDir = "/home/sinkerine/Downloads";
+    enableSession = true;
+  };
   my.programs.AriaNg.enable = true;
   my.services.lock = {
     enable = true;

@@ -215,7 +215,6 @@ in {
     gtk.enable = true;
   };
 
-  my.services.aria2.enable = true;
   my.services.fcitx5 = {
     enable = true;
     enableWaylandEnv = true;

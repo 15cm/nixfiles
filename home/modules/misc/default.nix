@@ -1,5 +1,5 @@
 { lib, ... }:
 
 with lib; {
-  imports = [ ./env.nix ./display.nix ];
+  imports = [ ./env.nix ./display.nix ./ids.nix ];
 }

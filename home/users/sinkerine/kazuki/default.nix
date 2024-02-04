@@ -1,4 +1,4 @@
-{ config, pkgs, state, mylib, ... }:
+{ config, pkgs, state, mylib, hostname, ... }:
 
 let inherit (mylib) applyXwaylandEnvsToDesktopExec;
 in {

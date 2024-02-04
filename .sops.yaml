@@ -65,3 +65,7 @@ creation_rules:
   - path_regex: hosts/amane/zrepl/.*\.(crt|key)$
     pgp: *sinkerine
     age: *amane
+  - path_regex: hosts/modules/services/aria2/.*\.env.txt$
+    pgp: *sinkerine
+    # kazuki, asako, sachi
+    age: "age1sc2gp8d40y7d9engfqhydg5v6mcg0aj40x3yccndzh7ruxvj63cqcpax76,age1kez9h9hmz4amrq5phv8cwv3d04l775ctzaqgrd7q9u70hp6s0ehsjp5wk8,age147zmk06prg2864yym9tcg5z9vl9ldykv5zkwuuefuy85q994qp3sjh3lfd"

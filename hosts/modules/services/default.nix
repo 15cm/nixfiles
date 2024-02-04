@@ -14,5 +14,6 @@
     ./ups
     ./smartd.nix
     ./lock.nix
+    ./aria2
   ];
 }

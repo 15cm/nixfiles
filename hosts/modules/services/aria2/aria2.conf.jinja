@@ -4,7 +4,7 @@
 ## 文件保存相关 ##
 
 # 文件的保存路径(可使用绝对路径或相对路径), 默认: 当前启动位置
-dir={{homeDirectory}}/Downloads
+dir={{downloadDir}}
 # 启用磁盘缓存, 0 为禁用缓存, 需 1.16 以上版本, 默认:16M
 #disk-cache=32M
 # 文件预分配方式, 能有效降低磁盘碎片, 默认:prealloc
@@ -70,7 +70,7 @@ rpc-secret=15cm
 # 当下载的是一个种子(以.torrent 结尾)时, 自动开始 BT 任务, 默认:true
 follow-torrent=true
 # BT 监听端口, 当端口被屏蔽时使用, 默认:6881-6999
-listen-port=8881-8999
+listen-port=6881-6999
 # 单个种子最大连接数, 默认:55
 #bt-max-peers=55
 # 打开 DHT 功能, PT 需要禁用, 默认:true
