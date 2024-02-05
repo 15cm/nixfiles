@@ -72,7 +72,6 @@ with lib;
     sopsKeyFile = ./zrepl/amane.m.mado.moe.key;
   };
   my.services.docker = { enable = true; };
-  my.services.docker-rootless = { enable = true; };
   my.services.shadowsocks-server.enable = true;
 
   my.services.metrics.enable = true;

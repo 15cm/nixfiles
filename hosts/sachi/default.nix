@@ -54,6 +54,7 @@ with lib;
   };
 
   my.services.docker = { enable = true; };
+  my.services.docker-rootless = { enable = true; };
   my.services.zrepl = {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.sachi) sink source; };
