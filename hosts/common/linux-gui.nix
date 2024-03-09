@@ -19,7 +19,6 @@ with lib;
     # native wayland support (unstable)
     wineWowPackages.waylandFull
     ryujinx
-    yuzu
   ];
 
   programs.steam = { enable = true; };

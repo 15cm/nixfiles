@@ -25,7 +25,6 @@ in {
     winetricks
     dolphin-emu-beta
     rpcs3
-    citra
   ];
 
   sops = {
