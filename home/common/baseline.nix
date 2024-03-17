@@ -5,8 +5,6 @@ let parallel = pkgs.parallel-full.override (old: { willCite = true; });
 in {
   programs.home-manager.enable = true;
 
-  imports = [ ../features/conf/misc-dotfiles ];
-
   home.packages = (with pkgs; [
     nixfmt
     eza

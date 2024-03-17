@@ -19,5 +19,6 @@
     ./tmux
     ./fzf.nix
     ./powerline
+    ./jetbrains
   ];
 }
