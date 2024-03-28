@@ -21,6 +21,9 @@ with lib;
     ryujinx
   ];
 
+  fonts.packages = with pkgs; [ noto-fonts ];
+  fonts.fontconfig.enable = false;
+
   programs.steam = { enable = true; };
 
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
