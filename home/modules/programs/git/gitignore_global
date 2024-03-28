@@ -5,3 +5,6 @@
 # Emacs
 .dir-locals.el
 *.~undo-tree~
+
+# LSP
+.ccls-cache/
