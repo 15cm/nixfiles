@@ -72,6 +72,7 @@ in {
     tremotesf
     goldendict-ng
     yt-dlp
+    feishin-appimage
   ];
 
   home.sessionVariables = {
@@ -87,6 +88,8 @@ in {
     enable = true;
     inherit (config.my.display) monitors;
     inherit (config.my.display) scale;
+    musicPlayer = "Feishin";
+    musicPlayerDesktopFileName = "feishin.desktop";
   };
 
   # Only pass scale env variables for XWayland apps.
