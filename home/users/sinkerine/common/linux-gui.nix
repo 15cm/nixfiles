@@ -25,6 +25,7 @@ in {
     libsForQt5.qt5ct
 
     # Development
+    gnumake
     postgresql
     nodePackages.js-beautify
     ccls
@@ -73,6 +74,7 @@ in {
     goldendict-ng
     yt-dlp
     feishin-appimage
+    qmk
   ];
 
   home.sessionVariables = {
