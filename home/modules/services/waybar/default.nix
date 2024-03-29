@@ -63,7 +63,7 @@ in {
             sort-by-number = true;
           };
           "tray" = { "spacing" = 10; };
-          "clock" = { format = "{: %H:%M  %Y/%m/%d %a}"; };
+          "clock" = { format = " {:%H:%M  %Y/%m/%d %a}"; };
           "cpu" = {
             interval = 10;
             format = " {usage}%";
