@@ -14,7 +14,7 @@ in {
       daemon.settings = {
         userns-remap = "sinkerine:sinkerine";
         default-address-pools = [{
-          base = "172.16.0.0/16";
+          base = config.my.ip.ranges.docker;
           size = 24;
         }];
         log-driver = mkForce "local";

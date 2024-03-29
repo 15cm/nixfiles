@@ -15,5 +15,6 @@ in {
     wireguard = "192.168.100.0/24";
     tailscale = "100.64.0.0/10";
     docker = "172.16.0.0/16";
+    dockerRootless = "172.20.0.0/16";
   };
 }
