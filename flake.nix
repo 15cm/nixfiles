@@ -2,7 +2,7 @@
   description = "Nix Flakes of Sinkerine";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:15cm/nixpkgs/nixos-unstable-custom";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
     home-manager = {
       url = "github:nix-community/home-manager";
