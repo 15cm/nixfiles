@@ -35,6 +35,11 @@ with lib; {
     xclip
   ];
 
+  home.sessionVariables = {
+    PATH = "${config.home.homeDirectory}/.nix-profile/bin:$PATH";
+    XDG_DATA_DIRS = "$XDG_DATA_DIRS:$HOME/.nix-profile/share";
+  };
+
   xresources.properties."Xft.dpi" = mkForce 120;
   xresources.properties."Xcursor.size" = mkForce 32;
 
