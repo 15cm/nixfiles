@@ -46,5 +46,6 @@ in {
     in templateFile "yazi-theme.toml" templateData templateData.theme;
 
     xdg.configFile."yazi/keymap.toml".source = ./keymap.toml;
+    xdg.configFile."yazi/init.lua".source = ./init.lua;
   };
 }
