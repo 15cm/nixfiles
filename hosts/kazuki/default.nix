@@ -85,17 +85,36 @@ in {
     sopsKeyFile = ./zrepl/kazuki.m.mado.moe.key;
   };
 
-  virtualisation.vmware.host = {
-    enable = true;
-    extraPackages = with pkgs; [ open-vm-tools ];
-    extraConfig = ''
-      # Fit all virtual machine memory to be swapped
-      prefvmx.minVmMemPct = "100"
-      # Disable background snapshots
-      mainMem.partialLazySave = "FALSE"
-      mainMem.partialLazyRestore = "FALSE"
-    '';
-  };
+  # Blocked by https://github.com/NixOS/nix/pull/9053
+  # virtualisation.vmware.host = {
+  #   enable = true;
+  #   package = (pkgs.vmware-workstation.overrideAttrs (old: rec {
+  #     src = builtins.fetchTree {
+  #       url =
+  #         "https://softwareupdate.vmware.com/cds/vmw-desktop/ws/${old.version}/${old.build}/linux/core/VMware-Workstation-${old.version}-${old.build}.x86_64.bundle.tar";
+  #       sha256 = "sha256-4kA5zi9roCOHWSpHwEsRehzrlAgrm/lugSLpznPIYRw=";
+  #     };
+
+  #     unpackPhase = let
+  #       vmware-unpack-env = pkgs.buildFHSEnv rec {
+  #         name = "vmware-unpack-env";
+  #         targetPkgs = pkgs: [ pkgs.zlib ];
+  #       };
+  #     in ''
+  #       ${vmware-unpack-env}/bin/vmware-unpack-env -c "sh ${src}/VMware-Workstation-${old.version}-{old.build}.x86_64.bundle --extract unpacked"
+  #       # If you need it, copy the enableMacOSGuests stuff here as well.
+  #     '';
+  #   }));
+
+  #   extraPackages = with pkgs; [ open-vm-tools ];
+  #   extraConfig = ''
+  #     # Fit all virtual machine memory to be swapped
+  #     prefvmx.minVmMemPct = "100"
+  #     # Disable background snapshots
+  #     mainMem.partialLazySave = "FALSE"
+  #     mainMem.partialLazyRestore = "FALSE"
+  #   '';
+  # };
 
   hardware.opengl.driSupport32Bit = true;
   virtualisation.docker.enableNvidia = true;
