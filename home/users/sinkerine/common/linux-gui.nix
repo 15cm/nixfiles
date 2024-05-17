@@ -174,12 +174,6 @@ in {
   };
   my.services.network-manager-applet.enable = true;
   my.services.dunst.enable = true;
-  my.services.gtklock = {
-    enable = true;
-    image =
-      "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
-    extraArgs = [ "--no-input-inhibit" ];
-  };
 
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {

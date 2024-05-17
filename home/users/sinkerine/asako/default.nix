@@ -16,4 +16,9 @@
   };
   my.display.scale = 1.25;
   my.services.waybar.networkInterface = "wlp1s0";
+  my.services.gtklock = {
+    enable = true;
+    image =
+      "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
+  };
 }
