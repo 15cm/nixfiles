@@ -3,13 +3,13 @@
 
 let
   pname = "feishin";
-  version = "0.6.1";
+  version = "0.7.1";
   name = "${pname}-${version}";
 
   src = fetchurl {
     url =
       "https://github.com/jeffvli/feishin/releases/download/v${version}/Feishin-${version}-linux-x86_64.AppImage";
-    sha256 = "sha256-1MNSO9CSxoAHJ3F+oPWpz8/JW2nDcyPsLe/RFaQfwwE=";
+    sha256 = "sha256-i+kV+MG/Wzx117pR2QF2ZEE3T6Ml7gJ7bZH5KVoYvv8=";
   };
 
   icon = fetchurl {
