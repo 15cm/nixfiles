@@ -115,7 +115,7 @@ in {
 
   qt = {
     enable = true;
-    platformTheme.name = "kde";
+    platformTheme = "kde";
     style.name = "breeze";
   };
   gtk = {
