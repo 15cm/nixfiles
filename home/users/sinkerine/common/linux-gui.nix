@@ -75,6 +75,7 @@ in {
     yt-dlp
     feishin-appimage
     qmk
+    ffmpeg
   ];
 
   home.sessionVariables = {
