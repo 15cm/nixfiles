@@ -39,10 +39,6 @@ in {
           { name = "mollifier/cd-gitroot"; }
           { name = "15cm/zce.zsh"; }
           {
-            name = "plugins/fzf";
-            tags = [ "defer:2" "from:oh-my-zsh" ];
-          }
-          {
             name = "plugins/git";
             tags = [ "from:oh-my-zsh" ];
           }

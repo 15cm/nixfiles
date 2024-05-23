@@ -93,6 +93,7 @@ bindkey '^y' _navi_widget
 
 # --------------------- fzf ---------------------
 export FZF_COMPLETION_TRIGGER=':'
+source <(fzf --zsh)
 
 _fzf_compgen_path() {
   fd --hidden --follow --exclude ".git" . "$1"
