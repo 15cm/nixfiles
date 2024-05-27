@@ -20,5 +20,6 @@
     enable = true;
     image =
       "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
+    extraArgs = [ "--no-input-inhibit" ];
   };
 }
