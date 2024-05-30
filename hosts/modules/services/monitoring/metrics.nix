@@ -116,7 +116,7 @@ in {
         listenAddress = "127.0.0.1";
       };
       services.prometheus.scrapeConfigs = [{
-        job_name = "smartcttl";
+        job_name = "smartctl";
         static_configs = [{
           targets = [
             "localhost:${
