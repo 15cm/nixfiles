@@ -25,31 +25,17 @@ in {
     programs.zsh = {
       enable = true;
       enableCompletion = false;
-      zplug = {
+      zimfw = {
         enable = true;
-        plugins = [
-          {
-            name = "zsh-users/zsh-autosuggestions";
-            tags = [ "defer:2" ];
-          }
-          {
-            name = "zsh-users/zsh-syntax-highlighting";
-            tags = [ "defer:3" "on:zsh-users/zsh-autosuggestions" ];
-          }
-          { name = "mollifier/cd-gitroot"; }
-          { name = "15cm/zce.zsh"; }
-          {
-            name = "plugins/git";
-            tags = [ "from:oh-my-zsh" ];
-          }
-          {
-            name = "jeffreytse/zsh-vi-mode";
-            tags = [ "defer:0" ];
-          }
-        ] ++ optionals (nixinfo.configName != "work@desktop") [{
-          name = "plugins/ssh-agent";
-          tags = [ "from:oh-my-zsh" ];
-        }];
+        modules = [
+          "15cm/zce.zsh"
+          "mollifier/cd-gitroot"
+          "ohmyzsh/ohmyzsh --root plugins/git"
+          "jeffreytse/zsh-vi-mode"
+          "zsh-users/zsh-autosuggestions"
+          "zsh-users/zsh-syntax-highlighting"
+        ] ++ optionals (nixinfo.configName != "work@desktop")
+          [ "ohmyzsh/ohmyzsh --root plugins/ssh-agent" ];
       };
 
       history = {

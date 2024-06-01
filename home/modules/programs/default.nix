@@ -11,6 +11,7 @@
     ./hm-switch.nix
     ./fontconfig
     ./zsh
+    ./zsh/zimfw.nix
     ./git
     ./python-dev-tools
     ./yazi
