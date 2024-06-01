@@ -37,12 +37,8 @@ with lib;
     pulse.enable = true;
   };
 
-  programs.hyprland = {
-    enable = true;
-    xwayland = { enable = true; };
-  };
-
   xdg.portal = {
+    enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
     config.common.default = "*";
   };
