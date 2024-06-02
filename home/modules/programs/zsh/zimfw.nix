@@ -16,8 +16,8 @@ in {
     };
     zimHome = mkOption {
       type = types.path;
-      default = "${config.home.homeDirectory}/.cache/zim";
-      defaultText = "~/.cache/zim";
+      default = "${config.home.homeDirectory}/.local/share/zim";
+      defaultText = "~/.local/share/zim";
     };
     zimConfigFile = mkOption {
       type = types.path;

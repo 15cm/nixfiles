@@ -28,10 +28,10 @@ in {
       zimfw = {
         enable = true;
         modules = [
-          "15cm/zce.zsh"
           "mollifier/cd-gitroot"
           "ohmyzsh/ohmyzsh --root plugins/git"
           "jeffreytse/zsh-vi-mode"
+          "15cm/zce.zsh --source zce.plugin.zsh"
           "zsh-users/zsh-autosuggestions"
           "zsh-users/zsh-syntax-highlighting"
         ] ++ optionals (nixinfo.configName != "work@desktop")
@@ -82,6 +82,7 @@ in {
         export ZVM_INIT_MODE=sourcing
 
         zstyle :omz:plugins:ssh-agent lazy yes
+        zstyle :omz:plugins:ssh-agent quiet yes
       '';
       initExtra = builtins.readFile ./zshrc;
 
