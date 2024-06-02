@@ -73,7 +73,7 @@ in {
     tremotesf
     goldendict-ng
     yt-dlp
-    feishin-appimage
+    feishin
     qmk
     ffmpeg
   ];
@@ -189,7 +189,14 @@ in {
     "insomnia" = {
       icon = "insomnia";
       name = "Insomnia";
-      exec = "insomnia --ozone-platform=wayland --enable-wayland-ime";
+      exec =
+        "insomnia --disable-gpu-sandbox --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime";
+    };
+    "feishin" = {
+      icon = "feishin";
+      name = "Feishin";
+      exec =
+        "feishin --disable-gpu-sandbox --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime";
     };
     "AriaNg" = {
       name = "AriaNg";
