@@ -18,5 +18,6 @@
     ./redshift
     ./openrgb.nix
     ./dunst
+    ./cliphist.nix
   ];
 }

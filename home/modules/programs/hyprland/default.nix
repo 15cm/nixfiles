@@ -8,7 +8,9 @@ let
     inherit (cfg) musicPlayer monitors scale;
     musicPlayerLower = toLower cfg.musicPlayer;
     musicPlayerDesktopFileName = cfg.musicPlayerDesktopFileName;
-    windowSwitcherScript = "python " + ./window_switcher.py;
+    windowSwitcherScript = "python ${./window_switcher.py}";
+    cliphistWofiImgScript =
+      "bash ${config.my.services.cliphist.wofiImgScript} | wl-copy";
   };
 in {
   options.my.programs.hyprland = {
