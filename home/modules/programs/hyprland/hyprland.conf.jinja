@@ -68,8 +68,6 @@ bind = $mainMod, Q, killactive
 bind = $mainMod, return, exec, alacritty
 bind = $mainMod, D, exec, wofi -iI --show drun
 bind = $mainMod, W, exec, {{windowSwitcherScript}}
-bind = $mainMod, E, exec, dex "$HOME/.nix-profile/share/applications/io.github.xiaoyifang.goldendict_ng.desktop"
-bind = $mainMod, E, focuswindow, ^(GoldenDict)$
 bind = $mainMod, I, exec, keepassxc
 bind = $mainMod, I, focuswindow, ^(org.keepassxc.KeePassXC)$
 bind = $mainMod, C, exec, copyq menu
@@ -96,6 +94,9 @@ bind = SHIFT, N, exec, dunstctl history-pop
 bind = SHIFT, N, submap, reset
 bind = , W, exec, networkmanager_dmenu
 bind = , W, submap, reset
+bind = , E, exec, dex "$HOME/.nix-profile/share/applications/io.github.xiaoyifang.goldendict_ng.desktop"
+bind = , E, focuswindow, ^(GoldenDict)$
+bind = , E, submap, reset
 
 bind = , escape, submap, reset
 submap = reset
@@ -175,8 +176,8 @@ bind = $mainMod SHIFT, y, movetoworkspace, special:default
 bind = $mainMod, y, togglespecialworkspace, default
 bind = $mainMod SHIFT, s, movetoworkspace, special:search
 bind = $mainMod, s, togglespecialworkspace, search
-bind = $mainMod SHIFT, t, movetoworkspace, special:todo
-bind = $mainMod, t, togglespecialworkspace, todo
+bind = $mainMod SHIFT, e, movetoworkspace, special:emacs
+bind = $mainMod, e, togglespecialworkspace, emacs
 
 # Window dispatchers
 bind = $mainMod, F, fullscreen, 1
