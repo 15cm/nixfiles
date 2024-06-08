@@ -18,6 +18,7 @@ in {
     hunspellDicts.en_US-large
     parallel
     tree
+    ast-grep
   ]);
 
   my.services.nix-home-manager-gc.enable = true;
