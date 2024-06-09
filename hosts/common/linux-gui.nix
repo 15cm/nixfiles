@@ -24,8 +24,6 @@ with lib;
   fonts.packages = with pkgs; [ noto-fonts ];
   fonts.fontconfig.enable = false;
 
-  programs.steam = { enable = true; };
-
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
   # Required by pipewire rt mod and Flatpak.
   programs.dconf.enable = true;
