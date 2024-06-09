@@ -43,11 +43,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "flake-compat";
     };
-    hyprland = {
-      # Lock at the parent commit of the culprit commit of https://github.com/hyprwm/Hyprland/issues/5880
-      url =
-        "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=4ed6b69b68a544a81cec583a1ad8aff218f7db5d";
-    };
+    hyprland = { url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; };
   };
 
   outputs = { self, nixpkgs, home-manager, nur, nixgl, flake-utils, sops-nix
