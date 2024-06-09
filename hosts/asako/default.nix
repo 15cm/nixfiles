@@ -55,7 +55,7 @@ in {
   services.kmonad = {
     enable = true;
     keyboards = {
-      "laptop" = {
+      laptop = {
         device = "/dev/input/by-path/platform-i8042-serio-0-event-kbd";
         defcfg = {
           enable = true;
@@ -66,7 +66,10 @@ in {
       };
     };
   };
-  systemd.services.kmonad-laptop.serviceConfig.Restart = "always";
+  systemd.services.kmonad-laptop.serviceConfig = {
+    Restart = "always";
+    RestartSec = "3";
+  };
 
   # Removes the unused rocm opencl packages in https://github.com/NixOS/nixos-hardware/blob/master/common/gpu/amd/default.nix
   hardware.opengl.extraPackages = with pkgs; mkForce [ amdvlk ];
