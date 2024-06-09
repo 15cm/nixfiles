@@ -28,11 +28,17 @@ in {
     home.packages = with pkgs; [ fcitx5-gtk libsForQt5.fcitx5-qt ];
 
     home.sessionVariables = {
-      GTK_IM_MODULE = (if cfg.enableWaylandEnv then "wayland" else "fcitx");
+      QT_IM_MODULES = "wayland;fcitx";
       QT_IM_MODULE = "fcitx";
       XMODIFIERS = "@im=fcitx";
       QT_PLUGIN_PATH =
         "${cfg.package}/${pkgs.qt6.qtbase.qtPluginPrefix}:\${QT_PLUGIN_PATH}";
+    };
+
+    gtk = {
+      gtk2.extraConfig = ''gtk-im-module="fcitx"'';
+      gtk3.extraConfig = { gtk-im-module = "fcitx"; };
+      gtk4.extraConfig = { gtk-im-module = "fcitx"; };
     };
 
     home.file.".local/share/fcitx5/themes/Material-Color-Pink/theme.conf".source =
