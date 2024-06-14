@@ -76,6 +76,7 @@ in {
     feishin
     qmk
     ffmpeg
+    telegram-desktop
   ];
 
   home.sessionVariables = {
