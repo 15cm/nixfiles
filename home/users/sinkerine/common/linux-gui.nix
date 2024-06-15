@@ -190,8 +190,7 @@ in {
     "insomnia" = {
       icon = "insomnia";
       name = "Insomnia";
-      exec =
-        "insomnia --disable-gpu-sandbox --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime";
+      exec = "insomnia --disable-gpu-sandbox";
     };
     "feishin" = {
       icon = "feishin";
