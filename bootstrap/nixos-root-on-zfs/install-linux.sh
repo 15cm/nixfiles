@@ -141,6 +141,8 @@ zfs create -o mountpoint=/ -o canmount=on $rpool/data/root
 zfs create -o mountpoint=/nix -o canmount=on $rpool/system/nix
 zfs create -o canmount=on $rpool/data/nixfiles
 zfs create -o canmount=on $rpool/data/keys
+zfs create -o canmount=on $rpool/data/var
+zfs create -o canmount=on $rpool/data/var/lib
 zfs create -o canmount=on $rpool/data/home
 zfs create -o canmount=on $rpool/data/home/sinkerine
 zfs create -o canmount=on $rpool/data/home/sinkerine/.cache
