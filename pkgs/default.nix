@@ -8,4 +8,5 @@ with pkgs; {
   iosevka-nerdfont = (callPackage ./iosevka-nerdfont { });
   khinsider = (callPackage ./khinsider { });
   feishin-appimage = (callPackage ./feishin-appimage { });
+  lsp-ai = (callPackage ./lsp-ai { });
 }

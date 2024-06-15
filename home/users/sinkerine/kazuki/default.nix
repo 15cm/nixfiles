@@ -6,7 +6,7 @@ in {
 
   imports = [ ../common ../common/linux-gui.nix ];
 
-  home.packages = with pkgs; [ handbrake ];
+  home.packages = with pkgs; [ handbrake lsp-ai ];
 
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {
