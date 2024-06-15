@@ -119,6 +119,12 @@ in {
   hardware.opengl.driSupport32Bit = true;
   virtualisation.docker.enableNvidia = true;
 
+  services.ollama = {
+    enable = true;
+    acceleration = "cuda";
+    host = "0.0.0.0";
+  };
+
   my.services.tailscale = {
     enable = true;
     useRoutingFeatures = "client";
