@@ -37,18 +37,13 @@
       inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs-stable.follows = "nixpkgs-stable";
     };
-    # TODO: change the nixos hardware url back after https://github.com/NixOS/nixos-hardware/pull/977 is merged.
-    nixos-hardware = { url = "github:K900/nixos-hardware/drop-amdvlk"; };
+    nixos-hardware = { url = "github:NixOS/nixos-hardware/master"; };
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "flake-compat";
     };
-    # TODO: unpin after https://github.com/hyprwm/Hyprland/issues/5880 is resolved.
-    hyprland = {
-      url =
-        "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    };
+    hyprland = { url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; };
   };
 
   outputs = { self, nixpkgs, home-manager, nur, nixgl, flake-utils, sops-nix
