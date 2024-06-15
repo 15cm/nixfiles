@@ -147,7 +147,9 @@
         # TODO: migrate to unencrypted pool + encrypted dataset.
         "kazuki" = rec {
           system = "x86_64-linux";
-          pkgs = builtins.getAttr system packages;
+          pkgs = (builtins.getAttr system packages) // {
+            config.cudaSupport = true;
+          };
           modules = [ ./hosts/kazuki hyprland.nixosModules.default ]
             ++ (with nixos-hardware.nixosModules;
               [ common-gpu-nvidia-nonprime ]);
