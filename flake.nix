@@ -47,7 +47,7 @@
     # TODO: unpin after https://github.com/hyprwm/Hyprland/issues/5880 is resolved.
     hyprland = {
       url =
-        "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=4ed6b69b68a544a81cec583a1ad8aff218f7db5d";
+        "git+https://github.com/hyprwm/Hyprland?submodules=1";
     };
   };
 
