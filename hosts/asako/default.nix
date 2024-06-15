@@ -119,12 +119,4 @@ in {
     enable = true;
     enableScrapeSmartctl = true;
   };
-  # Runs separate monitoring and alerts on machines that are not always online.
-  my.services.monitoring = {
-    enable = true;
-    domain = "monitoring.${hostname}.m.mado.moe";
-    datasourceHosts = [ hostname ];
-    dataDir = "/var/lib/grafana";
-  };
-  my.programs.proxychains.enable = true;
 }

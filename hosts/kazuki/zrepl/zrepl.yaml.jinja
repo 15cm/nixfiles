@@ -14,9 +14,10 @@ jobs:
       "rpool": true,
       "rpool/tmp<": false,
       "rpool/data<": true,
+      "rpool/data/var<": false,
+      "rpool/data/var-lib-docker<": false,
       "rpool/data/home/sinkerine/.cache": false,
       "rpool/data/home/sinkerine/vmware": false,
-      "rpool/data/var-lib-docker<": false,
     }
     connect:
       type: tls
