@@ -71,9 +71,6 @@ in {
     RestartSec = "3";
   };
 
-  # Removes the unused rocm opencl packages in https://github.com/NixOS/nixos-hardware/blob/master/common/gpu/amd/default.nix
-  hardware.opengl.extraPackages = with pkgs; mkForce [ amdvlk ];
-
   # Laptop backlight
   programs.light.enable = true;
 

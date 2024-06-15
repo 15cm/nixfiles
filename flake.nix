@@ -37,7 +37,8 @@
       inputs.flake-utils.follows = "flake-utils";
       inputs.nixpkgs-stable.follows = "nixpkgs-stable";
     };
-    nixos-hardware = { url = "github:NixOS/nixos-hardware/master"; };
+    # TODO: change the nixos hardware url back after https://github.com/NixOS/nixos-hardware/pull/977 is merged.
+    nixos-hardware = { url = "github:K900/nixos-hardware/drop-amdvlk"; };
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
