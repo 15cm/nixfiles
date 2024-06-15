@@ -33,8 +33,12 @@ with lib; {
     };
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      substituters =
-        [ "https://nix-community.cachix.org" "https://cache.nixos.org/" ];
+      substituters = [
+        "https://nix-community.cachix.org"
+        "https://cache.nixos.org/"
+        "https://hyprland.cachix.org"
+        "https://cuda-maintainers.cachix.org"
+      ];
       trusted-public-keys = config.my.trusts.cache.pubKeys;
       # Allows deploy-rs to add nix closure as non-root users in the wheel group. It resolves the error in home-manager: "cannot add path xxx because it lacks a signature by a trusted key"
       trusted-users = [ "root" "@wheel" ];
