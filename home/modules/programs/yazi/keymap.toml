@@ -50,7 +50,7 @@ keymap = [
 	{ on = [ "<C-Enter>" ], run = "open --interactive",                                   desc = "Open the selected files interactively" },
 	{ on = [ "y", "y" ],         run = [ "yank", "escape --visual --select" ],                 desc = "Copy the selected files" },
 	{ on = [ "y", "c" ],         run = [ "yank --cut", "escape --visual --select" ],           desc = "Cut the selected files" },
-	{ on = [ "y", "u" ],         run = [ "unyank", "escape --visual --select" ],                 desc = "Copy the selected files" },
+	{ on = [ "y", "u" ],         run = [ "unyank", "escape --visual --select" ],                 desc = "Undo copy of the selected files" },
 	{ on = [ "y", "p" ], run = "copy path",             desc = "Copy the absolute path" },
 	{ on = [ "y", "d" ], run = "copy dirname",          desc = "Copy the path of the parent directory" },
 	{ on = [ "y", "n" ], run = "copy filename",         desc = "Copy the name of the file" },
