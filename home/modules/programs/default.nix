@@ -21,5 +21,6 @@
     ./fzf.nix
     ./powerline
     ./jetbrains
+    ./firefox
   ];
 }

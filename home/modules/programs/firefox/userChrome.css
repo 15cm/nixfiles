@@ -1,0 +1,16 @@
+/* Hide tab bar */
+#TabsToolbar {
+    visibility: collapse !important;
+}
+
+/* Hide headers of all sidebars */
+#sidebar-header {
+    display: none;
+}
+
+/* Auto-hide sidebar when fullscreen */
+#main-window[inFullscreen] #sidebar-box,
+#main-window[inFullscreen] #sidebar-splitter {
+    display: none !important;
+    width: 0px !important;
+}

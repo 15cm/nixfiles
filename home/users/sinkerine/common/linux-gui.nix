@@ -34,7 +34,6 @@ in {
     pyright
 
     keepassxc
-    firefox
     google-chrome
     trash-cli
     jellyfin-media-player
@@ -176,6 +175,84 @@ in {
   };
   my.services.network-manager-applet.enable = true;
   my.services.dunst.enable = true;
+  my.programs.firefox = {
+    enable = true;
+    searchEngines = [
+      {
+        name = "GitHub";
+        value = {
+          urls = [{
+            template =
+              "https://github.com/search?q={searchTerms}&type=repositories";
+          }];
+          iconUpdateURL =
+            "https://github.githubassets.com/favicons/favicon.svg";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
+          definedAliases = [ "@gh" ];
+        };
+      }
+      {
+        name = "GitHub Code Search";
+        value = {
+          urls = [{
+            template = "https://github.com/search?q={searchTerms}&type=code";
+          }];
+          iconUpdateURL =
+            "https://github.githubassets.com/favicons/favicon.svg";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
+          definedAliases = [ "@ghc" ];
+        };
+      }
+      {
+        name = "NixOS Packages";
+        value = {
+          urls = [{
+            template =
+              "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
+          }];
+          iconUpdateURL = "https://search.nixos.org/favicon.png";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
+          definedAliases = [ "@nixp" ];
+        };
+      }
+      {
+        name = "NixOS Options";
+        value = {
+          urls = [{
+            template =
+              "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
+          }];
+          iconUpdateURL = "https://search.nixos.org/favicon.png";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
+          definedAliases = [ "@nixo" ];
+        };
+      }
+      {
+        name = "Nix Home Manager Options";
+        value = {
+          urls = [{
+            template =
+              "https://home-manager-options.extranix.com/?query={searchTerms}";
+          }];
+          iconUpdateURL =
+            "https://home-manager-options.extranix.com/images/favicon.png";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
+          definedAliases = [ "@nixhm" ];
+        };
+      }
+      {
+        name = "DockerHub";
+        value = {
+          urls =
+            [{ template = "https://hub.docker.com/search?q={searchTerms}"; }];
+          iconUpdateURL = "https://hub.docker.com/favicon.ico";
+          updateInterval = 24 * 60 * 60 * 1000; # every day
+          definedAliases = [ "@dh" ];
+        };
+      }
+    ];
+    searchEnginesOrderPrepend = [ "Google" ];
+  };
 
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {
