@@ -40,7 +40,7 @@ with lib; {
       "sub-torrent-download" = {
         path = "/pool/sub/download/torrent/download";
       };
-      "sub-torrent-upload" = { path = "/pool/sub/download/torrent/upload"; };
+      "sub-download" = { path = "/pool/sub/download"; };
       "sub-tvshow" = { path = "/pool/sub/media/tvshow"; };
       "sub-movie" = { path = "/pool/sub/media/movie"; };
     };

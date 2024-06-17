@@ -76,6 +76,8 @@ in {
     qmk
     ffmpeg
     telegram-desktop
+    wireshark
+    kdenlive
   ];
 
   home.sessionVariables = {
