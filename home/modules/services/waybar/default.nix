@@ -159,6 +159,7 @@ in {
             album-len = 0;
             title-len = if (hostname == "asako") then 20 else 40;
             dynamic-length = if (hostname == "asako") then 30 else 50;
+            ignored-players = [ "firefox" ];
           };
         };
       };
