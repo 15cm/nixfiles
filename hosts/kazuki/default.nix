@@ -116,7 +116,7 @@ in {
   #   '';
   # };
 
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics.enable32Bit = true;
   virtualisation.docker.enableNvidia = true;
 
   services.ollama = {
