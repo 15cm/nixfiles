@@ -130,6 +130,7 @@ in {
       description = "shadowsocks-libev Client Daemon";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
+      restartIfChanged = false;
       path = [ pkgs.shadowsocks-libev ]
         ++ optional (cfg.plugin != null) cfg.plugin
         ++ optional (cfg.passwordFile != null) pkgs.jq;
