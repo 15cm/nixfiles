@@ -147,6 +147,10 @@ in {
       config.my.ip.ranges.tailscale
     ];
   };
+  my.services.shadowsocks-client = {
+    enable = true;
+    serverAddress = "direct.15cm.net";
+  };
 
   my.services.smartd.enable = true;
   my.services.metrics = {

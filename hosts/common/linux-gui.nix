@@ -73,10 +73,6 @@ with lib;
     enable = true;
     lockService = "gtklock.service";
   };
-  my.services.shadowsocks-client = {
-    enable = true;
-    serverAddress = "direct.15cm.net";
-  };
 
   services.printing = {
     enable = true;
