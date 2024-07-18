@@ -26,7 +26,7 @@ with lib; {
     firefox-devedition-bin
     trash-cli
     clementine
-    gnome.nautilus
+    nautilus
     ark
     unrar
     kate

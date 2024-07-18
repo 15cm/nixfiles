@@ -6,7 +6,7 @@ in {
 
   imports = [ ../common ../common/linux-gui.nix ];
 
-  home.packages = with pkgs; [ handbrake lsp-ai ];
+  home.packages = with pkgs; [ handbrake ];
 
   # Name the entry same as the entry that comes with the package to overwrite it.
   xdg.desktopEntries = {
@@ -68,7 +68,6 @@ in {
   my.display.scale = 2.0;
 
   my.services.waybar.networkInterface = "enp5s0";
-  my.programs.openrgb.enable = true;
   my.programs.jetbrains = {
     enable = true;
     enableAndroidStudio = true;

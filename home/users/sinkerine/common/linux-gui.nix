@@ -38,7 +38,7 @@ in {
     trash-cli
     jellyfin-media-player
     clementine
-    gnome.nautilus
+    nautilus
     ark
     unrar
     insomnia
@@ -62,7 +62,6 @@ in {
     khinsider
     imagemagick
     dsf2flac
-    neofetch
     cloc
     antimicrox
     unzip

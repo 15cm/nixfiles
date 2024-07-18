@@ -76,6 +76,13 @@ in {
     "i2c-piix4"
   ];
   services.udev.extraRules = builtins.readFile openrgb-rules;
+  hardware = { i2c = { enable = true; }; };
+  services = {
+    hardware.openrgb = {
+      enable = true;
+      motherboard = "amd";
+    };
+  };
 
   my.services.zrepl = {
     enable = true;

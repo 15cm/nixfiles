@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 with lib;
-let templatePackage = pkgs.python3Packages.j2cli;
+let templatePackage = pkgs.python311Packages.j2cli;
 in rec {
   templateFile = name: data: template:
     pkgs.stdenv.mkDerivation {

@@ -13,7 +13,7 @@ in {
     enable = mkEnableOption "Powerline";
     package = mkOption {
       type = types.package;
-      default = pkgs.powerline;
+      default = pkgs.python311Packages.powerline;
     };
   };
   config = mkIf cfg.enable {
