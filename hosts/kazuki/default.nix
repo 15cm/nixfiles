@@ -25,6 +25,7 @@ in {
     winetricks
     dolphin-emu-beta
     rpcs3
+    (retroarch.override { cores = with libretro; [ mgba ]; })
   ];
 
   sops = {
