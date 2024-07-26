@@ -2,13 +2,7 @@
 
 with lib;
 
-let
-  openrgb-rules = pkgs.fetchurl {
-    url =
-      "https://gitlab.com/CalcProgrammer1/OpenRGB/-/raw/ca3c2ad54188c604c7626136ceda574e9fde3bc0/60-openrgb.rules";
-    hash = "sha256:0s0cdjdc5yndzwl0l2lccbqv08r0js7laln0slncb7h1lj6k5imf";
-  };
-in {
+{
   system.stateVersion = "22.05";
   imports = [
     ./hardware-configuration.nix
@@ -76,13 +70,10 @@ in {
     "i2c-dev"
     "i2c-piix4"
   ];
-  services.udev.extraRules = builtins.readFile openrgb-rules;
   hardware = { i2c = { enable = true; }; };
-  services = {
-    hardware.openrgb = {
-      enable = true;
-      motherboard = "amd";
-    };
+  services.hardware.openrgb = {
+    enable = true;
+    motherboard = "amd";
   };
 
   my.services.zrepl = {
