@@ -4,6 +4,8 @@ with lib;
 
 {
   environment.systemPackages = with pkgs; [
+    exfat
+    exfatprogs
     pavucontrol
     pulseaudio
     xorg.xev
