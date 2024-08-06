@@ -3,10 +3,10 @@
 with lib;
 let
   package = pkgs.openrgb;
-  cfg = config.my.programs.openrgb;
+  cfg = config.my.services.openrgb;
 
 in {
-  options.my.programs.openrgb = { enable = mkEnableOption "Openrgb"; };
+  options.my.services.openrgb = { enable = mkEnableOption "Openrgb"; };
   config = mkIf cfg.enable {
 
     home.packages = [ package ];

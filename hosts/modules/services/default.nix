@@ -15,5 +15,6 @@
     ./smartd.nix
     ./lock.nix
     ./aria2
+    ./openrgb.nix
   ];
 }

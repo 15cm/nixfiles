@@ -65,16 +65,8 @@ with lib;
 
   boot.kernelParams =
     [ "acpi_enforce_resources=lax" "transparent_hugepage=never" ];
-  boot.kernelModules = [
-    # Ensure we can access i2c bus for RGB memory
-    "i2c-dev"
-    "i2c-piix4"
-  ];
   hardware = { i2c = { enable = true; }; };
-  services.hardware.openrgb = {
-    enable = true;
-    motherboard = "amd";
-  };
+  my.services.openrgb.enable = true;
 
   my.services.zrepl = {
     enable = true;
