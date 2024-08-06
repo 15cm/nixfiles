@@ -116,7 +116,6 @@ with lib;
   # };
 
   hardware.graphics.enable32Bit = true;
-  virtualisation.docker.enableNvidia = true;
 
   services.ollama = {
     enable = false;
