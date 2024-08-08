@@ -93,7 +93,6 @@ with lib;
   my.services.metrics = {
     enable = true;
     enableScrapeHeadscale = true;
-    enableScrapeNut = true;
     enableScrapeSmartctl = true;
   };
   my.services.monitoring = {
@@ -102,7 +101,6 @@ with lib;
     datasourceHosts = [ "sachi" "kazuki" "amane" "yumiko" "asako" ];
     dataDir = "/pool/main/appdata/grafana";
   };
-  my.services.ups.enable = true;
   my.services.aria2 = {
     enable = true;
     downloadDir = "/pool/sub/download/aria2";
