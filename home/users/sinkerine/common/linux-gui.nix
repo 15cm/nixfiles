@@ -132,7 +132,7 @@ in {
     cursorTheme = {
       package = pkgs.breeze-qt5;
       name = "breeze_cursors";
-      size = config.my.display.cursorSize;
+      size = config.my.display.cursorSize / 2;
     };
   };
   xdg.userDirs = {
@@ -295,7 +295,7 @@ in {
   home.pointerCursor = {
     name = "breeze_cursors";
     package = pkgs.breeze-qt5;
-    size = config.my.display.cursorSize;
+    size = config.my.display.cursorSize / 2;
     x11.enable = true;
     gtk.enable = true;
   };
