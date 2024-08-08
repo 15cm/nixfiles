@@ -72,7 +72,7 @@ in {
         dynamicConfigOptions = {
           http = {
             middlewares = {
-              lan-only.ipWhiteList.sourceRange = cfg.lanOnlyIpRanges;
+              lan-only.ipAllowList.sourceRange = cfg.lanOnlyIpRanges;
             };
           };
         };

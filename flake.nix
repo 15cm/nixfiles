@@ -208,12 +208,16 @@
                 sshUser = "root";
                 path = deploy-rs.lib.x86_64-linux.activate.nixos
                   (builtins.getAttr hostname self.nixosConfigurations);
+                confirmTimeout = 60;
+                autoRollback = false;
               };
               home = {
                 sshUser = "sinkerine";
                 path = deploy-rs.lib.x86_64-linux.activate.home-manager
                   (builtins.getAttr "sinkerine@${hostname}"
                     self.homeConfigurations);
+                confirmTimeout = 60;
+                autoRollback = false;
               };
             };
           });
