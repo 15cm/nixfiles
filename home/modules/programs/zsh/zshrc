@@ -64,7 +64,7 @@ bindkey -M viins "^[[4~" end-of-line
 # zce
 bindkey -M vicmd 't' zce
 
-bindkey -s '^u' 'ya^m'
+bindkey -s '^u' 'yazi_zsh^m'
 
 # direnv
 if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi

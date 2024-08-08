@@ -4,6 +4,16 @@ with lib;
 let
   cfg = config.my.programs.yazi;
   inherit (mylib) templateFile;
+  zshIntegration = ''
+    function yazi_zsh() {
+      local tmp="$(mktemp -t "yazi-cwd.XXXXX")"
+      yazi "$@" --cwd-file="$tmp"
+      if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        cd -- "$cwd"
+      fi
+      rm -f -- "$tmp"
+    }
+  '';
 in {
   options.my.programs.yazi = {
     enable = mkEnableOption "Yazi";
@@ -17,10 +27,10 @@ in {
     };
   };
   config = mkIf cfg.enable {
+    programs.zsh.initExtra = zshIntegration;
     programs.yazi = {
       enable = true;
       inherit (cfg) package;
-      enableZshIntegration = true;
       settings = {
         preview = let scaleDown = builtins.div 1.0 cfg.scale;
         in {
