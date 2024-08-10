@@ -68,7 +68,7 @@ in {
   };
   systemd.services.kmonad-laptop.serviceConfig = {
     Restart = "always";
-    RestartSec = "3";
+    RestartSec = "5";
   };
 
   # Removes the unused rocm opencl packages in https://github.com/NixOS/nixos-hardware/blob/master/common/gpu/amd/default.nix
