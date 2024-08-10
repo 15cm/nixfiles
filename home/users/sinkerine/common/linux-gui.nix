@@ -9,7 +9,6 @@ in {
   imports = [
     # Essentials
     ../../../features/conf/ssh
-    ../../../features/app/gpg
     # XSession related. Needed by xWayland as well.
     ../../../features/conf/xresources
   ];
@@ -140,6 +139,7 @@ in {
     createDirectories = true;
   };
   my.programs.fontconfig.enableGui = true;
+  my.services.gpg.enable = true;
 
   programs.zsh.shellAliases = {
     # Nix Home Manager

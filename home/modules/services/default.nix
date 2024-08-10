@@ -19,5 +19,6 @@
     ./openrgb.nix
     ./dunst
     ./cliphist.nix
+    ./gpg.nix
   ];
 }
