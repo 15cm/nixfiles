@@ -144,7 +144,7 @@ in {
             format = "{}";
             interval = 1;
             exec = pkgs.writeShellScript "waybar-custom-is-maximized.sh" ''
-              result=$(hyprctl activewindow -j | jq ". | select(.fullscreen and .fullscreenMode == 1)")
+              result=$(hyprctl activewindow -j | jq ". | select(.fullscreen == 1)")
               if [ -n "$result" ]; then
                 echo "M"
               fi
