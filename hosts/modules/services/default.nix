@@ -16,5 +16,6 @@
     ./lock.nix
     ./aria2
     ./openrgb.nix
+    ./vsftpd
   ];
 }

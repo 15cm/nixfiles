@@ -107,4 +107,10 @@ with lib;
     enableSession = true;
     enableReverseProxy = true;
   };
+  my.services.vsftpd = {
+    enable = true;
+    enableSsl = true;
+    sopsCertFile = ./ftp/vsftpd.pem;
+    sopsKeyFile = ./ftp/vsftpd.key;
+  };
 }
