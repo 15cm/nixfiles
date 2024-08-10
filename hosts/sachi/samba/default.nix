@@ -47,8 +47,8 @@ with lib; {
   };
   # Initialize smb password following https://serverfault.com/questions/1104310/how-do-i-import-an-smbpasswd-file-into-a-different-samba-server
   # The smbpasswd is generated via:
-  # pdbedit -a -u <username>
-  # pdbedit -L -w > /tmp/smbpasswd
+  # sudo pdbedit -a -u <username>
+  # sudo pdbedit -L -w > /tmp/smbpasswd
   system.activationScripts = mkIf config.services.samba.enable {
     sambaUserSetup = {
       text = ''

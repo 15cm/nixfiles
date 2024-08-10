@@ -18,6 +18,7 @@ with lib;
       "libvirtd"
       "dockremap"
       "wireshark"
+      "camera"
     ];
     uid = config.my.ids.uids.sinkerine;
     home = "/home/sinkerine";
@@ -39,4 +40,13 @@ with lib;
   };
 
   users.groups.smtp-secret = { gid = config.my.ids.uids.smtp-secret; };
+
+  sops.secrets.cameraHashedPassword = { sopsFile = ./secrets.yaml; };
+  users.users.camera = {
+    isSystemUser = true;
+    uid = config.my.ids.uids.camera;
+    group = "camera";
+    hashedPasswordFile = config.sops.secrets.cameraHashedPassword.path;
+  };
+  users.groups.camera = { gid = config.my.ids.uids.camera; };
 }

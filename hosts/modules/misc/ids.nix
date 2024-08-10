@@ -16,6 +16,7 @@ with lib; {
     sinkerine = 1000;
     traefik = 198;
     nix-serve = 199;
+    camera = 200;
     dockremap = 100000;
     smtp-secret = 2000;
     nut = 84;

@@ -20,10 +20,13 @@ in {
     {
       services.vsftpd = {
         enable = true;
+        # Honor the userlist as an allowlist.
         userlistDeny = false;
+        # Enable userlist for allowlist or denylist purpose.
+        userlistEnable = true;
         localUsers = true;
-        userlist = [ "sinkerine" ];
-        localRoot = "/pool/main";
+        userlist = [ "camera" ];
+        localRoot = "/pool/main/storage/";
         writeEnable = true;
         extraConfig = ''
           # Required for FTPS to work
@@ -31,6 +34,7 @@ in {
           pasv_enable=YES
           pasv_min_port=20000
           pasv_max_port=20010
+          local_umask=007
         '';
       };
     }
