@@ -17,6 +17,7 @@ with lib;
       "docker"
       "libvirtd"
       "dockremap"
+      "wireshark"
     ];
     uid = config.my.ids.uids.sinkerine;
     home = "/home/sinkerine";

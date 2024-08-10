@@ -61,6 +61,10 @@ with lib;
     allowedTCPPorts = [ 22000 ];
     allowedUDPPorts = [ 22000 21027 ];
   };
+  programs.wireshark = {
+    enable = true;
+    package = pkgs.wireshark;
+  };
 
   my.services.docker.enable = true;
   my.services.autofs.enable = true;
