@@ -76,6 +76,7 @@ in {
     ffmpeg
     telegram-desktop
     kdenlive
+    darktable
   ];
 
   home.sessionVariables = {

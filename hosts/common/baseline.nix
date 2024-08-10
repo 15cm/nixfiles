@@ -117,6 +117,7 @@ with lib; {
 
   boot.kernel.sysctl = {
     "vm.max_map_count" = 524288;
+    "vm.overcommit_memory" = 1;
     "fs.inotify.max_user_watches" = 200000;
     "fs.inotify.max_user_instances" = 8192;
   };
