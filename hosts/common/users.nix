@@ -41,7 +41,10 @@ with lib;
 
   users.groups.smtp-secret = { gid = config.my.ids.uids.smtp-secret; };
 
-  sops.secrets.cameraHashedPassword = { sopsFile = ./secrets.yaml; };
+  sops.secrets.cameraHashedPassword = {
+    sopsFile = ./secrets.yaml;
+    neededForUsers = true;
+  };
   users.users.camera = {
     isSystemUser = true;
     uid = config.my.ids.uids.camera;
