@@ -23,6 +23,7 @@ with lib; {
     nix-index
     iperf
     jq
+    lm-sensors
   ];
 
   nix = {
