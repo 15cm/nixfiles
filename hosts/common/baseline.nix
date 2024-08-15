@@ -23,7 +23,7 @@ with lib; {
     nix-index
     iperf
     jq
-    lm-sensors
+    lm_sensors
   ];
 
   nix = {
@@ -50,6 +50,7 @@ with lib; {
   networking.hostId = builtins.getAttr hostname config.my.ids.hostIds;
 
   users.mutableUsers = false;
+  hardware.enableRedistributableFirmware = true;
   time.timeZone = "America/Los_Angeles";
   services.acpid.enable = true;
   programs.zsh.enable = true;

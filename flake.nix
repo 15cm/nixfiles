@@ -150,8 +150,10 @@
             config.cudaSupport = true;
           };
           modules = [ ./hosts/kazuki hyprland.nixosModules.default ]
-            ++ (with nixos-hardware.nixosModules;
-              [ common-gpu-nvidia-nonprime ]);
+            ++ (with nixos-hardware.nixosModules; [
+              common-gpu-nvidia-nonprime
+              common-cpu-amd
+            ]);
           specialArgs = { hostname = "kazuki"; };
         };
         # TODO: migrate to unencrypted pool + encrypted dataset.
@@ -169,7 +171,8 @@
         "sachi" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
-          modules = [ ./hosts/sachi ];
+          modules = [ ./hosts/sachi ] ++ (with nixos-hardware.nixosModules;
+            [ common-cpu-intel-cpu-only ]);
           specialArgs = { hostname = "sachi"; };
         };
         "yumiko" = rec {

@@ -53,6 +53,12 @@ with lib;
     interfaces.eno4.useDHCP = false;
   };
 
+  boot.kernelModules = [ "coretemp" ];
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+  };
+
   my.services.docker = { enable = true; };
   my.services.zrepl = {
     enable = true;
@@ -113,4 +119,5 @@ with lib;
     sopsCertFile = ./ftp/vsftpd.pem;
     sopsKeyFile = ./ftp/vsftpd.key;
   };
+
 }
