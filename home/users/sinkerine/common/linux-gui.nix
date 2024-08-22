@@ -76,6 +76,7 @@ in {
     telegram-desktop
     kdenlive
     darktable
+    webos-dev-manager
   ];
 
   home.sessionVariables = {
@@ -316,6 +317,10 @@ in {
       exec =
         "env FONTCONFIG_FILE=${config.home.homeDirectory}/.config/fontconfig/conf.d/10-hm-fonts.conf steam";
       terminal = false;
+    };
+    webos-dev-manager = {
+      name = "WebOS Dev manager";
+      exec = applyChromeFlagsToDesktopExec "webos-dev-manager";
     };
   };
 
