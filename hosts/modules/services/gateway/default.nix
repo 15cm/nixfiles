@@ -23,6 +23,10 @@ in {
       type = with types; listOf str;
       default = [ config.my.ip.ranges.local ];
     };
+    externalAllowListIpRanges = mkOption {
+      type = with types; listOf str;
+      default = config.my.ip.ranges.cloudFlareList;
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -73,6 +77,8 @@ in {
           http = {
             middlewares = {
               lan-only.ipAllowList.sourceRange = cfg.lanOnlyIpRanges;
+              wan.ipAllowList.sourceRange = cfg.lanOnlyIpRanges
+                ++ cfg.externalAllowListIpRanges;
             };
           };
         };
