@@ -65,6 +65,7 @@
             emacs-overlay.overlays.default
           ];
           config.allowUnfree = true;
+          config.nvidia.acceptLicense = true;
           config.permittedInsecurePackages = [ "electron-24.8.6" ];
         });
 
