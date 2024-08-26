@@ -120,4 +120,8 @@ with lib;
     sopsKeyFile = ./ftp/vsftpd.key;
   };
 
+  services.udev.extraRules = ''
+    # UDEV rules for 3d printer
+    SUBSYSTEM=="tty", ATTRS{idVendor}=="2974", ATTRS{idProduct}=="0503", ACTION=="add", MODE:="0660", OWNER:="dockremap", GROUP:="dockremap", SYMLINK+="monoprice_3d_printer"
+  '';
 }
