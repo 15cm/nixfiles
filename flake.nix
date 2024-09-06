@@ -43,10 +43,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "flake-compat";
     };
-    hyprland = {
-      url =
-        "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=51ffd7fa6f186419276e5d3d5fe141a3fdb3c55c";
-    };
+    hyprland = { url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; };
   };
 
   outputs = { self, nixpkgs, home-manager, nur, nixgl, flake-utils, sops-nix

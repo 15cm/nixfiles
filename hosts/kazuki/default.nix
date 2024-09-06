@@ -20,6 +20,7 @@ with lib;
     dolphin-emu-beta
     rpcs3
     (retroarch.override { cores = with libretro; [ mgba ]; })
+    nvidia-vaapi-driver
   ];
 
   sops = {

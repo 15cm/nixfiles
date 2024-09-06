@@ -48,9 +48,10 @@ in {
   home.sessionVariables = {
     # Hyprland Nvidia
     LIBVA_DRIVER_NAME = "nvidia";
-    GBM_BACKEND = "nvidia-drm";
+    NVD_BACKEND = "direct";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     WLR_NO_HARDWARE_CURSORS = "1";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
   };
 
   my.display.monitors = {
