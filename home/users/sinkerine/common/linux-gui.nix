@@ -320,7 +320,7 @@ in {
     };
     webos-dev-manager = {
       name = "WebOS Dev manager";
-      exec = applyChromeFlagsToDesktopExec "webos-dev-manager";
+      exec = applyElectronFlagsToDesktopExec "webos-dev-manager";
     };
   };
 
