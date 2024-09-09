@@ -74,6 +74,16 @@ in {
   # Removes the unused rocm opencl packages in https://github.com/NixOS/nixos-hardware/blob/master/common/gpu/amd/default.nix
   hardware.graphics.extraPackages = with pkgs; mkForce [ amdvlk ];
 
+  # Disable the Radeon outputs in Pipewire so that the laptop speaker is selected by default.
+  services.pipewire.wireplumber.extraConfig = {
+    "disable-radeon-devices" = {
+      "monitor.alsa.rules" = [{
+        "matches" = [{ "device.name" = "alsa_card.pci-0000_63_00.1"; }];
+        "actions" = { "update-props" = { "device.disabled" = true; }; };
+      }];
+    };
+  };
+
   # Laptop backlight
   programs.light.enable = true;
 
