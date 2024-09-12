@@ -23,6 +23,9 @@ with lib;
     nvidia-vaapi-driver
   ];
 
+  # Blocked by vmware to support latest kernels https://github.com/NixOS/nixpkgs/issues/339507
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_6;
+
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = { hashedPassword.neededForUsers = true; };

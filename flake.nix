@@ -165,7 +165,10 @@
             ./hosts/asako
             hyprland.nixosModules.default
             kmonad.nixosModules.default
-          ] ++ (with nixos-hardware.nixosModules; [ lenovo-thinkpad-z13-gen1 ]);
+          ] ++ (with nixos-hardware.nixosModules; [
+            lenovo-thinkpad-z13-gen1
+            common-cpu-amd-pstate
+          ]);
           specialArgs = { hostname = "asako"; };
         };
         # TODO: migrate to unencrypted pool + encrypted dataset.

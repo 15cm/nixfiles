@@ -71,9 +71,6 @@ in {
     RestartSec = "5";
   };
 
-  # Removes the unused rocm opencl packages in https://github.com/NixOS/nixos-hardware/blob/master/common/gpu/amd/default.nix
-  hardware.graphics.extraPackages = with pkgs; mkForce [ amdvlk ];
-
   # Disable the Radeon outputs in Pipewire so that the laptop speaker is selected by default.
   services.pipewire.wireplumber.extraConfig = {
     "disable-radeon-devices" = {
@@ -95,20 +92,6 @@ in {
     lidSwitchDocked = "suspend";
     lidSwitchExternalPower = "ignore";
   };
-
-  # Trackpoint
-  hardware.trackpoint = {
-    enable = true;
-    sensitivity = 128;
-    emulateWheel = true;
-  };
-  # ATTR{device/speed} is missing in z13 trackpoint so https://github.com/NixOS/nixpkgs/blob/9805c6163a99a8bfb99e09531e85cb1549899aad/nixos/modules/tasks/trackpoint.nix#LL80C4-L80C22 will fail.
-  services.udev.extraRules = let cfg = config.hardware.trackpoint;
-  in ''
-    ACTION=="add|change", SUBSYSTEM=="input", ATTR{name}=="${cfg.device}",  ATTR{device/sensitivity}="${
-      toString cfg.sensitivity
-    }"
-  '';
 
   my.services.zrepl = {
     enable = true;

@@ -10,7 +10,7 @@ with lib;
 
   boot.supportedFilesystems = [ "ext4" "fat32" "zfs" ];
 
-  environment.systemPackages = with pkgs; [ ntfs3g rsync ];
+  environment.systemPackages = with pkgs; [ ntfs3g rsync git ];
 
   networking.networkmanager.enable = true;
   networking.wireless.enable = mkImageMediaOverride false;

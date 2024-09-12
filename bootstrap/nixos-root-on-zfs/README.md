@@ -103,8 +103,9 @@ Create the backup-disabled datasets back as needed:
 ``` sh
 zfs create -o canmount=on rpool/data/home/sinkerine/.cache
 zfs create -o canmount=on rpool/data/home/sinkerine/vmware
-chown -R 1000:1000 /mnt/home
+chown -R 1000:1000 /mnt/home/sinkerine/.cache /mnt/home/sinkerine/vmware
 ```
+
 ### More than one matching pool found
 zpool can find more than one matching pool by the pool name if there are leftover zpool label on the disk with old data. It's probably caused by forgetting to `zpool labelclear` or `wipefs -a` on the existing zpool device and then create a new partition table on the device. dd zero to the device to clear all data:
 

@@ -23,8 +23,6 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       boot.supportedFilesystems = [ "zfs" ];
-      boot.kernelPackages =
-        config.boot.zfs.package.latestCompatibleLinuxPackages;
       boot.zfs.forceImportAll = true;
       boot.zfs.extraPools = cfg.nonRootPools;
       boot.zfs.devNodes = "/dev/disk/by-path";
