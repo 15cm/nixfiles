@@ -12,16 +12,7 @@ with lib;
     ../common/linux-gui.nix
   ];
 
-  environment.systemPackages = with pkgs; [
-    easyrsa
-    i2c-tools
-    wineWowPackages.stable
-    winetricks
-    dolphin-emu-beta
-    rpcs3
-    (retroarch.override { cores = with libretro; [ mgba ]; })
-    nvidia-vaapi-driver
-  ];
+  environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];
 
   # Blocked by vmware to support latest kernels https://github.com/NixOS/nixpkgs/issues/339507
   boot.kernelPackages = mkForce pkgs.linuxPackages_6_6;
@@ -100,6 +91,11 @@ with lib;
     '';
   };
   hardware.graphics.enable32Bit = true;
+
+  services.sunshine = {
+    enable = true;
+    capSysAdmin = true;
+  };
 
   services.ollama = {
     enable = false;
