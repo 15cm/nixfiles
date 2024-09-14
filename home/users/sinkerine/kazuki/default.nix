@@ -67,6 +67,11 @@ in {
     };
   };
   my.display.scale = 2.0;
+  my.services.hyprlock = {
+    enable = true;
+    image =
+      "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
+  };
 
   my.services.waybar.networkInterface = "enp5s0";
   my.programs.jetbrains = {

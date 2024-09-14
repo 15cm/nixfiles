@@ -108,7 +108,7 @@ submap = reset
 # System power management
 bind = $mainMod SHIFT, Z, submap, power-management
 submap = power-management
-bind = , L, exec, systemctl --user start gtklock.service
+bind = , L, exec, {{lockCommand}}
 bind = , L, submap, reset
 bind = , S, exec, systemctl suspend
 bind = , S, submap, reset

@@ -85,7 +85,7 @@ with lib; {
       value = "10240";
     }
   ];
-  security.pam.services.gtklock = {
+  security.pam.services.hyprlock = {
     text = ''
       auth include login
     '';

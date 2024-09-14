@@ -78,7 +78,7 @@ with lib;
   my.programs.AriaNg.enable = true;
   my.services.lock = {
     enable = true;
-    lockService = "gtklock.service";
+    lockService = "hyprlock.service";
   };
 
   services.printing = {

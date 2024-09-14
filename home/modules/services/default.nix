@@ -20,5 +20,6 @@
     ./dunst
     ./cliphist.nix
     ./gpg.nix
+    ./hyprlock.nix
   ];
 }

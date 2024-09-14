@@ -17,8 +17,14 @@ in {
       enable = true;
       description = "Lock pre/post suspend trigger";
       serviceConfig = {
-        ExecStart =
-          "${pkgs.systemd}/bin/systemctl --user -M sinkerine@ start ${cfg.lockService}";
+        ExecStart = concatStringsSep " " [
+          "${pkgs.systemd}/bin/systemctl"
+          "--user"
+          "-M"
+          "sinkerine@"
+          "start"
+          "${cfg.lockService}"
+        ];
         Type = "oneshot";
       };
       after = [ "systemd-suspend.service" "systemd-hibernate.service" ];

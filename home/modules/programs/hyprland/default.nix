@@ -11,6 +11,7 @@ let
     windowSwitcherScript = "python ${./window_switcher.py}";
     cliphistWofiImgScript =
       "bash ${config.my.services.cliphist.wofiImgScript} | wl-copy";
+    lockCommand = "hyprlock";
   };
 in {
   options.my.programs.hyprland = {
