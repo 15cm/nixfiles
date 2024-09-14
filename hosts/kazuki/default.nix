@@ -92,11 +92,6 @@ with lib;
   };
   hardware.graphics.enable32Bit = true;
 
-  services.sunshine = {
-    enable = true;
-    capSysAdmin = true;
-  };
-
   services.ollama = {
     enable = false;
     acceleration = "cuda";
