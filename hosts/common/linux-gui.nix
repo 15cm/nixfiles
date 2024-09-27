@@ -76,10 +76,6 @@ with lib;
     enableReverseProxy = true;
   };
   my.programs.AriaNg.enable = true;
-  my.services.lock = {
-    enable = true;
-    lockService = "hyprlock.service";
-  };
 
   services.printing = {
     enable = true;

@@ -83,9 +83,12 @@ in {
 
   # Laptop backlight
   programs.light.enable = true;
-
   # Laptop battery
   services.upower.enable = true;
+  my.services.lock = {
+    enable = true;
+    lockService = "hyprlock.service";
+  };
 
   services.logind = mkForce {
     lidSwitch = "suspend";
