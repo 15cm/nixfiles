@@ -14,8 +14,23 @@ with lib;
 
   environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];
 
-  # Blocked by vmware to support latest kernels https://github.com/NixOS/nixpkgs/issues/339507
-  boot.kernelPackages = mkForce pkgs.linuxPackages_6_6;
+  # TODO: remove after vmware is support on latest kernels
+  # https://github.com/NixOS/nixpkgs/issues/339507
+  nixpkgs.overlays = [
+    (final: prev: {
+      linuxPackages_6_10 = prev.linuxPackages_6_10.extend (_lpfinal: _lpprev: {
+        vmware = prev.linuxPackages_6_10.vmware.overrideAttrs (_oldAttrs: {
+          version = "workstation-17.5.2-k6.9+-unstable-2024-08-22";
+          src = final.fetchFromGitHub {
+            owner = "nan0desu";
+            repo = "vmware-host-modules";
+            rev = "b489870663afa6bb60277a42a6390c032c63d0fa";
+            hash = "sha256-9t4a4rnaPA4p/SccmOwsL0GsH2gTWlvFkvkRoZX4DJE=";
+          };
+        });
+      });
+    })
+  ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
@@ -50,14 +65,15 @@ with lib;
   };
 
   hardware.nvidia = {
+    # https://github.com/NixOS/nixpkgs/blob/1925c603f17fc89f4c8f6bf6f631a802ad85d784/pkgs/os-specific/linux/nvidia-x11/default.nix#L53-L60
     package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-      version = "560.28.03";
-      sha256_64bit = "sha256-martv18vngYBJw1IFUCAaYr+uc65KtlHAMdLMdtQJ+Y=";
-      sha256_aarch64 = "sha256-+u0ZolZcZoej4nqPGmZn5qpyynLvu2QSm9Rd3wLdDmM=";
-      openSha256 = "sha256-asGpqOpU0tIO9QqceA8XRn5L27OiBFuI9RZ1NjSVwaM=";
-      settingsSha256 = "sha256-b4nhUMCzZc3VANnNb0rmcEH6H7SK2D5eZIplgPV59c8=";
+      version = "560.31.02";
+      sha256_64bit = "sha256-0cwgejoFsefl2M6jdWZC+CKc58CqOXDjSi4saVPNKY0=";
+      sha256_aarch64 = "sha256-m7da+/Uc2+BOYj6mGON75h03hKlIWItHORc5+UvXBQc=";
+      openSha256 = "sha256-X5UzbIkILvo0QZlsTl9PisosgPj/XRmuuMH+cDohdZQ=";
+      settingsSha256 = "sha256-A3SzGAW4vR2uxT1Cv+Pn+Sbm9lLF5a/DGzlnPhxVvmE=";
       persistencedSha256 =
-        "sha256-MhITuC8tH/IPhCOUm60SrPOldOpitk78mH0rg+egkTE=";
+        "sha256-BDtdpH5f9/PutG3Pv9G4ekqHafPm3xgDYdTcQumyMtg=";
     };
     modesetting.enable = true;
     powerManagement.enable = true;
