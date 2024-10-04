@@ -84,18 +84,18 @@ with lib;
   services.avahi.enable = true;
   services.avahi.nssmdns4 = true;
 
-  systemd.services.restart-network-manager-on-resume = {
-    enable = true;
-    description = "Restart network manager on system resume";
-    serviceConfig = {
-      ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
-      ExecStart =
-        "${pkgs.systemd}/bin/systemctl restart NetworkManager.service";
-      Type = "oneshot";
-    };
-    after = [ "systemd-suspend.service" "systemd-hibernate.service" ];
-    requiredBy = [ "systemd-suspend.service" "systemd-hibernate.service" ];
-  };
+  # systemd.services.restart-network-manager-on-resume = {
+  #   enable = true;
+  #   description = "Restart network manager on system resume";
+  #   serviceConfig = {
+  #     ExecStartPre = "${pkgs.coreutils}/bin/sleep 3";
+  #     ExecStart =
+  #       "${pkgs.systemd}/bin/systemctl restart NetworkManager.service";
+  #     Type = "oneshot";
+  #   };
+  #   after = [ "systemd-suspend.service" "systemd-hibernate.service" ];
+  #   requiredBy = [ "systemd-suspend.service" "systemd-hibernate.service" ];
+  # };
   # For QMK Flashing of Ergodox EZ https://github.com/zsa/docs/issues/14
   services.udev.extraRules = ''
     # UDEV rules for Teensy USB devices
