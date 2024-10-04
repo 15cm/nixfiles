@@ -166,7 +166,7 @@
             hyprland.nixosModules.default
             kmonad.nixosModules.default
           ] ++ (with nixos-hardware.nixosModules; [
-            lenovo-thinkpad-z13-gen1
+            lenovo-thinkpad-z13-gen2
             common-cpu-amd-pstate
           ]);
           specialArgs = { hostname = "asako"; };
