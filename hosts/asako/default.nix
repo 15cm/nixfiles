@@ -81,6 +81,9 @@ in {
     };
   };
 
+  ## TODO: bump to 6.11 with the amdgpu kernel fix after zfs is ready for 6.11.
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_6;
+
   # Laptop backlight
   programs.light.enable = true;
   # Laptop battery
