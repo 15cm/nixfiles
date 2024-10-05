@@ -109,6 +109,8 @@ with lib;
   };
   my.services.aria2 = {
     enable = true;
+    package = pkgs.aria2-fast;
+    maxConnectionPerServer = 128;
     downloadDir = "/pool/sub/download/aria2";
     enableSession = true;
     enableReverseProxy = true;

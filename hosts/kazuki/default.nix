@@ -95,6 +95,11 @@ with lib;
     sopsKeyFile = ./zrepl/kazuki.m.mado.moe.key;
   };
 
+  my.services.aria2 = {
+    package = pkgs.aria2-fast;
+    maxConnectionPerServer = 128;
+  };
+
   virtualisation.vmware.host = {
     enable = true;
     extraPackages = with pkgs; [ open-vm-tools ];

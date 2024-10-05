@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.my.services.aria2;
   inherit (mylib) templateFile assertNotNull;
-  templateData = { inherit (cfg) downloadDir; };
+  templateData = { inherit (cfg) downloadDir maxConnectionPerServer; };
   aria2Config = templateFile "aria2-conf" templateData ./aria2.conf.jinja;
   sessionFile = "${cfg.programDir}/aria2.session";
 in {
@@ -25,6 +25,10 @@ in {
     programDir = mkOption {
       type = types.str;
       default = "/home/${cfg.user}/.local/share/aria2";
+    };
+    maxConnectionPerServer = mkOption {
+      type = types.int;
+      default = 16;
     };
     enableSession = mkEnableOption "Session file";
     enableReverseProxy = mkEnableOption "Reverse proxy";
