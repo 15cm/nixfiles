@@ -31,13 +31,6 @@
       url = "github:kmonad/kmonad?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    emacs-overlay = {
-      url =
-        "github:nix-community/emacs-overlay/d2e8a913f490f0022b9fe9c54e419e3ab134687c";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.nixpkgs-stable.follows = "nixpkgs-stable";
-    };
     nixos-hardware = { url = "github:NixOS/nixos-hardware/master"; };
     deploy-rs = {
       url = "github:serokell/deploy-rs";
@@ -48,7 +41,7 @@
   };
 
   outputs = { self, nixpkgs, home-manager, nur, nixgl, flake-utils, sops-nix
-    , kmonad, nixos-hardware, deploy-rs, emacs-overlay, hyprland, ... }:
+    , kmonad, nixos-hardware, deploy-rs, hyprland, ... }:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -63,7 +56,6 @@
             modifications
             nixgl.overlays.default
             kmonad.overlays.default
-            emacs-overlay.overlays.default
           ];
           config.allowUnfree = true;
           config.nvidia.acceptLicense = true;

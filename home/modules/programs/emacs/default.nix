@@ -10,7 +10,7 @@ in {
     enable = mkEnableOption "emacs";
     package = mkOption {
       type = types.package;
-      default = pkgs.emacs-unstable-nox;
+      default = pkgs.emacs-nox;
     };
     enableSSHConfigRepo =
       mkEnableOption "use ssh url for the git emacs config repo";

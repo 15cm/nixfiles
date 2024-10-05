@@ -180,7 +180,7 @@ in {
     bno = "build-nix-os.sh";
   };
   my.programs.emacs = {
-    package = pkgs.emacs-unstable-pgtk;
+    package = pkgs.emacs29-pgtk;
     enableSSHConfigRepo = true;
     startAfterGraphicalSession = true;
   };
