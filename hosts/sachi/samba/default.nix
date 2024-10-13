@@ -37,6 +37,7 @@ with lib; {
       "main-picture" = { path = "/pool/main/media/picture"; };
       "main-photo" = { path = "/pool/main/media/photo"; };
       "main-book" = { path = "/pool/main/media/book"; };
+      "main-sync" = { path = "/pool/main/sync"; };
       "sub-aria2" = { path = "/pool/sub/download/aria2"; };
       "sub-aria2-baidu" = { path = "/pool/sub/download/aria2-baidu"; };
       "sub-bangumi" = { path = "/pool/sub/download/bangumi"; };
