@@ -1,16 +1,19 @@
-{ lib, buildGoPackage, fetchFromGitHub }:
+{ lib, buildGoModule, fetchFromGitHub }:
 
 let version = "2.0.0";
-in buildGoPackage {
+in buildGoModule {
   inherit version;
   pname = "clipper";
-  goPackagePath = "github.com/wincent/clipper";
+  postPatch = ''
+    go mod init github.com/wincent/clipper
+  '';
+  vendorHash = null;
 
   src = fetchFromGitHub {
     owner = "wincent";
     repo = "clipper";
     rev = version;
-    sha256 = "1dqk3621ram5sclzps7lbsl695bwrqpgq8cq000nwpgdwg603lwj";
+    hash = "sha256-ktMBzOPtXW4BAJgh/C7OfJVkqF706Psp06WqHIQZE7c";
   };
 
   meta = with lib; {
