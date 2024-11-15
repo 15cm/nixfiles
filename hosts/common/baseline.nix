@@ -24,6 +24,7 @@ with lib; {
     iperf
     jq
     lm_sensors
+    git
   ];
 
   nix = {

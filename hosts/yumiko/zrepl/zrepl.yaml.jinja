@@ -10,7 +10,7 @@ global:
 jobs:
   - type: sink
     name: "sink"
-    root_fs: "tank/push"
+    root_fs: "tank/unencrypted/push"
     serve:
       type: tls
       listen: ":{{ports.sink}}"
@@ -33,7 +33,7 @@ jobs:
       ca: {{caCertFile}}
       cert: {{certFile}}
       key: {{keyFile}}
-    root_fs: "tank/pull"
+    root_fs: "tank/unencrypted/pull"
     interval: 1d
     recv:
       placeholder:

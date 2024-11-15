@@ -51,7 +51,7 @@ umount -Rl /mnt
 zpool export -a
 ```
 
-### 4
+### 5
 Reboot the machine. After reboot, switch to tty and setup home manager:
 ```
 nix build --no-link path:/nixfiles#homeConfigurations.${USER}@$(hostname).activationPackage

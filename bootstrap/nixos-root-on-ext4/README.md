@@ -23,15 +23,14 @@ Run `BIOS_BOOT=1 bash /nixfiles/bootstrap/nixos-root-on-ext4/install.sh <hostnam
 #### Else If Root and ZFS partitions are on the same disks
 Run `BIOS_BOOT=1 bash /nixfiles/bootstrap/nixos-root-on-ext4/install.sh <hostname> <disk_path> <root_part_size>`
 
-### 5
-Follow [steps 4 and 5 in nixos-root-on-zfs](../nixos-root-on-zfs/README.md#5).
+### 5 Create zpool
 
-### 6 Create zpool
+#### Untrusted Host
 
 Always create an unencrypted pool.
 
 ```
-sudo zpool create \
+zpool create \
     -O relatime=on \
     -O acltype=posixacl \
     -O canmount=off \
@@ -45,23 +44,26 @@ sudo zpool create \
     <zfs_partition>
 ```
 
-#### Untrusted Host
 For the untrusted host where zfs key won't be loaded, create an unencrypted dataset to [allow placeholder datasets to be created](https://zrepl.github.io/configuration/sendrecvoptions.html#placeholders).
 
 ```
-sudo zfs create -o mountpoint=none <pool_name>/uncrypted
-sudo zfs set mountpoint=/pool/<pool_name> <pool_name>/uncrypted
+zfs create -o mountpoint=none <pool_name>/unencrypted
+# zfs create -o mountpoint=none <pool_name>/unencrypted/push
+# zfs create -o mountpoint=none <pool_name>/unencrypted/pull
 ```
 
 #### Trusted Host
 For the trusted host where zfs key will be loaded, create an encrypted pool.
 
 ```
-sudo zfs create \
+zfs create \
     -o mountpoint=none
     -o encryption=aes-256-gcm \
     -o keyformat=passphrase \
     -o keylocation=prompt \
     <pool_name>/encrypted
-sudo zfs set mountpoint=/pool/<pool_name> <pool_name>/encrypted
+zfs set mountpoint=/pool/<pool_name> <pool_name>/encrypted
 ```
+
+### 6
+Follow [steps 4 and 5 in nixos-root-on-zfs](../nixos-root-on-zfs/README.md#5).

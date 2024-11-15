@@ -39,7 +39,7 @@ fi
 info "Unmounting /mnt"
 umount -Rl /mnt || :
 
-# Disk ;artition (UEFI):
+# Disk partition (UEFI):
 # p1 512MB ESP+EFI
 # p2 EXT4
 # [optional] p3 ZFS
