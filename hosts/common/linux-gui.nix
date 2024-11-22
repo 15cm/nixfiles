@@ -57,11 +57,6 @@ with lib;
   # Needed by Nautilus.
   services.gvfs.enable = true;
 
-  networking.firewall = {
-    # https://docs.syncthing.net/users/firewall.html
-    allowedTCPPorts = [ 22000 ];
-    allowedUDPPorts = [ 22000 21027 ];
-  };
   programs.wireshark = {
     enable = true;
     package = pkgs.wireshark;

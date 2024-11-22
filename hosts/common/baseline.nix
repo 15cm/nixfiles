@@ -128,7 +128,12 @@ with lib; {
     "fs.inotify.max_user_watches" = 200000;
     "fs.inotify.max_user_instances" = 8192;
   };
-  networking.firewall.enable = true;
+  networking.firewall = {
+    enable = true;
+    # https://docs.syncthing.net/users/firewall.html
+    allowedTCPPorts = [ 22000 ];
+    allowedUDPPorts = [ 22000 21027 ];
+  };
   # Hosts doesn't support wildcard but I don't want to introduce a DNS server on each machine.
   networking.extraHosts = ''
     127.0.0.1 gateway.${hostname}.m.mado.moe
