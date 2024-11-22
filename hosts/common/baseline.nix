@@ -118,9 +118,6 @@ with lib; {
       ln -sf ${pkgs.tzdata}/share/zoneinfo /usr/share/zoneinfo
     fi
   '';
-  system.activationScripts.linkBinaries = ''
-    ln -sf ${pkgs.mpv}/bin/mpv /usr/bin/mpv
-  '';
 
   boot.kernel.sysctl = {
     "vm.max_map_count" = 524288;

@@ -79,6 +79,10 @@ with lib;
   services.avahi.enable = true;
   services.avahi.nssmdns4 = true;
 
+  system.activationScripts.linkBinaries = ''
+    ln -sf ${pkgs.mpv}/bin/mpv /usr/bin/mpv
+  '';
+
   # systemd.services.restart-network-manager-on-resume = {
   #   enable = true;
   #   description = "Restart network manager on system resume";
