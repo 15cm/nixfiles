@@ -10,7 +10,7 @@ in {
     programs.alacritty = {
       enable = true;
       settings = {
-        shell = {
+        terminal.shell = {
           program = "${pkgs.tmux}/bin/tmux";
           args = [ "new" "-A" "-s" "main" ];
         };

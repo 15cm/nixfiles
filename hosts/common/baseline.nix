@@ -47,10 +47,6 @@ with lib; {
     };
   };
 
-  # Confirm it's compatible with https://github.com/openzfs/zfs/releases before
-  # bumping.
-  boot.kernelPackages = pkgs.linuxPackages_6_10;
-
   # For zfs to identify machines.
   networking.hostId = builtins.getAttr hostname config.my.ids.hostIds;
 

@@ -7,6 +7,7 @@ let
 in {
   options.my.essentials.zfs = {
     enable = mkEnableOption "zfs";
+    enableZfsUnstable = mkEnableOption "zfs unstable";
     enableNonRootEncryption = mkEnableOption "non root encryption";
     enableZed = mkEnableOption "zed";
     nonRootPools = mkOption {
@@ -28,6 +29,7 @@ in {
       boot.zfs.devNodes = "/dev/disk/by-path";
       services.zfs.autoScrub.enable = true;
     }
+    (mkIf cfg.enableZfsUnstable { boot.zfs.package = pkgs.zfs_unstable; })
     (mkIf cfg.enableZed {
       services.zfs.zed = {
         # this option does not work; will return error
