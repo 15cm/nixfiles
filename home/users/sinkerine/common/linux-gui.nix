@@ -37,7 +37,7 @@ in {
     trash-cli
     jellyfin-media-player
     clementine
-    nautilus
+    nemo
     ark
     unrar
     insomnia
@@ -155,11 +155,6 @@ in {
     iconTheme = {
       package = pkgs.breeze-icons;
       name = "breeze";
-    };
-    cursorTheme = {
-      package = pkgs.breeze-qt5;
-      name = "breeze_cursors";
-      size = config.my.display.cursorSize / 2;
     };
   };
   xdg.userDirs = {

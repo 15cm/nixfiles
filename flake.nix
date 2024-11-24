@@ -25,7 +25,6 @@
     sops-nix = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "nixpkgs-stable";
     };
     kmonad = {
       url = "github:kmonad/kmonad?dir=nix";

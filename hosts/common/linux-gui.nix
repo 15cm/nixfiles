@@ -54,7 +54,7 @@ with lib;
   services.geoclue2.enable = true;
 
   services.flatpak.enable = true;
-  # Needed by Nautilus.
+  # Needed by Nautilus/Nemo.
   services.gvfs.enable = true;
 
   programs.wireshark = {
