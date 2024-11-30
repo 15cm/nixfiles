@@ -317,6 +317,20 @@ in {
       name = "WebOS Dev manager";
       exec = applyElectronFlagsToDesktopExec "webos-dev-manager";
     };
+    # Using fcitx instead of wayland for QT_IM_MODULE fixes https://www.github.com/fcitx/fcitx5/issues/1152.
+    "org.telegram.desktop" = {
+      name = "Telegram Desktop";
+      exec =
+        "env QT_IM_MODULE=fcitx QT_IM_MODULES=fcitx telegram-desktop -- %u";
+      icon = "telegram";
+      terminal = false;
+      settings = {
+        DBusActivatable = "true";
+        StartupWMClass = "TelegramDesktop";
+        MimeType = "x-scheme-handler/tg;x-scheme-handler/tonsite";
+        SingleMainWindow = "true";
+      };
+    };
   };
 
   home.pointerCursor = {
