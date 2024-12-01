@@ -30,10 +30,7 @@ in {
   my.programs.tmux.enable = true;
   my.programs.fzf.enable = true;
   my.programs.set-theme.enable = true;
-  my.programs.yazi = {
-    enable = true;
-    inherit (config.my.display) scale;
-  };
+  my.programs.yazi = { enable = true; };
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
   my.programs.powerline.enable = true;
