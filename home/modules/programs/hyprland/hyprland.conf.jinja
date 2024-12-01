@@ -101,6 +101,9 @@ bind = , W, submap, reset
 bind = , g, exec, dex "$HOME/.nix-profile/share/applications/io.github.xiaoyifang.goldendict_ng.desktop"
 bind = , g, focuswindow, ^(GoldenDict)$
 bind = , g, submap, reset
+# Not sure why wofi launches the same .desktop but the QT_IM_MODULE env doesn't take effect.
+bind = , T, exec, dex "$HOME/.nix-profile/share/applications/org.telegram.desktop.desktop"
+bind = , T, submap, reset
 
 bind = , escape, submap, reset
 submap = reset
