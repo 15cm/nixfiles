@@ -8,7 +8,7 @@ in {
   config = mkIf cfg.enable {
     power.ups = {
       enable = true;
-      ups.apc = {
+      ups.nas = {
         driver = "usbhid-ups";
         port = "auto";
         directives = [ "default.battery.charge.low = 50" ];
@@ -19,7 +19,7 @@ in {
         actions = [ "set" "fsd" ];
       };
       upsmon = {
-        monitor."apc@localhost" = {
+        monitor."nas@localhost" = {
           user = "admin";
           passwordFile = config.sops.secrets.upsAdminPassword.path;
         };

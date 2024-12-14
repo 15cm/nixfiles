@@ -7,11 +7,11 @@ with lib; {
   };
   services.samba = {
     enable = true;
-    securityType = "user";
 
     # This adds to the [global] section:
     settings = {
       global = {
+        "security" = "user";
         "client min protocol" = "SMB3_11";
         "server min protocol" = "SMB3_11";
         "server smb encrypt" = "desired";
@@ -31,7 +31,7 @@ with lib; {
     openFirewall = true;
 
     # Smb sharing doesn't work well with zfs properties.
-    shares = {
+    settings = {
       "main-storage" = { path = "/pool/main/storage"; };
       "main-music" = { path = "/pool/main/media/music"; };
       "main-picture" = { path = "/pool/main/media/picture"; };

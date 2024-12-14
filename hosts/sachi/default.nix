@@ -97,10 +97,12 @@ with lib;
   };
 
   my.services.smartd.enable = true;
+  my.services.ups.enable = true;
   my.services.metrics = {
     enable = true;
     enableScrapeHeadscale = true;
     enableScrapeSmartctl = true;
+    enableScrapeNut = true;
   };
   my.services.monitoring = {
     enable = true;
