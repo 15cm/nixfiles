@@ -118,7 +118,7 @@
               ./modules/home-manager
               ./home/modules
               hyprland.homeManagerModules.default
-              { imports = [ nur.hmModules.nur ]; }
+              { imports = [ nur.modules.homeManager.default ]; }
             ];
             extraSpecialArgs = (v.extraSpecialArgs or { }) // rec {
               inherit state;

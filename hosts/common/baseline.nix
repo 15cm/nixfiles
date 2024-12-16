@@ -44,6 +44,7 @@ with lib; {
       trusted-public-keys = config.my.trusts.cache.pubKeys;
       # Allows deploy-rs to add nix closure as non-root users in the wheel group. It resolves the error in home-manager: "cannot add path xxx because it lacks a signature by a trusted key"
       trusted-users = [ "root" "@wheel" ];
+      download-buffer-size = 209715200; # 200 MiB
     };
   };
 

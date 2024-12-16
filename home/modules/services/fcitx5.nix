@@ -9,13 +9,7 @@ in {
     package = mkOption {
       type = types.package;
       default = pkgs.fcitx5-with-addons.override {
-        addons = with pkgs; [
-          (fcitx5-rime.override {
-            librime =
-              config.nur.repos.xddxdd.lantianCustomized.librime-with-plugins;
-          })
-          fcitx5-mozc
-        ];
+        addons = with pkgs; [ fcitx5-rime fcitx5-mozc ];
       };
     };
 
