@@ -77,6 +77,7 @@ in {
     kdenlive
     darktable
     webos-dev-manager
+    wechat-uos
   ];
 
   home.sessionVariables = {
