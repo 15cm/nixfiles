@@ -40,7 +40,7 @@ with lib; {
       "main-sync" = { path = "/pool/main/sync"; };
       "sub-aria2" = { path = "/pool/sub/download/aria2"; };
       "sub-aria2-baidu" = { path = "/pool/sub/download/aria2-baidu"; };
-      "sub-bangumi" = { path = "/pool/sub/download/bangumi"; };
+      "sub-arr" = { path = "/pool/sub/arr"; };
       "sub-torrent-download" = {
         path = "/pool/sub/download/torrent/download";
       };
