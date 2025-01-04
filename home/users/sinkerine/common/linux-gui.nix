@@ -60,7 +60,6 @@ in {
     xdg-utils
     khinsider
     imagemagick
-    dsf2flac
     cloc
     antimicrox
     unzip
@@ -78,6 +77,7 @@ in {
     darktable
     webos-dev-manager
     wechat-uos
+    discord
   ];
 
   home.sessionVariables = {
