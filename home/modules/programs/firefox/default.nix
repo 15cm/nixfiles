@@ -40,7 +40,7 @@ in {
       type = with types; listOf str;
       default = [ ];
       example = literalExpression ''
-        ["Google"]
+        ["google"]
       '';
     };
   };
@@ -55,15 +55,15 @@ in {
         userChrome = (builtins.readFile ./userChrome.css);
         search = {
           force = true;
-          default = "Google";
-          privateDefault = "Google";
+          default = "google";
+          privateDefault = "google";
           engines = {
-            "Bing".metaData.hidden = true;
-            "eBay".metaData.hidden = true;
-            "DuckDuckGo".metaData.hidden = true;
-            "Amazon.com".metaData.hidden = true;
-            "Google".metaData.alias = "@gg";
-            "Wikipedia (en)".metaData.alias = "@wiki";
+            "bing".metaData.hidden = true;
+            "ebay".metaData.hidden = true;
+            "ddg".metaData.hidden = true;
+            "amazondotcom-us".metaData.hidden = true;
+            "google".metaData.alias = "@gg";
+            "wikipedia".metaData.alias = "@wiki";
           } // (builtins.listToAttrs cfg.searchEngines);
           order = cfg.searchEnginesOrderPrepend
             ++ (map (kv: kv.name) cfg.searchEngines);

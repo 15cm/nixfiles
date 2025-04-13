@@ -34,7 +34,7 @@ with lib;
     };
   };
 
-  boot.kernelPackages = mkForce pkgs.linuxPackages_6_6;
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_13;
   my.essentials.zfs = {
     enable = true;
     enableZed = true;
@@ -72,18 +72,6 @@ with lib;
   my.services.aria2 = {
     package = pkgs.aria2-fast;
     maxConnectionPerServer = 128;
-  };
-
-  virtualisation.vmware.host = {
-    enable = true;
-    extraPackages = with pkgs; [ open-vm-tools ];
-    extraConfig = ''
-      # Fit all virtual machine memory to be swapped
-      prefvmx.minVmMemPct = "100"
-      # Disable background snapshots
-      mainMem.partialLazySave = "FALSE"
-      mainMem.partialLazyRestore = "FALSE"
-    '';
   };
   hardware.graphics.enable32Bit = true;
 

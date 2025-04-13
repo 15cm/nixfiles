@@ -19,7 +19,7 @@ in {
 
   config = mkIf cfg.enable {
 
-    home.packages = with pkgs; [ fcitx5-gtk libsForQt5.fcitx5-qt ];
+    home.packages = with pkgs; [ fcitx5-gtk kdePackages.fcitx5-qt ];
 
     home.sessionVariables = {
       QT_IM_MODULES = "wayland;fcitx";

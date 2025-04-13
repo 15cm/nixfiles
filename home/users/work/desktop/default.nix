@@ -27,11 +27,11 @@ with lib; {
     trash-cli
     clementine
     nautilus
-    ark
+    kdePackages.ark
     unrar
-    kate
-    gwenview
-    okular
+    kdePackages.kate
+    kdePackages.gwenview
+    kdePackages.okular
     xclip
   ];
 

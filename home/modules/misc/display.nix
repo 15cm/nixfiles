@@ -26,7 +26,7 @@ with lib; {
     };
     my.display.cursorSize = mkOption {
       type = types.int;
-      default = 48;
+      default = 24;
     };
   };
 }

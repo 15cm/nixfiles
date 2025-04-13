@@ -20,8 +20,8 @@ in {
 
     # Wayland env
     qt6.qtwayland
-    qt5.qtwayland
-    libsForQt5.qt5ct
+    # qt5.qtwayland
+    # libsForQt5.qt5ct
 
     # Development
     gnumake
@@ -38,15 +38,15 @@ in {
     jellyfin-media-player
     clementine
     nemo
-    ark
+    kdePackages.ark
     unrar
     insomnia
     picard
-    kate
-    gwenview
+    kdePackages.kate
+    kdePackages.gwenview
     nodejs
     pandoc
-    okular
+    kdePackages.okular
     calibre
     libreoffice
     oxipng
@@ -73,7 +73,7 @@ in {
     qmk
     ffmpeg
     telegram-desktop
-    kdenlive
+    kdePackages.kdenlive
     darktable
     webos-dev-manager
     wechat-uos
@@ -117,8 +117,13 @@ in {
 
   qt = {
     enable = true;
-    platformTheme.name = "kde";
-    style.name = "breeze";
+    platformTheme = {
+      package = with pkgs; [
+        kdePackages.plasma-integration
+        kdePackages.systemsettings
+      ];
+    };
+    style = { package = with pkgs; [ kdePackages.breeze ]; };
   };
   xdg.configFile."kdeglobals".text = ''
     [DirSelect Dialog]
@@ -150,11 +155,11 @@ in {
   gtk = {
     enable = true;
     theme = {
-      package = pkgs.breeze-gtk;
+      package = pkgs.kdePackages.breeze-gtk;
       name = "Breeze";
     };
     iconTheme = {
-      package = pkgs.breeze-icons;
+      package = pkgs.kdePackages.breeze-icons;
       name = "breeze";
     };
   };
@@ -176,7 +181,7 @@ in {
     bno = "build-nix-os.sh";
   };
   my.programs.emacs = {
-    package = pkgs.emacs29-pgtk;
+    package = pkgs.emacs-pgtk;
     enableSSHConfigRepo = true;
     startAfterGraphicalSession = true;
   };
@@ -210,8 +215,7 @@ in {
             template =
               "https://github.com/search?q={searchTerms}&type=repositories";
           }];
-          iconUpdateURL =
-            "https://github.githubassets.com/favicons/favicon.svg";
+          icon = "https://github.githubassets.com/favicons/favicon.svg";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@gh" ];
         };
@@ -222,8 +226,7 @@ in {
           urls = [{
             template = "https://github.com/search?q={searchTerms}&type=code";
           }];
-          iconUpdateURL =
-            "https://github.githubassets.com/favicons/favicon.svg";
+          icon = "https://github.githubassets.com/favicons/favicon.svg";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@ghc" ];
         };
@@ -235,7 +238,7 @@ in {
             template =
               "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
           }];
-          iconUpdateURL = "https://search.nixos.org/favicon.png";
+          icon = "https://search.nixos.org/favicon.png";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@nixp" ];
         };
@@ -247,7 +250,7 @@ in {
             template =
               "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
           }];
-          iconUpdateURL = "https://search.nixos.org/favicon.png";
+          icon = "https://search.nixos.org/favicon.png";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@nixo" ];
         };
@@ -259,8 +262,7 @@ in {
             template =
               "https://home-manager-options.extranix.com/?query={searchTerms}";
           }];
-          iconUpdateURL =
-            "https://home-manager-options.extranix.com/images/favicon.png";
+          icon = "https://home-manager-options.extranix.com/images/favicon.png";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@nixhm" ];
         };
@@ -270,13 +272,13 @@ in {
         value = {
           urls =
             [{ template = "https://hub.docker.com/search?q={searchTerms}"; }];
-          iconUpdateURL = "https://hub.docker.com/favicon.ico";
+          icon = "https://hub.docker.com/favicon.ico";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@dh" ];
         };
       }
     ];
-    searchEnginesOrderPrepend = [ "Google" ];
+    searchEnginesOrderPrepend = [ "google" ];
   };
 
   # Name the entry same as the entry that comes with the package to overwrite it.
@@ -336,8 +338,8 @@ in {
 
   home.pointerCursor = {
     name = "breeze_cursors";
-    package = pkgs.breeze-qt5;
-    size = config.my.display.cursorSize / 2;
+    package = pkgs.kdePackages.breeze;
+    size = config.my.display.cursorSize;
     x11.enable = true;
     gtk.enable = true;
   };
