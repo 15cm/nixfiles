@@ -15,10 +15,6 @@ in {
       exec = "nice -n -19 ryujinx %f";
       terminal = false;
     };
-    vmware-workstation = {
-      name = "VMware Workstation (high priority)";
-      exec = applyXwaylandEnvsToDesktopExec config "nice -n -19 vmware";
-    };
     steam-fc-override = {
       name = "Steam (fc override)";
       exec =

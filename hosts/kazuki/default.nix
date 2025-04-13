@@ -14,24 +14,6 @@ with lib;
 
   environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];
 
-  # TODO: remove after vmware is support on latest kernels
-  # https://github.com/NixOS/nixpkgs/issues/339507
-  nixpkgs.overlays = [
-    (final: prev: {
-      linuxPackages_6_12 = prev.linuxPackages_6_12.extend (_lpfinal: _lpprev: {
-        vmware = prev.linuxPackages_6_12.vmware.overrideAttrs (_oldAttrs: {
-          version = "workstation-17.5.2-k6.9+-unstable-2024-08-22";
-          src = final.fetchFromGitHub {
-            owner = "nan0desu";
-            repo = "vmware-host-modules";
-            rev = "b489870663afa6bb60277a42a6390c032c63d0fa";
-            hash = "sha256-9t4a4rnaPA4p/SccmOwsL0GsH2gTWlvFkvkRoZX4DJE=";
-          };
-        });
-      });
-    })
-  ];
-
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = { hashedPassword.neededForUsers = true; };
