@@ -58,7 +58,8 @@
           ];
           config.allowUnfree = true;
           config.nvidia.acceptLicense = true;
-          config.permittedInsecurePackages = [ "electron-24.8.6" ];
+          config.permittedInsecurePackages =
+            [ "electron-33.4.11" "ventoy-1.1.05" ];
         });
 
       homeConfigurationArgs = {
