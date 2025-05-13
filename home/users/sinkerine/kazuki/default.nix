@@ -52,7 +52,7 @@ in {
 
   my.display.monitors = {
     one = {
-      output = "DP-1";
+      output = "DP-3";
       wallpaper =
         "${config.home.homeDirectory}/Pictures/wallpapers/yande.re_455471_armor_fate_grand_order_heels_landscape_shielder_(fate_grand_order)_thighhighs_thkani@2x.png";
     };
