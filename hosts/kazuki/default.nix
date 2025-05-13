@@ -51,9 +51,7 @@ with lib;
     package = config.boot.kernelPackages.nvidiaPackages.beta;
     modesetting.enable = true;
     powerManagement.enable = true;
-    forceFullCompositionPipeline = true;
-    # Open nvidia has issue with suspend. Ensure to use the proprietary drivers.
-    open = false;
+    open = true;
   };
 
   boot.kernelParams =
