@@ -54,37 +54,39 @@ in {
         DOOMDIR = "${config.home.homeDirectory}/.doom.d";
       } // optionalAttrs isDarwin { HOMEBREW_NO_AUTO_UPDATE = "1"; };
       # Env vars that are specific to interactive shell.
-      initExtraFirst = mkBefore ''
-        # zmodload zsh/zprof
-        export TZ="America/Los_Angeles"
-        export PATH="$PATH:$HOME/local/bin:/usr/local/bin:/usr/bin";
-        export EDITOR="${config.home.homeDirectory}/local/bin/exec-editor.sh";
-        export TERM="alacritty";
-        export TLDR_COLOR_BLANK="blue";
-        export TLDR_COLOR_DESCRIPTION="green";
-        export TLDR_COLOR_PARAMETER="blue";
-        export ZSH_AUTOSUGGEST_USE_ASYNC=true;
-        export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#a8a8a8,underline";
-        export GPG_TTY="$(tty)"
-        export KEYTIMEOUT=1
-        # Only the chars in this list are skipped in word operations.
-        export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-        # Only check zcompdump per day
-        autoload -Uz compinit
-        if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
-          compinit;
-        else
-          compinit -C;
-        fi;
+      initContent = mkMerge [
+        (mkBefore ''
+          # zmodload zsh/zprof
+          export TZ="America/Los_Angeles"
+          export PATH="$PATH:$HOME/local/bin:/usr/local/bin:/usr/bin";
+          export EDITOR="${config.home.homeDirectory}/local/bin/exec-editor.sh";
+          export TERM="alacritty";
+          export TLDR_COLOR_BLANK="blue";
+          export TLDR_COLOR_DESCRIPTION="green";
+          export TLDR_COLOR_PARAMETER="blue";
+          export ZSH_AUTOSUGGEST_USE_ASYNC=true;
+          export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#a8a8a8,underline";
+          export GPG_TTY="$(tty)"
+          export KEYTIMEOUT=1
+          # Only the chars in this list are skipped in word operations.
+          export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+          # Only check zcompdump per day
+          autoload -Uz compinit
+          if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+            compinit;
+          else
+            compinit -C;
+          fi;
 
-        # This allows us to override the zvm keybindings later.
-        # https://github.com/jeffreytse/zsh-vi-mode#initialization-mode
-        export ZVM_INIT_MODE=sourcing
+          # This allows us to override the zvm keybindings later.
+          # https://github.com/jeffreytse/zsh-vi-mode#initialization-mode
+          export ZVM_INIT_MODE=sourcing
 
-        zstyle :omz:plugins:ssh-agent lazy yes
-        zstyle :omz:plugins:ssh-agent quiet yes
-      '';
-      initExtra = builtins.readFile ./zshrc;
+          zstyle :omz:plugins:ssh-agent lazy yes
+          zstyle :omz:plugins:ssh-agent quiet yes
+        '')
+        (mkOrder 650 (builtins.readFile ./zshrc))
+      ];
 
       shellAliases = {
         md = "mkdir -p";

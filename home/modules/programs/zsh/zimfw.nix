@@ -33,7 +33,7 @@ in {
         ${concatStringsSep "\n" (map (m: "zmodule ${m}") cfg.modules)}
       ''}
     '';
-    programs.zsh.initExtraBeforeCompInit = ''
+    programs.zsh.initContent = mkOrder 550 ''
       export ZIM_HOME=${cfg.zimHome};
       export ZIM_CONFIG_FILE=${cfg.zimConfigFile};
       zstyle ':zim:zmodule' use 'degit'

@@ -27,7 +27,7 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    programs.zsh.initExtra = zshIntegration;
+    programs.zsh.initContent = mkOrder 600 zshIntegration;
     programs.yazi = {
       enable = true;
       inherit (cfg) package;

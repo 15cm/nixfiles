@@ -25,7 +25,7 @@ in {
       "powerline/colorschemes".source = ./colorschemes;
       "powerline/themes".source = ./themes;
     };
-    programs.zsh.initExtra = mkAfter ''
+    programs.zsh.initContent = mkAfter ''
       # Powerline
       export POWERLINE_CONFIG_COMMAND=${cfg.package}/bin/powerline-config
       powerline-daemon -q
