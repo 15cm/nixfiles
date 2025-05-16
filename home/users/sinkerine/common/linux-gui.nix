@@ -78,6 +78,7 @@ in {
     webos-dev-manager
     wechat-uos
     discord
+    prusa-slicer
   ];
 
   home.sessionVariables = {

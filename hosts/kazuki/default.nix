@@ -57,7 +57,7 @@ with lib;
   boot.kernelParams =
     [ "acpi_enforce_resources=lax" "transparent_hugepage=never" ];
   hardware = { i2c = { enable = true; }; };
-  my.services.openrgb.enable = true;
+  services.fwupd.enable = true;
 
   my.services.zrepl = {
     enable = true;
