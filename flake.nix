@@ -210,6 +210,7 @@
                   (builtins.getAttr hostname self.nixosConfigurations);
                 confirmTimeout = 60;
                 autoRollback = false;
+                magicRollback = false;
               };
               home = {
                 sshUser = "sinkerine";
@@ -218,6 +219,7 @@
                     self.homeConfigurations);
                 confirmTimeout = 60;
                 autoRollback = false;
+                magicRollback = false;
               };
             };
           });
