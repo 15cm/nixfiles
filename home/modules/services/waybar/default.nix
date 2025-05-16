@@ -45,7 +45,6 @@ in {
       settings = {
         mainBar = {
           layer = "top";
-          output = (mapAttrsToList (name: value: value.output) cfg.monitors);
           position = "top";
           height = 36;
           modules-left = [ "cpu" "memory" ]
