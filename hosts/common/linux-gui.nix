@@ -71,6 +71,7 @@ with lib;
     enableReverseProxy = true;
   };
   my.programs.AriaNg.enable = true;
+  my.programs.proxychains.enable = true;
 
   services.printing = {
     enable = true;
