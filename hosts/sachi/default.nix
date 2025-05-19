@@ -53,6 +53,12 @@ with lib;
     interfaces.eno3.useDHCP = false;
     interfaces.eno4.useDHCP = false;
   };
+  hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    open = true;
+  };
 
   boot.kernelModules = [ "coretemp" ];
   powerManagement = {
