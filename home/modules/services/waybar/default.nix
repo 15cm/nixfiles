@@ -16,10 +16,6 @@ in {
       type = types.attrs;
       default = [ ];
     };
-    networkInterface = mkOption {
-      type = types.str;
-      default = null;
-    };
   };
 
   config = mkIf cfg.enable {
@@ -111,7 +107,6 @@ in {
           };
           "network" = {
             interval = 30;
-            interface = cfg.networkInterface;
             format = "{ifname}";
             format-wifi = " {essid} ({signalStrength}%)";
             format-ethernet = "{ipaddr}/{cidr} ";
@@ -125,7 +120,6 @@ in {
           };
           "network#speed" = {
             interval = 3;
-            interface = cfg.networkInterface;
             format = " {bandwidthDownBytes}  {bandwidthUpBytes}";
             min-length = 22;
             max-length = 25;

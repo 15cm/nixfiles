@@ -70,7 +70,6 @@ in {
       "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
   };
 
-  my.services.waybar.networkInterface = "enp6s0";
   my.programs.jetbrains = {
     enable = true;
     enableAndroidStudio = true;
