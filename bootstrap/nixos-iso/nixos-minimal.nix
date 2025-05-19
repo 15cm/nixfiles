@@ -6,7 +6,7 @@ with lib;
   imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
 
   # use the latest Linux kernel
-  boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_6;
 
   boot.supportedFilesystems = [ "ext4" "fat32" "zfs" ];
 
