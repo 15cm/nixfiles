@@ -26,6 +26,7 @@ in {
         Type = "oneshot";
         ExecStart =
           "${pkgs.home-manager}/bin/home-manager expire-generations '${cfg.args}'";
+        ExecStartPost = "/run/current-system/sw/bin/nix-collect-garbage -d";
       };
     };
     systemd.user.timers.nix-home-manager-gc = {
