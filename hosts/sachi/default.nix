@@ -12,6 +12,8 @@ with lib;
     ./samba
   ];
 
+  environment.systemPackages = with pkgs; [ nvidia-container-toolkit ];
+
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = { hashedPassword.neededForUsers = true; };
@@ -53,12 +55,15 @@ with lib;
     interfaces.eno3.useDHCP = false;
     interfaces.eno4.useDHCP = false;
   };
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     modesetting.enable = true;
     powerManagement.enable = false;
-    open = true;
+    open = false;
   };
+  hardware.nvidia-container-toolkit.enable = true;
 
   boot.kernelModules = [ "coretemp" ];
   powerManagement = {
@@ -66,7 +71,9 @@ with lib;
     powertop.enable = true;
   };
 
-  my.services.docker = { enable = true; };
+  my.services.docker = {
+    enable = true;
+  };
   my.services.zrepl = {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.sachi) sink source; };
