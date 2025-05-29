@@ -12,7 +12,6 @@ in {
       enableOnBoot = true;
       storageDriver = "overlay2";
       daemon.settings = {
-        userns-remap = "sinkerine:sinkerine";
         default-address-pools = [{
           base = config.my.ip.ranges.docker;
           size = 24;
@@ -24,10 +23,10 @@ in {
 
     users.groups.dockremap = { gid = config.my.ids.uids.dockremap; };
     users.users.dockremap = {
-      isNormalUser = true;
+      isSystemUser = true;
       uid = config.my.ids.uids.dockremap;
       group = "dockremap";
-      openssh.authorizedKeys.keys = config.my.trusts.ssh.pubKeys;
+      extraGroups = [ "docker" ];
     };
 
     systemd.services.createDockerNetowrk = {
