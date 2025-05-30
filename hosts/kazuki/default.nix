@@ -68,6 +68,11 @@ with lib;
     sopsKeyFile = ./zrepl/kazuki.m.mado.moe.key;
   };
 
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = [ "your_username" ];
+  virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
+
   my.services.aria2 = {
     package = pkgs.aria2-fast;
     maxConnectionPerServer = 128;
