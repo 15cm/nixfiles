@@ -69,9 +69,4 @@ in {
     image =
       "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
   };
-
-  my.programs.jetbrains = {
-    enable = true;
-    enableAndroidStudio = true;
-  };
 }
