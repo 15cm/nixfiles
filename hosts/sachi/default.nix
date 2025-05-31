@@ -66,14 +66,8 @@ with lib;
   hardware.nvidia-container-toolkit.enable = true;
 
   boot.kernelModules = [ "coretemp" ];
-  powerManagement = {
-    enable = true;
-    powertop.enable = true;
-  };
 
-  my.services.docker = {
-    enable = true;
-  };
+  my.services.docker = { enable = true; };
   my.services.zrepl = {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.sachi) sink source; };

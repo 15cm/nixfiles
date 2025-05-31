@@ -69,4 +69,10 @@ in {
     image =
       "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
   };
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
+    };
+  };
 }

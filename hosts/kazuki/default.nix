@@ -69,7 +69,7 @@ with lib;
   };
 
   programs.virt-manager.enable = true;
-  users.groups.libvirtd.members = [ "your_username" ];
+  users.groups.libvirtd.members = [ "sinkerine" ];
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
 
