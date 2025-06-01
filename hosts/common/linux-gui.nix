@@ -29,6 +29,7 @@ with lib;
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
   # Required by pipewire rt mod and Flatpak.
   programs.dconf.enable = true;
+  programs.nix-ld.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
