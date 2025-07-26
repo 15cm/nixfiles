@@ -34,7 +34,7 @@ with lib;
     };
   };
 
-  boot.kernelPackages = mkForce pkgs.linuxPackages_6_14;
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_15;
   my.essentials.zfs = {
     enable = true;
     enableZed = true;
