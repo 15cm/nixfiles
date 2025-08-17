@@ -20,7 +20,7 @@ with lib;
     winetricks
     # native wayland support (unstable)
     wineWowPackages.waylandFull
-    ryujinx
+    ryubing
   ];
 
   fonts.packages = with pkgs; [ noto-fonts ];
