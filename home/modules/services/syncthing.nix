@@ -8,6 +8,7 @@ in {
   config = mkIf cfg.enable {
     services.syncthing = {
       enable = true;
+      extraOptions = [ "--allow-newer-config" ];
       tray = {
         enable = true;
         command = "syncthingtray --wait";
