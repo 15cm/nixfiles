@@ -34,7 +34,7 @@ with lib;
     };
   };
 
-  boot.kernelPackages = mkForce pkgs.linuxPackages_6_15;
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_16;
   my.essentials.zfs = {
     enable = true;
     enableNonRootEncryption = true;
