@@ -70,8 +70,7 @@ bind = $mainMod, D, exec, wofi -iI --show drun
 bind = $mainMod, W, exec, {{windowSwitcherScript}}
 bind = $mainMod, I, exec, keepassxc
 bind = $mainMod, I, focuswindow, ^(org.keepassxc.KeePassXC)$
-bind = $mainMod, C, exec, copyq menu
-bind = $mainMod SHIFT, C, exec, copyq show
+bind = $mainMod, C, exec, copyq toggle
 
 # App launcher.
 bind = $mainMod, O, submap, open
@@ -230,6 +229,5 @@ bindm = $mainMod SHIFT, mouse:273, movewindow
 # Resize windows with mainMod + shift + left mouse button and dragging
 bindm = $mainMod SHIFT, mouse:272, resizewindow
 
-windowrulev2 = float, class:^(com.github.hluk.copyq)$, title:^(CopyQ)$
 windowrulev2 = opacity 0.9 0.9, class:^(emacs)$
 windowrulev2 = opacity 0.7 0.7, class:^(Alacritty)$
