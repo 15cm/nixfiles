@@ -12,7 +12,7 @@ in {
 
   options.my.programs.vim = {
     enable = mkEnableOption "Vim";
-    viAlias = mylib.mkDefaultTrueEnableOption "Vi alias";
+    viAlias = mkEnableOption "Vi alias";
   };
 
   config = mkIf cfg.enable (mkMerge [
