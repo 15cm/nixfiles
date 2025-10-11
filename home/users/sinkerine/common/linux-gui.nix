@@ -186,6 +186,7 @@ in {
     enableSSHConfigRepo = true;
     startAfterGraphicalSession = true;
   };
+  my.programs.nvim = { enable = true; };
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
 

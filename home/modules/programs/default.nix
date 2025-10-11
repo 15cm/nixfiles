@@ -22,5 +22,6 @@
     ./powerline
     ./jetbrains
     ./firefox
+    ./nvim
   ];
 }

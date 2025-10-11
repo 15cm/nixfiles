@@ -37,10 +37,11 @@
       inputs.flake-compat.follows = "flake-compat";
     };
     hyprland = { url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; };
+    nixvim = { url = "github:nix-community/nixvim"; };
   };
 
   outputs = { self, nixpkgs, home-manager, nur, nixgl, flake-utils, sops-nix
-    , kmonad, nixos-hardware, deploy-rs, hyprland, ... }:
+    , kmonad, nixos-hardware, deploy-rs, hyprland, nixvim, ... }:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -119,7 +120,10 @@
               ./modules/home-manager
               ./home/modules
               hyprland.homeManagerModules.default
-              { imports = [ nur.modules.homeManager.default ]; }
+              {
+                imports =
+                  [ nur.modules.homeManager.default nixvim.homeModules.nixvim ];
+              }
             ];
             extraSpecialArgs = (v.extraSpecialArgs or { }) // rec {
               inherit state;

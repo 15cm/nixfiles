@@ -98,7 +98,6 @@ in {
         rp = "realpath";
 
         # Editors
-        vi = "vim";
         ew = "$EDITOR";
 
         # Tmux
