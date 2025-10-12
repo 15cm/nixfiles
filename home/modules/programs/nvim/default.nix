@@ -6,12 +6,14 @@ in {
   options.my.programs.nvim = {
     enable = mkEnableOption "Neo Vim";
     viAlias = mylib.mkDefaultTrueEnableOption "Vi Alias";
+    colorscheme = mkOption { type = types.str; };
   };
   config = mkIf cfg.enable (mkMerge [
     {
+      my.programs.nvim.colorscheme =
+        (if state.theme == "light" then "solarized" else "kanagawa");
       programs.nixvim = {
         enable = true;
-        colorschemes.kanagawa = { enable = true; };
         opts = {
           number = true; # Show line numbers
           relativenumber = true; # Show relative line numbers
@@ -19,6 +21,8 @@ in {
           background = state.theme;
           hlsearch = true;
         };
+        colorscheme = cfg.colorscheme;
+        colorschemes.kanagawa = { enable = true; };
         globals.mapleader = " ";
         keymaps = [
           {
@@ -125,6 +129,17 @@ in {
             '';
             options.desc = "Telescope live_grep selection";
           }
+          # Correct the keymaps of <Home> and <End>
+          {
+            mode = [ "" "!" ];
+            key = "<Find>";
+            action = "<Home>";
+          }
+          {
+            mode = [ "" "!" ];
+            key = "<Select>";
+            action = "<End>";
+          }
           {
             mode = [ "" "!" ];
             key = "<A-c>";
@@ -228,7 +243,6 @@ in {
           };
           treesitter = {
             enable = true;
-            folding = true;
             settings = {
               # NOTE: You can set whether `nvim-treesitter` should automatically install the grammars.
               auto_install = false;
@@ -354,6 +368,26 @@ in {
               repo = "nvim-clipper";
               rev = version;
               sha256 = "sha256-usaYu9Cd+/oXgKMDu76FGAqLW41NitX/Jfl0AptTNI0=";
+            };
+          })
+          (pkgs.vimUtils.buildVimPlugin rec {
+            pname = "nvim-tairiki";
+            version = "0.1";
+            src = pkgs.fetchFromGitHub rec {
+              owner = "deparr";
+              repo = "tairiki.nvim";
+              rev = "7dd9a81f96280cfd4789582c7165787b456f1577";
+              sha256 = "sha256-FRqBpvC3XyO677rtKbBOJL2kanIM6sdv9UqjZSyxkqw";
+            };
+          })
+          (pkgs.vimUtils.buildVimPlugin rec {
+            pname = "nvim-solarized";
+            version = "3.6.0";
+            src = pkgs.fetchFromGitHub rec {
+              owner = "maxmx03";
+              repo = "solarized.nvim";
+              rev = "v${version}";
+              sha256 = "sha256-fNytlDlYHqX1W1pqt8xLoud+AtMQDlmtUkbwZArj4bs=";
             };
           })
         ];

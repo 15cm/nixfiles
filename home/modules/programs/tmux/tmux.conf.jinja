@@ -8,6 +8,10 @@ set -ag terminal-overrides ",$TERM:Tc"
 set -ga update-environment TERM
 set -ga update-environment TERM_PROGRAM
 
+# https://stackoverflow.com/questions/18600188/home-end-keys-do-not-work-in-tmux
+bind-key -n Home send Escape "OH"
+bind-key -n End send Escape "OF"
+
 # Auto Restore
 set -g @continuum-restore 'on'
 
