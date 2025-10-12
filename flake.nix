@@ -121,8 +121,11 @@
               ./home/modules
               hyprland.homeManagerModules.default
               {
-                imports =
-                  [ nur.modules.homeManager.default nixvim.homeModules.nixvim ];
+                imports = [
+                  nur.modules.homeManager.default
+                  nixvim.homeModules.nixvim
+                  sops-nix.homeManagerModules.sops
+                ];
               }
             ];
             extraSpecialArgs = (v.extraSpecialArgs or { }) // rec {

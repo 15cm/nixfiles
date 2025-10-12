@@ -12,6 +12,9 @@ in {
     {
       my.programs.nvim.colorscheme =
         (if state.theme == "light" then "solarized" else "kanagawa");
+      programs.zsh.initContent = (mkOrder 750 ''
+        export AVANTE_ANTHROPIC_API_KEY=$(cat ${config.sops.secrets.avanteAnthropicApiKey.path})
+      '');
       programs.nixvim = {
         enable = true;
         opts = {
@@ -20,6 +23,7 @@ in {
           shiftwidth = 2; # Tab width should be 2
           background = state.theme;
           hlsearch = true;
+          smartcase = true;
         };
         colorscheme = cfg.colorscheme;
         colorschemes.kanagawa = { enable = true; };
@@ -37,18 +41,18 @@ in {
           }
           {
             key = "<leader>;";
-            action = "<cmd>Yazi<CR>";
-          }
-          {
-            key = "<leader>;";
-            action = "<cmd>Yazi<CR>";
+            action = "<cmd>Telescope commands<CR>";
           }
           {
             key = "<leader>:";
-            action = "<cmd>Yazi toogle<CR>";
+            action = "<cmd>Telescope command_history<CR>";
           }
           {
             key = "<leader>'";
+            action = "<cmd>Yazi<CR>";
+          }
+          {
+            key = ''<leader>"'';
             action = "<cmd>Yazi cwd<CR>";
           }
           {
@@ -68,6 +72,21 @@ in {
           {
             key = "<leader>fr";
             action = "<cmd>Telescope oldfiles<CR>";
+          }
+          {
+            key = "<leader>yn";
+            action = ''<cmd>let @" = expand('%')<CR>'';
+            options.desc = "Yank file name";
+          }
+          {
+            key = "<leader>yf";
+            action = ''<cmd>let @" = expand('%:p')<CR>'';
+            options.desc = "Yank file path";
+          }
+          {
+            key = "<leader>yd";
+            action = ''<cmd>let @" = expand('%:h')<CR>'';
+            options.desc = "Yank directory path";
           }
           {
             key = "<leader>ss";
@@ -255,6 +274,7 @@ in {
               ];
             };
           };
+          fzf-lua.enable = true;
           project-nvim = { enable = true; };
           yanky = {
             enable = true;
@@ -308,6 +328,10 @@ in {
                   group = "Projects";
                 }
                 {
+                  __unkeyed-y = "<leader>y";
+                  group = "Yank";
+                }
+                {
                   __unkeyed-leader = "<leader><leader>";
                   group = "Misc";
                 }
@@ -356,6 +380,24 @@ in {
             };
           };
           highlight-colors.enable = true;
+          avante = {
+            enable = true;
+            settings = {
+              instructions_file = "avante.md";
+              provider = "claude";
+              providers = {
+                claude = {
+                  endpoint = "https://api.anthropic.com";
+                  model = "claude-sonnet-4-20250514";
+                  timeout = 30000; # Timeout in milliseconds
+                  extra_request_body = {
+                    temperature = 0.75;
+                    max_tokens = 20480;
+                  };
+                };
+              };
+            };
+          };
         };
         extraPlugins = with pkgs.vimPlugins; [
           vim-rsi

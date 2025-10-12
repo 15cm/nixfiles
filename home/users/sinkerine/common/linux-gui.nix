@@ -31,6 +31,7 @@ in {
     ruby
     rust-analyzer
     pyright
+    nixd
 
     keepassxc
     google-chrome
