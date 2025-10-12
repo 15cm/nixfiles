@@ -11,7 +11,7 @@ in {
     {
       programs.nixvim = {
         enable = true;
-        colorschemes.kanagawa.enable = true;
+        colorschemes.kanagawa = { enable = true; };
         opts = {
           number = true; # Show line numbers
           relativenumber = true; # Show relative line numbers
@@ -26,6 +26,10 @@ in {
             options.silent = true;
             key = "<Esc>";
             action = "<cmd>noh<CR>";
+          }
+          {
+            key = "<leader><leader>c";
+            action = "<cmd>Telescope colorscheme<CR>";
           }
           {
             key = "<leader>;";
@@ -76,6 +80,29 @@ in {
             '';
           }
           {
+            key = "<leader>sd";
+            action = nixvimLib.mkRaw ''
+              function()
+                local lg = require("telescope.live_grep")
+                local utils = require("telescope.utils")
+                lg { cwd = utils.buffer_dir() }
+              end
+            '';
+          }
+          {
+            key = "<leader>sD";
+            action = nixvimLib.mkRaw ''
+              function()
+                local lg = require("telescope.live_grep")
+                local utils = require("telescope.utils")
+                lg {
+                  cw= utils.buffer_dir(), 
+                  default_text = table.concat(get_selection())
+                }
+              end
+            '';
+          }
+          {
             key = "<leader>,";
             action = "<cmd>Telescope buffers<CR>";
           }
@@ -96,6 +123,7 @@ in {
                 }
               end
             '';
+            options.desc = "Telescope live_grep selection";
           }
           {
             mode = [ "" "!" ];
@@ -222,7 +250,10 @@ in {
             lazyLoad = { settings = { cmd = "Neogit"; }; };
           };
           flash = { enable = true; };
-          airline = { enable = true; };
+          airline = {
+            enable = true;
+            settings.theme = "tomorrow";
+          };
           auto-session = { enable = true; };
           yazi = {
             enable = true;
@@ -256,6 +287,10 @@ in {
                 {
                   __unkeyed-p = "<leader>p";
                   group = "Projects";
+                }
+                {
+                  __unkeyed-leader = "<leader><leader>";
+                  group = "Misc";
                 }
               ];
             };
@@ -301,9 +336,11 @@ in {
               };
             };
           };
+          highlight-colors.enable = true;
         };
         extraPlugins = with pkgs.vimPlugins; [
           vim-rsi
+          vim-airline-themes
           (pkgs.vimUtils.buildVimPlugin rec {
             pname = "nvim-clipper";
             version = "0.1";
@@ -321,6 +358,7 @@ in {
               vim.fn.getpos ".", vim.fn.getpos "v", { mode = vim.fn.mode() }
             )
           end
+          vim.o.termguicolors = true
         '';
         extraConfigLua = ''
           require("project").setup()

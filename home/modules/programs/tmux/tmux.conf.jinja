@@ -1,6 +1,10 @@
 # https://github.com/sxyazi/yazi/wiki/Image-preview-within-tmux
 set -g allow-passthrough on
 
+# True color settings
+set -g default-terminal "$TERM"
+set -ag terminal-overrides ",$TERM:Tc"
+
 set -ga update-environment TERM
 set -ga update-environment TERM_PROGRAM
 
