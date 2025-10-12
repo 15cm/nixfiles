@@ -199,6 +199,7 @@ in {
           lz-n.enable = true;
           noice.enable = true;
           nix = { enable = true; };
+          orgmode = { enable = true; };
           neo-tree = { enable = true; };
           web-devicons.enable = true;
           telescope = {
@@ -248,6 +249,10 @@ in {
           neogit = {
             enable = true;
             lazyLoad = { settings = { cmd = "Neogit"; }; };
+          };
+          gitblame = {
+            enable = true;
+            lazyLoad = { settings = { cmd = "GitBlameToggle"; }; };
           };
           flash = { enable = true; };
           airline = {
