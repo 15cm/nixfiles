@@ -394,16 +394,6 @@ in {
             };
           })
           (pkgs.vimUtils.buildVimPlugin rec {
-            pname = "nvim-tairiki";
-            version = "0.1";
-            src = pkgs.fetchFromGitHub rec {
-              owner = "deparr";
-              repo = "tairiki.nvim";
-              rev = "7dd9a81f96280cfd4789582c7165787b456f1577";
-              sha256 = "sha256-FRqBpvC3XyO677rtKbBOJL2kanIM6sdv9UqjZSyxkqw";
-            };
-          })
-          (pkgs.vimUtils.buildVimPlugin rec {
             pname = "nvim-solarized";
             version = "3.6.0";
             src = pkgs.fetchFromGitHub rec {
