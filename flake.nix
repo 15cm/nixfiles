@@ -127,6 +127,7 @@
             ];
             extraSpecialArgs = (v.extraSpecialArgs or { }) // rec {
               inherit state;
+              nixvimLib = nixvim.lib.nixvim;
               nixinfo = {
                 inherit configName;
                 projectRoot = "/nixfiles";
