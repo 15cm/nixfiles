@@ -70,6 +70,10 @@ in {
             '';
           }
           {
+            key = "<leader>,";
+            action = "<cmd>Telescope buffers<CR>";
+          }
+          {
             key = "<leader>.";
             action = "<cmd>Telescope find_files<CR>";
           }
@@ -88,10 +92,6 @@ in {
             '';
           }
           {
-            key = "<leader>bb";
-            action = "<cmd>Telescope buffers<CR>";
-          }
-          {
             mode = [ "" "!" ];
             key = "<A-c>";
             action = "<cmd>Telescope yank_history<CR>";
@@ -100,6 +100,15 @@ in {
             mode = [ "" "!" ];
             key = "<A-x>";
             action = "<cmd>Telescope commands<CR>";
+          }
+          {
+            mode = [ "" "!" ];
+            key = "<C-s>";
+            action = "<cmd>up<CR>";
+          }
+          {
+            key = "<leader>bb";
+            action = "<cmd>Telescope buffers<CR>";
           }
           {
             key = "<leader>bn";
@@ -114,13 +123,13 @@ in {
             action = "<cmd>Neogit<CR>";
           }
           {
-            key = "s";
+            key = "t";
             action = nixvimLib.mkRaw ''function() require("flash").jump() end'';
             options.desc = "Flash";
           }
           {
             mode = "c";
-            key = "<C-s>";
+            key = "<C-/>";
             action =
               nixvimLib.mkRaw ''function() require("flash").toggle() end'';
             options.desc = "Toggle Flash Search";
@@ -168,6 +177,20 @@ in {
               };
             };
           };
+          treesitter = {
+            enable = true;
+            settings = {
+              # NOTE: You can set whether `nvim-treesitter` should automatically install the grammars.
+              auto_install = false;
+              ensure_installed = [
+                "git_config"
+                "git_rebase"
+                "gitattributes"
+                "gitcommit"
+                "gitignore"
+              ];
+            };
+          };
           project-nvim = { enable = true; };
           yanky = {
             enable = true;
@@ -212,6 +235,22 @@ in {
               ];
             };
           };
+          nvim-autopairs = { enable = true; };
+          rainbow = { enable = true; };
+          lsp = {
+            enable = true;
+            servers = { };
+          };
+          conform-nvim = {
+            enable = true;
+            settings = {
+              formatters_by_ft = { nix = [ "nixfmt" ]; };
+              format_on_save = {
+                timeout_ms = 500;
+                lsp_format = "fallback";
+              };
+            };
+          };
         };
         extraPlugins = with pkgs.vimPlugins; [ vim-rsi ];
         extraConfigLuaPre = ''
@@ -230,6 +269,7 @@ in {
           git.enable = true;
           fzf.enable = true;
           ripgrep.enable = true;
+          gcc.enable = true;
         };
       };
     }
