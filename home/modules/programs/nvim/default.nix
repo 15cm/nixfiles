@@ -49,7 +49,13 @@ in {
           }
           {
             key = "<leader>ff";
-            action = "<cmd>Yazi<CR>";
+            action = nixvimLib.mkRaw ''
+              function()
+                local fb = require("telescope").extensions.file_browser.file_browser
+                local utils = require("telescope.utils")
+                fb { cwd = utils.buffer_dir() }
+              end
+            '';
           }
           {
             key = "<leader>fr";
@@ -179,6 +185,7 @@ in {
           };
           treesitter = {
             enable = true;
+            folding = true;
             settings = {
               # NOTE: You can set whether `nvim-treesitter` should automatically install the grammars.
               auto_install = false;
@@ -239,7 +246,7 @@ in {
           rainbow = { enable = true; };
           lsp = {
             enable = true;
-            servers = { };
+            servers = { nixd.enable = true; };
           };
           conform-nvim = {
             enable = true;
