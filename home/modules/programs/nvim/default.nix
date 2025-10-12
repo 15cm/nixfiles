@@ -3,6 +3,8 @@
 with lib;
 let cfg = config.my.programs.nvim;
 in {
+  imports = [ ./avante.nix ];
+
   options.my.programs.nvim = {
     enable = mkEnableOption "Neo Vim";
     viAlias = mylib.mkDefaultTrueEnableOption "Vi Alias";
@@ -12,9 +14,6 @@ in {
     {
       my.programs.nvim.colorscheme =
         (if state.theme == "light" then "solarized" else "kanagawa");
-      programs.zsh.initContent = (mkOrder 750 ''
-        export AVANTE_ANTHROPIC_API_KEY=$(cat ${config.sops.secrets.avanteAnthropicApiKey.path})
-      '');
       programs.nixvim = {
         enable = true;
         opts = {
@@ -380,24 +379,6 @@ in {
             };
           };
           highlight-colors.enable = true;
-          avante = {
-            enable = true;
-            settings = {
-              instructions_file = "avante.md";
-              provider = "claude";
-              providers = {
-                claude = {
-                  endpoint = "https://api.anthropic.com";
-                  model = "claude-sonnet-4-20250514";
-                  timeout = 30000; # Timeout in milliseconds
-                  extra_request_body = {
-                    temperature = 0.75;
-                    max_tokens = 20480;
-                  };
-                };
-              };
-            };
-          };
         };
         extraPlugins = with pkgs.vimPlugins; [
           vim-rsi
