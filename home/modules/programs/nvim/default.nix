@@ -32,12 +32,24 @@ in {
             action = "<cmd>Yazi<CR>";
           }
           {
+            key = "<leader>;";
+            action = "<cmd>Yazi<CR>";
+          }
+          {
+            key = "<leader>:";
+            action = "<cmd>Yazi toogle<CR>";
+          }
+          {
+            key = "<leader>'";
+            action = "<cmd>Yazi cwd<CR>";
+          }
+          {
             key = "<leader>ft";
             action = "<cmd>Neotree toggle<CR>";
           }
           {
             key = "<leader>ff";
-            action = "<cmd>Telescope find_files<CR>";
+            action = "<cmd>Yazi<CR>";
           }
           {
             key = "<leader>fr";
@@ -45,7 +57,35 @@ in {
           }
           {
             key = "<leader>ss";
+            action = "<cmd>Telescope current_buffer_fuzzy_find<CR>";
+          }
+          {
+            key = "<leader>sS";
+            action = nixvimLib.mkRaw ''
+              function()
+                require("telescope.builtin").current_buffer_fuzzy_find {
+                  default_text = table.concat(get_selection())
+                }
+              end
+            '';
+          }
+          {
+            key = "<leader>.";
+            action = "<cmd>Telescope find_files<CR>";
+          }
+          {
+            key = "<leader>/";
             action = "<cmd>Telescope live_grep<CR>";
+          }
+          {
+            key = "<leader>*";
+            action = nixvimLib.mkRaw ''
+              function()
+                require("telescope.builtin").live_grep {
+                  default_text = table.concat(get_selection())
+                }
+              end
+            '';
           }
           {
             key = "<leader>bb";
@@ -90,16 +130,12 @@ in {
             action = "<cmd>Telescope projects<CR>";
           }
           {
-            key = "<leader>pn";
+            key = "<leader>pa";
             action = "<cmd>ProjectAdd<CR>";
           }
           {
             key = "<leader>pd";
             action = "<cmd>ProjectDelete<CR>";
-          }
-          {
-            key = "<leader>p/";
-            action = "<cmd>ProjectFzf<CR>";
           }
         ];
 
@@ -110,7 +146,27 @@ in {
           "web-devicons".enable = true;
           telescope = {
             enable = true;
-            extensions = { "file-browser".enable = true; };
+            extensions = {
+              file-browser.enable = true;
+              fzf-native = {
+                enable = true;
+                settings = {
+                  case_mode = "smart_case";
+                  fuzzy = true;
+                };
+              };
+            };
+            settings = {
+              defaults = {
+                mappings = {
+                  i = {
+                    "<ESC>" =
+                      nixvimLib.mkRaw "require('telescope.actions').close";
+                    "<C-h>" = "which_key";
+                  };
+                };
+              };
+            };
           };
           project-nvim = { enable = true; };
           yanky = {
@@ -123,7 +179,7 @@ in {
           };
           flash = { enable = true; };
           airline = { enable = true; };
-          fzf-lua = { enable = true; };
+          auto-session = { enable = true; };
           yazi = {
             enable = true;
             settings = {
@@ -158,10 +214,23 @@ in {
           };
         };
         extraPlugins = with pkgs.vimPlugins; [ vim-rsi ];
+        extraConfigLuaPre = ''
+          get_selection = function()
+            return vim.fn.getregion(
+              vim.fn.getpos ".", vim.fn.getpos "v", { mode = vim.fn.mode() }
+            )
+          end
+        '';
         extraConfigLua = ''
           require("project").setup()
           require("telescope").load_extension("projects")
+          require("auto-session").setup({})
         '';
+        dependencies = {
+          git.enable = true;
+          fzf.enable = true;
+          ripgrep.enable = true;
+        };
       };
     }
     (mkIf cfg.viAlias { programs.zsh.shellAliases = { vi = "nvim"; }; })
