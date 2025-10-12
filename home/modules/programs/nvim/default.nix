@@ -113,6 +113,11 @@ in {
             action = "<cmd>up<CR>";
           }
           {
+            mode = [ "" "!" ];
+            key = "<C-y>";
+            action = nixvimLib.mkRaw ''require("wincent.clipper.clip") '';
+          }
+          {
             key = "<leader>bb";
             action = "<cmd>Telescope buffers<CR>";
           }
@@ -152,13 +157,22 @@ in {
             key = "<leader>pd";
             action = "<cmd>ProjectDelete<CR>";
           }
+          {
+            key = "<leader>ca";
+            action = nixvimLib.mkRaw "vim.lsp.buf.code_action";
+          }
+          {
+            key = "<leader>cd";
+            action = "<cmd>Telescope diagnostics<CR>";
+          }
         ];
 
         plugins = {
-          "lz-n".enable = true;
+          lz-n.enable = true;
+          noice.enable = true;
           nix = { enable = true; };
-          "neo-tree" = { enable = true; };
-          "web-devicons".enable = true;
+          neo-tree = { enable = true; };
+          web-devicons.enable = true;
           telescope = {
             enable = true;
             extensions = {
@@ -228,15 +242,19 @@ in {
             settings = {
               spec = [
                 {
-                  __unkeyed-1 = "<leader>b";
+                  __unkeyed-b = "<leader>b";
                   group = "Buffers";
                 }
                 {
-                  __unkeyed-2 = "<leader>f";
+                  __unkeyed-c = "<leader>c";
+                  group = "Buffers";
+                }
+                {
+                  __unkeyed-f = "<leader>f";
                   group = "Files";
                 }
                 {
-                  __unkeyed-3 = "<leader>p";
+                  __unkeyed-p = "<leader>p";
                   group = "Projects";
                 }
               ];
@@ -244,10 +262,35 @@ in {
           };
           nvim-autopairs = { enable = true; };
           rainbow = { enable = true; };
-          lsp = {
+          nvim-surround = { enable = true; };
+          lspconfig = { enable = true; };
+          cmp = {
             enable = true;
-            servers = { nixd.enable = true; };
+            autoEnableSources = true;
+            settings = {
+              sources = [
+                { name = "nvim_lsp"; }
+                { name = "path"; }
+                { name = "buffer"; }
+              ];
+              mapping = {
+                __raw = ''
+                  {
+                    ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select}),
+                    ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select}),
+                    ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert}),
+                    ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert}),
+                    ['<C-Space>'] = cmp.mapping.complete(),
+                    ['<C-g>'] = cmp.mapping.close(),
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                  }
+                '';
+              };
+            };
           };
+          cmp-nvim-lsp = { enable = true; };
+          cmp-buffer = { enable = true; };
+          cmp-path = { enable = true; };
           conform-nvim = {
             enable = true;
             settings = {
@@ -259,7 +302,19 @@ in {
             };
           };
         };
-        extraPlugins = with pkgs.vimPlugins; [ vim-rsi ];
+        extraPlugins = with pkgs.vimPlugins; [
+          vim-rsi
+          (pkgs.vimUtils.buildVimPlugin rec {
+            pname = "nvim-clipper";
+            version = "0.1";
+            src = pkgs.fetchFromGitHub rec {
+              owner = "wincent";
+              repo = "nvim-clipper";
+              rev = version;
+              sha256 = "sha256-usaYu9Cd+/oXgKMDu76FGAqLW41NitX/Jfl0AptTNI0=";
+            };
+          })
+        ];
         extraConfigLuaPre = ''
           get_selection = function()
             return vim.fn.getregion(
@@ -271,6 +326,10 @@ in {
           require("project").setup()
           require("telescope").load_extension("projects")
           require("auto-session").setup({})
+          vim.lsp.enable("nixd")
+          require('wincent.clipper').setup({
+            autocmd = false
+          })
         '';
         dependencies = {
           git.enable = true;
