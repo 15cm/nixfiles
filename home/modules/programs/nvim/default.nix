@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.my.programs.nvim;
 in {
-  imports = [ ./avante.nix ./nix.nix ];
+  imports = [ ./avante.nix ./nix.nix ./clipper.nix ./text-edit.nix ];
 
   options.my.programs.nvim = {
     enable = mkEnableOption "Neo Vim";
@@ -106,7 +106,7 @@ in {
             key = "<leader>sd";
             action = nixvimLib.mkRaw ''
               function()
-                local lg = require("telescope.live_grep")
+                local lg = require("telescope.builtin").live_grep
                 local utils = require("telescope.utils")
                 lg { cwd = utils.buffer_dir() }
               end
@@ -116,7 +116,7 @@ in {
             key = "<leader>sD";
             action = nixvimLib.mkRaw ''
               function()
-                local lg = require("telescope.live_grep")
+                local lg = require("telescope.builtin").live_grep
                 local utils = require("telescope.utils")
                 lg {
                   cw= utils.buffer_dir(), 
@@ -161,11 +161,6 @@ in {
           }
           {
             mode = [ "" "!" ];
-            key = "<A-c>";
-            action = "<cmd>Telescope yank_history<CR>";
-          }
-          {
-            mode = [ "" "!" ];
             key = "<A-x>";
             action = "<cmd>Telescope commands<CR>";
           }
@@ -173,11 +168,6 @@ in {
             mode = [ "" "!" ];
             key = "<C-s>";
             action = "<cmd>up<CR>";
-          }
-          {
-            mode = [ "" "!" ];
-            key = "<C-y>";
-            action = nixvimLib.mkRaw ''require("wincent.clipper.clip") '';
           }
           {
             key = "<leader>bb";
@@ -194,18 +184,6 @@ in {
           {
             key = "<leader>gg";
             action = "<cmd>Neogit<CR>";
-          }
-          {
-            key = "t";
-            action = nixvimLib.mkRaw ''function() require("flash").jump() end'';
-            options.desc = "Flash";
-          }
-          {
-            mode = "c";
-            key = "<C-/>";
-            action =
-              nixvimLib.mkRaw ''function() require("flash").toggle() end'';
-            options.desc = "Toggle Flash Search";
           }
           {
             key = "<leader>pp";
@@ -275,10 +253,6 @@ in {
           };
           fzf-lua.enable = true;
           project-nvim = { enable = true; };
-          yanky = {
-            enable = true;
-            enableTelescope = true;
-          };
           neogit = {
             enable = true;
             lazyLoad = { settings = { cmd = "Neogit"; }; };
@@ -287,7 +261,6 @@ in {
             enable = true;
             lazyLoad = { settings = { cmd = "GitBlameToggle"; }; };
           };
-          flash = { enable = true; };
           airline = {
             enable = true;
             settings.theme = "tomorrow";
@@ -337,9 +310,7 @@ in {
               ];
             };
           };
-          nvim-autopairs = { enable = true; };
           rainbow = { enable = true; };
-          nvim-surround = { enable = true; };
           lspconfig = { enable = true; };
           cmp = {
             enable = true;
@@ -383,16 +354,6 @@ in {
           vim-rsi
           vim-airline-themes
           (pkgs.vimUtils.buildVimPlugin rec {
-            pname = "nvim-clipper";
-            version = "0.1";
-            src = pkgs.fetchFromGitHub rec {
-              owner = "wincent";
-              repo = "nvim-clipper";
-              rev = version;
-              sha256 = "sha256-usaYu9Cd+/oXgKMDu76FGAqLW41NitX/Jfl0AptTNI0=";
-            };
-          })
-          (pkgs.vimUtils.buildVimPlugin rec {
             pname = "nvim-solarized";
             version = "3.6.0";
             src = pkgs.fetchFromGitHub rec {
@@ -415,9 +376,6 @@ in {
           require("project").setup()
           require("telescope").load_extension("projects")
           require("auto-session").setup({})
-          require('wincent.clipper').setup({
-            autocmd = false
-          })
         '';
         dependencies = {
           git.enable = true;
