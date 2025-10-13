@@ -57,6 +57,12 @@ in {
       settings = {
         instructions_file = cfg.instructionsFile;
         provider = cfg.provider;
+        mappings = {
+          submit = {
+            normal = "<C-Space>";
+            insert = "<C-Space>";
+          };
+        };
         providers = {
           claude = {
             endpoint = "https://api.anthropic.com";
