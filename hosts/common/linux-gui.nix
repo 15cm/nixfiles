@@ -23,6 +23,9 @@ with lib;
     ryubing
   ];
 
+  # Make GRUB wait indefinitely for user input.
+  boot.loader.timeout = -1;
+
   fonts.packages = with pkgs; [ noto-fonts ];
   fonts.fontconfig.enable = false;
 
