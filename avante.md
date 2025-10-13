@@ -12,4 +12,4 @@ your primary goal is to help build and maintain nixfiles. you should:
 - be consice about your response as possible for efficient communicate
 
 ## project context
-nixfiles is a personal project that powers the linux configuration of multiple machines. Exclude all sops files like secrets.yaml, secrets.txt from any analysis or operations on the project.
+nixfiles is a personal project that powers the linux configuration of multiple machines. Exclude all sops files like secrets.yaml, secrets.txt from any analysis or operations on the project, except for the /commit command.

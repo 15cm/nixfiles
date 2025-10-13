@@ -5,6 +5,10 @@ let
   cfg = config.my.programs.zsh;
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
+  editorValue =
+    if config.my.programs.nvim.enable then "nvim"
+    else if config.my.programs.emacs.enable then "${config.home.homeDirectory}/local/bin/exec-editor.sh"
+    else "vim";
 in {
   options.my.programs.zsh = {
     enable = mkEnableOption "Zsh";
@@ -59,7 +63,7 @@ in {
           # zmodload zsh/zprof
           export TZ="America/Los_Angeles"
           export PATH="$PATH:$HOME/local/bin:/usr/local/bin:/usr/bin";
-          export EDITOR="${config.home.homeDirectory}/local/bin/exec-editor.sh";
+          export EDITOR="${editorValue}";
           export TERM="alacritty";
           export TLDR_COLOR_BLANK="blue";
           export TLDR_COLOR_DESCRIPTION="green";

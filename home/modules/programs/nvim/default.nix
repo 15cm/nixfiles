@@ -22,6 +22,7 @@ in {
           shiftwidth = 2; # Tab width should be 2
           background = state.theme;
           hlsearch = true;
+          ignorecase = true;
           smartcase = true;
         };
         colorscheme = cfg.colorscheme;

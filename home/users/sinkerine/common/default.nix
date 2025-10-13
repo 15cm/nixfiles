@@ -18,4 +18,5 @@
     gnupg.sshKeyPaths = [ ];
   };
   sops.secrets.avanteAnthropicApiKey = { sopsFile = ./secrets.yaml; };
+  sops.secrets.avanteOpenaiApiKey = { sopsFile = ./secrets.yaml; };
 }

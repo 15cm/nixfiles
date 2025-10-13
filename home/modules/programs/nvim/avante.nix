@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ nixvimLib, config, lib, ... }:
 
 with lib;
 let
@@ -23,7 +23,7 @@ in {
     claude = {
       model = mkOption {
         type = types.str;
-        default = "claude-3-5-sonnet-20241022";
+        default = "claude-sonnet-4-20250514";
         description = "Claude model to use";
       };
 
@@ -77,8 +77,36 @@ in {
     # Export API key environment variable
     programs.zsh.initContent = mkOrder 750 ''
       export AVANTE_ANTHROPIC_API_KEY=$(cat ${config.sops.secrets.avanteAnthropicApiKey.path})
-      export AVANTE_OPEN_AI_API_KEY=$(cat ${config.sops.secrets.avanteOpenAiApiKey.path})
+      export AVANTE_OPENAI_API_KEY=$(cat ${config.sops.secrets.avanteOpenaiApiKey.path})
     '';
+
+    programs.nixvim.keymaps = [
+      {
+        key = "<leader>apo";
+        action = nixvimLib.mkRaw ''
+          function() require("avante.api").switch_provider("openai") end
+        '';
+        options.desc = "avante: switch_provider openai";
+      }
+      {
+        key = "<leader>apc";
+        action = nixvimLib.mkRaw ''
+          function() require("avante.api").switch_provider("claude") end
+        '';
+        options.desc = "avante: switch_provider claude";
+      }
+    ];
+
+    programs.nixvim.plugins.which-key.settings.spec = [
+      {
+        __unkeyed-a = "<leader>a";
+        group = "Avante";
+      }
+      {
+        __unkeyed-ap = "<leader>ap";
+        group = "Avante SwitchProvider";
+      }
+    ];
 
     # Configure the Avante plugin
     programs.nixvim.plugins.avante = {
@@ -88,8 +116,8 @@ in {
         provider = cfg.provider;
         mappings = {
           submit = {
-            normal = "<C-Space>";
-            insert = "<C-Space>";
+            normal = "<CR>";
+            insert = "<A-Enter>";
           };
         };
         providers = {
