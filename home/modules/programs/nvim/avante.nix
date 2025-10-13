@@ -14,34 +14,62 @@ in {
       description = "AI provider to use (claude, openai, etc.)";
     };
 
-    model = mkOption {
-      type = types.str;
-      default = "claude-sonnet-4-20250514";
-      description = "AI model to use";
-    };
-
-    timeout = mkOption {
-      type = types.int;
-      default = 30000;
-      description = "Request timeout in milliseconds";
-    };
-
-    temperature = mkOption {
-      type = types.float;
-      default = 0.75;
-      description = "AI model temperature setting";
-    };
-
-    maxTokens = mkOption {
-      type = types.int;
-      default = 20480;
-      description = "Maximum tokens for AI responses";
-    };
-
     instructionsFile = mkOption {
       type = types.str;
       default = "avante.md";
       description = "Instructions file for Avante";
+    };
+
+    claude = {
+      model = mkOption {
+        type = types.str;
+        default = "claude-3-5-sonnet-20241022";
+        description = "Claude model to use";
+      };
+
+      timeout = mkOption {
+        type = types.int;
+        default = 30000;
+        description = "Request timeout in milliseconds";
+      };
+
+      temperature = mkOption {
+        type = types.float;
+        default = 0.5;
+        description = "Claude model temperature setting";
+      };
+
+      maxTokens = mkOption {
+        type = types.int;
+        default = 4096;
+        description = "Maximum tokens for Claude responses";
+      };
+    };
+
+    openai = {
+      model = mkOption {
+        type = types.str;
+        default = "gpt-4o";
+        description = "OpenAI model to use";
+      };
+
+      timeout = mkOption {
+        type = types.int;
+        default = 30000;
+        description = "Request timeout in milliseconds";
+      };
+
+      temperature = mkOption {
+        type = types.float;
+        default = 0.3;
+        description = "OpenAI model temperature setting";
+      };
+
+      maxTokens = mkOption {
+        type = types.int;
+        default = 4096;
+        description = "Maximum tokens for OpenAI responses";
+      };
     };
   };
 
@@ -49,6 +77,7 @@ in {
     # Export API key environment variable
     programs.zsh.initContent = mkOrder 750 ''
       export AVANTE_ANTHROPIC_API_KEY=$(cat ${config.sops.secrets.avanteAnthropicApiKey.path})
+      export AVANTE_OPEN_AI_API_KEY=$(cat ${config.sops.secrets.avanteOpenAiApiKey.path})
     '';
 
     # Configure the Avante plugin
@@ -66,11 +95,20 @@ in {
         providers = {
           claude = {
             endpoint = "https://api.anthropic.com";
-            model = cfg.model;
-            timeout = cfg.timeout;
+            model = cfg.claude.model;
+            timeout = cfg.claude.timeout;
             extra_request_body = {
-              temperature = cfg.temperature;
-              max_tokens = cfg.maxTokens;
+              temperature = cfg.claude.temperature;
+              max_tokens = cfg.claude.maxTokens;
+            };
+          };
+          openai = {
+            endpoint = "https://api.openai.com/v1";
+            model = cfg.openai.model;
+            timeout = cfg.openai.timeout;
+            extra_request_body = {
+              temperature = cfg.openai.temperature;
+              max_tokens = cfg.openai.maxTokens;
             };
           };
         };
