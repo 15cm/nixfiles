@@ -11,7 +11,6 @@ in {
     fd
     htop
     lsof
-    ripgrep
     silver-searcher
     bind
     hunspell
@@ -34,6 +33,7 @@ in {
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
   my.programs.powerline.enable = true;
+
   programs.bottom = {
     enable = true;
     settings = {
@@ -46,5 +46,9 @@ in {
   programs.tealdeer = {
     enable = true;
     settings = { updates = { auto_update = true; }; };
+  };
+  programs.ripgrep = {
+    enable = true;
+    arguments = [ "--smart-case" ];
   };
 }
