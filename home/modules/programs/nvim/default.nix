@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.my.programs.nvim;
 in {
-  imports = [ ./avante.nix ];
+  imports = [ ./avante.nix ./nix.nix ];
 
   options.my.programs.nvim = {
     enable = mkEnableOption "Neo Vim";
@@ -232,7 +232,6 @@ in {
         plugins = {
           lz-n.enable = true;
           noice.enable = true;
-          nix = { enable = true; };
           orgmode = { enable = true; };
           neo-tree = { enable = true; };
           web-devicons.enable = true;
@@ -372,7 +371,6 @@ in {
           conform-nvim = {
             enable = true;
             settings = {
-              formatters_by_ft = { nix = [ "nixfmt" ]; };
               format_on_save = {
                 timeout_ms = 500;
                 lsp_format = "fallback";
@@ -417,7 +415,6 @@ in {
           require("project").setup()
           require("telescope").load_extension("projects")
           require("auto-session").setup({})
-          vim.lsp.enable("nixd")
           require('wincent.clipper').setup({
             autocmd = false
           })
