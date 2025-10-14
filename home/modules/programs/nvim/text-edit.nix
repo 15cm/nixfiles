@@ -67,17 +67,16 @@ in {
           {
             mode = "c";
             key = cfg.flash.toggleKey;
-            action = nixvimLib.mkRaw ''function() require("flash").toggle() end'';
+            action =
+              nixvimLib.mkRaw ''function() require("flash").toggle() end'';
             options.desc = "Toggle Flash Search";
           }
         ])
-        (mkIf cfg.yanky.enable [
-          {
-            mode = [ "" "!" ];
-            key = "<A-c>";
-            action = "<cmd>Telescope yank_history<CR>";
-          }
-        ])
+        (mkIf cfg.yanky.enable [{
+          mode = [ "" "!" ];
+          key = "<A-c>";
+          action = "<cmd>Telescope yank_history<CR>";
+        }])
       ];
 
       plugins = {
