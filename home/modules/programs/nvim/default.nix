@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.my.programs.nvim;
 in {
-  imports = [ ./avante.nix ./nix.nix ./clipper.nix ./text-edit.nix ];
+  imports = [ ./avante.nix ./nix.nix ./clipper.nix ./text-edit.nix ./completion.nix ];
 
   options.my.programs.nvim = {
     enable = mkEnableOption "Neo Vim";
@@ -24,6 +24,7 @@ in {
           hlsearch = true;
           ignorecase = true;
           smartcase = true;
+          completeopt = [ "menu" "menuone" "noselect" ];
         };
         colorscheme = cfg.colorscheme;
         colorschemes.kanagawa = { enable = true; };
@@ -311,34 +312,6 @@ in {
             };
           };
           rainbow = { enable = true; };
-          lspconfig = { enable = true; };
-          cmp = {
-            enable = true;
-            autoEnableSources = true;
-            settings = {
-              sources = [
-                { name = "nvim_lsp"; }
-                { name = "path"; }
-                { name = "buffer"; }
-              ];
-              mapping = {
-                __raw = ''
-                  {
-                    ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select}),
-                    ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select}),
-                    ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert}),
-                    ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert}),
-                    ['<C-Space>'] = cmp.mapping.complete(),
-                    ['<C-g>'] = cmp.mapping.close(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-                  }
-                '';
-              };
-            };
-          };
-          cmp-nvim-lsp = { enable = true; };
-          cmp-buffer = { enable = true; };
-          cmp-path = { enable = true; };
           conform-nvim = {
             enable = true;
             settings = {
