@@ -35,7 +35,7 @@ in {
 
       temperature = mkOption {
         type = types.float;
-        default = 0.5;
+        default = 0.2;
         description = "Claude model temperature setting";
       };
 
@@ -61,7 +61,7 @@ in {
 
       temperature = mkOption {
         type = types.float;
-        default = 0.3;
+        default = 0.2;
         description = "OpenAI model temperature setting";
       };
 
