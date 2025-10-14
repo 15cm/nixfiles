@@ -3,7 +3,8 @@
 with lib;
 let cfg = config.my.programs.nvim;
 in {
-  imports = [ ./avante.nix ./nix.nix ./clipper.nix ./text-edit.nix ./completion.nix ];
+  imports =
+    [ ./avante.nix ./nix.nix ./clipper.nix ./text-edit.nix ./completion.nix ./ide.nix ];
 
   options.my.programs.nvim = {
     enable = mkEnableOption "Neo Vim";
@@ -197,14 +198,6 @@ in {
           {
             key = "<leader>pd";
             action = "<cmd>ProjectDelete<CR>";
-          }
-          {
-            key = "<leader>ca";
-            action = nixvimLib.mkRaw "vim.lsp.buf.code_action";
-          }
-          {
-            key = "<leader>cd";
-            action = "<cmd>Telescope diagnostics<CR>";
           }
         ];
 
