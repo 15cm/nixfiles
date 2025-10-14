@@ -66,12 +66,7 @@ with lib; {
   };
   my.programs.fontconfig.enableGui = true;
 
-  my.programs.emacs = {
-    package = pkgs.emacs;
-    # Fixes non-standard home directory.
-    # https://emacs.stackexchange.com/questions/34022/error-initialization-user-has-no-home-directory
-    extraOptions = [ "--user" "''" ];
-  };
+  my.programs.nvim = { enable = true; };
   my.services.copyq.enable = true;
   my.services.clipper.enable = true;
   my.services.dunst.enable = true;
