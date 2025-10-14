@@ -1,4 +1,4 @@
-{ nixvimLib, config, lib, ... }:
+{ nixvimLib, config, lib, pkgs, ... }:
 
 with lib;
 let
@@ -12,6 +12,7 @@ in {
   };
 
   config = mkIf (nvimCfg.enable && cfg.enable) {
+    home.packages = with pkgs; [ nixfmt-classic nixd ];
     programs.nixvim = {
       plugins = {
         nix = { enable = true; };
@@ -21,6 +22,7 @@ in {
       extraConfigLua = ''
         vim.lsp.enable("nixd")
       '';
+
     };
   };
 }

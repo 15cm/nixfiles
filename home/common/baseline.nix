@@ -6,7 +6,6 @@ in {
   programs.home-manager.enable = true;
 
   home.packages = (with pkgs; [
-    nixfmt-classic
     eza
     fd
     htop
