@@ -91,7 +91,7 @@ in {
     lockService = "hyprlock.service";
   };
 
-  services.logind = mkForce {
+  services.logind.settings.Login = mkForce {
     lidSwitch = "suspend";
     lidSwitchDocked = "suspend";
     lidSwitchExternalPower = "ignore";
