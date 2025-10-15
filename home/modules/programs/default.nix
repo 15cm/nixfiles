@@ -23,5 +23,6 @@
     ./jetbrains
     ./firefox
     ./nvim
+    ./baidupcs-go.nix
   ];
 }
