@@ -146,7 +146,6 @@ bindsym $mod+o mode "launcher"
 
 mode "launcher" {
      bindsym f exec firefox; mode "default"
-     bindsym e exec emacsclient -c; mode "default"
      bindsym s exec flameshot gui; mode "default"
      # On the 4K display of desktop, 2x scale is too large. Fractional scaling are not honored by nautilus.
      bindsym d exec {%if hostname == "kazuki"%} GDK_SCALE=1 {%endif%} nautilus -w ~; mode "default"

@@ -181,11 +181,6 @@ in {
     snoo = "switch-nix-os.sh --option substitute false";
     bno = "build-nix-os.sh";
   };
-  my.programs.emacs = {
-    package = pkgs.emacs-pgtk;
-    enableSSHConfigRepo = true;
-    startAfterGraphicalSession = true;
-  };
   my.programs.nvim = {
     enable = true;
     avante.enable = true;

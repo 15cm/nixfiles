@@ -40,8 +40,8 @@
     nixvim = { url = "github:nix-community/nixvim"; };
   };
 
-  outputs = { self, nixpkgs, home-manager, nur, nixgl, flake-utils, sops-nix
-    , kmonad, nixos-hardware, deploy-rs, hyprland, nixvim, ... }:
+  outputs = { self, nixpkgs, home-manager, nur, nixgl, sops-nix, kmonad
+    , nixos-hardware, deploy-rs, hyprland, nixvim, ... }:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
