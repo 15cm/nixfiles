@@ -3,8 +3,14 @@
 with lib;
 let cfg = config.my.programs.nvim;
 in {
-  imports =
-    [ ./avante.nix ./nix.nix ./clipper.nix ./text-edit.nix ./completion.nix ./ide.nix ];
+  imports = [
+    ./avante.nix
+    ./nix.nix
+    ./clipper.nix
+    ./text-edit.nix
+    ./completion.nix
+    ./ide.nix
+  ];
 
   options.my.programs.nvim = {
     enable = mkEnableOption "Neo Vim";
@@ -204,7 +210,13 @@ in {
         plugins = {
           lz-n.enable = true;
           noice.enable = true;
-          orgmode = { enable = true; };
+          orgmode = {
+            enable = true;
+            settings = {
+              org_agenda_files = "~/org/**/*";
+              org_default_notes_file = "~/org/inbox.org";
+            };
+          };
           neo-tree = { enable = true; };
           web-devicons.enable = true;
           telescope = {
