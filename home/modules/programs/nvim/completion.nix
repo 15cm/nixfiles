@@ -31,7 +31,7 @@ in {
                   ['<Tab>'] = cmp.mapping.select_next_item(),
                   ['<C-Space>'] = cmp.mapping.complete(),
                   ['<C-g>'] = cmp.mapping.close(),
-                  ['<CR>'] = cmp.mapping.confirm({ select = false }),
+                  ['<CR>'] = cmp.mapping.confirm(),
                 }
               '';
             };

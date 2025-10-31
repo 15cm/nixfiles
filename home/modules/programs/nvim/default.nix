@@ -31,7 +31,6 @@ in {
           hlsearch = true;
           ignorecase = true;
           smartcase = true;
-          completeopt = [ "menu" "menuone" "noselect" ];
         };
         colorscheme = cfg.colorscheme;
         colorschemes.kanagawa = { enable = true; };
