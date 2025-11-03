@@ -214,6 +214,7 @@ in {
             settings = {
               org_agenda_files = "~/org/**/*";
               org_default_notes_file = "~/org/inbox.org";
+              org_startup_indented = true;
             };
           };
           neo-tree = { enable = true; };
