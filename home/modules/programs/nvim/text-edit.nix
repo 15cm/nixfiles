@@ -53,6 +53,14 @@ in {
         description = "Enable yanky for enhanced yank/paste functionality";
       };
     };
+
+    wrapping = {
+      enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Enable wrapping.nvim for text wrapping functionality";
+      };
+    };
   };
 
   config = mkIf (nvimCfg.enable && cfg.enable) {
@@ -86,6 +94,10 @@ in {
         yanky = mkIf cfg.yanky.enable {
           enable = true;
           enableTelescope = true;
+        };
+        wrapping = mkIf cfg.wrapping.enable {
+          enable = true;
+          settings = { auto_set_mode_filetype_allowlist = [ "md" "org" ]; };
         };
       };
     };
