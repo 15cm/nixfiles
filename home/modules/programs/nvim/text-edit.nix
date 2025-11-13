@@ -97,7 +97,13 @@ in {
         };
         wrapping = mkIf cfg.wrapping.enable {
           enable = true;
-          settings = { auto_set_mode_filetype_allowlist = [ "md" "org" ]; };
+          settings = {
+            auto_set_mode_filetype_allowlist = [ "markdown" "org" ];
+            softener = {
+              markdown = true;
+              org = true;
+            };
+          };
         };
       };
     };
