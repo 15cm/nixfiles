@@ -25,8 +25,6 @@ Run `BIOS_BOOT=1 bash /nixfiles/bootstrap/nixos-root-on-ext4/install.sh <hostnam
 
 ### 5 Create zpool
 
-#### Untrusted Host
-
 Always create an unencrypted pool.
 
 ```
@@ -44,6 +42,8 @@ zpool create \
     <zfs_partition>
 ```
 
+#### Untrusted Host
+
 For the untrusted host where zfs key won't be loaded, create an unencrypted dataset to [allow placeholder datasets to be created](https://zrepl.github.io/configuration/sendrecvoptions.html#placeholders).
 
 ```
@@ -57,7 +57,7 @@ For the trusted host where zfs key will be loaded, create an encrypted pool.
 
 ```
 zfs create \
-    -o mountpoint=none
+    -o mountpoint=none \
     -o encryption=aes-256-gcm \
     -o keyformat=passphrase \
     -o keylocation=prompt \

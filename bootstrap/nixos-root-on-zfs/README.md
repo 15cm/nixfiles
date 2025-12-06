@@ -88,6 +88,8 @@ The `neededForBoot=true` in the sed replacement of hardware-configuration.nix is
 
 ### To restore from an existing snapshot data
 
+#### For zfs root home
+
 On the new machine, destroy the existing dataset:
 ``` sh
 zfs destroy -r rpool/data/home/sinkerine
@@ -104,6 +106,21 @@ Create the backup-disabled datasets back as needed:
 zfs create -o canmount=on rpool/data/home/sinkerine/.cache
 zfs create -o canmount=on rpool/data/home/sinkerine/vmware
 chown -R 1000:1000 /mnt/home/sinkerine/.cache /mnt/home/sinkerine/vmware
+```
+
+#### For recursive tank dataset, such as vps to vps
+
+Configure root SSH access to both remote machine.
+
+On the sender remote machine, create a recursive snapshot like:
+
+```sh
+zfs snapshot -r tank/encrypted@manual
+```
+
+Then send the dataset recursively such as:
+```sh
+ssh amane-root "zfs send -R -w -c tank/encrypted@manual" | ssh amane-new-root "zfs recv -F tank/encrypted"
 ```
 
 ### More than one matching pool found

@@ -328,10 +328,6 @@ in {
         "env FONTCONFIG_FILE=${config.home.homeDirectory}/.config/fontconfig/conf.d/10-hm-fonts.conf steam";
       terminal = false;
     };
-    webos-dev-manager = {
-      name = "WebOS Dev manager";
-      exec = applyElectronFlagsToDesktopExec "webos-dev-manager";
-    };
     # Using fcitx instead of wayland for QT_IM_MODULE fixes https://www.github.com/fcitx/fcitx5/issues/1152.
     "org.telegram.desktop" = {
       name = "Telegram Desktop";
