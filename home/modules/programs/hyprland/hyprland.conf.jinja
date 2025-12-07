@@ -65,7 +65,7 @@ input {
 
 # Frequently used shortcuts
 bind = $mainMod, Q, killactive
-bind = $mainMod, return, exec, alacritty
+bind = $mainMod, return, exec, foot
 bind = $mainMod, D, exec, wofi -iI --show drun
 bind = $mainMod, W, exec, {{windowSwitcherScript}}
 bind = $mainMod, I, exec, keepassxc
@@ -229,3 +229,4 @@ bindm = $mainMod SHIFT, mouse:272, resizewindow
 
 windowrule = opacity 0.9 override 0.9 override, match:class emacs
 windowrule = opacity 0.7 override 0.7 override, match:class Alacritty
+windowrule = opacity 0.7 override 0.7 override, match:class foot

@@ -16,6 +16,7 @@
     ./python-dev-tools
     ./yazi
     ./alacritty.nix
+    ./foot.nix
     ./vim
     ./tmux
     ./fzf.nix

@@ -105,6 +105,7 @@ in {
             };
           };
         };
+        multicursors = { enable = true; };
       };
     };
   };
