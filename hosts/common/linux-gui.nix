@@ -12,7 +12,7 @@ with lib;
     evtest
     mpv
     deploy-rs
-    glxinfo
+    mesa-demos
     ventoy
     # support both 32- and 64-bit applications
     wineWowPackages.stable

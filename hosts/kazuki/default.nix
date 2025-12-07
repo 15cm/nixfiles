@@ -34,7 +34,7 @@ with lib;
     };
   };
 
-  boot.kernelPackages = mkForce pkgs.linuxPackages_6_16;
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_17;
   my.essentials.zfs = {
     enable = true;
     enableZed = true;
@@ -78,12 +78,6 @@ with lib;
     maxConnectionPerServer = 128;
   };
   hardware.graphics.enable32Bit = true;
-
-  services.ollama = {
-    enable = false;
-    acceleration = "cuda";
-    host = "0.0.0.0";
-  };
 
   my.services.tailscale = {
     enable = true;

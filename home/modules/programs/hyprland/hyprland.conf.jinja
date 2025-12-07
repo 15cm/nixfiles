@@ -227,5 +227,5 @@ bindm = $mainMod SHIFT, mouse:273, movewindow
 # Resize windows with mainMod + shift + left mouse button and dragging
 bindm = $mainMod SHIFT, mouse:272, resizewindow
 
-windowrulev2 = opacity 0.9 0.9, class:^(emacs)$
-windowrulev2 = opacity 0.7 0.7, class:^(Alacritty)$
+windowrule = opacity 0.9 override 0.9 override, match:class emacs
+windowrule = opacity 0.7 override 0.7 override, match:class Alacritty

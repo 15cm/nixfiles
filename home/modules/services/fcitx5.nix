@@ -8,7 +8,7 @@ in {
 
     package = mkOption {
       type = types.package;
-      default = pkgs.fcitx5-with-addons.override {
+      default = pkgs.qt6Packages.fcitx5-with-addons.override {
         addons = with pkgs; [ fcitx5-rime fcitx5-mozc ];
       };
     };

@@ -59,8 +59,12 @@
           ];
           config.allowUnfree = true;
           config.nvidia.acceptLicense = true;
-          config.permittedInsecurePackages =
-            [ "electron-33.4.11" "ventoy-1.1.07" "qtwebengine-5.15.19" ];
+          config.permittedInsecurePackages = [
+            "electron-36.9.5"
+            "ventoy-1.1.07"
+            "qtwebengine-5.15.19"
+            "mbedtls-2.28.10"
+          ];
         });
 
       homeConfigurationArgs = {

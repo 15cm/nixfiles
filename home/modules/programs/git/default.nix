@@ -7,15 +7,17 @@ in {
   config = mkIf cfg.enable {
     programs.git = {
       enable = true;
-      userName = "Sinkerine";
-      userEmail = "git@15cm.net";
-      lfs = { enable = true; };
-
-      extraConfig = {
+      settings = {
+        user = {
+          name = "Sinkerine";
+          email = "git@15cm.net";
+        };
         pull.rebase = true;
         init.defaultBranch = "main";
         core.excludesfile = "~/.gitignore_global";
       };
+      lfs = { enable = true; };
+
     };
     home.file.".gitignore_global".source = ./gitignore_global;
   };
