@@ -10,8 +10,8 @@ in {
 
     provider = mkOption {
       type = types.str;
-      default = "claude";
-      description = "AI provider to use (claude, openai, etc.)";
+      default = "claude-haiku";
+      description = "AI provider to use (claude-sonnet, openai, etc.)";
     };
 
     instructionsFile = mkOption {
@@ -20,11 +20,11 @@ in {
       description = "Instructions file for Avante";
     };
 
-    claude = {
+    claude-sonnet = {
       model = mkOption {
         type = types.str;
-        default = "claude-sonnet-4-20250514";
-        description = "Claude model to use";
+        default = "claude-sonnet-4-5-20250929";
+        description = "Claude Sonnet model to use";
       };
 
       timeout = mkOption {
@@ -36,13 +36,13 @@ in {
       temperature = mkOption {
         type = types.float;
         default = 0.2;
-        description = "Claude model temperature setting";
+        description = "Claude Sonnet model temperature setting";
       };
 
       maxTokens = mkOption {
         type = types.int;
         default = 4096;
-        description = "Maximum tokens for Claude responses";
+        description = "Maximum tokens for Claude Sonnet responses";
       };
     };
 
@@ -71,6 +71,58 @@ in {
         description = "Maximum tokens for OpenAI responses";
       };
     };
+
+    claude-haiku = {
+      model = mkOption {
+        type = types.str;
+        default = "claude-haiku-4-5-20251001";
+        description = "Claude Haiku model to use";
+      };
+
+      timeout = mkOption {
+        type = types.int;
+        default = 30000;
+        description = "Request timeout in milliseconds";
+      };
+
+      temperature = mkOption {
+        type = types.float;
+        default = 0.2;
+        description = "Claude Haiku model temperature setting";
+      };
+
+      maxTokens = mkOption {
+        type = types.int;
+        default = 4096;
+        description = "Maximum tokens for Claude Haiku responses";
+      };
+    };
+
+    gemini = {
+      model = mkOption {
+        type = types.str;
+        default = "gemini-2.5-flash";
+        description = "Gemini model to use";
+      };
+
+      timeout = mkOption {
+        type = types.int;
+        default = 30000;
+        description = "Request timeout in milliseconds";
+      };
+
+      temperature = mkOption {
+        type = types.float;
+        default = 0.2;
+        description = "Gemini model temperature setting";
+      };
+
+      maxTokens = mkOption {
+        type = types.int;
+        default = 4096;
+        description = "Maximum tokens for Gemini responses";
+      };
+    };
   };
 
   config = mkIf (nvimCfg.enable && cfg.enable) {
@@ -78,7 +130,7 @@ in {
     programs.zsh.initContent = mkOrder 750 ''
       export AVANTE_ANTHROPIC_API_KEY=$(cat ${config.sops.secrets.avanteAnthropicApiKey.path})
       export AVANTE_OPENAI_API_KEY=$(cat ${config.sops.secrets.avanteOpenaiApiKey.path})
-    '';
+      export AVANTE_GEMINI_API_KEY=$(cat ${config.sops.secrets.avanteGeminiApiKey.path}) '';
 
     programs.nixvim.keymaps = [
       {
@@ -91,9 +143,23 @@ in {
       {
         key = "<leader>apc";
         action = nixvimLib.mkRaw ''
-          function() require("avante.api").switch_provider("claude") end
+          function() require("avante.api").switch_provider("claude-sonnet") end
         '';
-        options.desc = "avante: switch_provider claude";
+        options.desc = "avante: switch_provider claude-sonnet";
+      }
+      {
+        key = "<leader>apg";
+        action = nixvimLib.mkRaw ''
+          function() require("avante.api").switch_provider("gemini") end
+        '';
+        options.desc = "avante: switch_provider gemini";
+      }
+      {
+        key = "<leader>aph";
+        action = nixvimLib.mkRaw ''
+          function() require("avante.api").switch_provider("claude-haiku") end
+        '';
+        options.desc = "avante: switch_provider claude-haiku";
       }
     ];
 
@@ -121,13 +187,13 @@ in {
           };
         };
         providers = {
-          claude = {
+          claude-sonnet = {
             endpoint = "https://api.anthropic.com";
-            model = cfg.claude.model;
-            timeout = cfg.claude.timeout;
+            model = cfg.claude-sonnet.model;
+            timeout = cfg.claude-sonnet.timeout;
             extra_request_body = {
-              temperature = cfg.claude.temperature;
-              max_tokens = cfg.claude.maxTokens;
+              temperature = cfg.claude-sonnet.temperature;
+              max_tokens = cfg.claude-sonnet.maxTokens;
             };
           };
           openai = {
@@ -137,6 +203,25 @@ in {
             extra_request_body = {
               temperature = cfg.openai.temperature;
               max_tokens = cfg.openai.maxTokens;
+            };
+          };
+          claude-haiku = {
+            endpoint = "https://api.anthropic.com";
+            model = cfg.claude-haiku.model;
+            timeout = cfg.claude-haiku.timeout;
+            extra_request_body = {
+              temperature = cfg.claude-haiku.temperature;
+              max_tokens = cfg.claude-haiku.maxTokens;
+            };
+          };
+          gemini = {
+            endpoint =
+              "https://generativelanguage.googleapis.com/v1beta/models";
+            model = cfg.gemini.model;
+            timeout = cfg.gemini.timeout;
+            extra_request_body = {
+              temperature = cfg.gemini.temperature;
+              max_tokens = cfg.gemini.maxTokens;
             };
           };
         };
