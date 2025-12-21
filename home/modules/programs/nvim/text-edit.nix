@@ -1,9 +1,11 @@
-{ nixvimLib, config, lib, ... }:
+{ nixvimLib, config, lib, pkgs, ... }:
 
 with lib;
 let
   cfg = config.my.programs.nvim.textEdit;
   nvimCfg = config.my.programs.nvim;
+  spellDir = config.xdg.dataHome + "/nvim/site/spell";
+  baseUrl = "https://ftp.nluug.nl/pub/vim/runtime/spell/";
 in {
   options.my.programs.nvim.textEdit = {
     enable = mkEnableOption "Text editing enhancements for Neovim" // {
@@ -71,19 +73,31 @@ in {
 
       spelllang = mkOption {
         type = types.str;
-        default = "en_us";
+        default = "en";
         description = "Spell check language";
       };
 
       spellfile = mkOption {
         type = types.nullOr types.str;
-        default = null;
+        default = "${spellDir}/en.utf-8.spl";
         description = "Custom spell file location";
       };
     };
   };
 
   config = mkIf (nvimCfg.enable && cfg.enable) {
+    home.file = mkIf cfg.spell.enable {
+      "en-spl" = {
+        enable = true;
+        source = pkgs.fetchurl {
+          url = baseUrl + "/en.utf-8.spl";
+          sha256 =
+            "sha256-/sq9yUm2o50ywImfolReqyXmPy7QozxK0VEUJjhNMHA="; # Placeholder, will need actual hash
+        };
+        target = spellDir + "/en.utf8.spl";
+      };
+    };
+
     programs.nixvim = {
       keymaps = mkMerge [
         (mkIf cfg.flash.enable [
@@ -107,27 +121,27 @@ in {
         }])
         (mkIf cfg.spell.enable [
           {
-            key = "<leader>ss";
+            key = "<leader>Ss";
             action = ":set spell!<CR>";
             options.desc = "Toggle spell check";
           }
           {
-            key = "<leader>sn";
+            key = "<leader>Sn";
             action = "]s";
             options.desc = "Next misspelled word";
           }
           {
-            key = "<leader>sp";
+            key = "<leader>Sp";
             action = "[s";
             options.desc = "Previous misspelled word";
           }
           {
-            key = "<leader>sa";
+            key = "<leader>Sa";
             action = "zg";
             options.desc = "Add word to spell file";
           }
           {
-            key = "<leader>sr";
+            key = "<leader>Sr";
             action = "zw";
             options.desc = "Remove word from spell file";
           }
@@ -156,7 +170,7 @@ in {
       };
 
       # Spell check configuration
-      opt = mkIf cfg.spell.enable {
+      opts = mkIf cfg.spell.enable {
         spell = true;
         spelllang = cfg.spell.spelllang;
       } // (lib.optionalAttrs (cfg.spell.spellfile != null) {

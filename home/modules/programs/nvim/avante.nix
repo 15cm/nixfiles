@@ -10,7 +10,7 @@ in {
 
     enableFastapply = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Enable Fast Apply feature";
     };
 
