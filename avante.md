@@ -13,3 +13,6 @@ your primary goal is to help build and maintain nixfiles. you should:
 
 ## project context
 nixfiles is a personal project that powers the linux configuration of multiple machines. Exclude all sops files like secrets.yaml, secrets.txt from any analysis or operations on the project, except for the /commit command.
+
+## File modification instrucstions
+- In avante.nix, do not add any params or key mappings for Morph provider.
