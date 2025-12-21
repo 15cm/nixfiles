@@ -61,6 +61,26 @@ in {
         description = "Enable wrapping.nvim for text wrapping functionality";
       };
     };
+
+    spell = {
+      enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Enable spell check functionality";
+      };
+
+      spelllang = mkOption {
+        type = types.str;
+        default = "en_us";
+        description = "Spell check language";
+      };
+
+      spellfile = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "Custom spell file location";
+      };
+    };
   };
 
   config = mkIf (nvimCfg.enable && cfg.enable) {
@@ -85,6 +105,33 @@ in {
           key = "<A-c>";
           action = "<cmd>Telescope yank_history<CR>";
         }])
+        (mkIf cfg.spell.enable [
+          {
+            key = "<leader>ss";
+            action = ":set spell!<CR>";
+            options.desc = "Toggle spell check";
+          }
+          {
+            key = "<leader>sn";
+            action = "]s";
+            options.desc = "Next misspelled word";
+          }
+          {
+            key = "<leader>sp";
+            action = "[s";
+            options.desc = "Previous misspelled word";
+          }
+          {
+            key = "<leader>sa";
+            action = "zg";
+            options.desc = "Add word to spell file";
+          }
+          {
+            key = "<leader>sr";
+            action = "zw";
+            options.desc = "Remove word from spell file";
+          }
+        ])
       ];
 
       plugins = {
@@ -107,6 +154,14 @@ in {
         };
         multicursors = { enable = true; };
       };
+
+      # Spell check configuration
+      opt = mkIf cfg.spell.enable {
+        spell = true;
+        spelllang = cfg.spell.spelllang;
+      } // (lib.optionalAttrs (cfg.spell.spellfile != null) {
+        spellfile = cfg.spell.spellfile;
+      });
     };
   };
 }
