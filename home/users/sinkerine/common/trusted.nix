@@ -1,6 +1,11 @@
 { hostname, ... }:
 
 {
+  my.programs.nvim = {
+    enable = true;
+    avante.enable = true;
+  };
+
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age = {
