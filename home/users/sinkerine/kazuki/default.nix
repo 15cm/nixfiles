@@ -1,10 +1,9 @@
-{ config, pkgs, state, mylib, hostname, ... }:
+{ config, pkgs, ... }:
 
-let inherit (mylib) applyXwaylandEnvsToDesktopExec;
-in {
+{
   home.stateVersion = "23.05";
 
-  imports = [ ../common ../common/linux-gui.nix ];
+  imports = [ ../common ../common/linux-gui.nix ../common/trusted.nix ];
 
   home.packages = with pkgs; [ handbrake ];
 

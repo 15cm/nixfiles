@@ -3,7 +3,7 @@
 {
   home.stateVersion = "23.05";
 
-  imports = [ ../common ../common/linux-gui.nix ];
+  imports = [ ../common ../common/linux-gui.nix ../common/trusted.nix ];
 
   home.packages = with pkgs; [ radeontop ];
 
