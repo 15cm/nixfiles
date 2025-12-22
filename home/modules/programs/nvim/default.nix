@@ -126,7 +126,7 @@ in {
                 local lg = require("telescope.builtin").live_grep
                 local utils = require("telescope.utils")
                 lg {
-                  cw= utils.buffer_dir(), 
+                  cw= utils.buffer_dir(),
                   default_text = table.concat(get_selection())
                 }
               end
@@ -312,6 +312,14 @@ in {
                 {
                   __unkeyed-leader = "<leader><leader>";
                   group = "Misc";
+                }
+                {
+                  __unkeyed-bang = "<leader>!";
+                  group = "Spell Check";
+                }
+                {
+                  __unkeyed-x = "<leader>x";
+                  group = "Debug";
                 }
               ];
             };

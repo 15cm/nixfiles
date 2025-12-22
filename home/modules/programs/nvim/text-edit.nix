@@ -121,27 +121,27 @@ in {
         }])
         (mkIf cfg.spell.enable [
           {
-            key = "<leader>Ss";
+            key = "<leader>!";
             action = ":set spell!<CR>";
-            options.desc = "Toggle spell check";
+            options.desc = "Spell Check";
           }
           {
-            key = "<leader>Sn";
+            key = "<leader>!n";
             action = "]s";
             options.desc = "Next misspelled word";
           }
           {
-            key = "<leader>Sp";
+            key = "<leader>!p";
             action = "[s";
             options.desc = "Previous misspelled word";
           }
           {
-            key = "<leader>Sa";
+            key = "<leader>!a";
             action = "zg";
             options.desc = "Add word to spell file";
           }
           {
-            key = "<leader>Sr";
+            key = "<leader>!r";
             action = "zw";
             options.desc = "Remove word from spell file";
           }
@@ -171,7 +171,7 @@ in {
 
       # Spell check configuration
       opts = mkIf cfg.spell.enable {
-        spell = true;
+        spell = false;
         spelllang = cfg.spell.spelllang;
       } // (lib.optionalAttrs (cfg.spell.spellfile != null) {
         spellfile = cfg.spell.spellfile;
