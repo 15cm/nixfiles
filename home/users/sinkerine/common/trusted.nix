@@ -22,5 +22,14 @@
   sops.secrets.avanteMoonshotApiKey = { sopsFile = ./secrets.yaml; };
   sops.secrets.morphApiKey = { sopsFile = ./secrets.yaml; };
 
+  programs.opencode = {
+    enable = true;
+    settings = {
+      theme = "opencode";
+      model = "anthropic/claude-haiku-4-5-20251001";
+      autoshare = false;
+      autoupdate = true;
+    };
+  };
 }
 
