@@ -34,14 +34,15 @@ with lib;
     };
   };
 
-  boot.kernelPackages = mkForce pkgs.linuxPackages_6_17;
-  my.essentials.zfs = {
-    enable = true;
-    enableNonRootEncryption = true;
-    enableZed = true;
-    nonRootPools = [ "main" "sub" ];
-    encryptedZfsPath = "main";
-  };
+   boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
+   my.essentials.zfs = {
+     enable = true;
+     enableNonRootEncryption = true;
+     enableZed = true;
+     enableZfsUnstable = true;
+     nonRootPools = [ "main" "sub" ];
+     encryptedZfsPath = "main";
+   };
 
   networking = {
     hostName = hostname;

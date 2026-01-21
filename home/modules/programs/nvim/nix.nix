@@ -12,7 +12,7 @@ in {
   };
 
   config = mkIf (nvimCfg.enable && cfg.enable) {
-    home.packages = with pkgs; [ nixfmt-classic nixd ];
+    home.packages = with pkgs; [ nixfmt nixd ];
     programs.nixvim = {
       plugins = {
         nix = { enable = true; };

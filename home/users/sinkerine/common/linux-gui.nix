@@ -1,11 +1,21 @@
-{ config, pkgs, lib, hostname, mylib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  hostname,
+  mylib,
+  ...
+}:
 
 with lib;
 let
   inherit (mylib)
-    applyXwaylandEnvsToDesktopExec applyChromeFlagsToDesktopExec
-    applyElectronFlagsToDesktopExec;
-in {
+    applyXwaylandEnvsToDesktopExec
+    applyChromeFlagsToDesktopExec
+    applyElectronFlagsToDesktopExec
+    ;
+in
+{
   imports = [
     # Essentials
     ../../../features/conf/ssh
@@ -50,7 +60,6 @@ in {
     calibre
     libreoffice
     oxipng
-    osdlyrics
     dex
     krita
     unflac
@@ -112,7 +121,10 @@ in {
   };
   my.services.hyprpaper = {
     enable = true;
-    inherit (config.my.display) monitors;
+    wallpapers = map (name: {
+      monitor = config.my.display.monitors.${name}.output;
+      path = config.my.display.monitors.${name}.wallpaper;
+    }) (builtins.attrNames config.my.display.monitors);
   };
 
   qt = {
@@ -123,7 +135,9 @@ in {
         kdePackages.systemsettings
       ];
     };
-    style = { package = with pkgs; [ kdePackages.breeze ]; };
+    style = {
+      package = with pkgs; [ kdePackages.breeze ];
+    };
   };
   xdg.configFile."kdeglobals".text = ''
     [DirSelect Dialog]
@@ -206,10 +220,11 @@ in {
       {
         name = "GitHub";
         value = {
-          urls = [{
-            template =
-              "https://github.com/search?q={searchTerms}&type=repositories";
-          }];
+          urls = [
+            {
+              template = "https://github.com/search?q={searchTerms}&type=repositories";
+            }
+          ];
           icon = "https://github.githubassets.com/favicons/favicon.svg";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@gh" ];
@@ -218,9 +233,11 @@ in {
       {
         name = "GitHub Code Search";
         value = {
-          urls = [{
-            template = "https://github.com/search?q={searchTerms}&type=code";
-          }];
+          urls = [
+            {
+              template = "https://github.com/search?q={searchTerms}&type=code";
+            }
+          ];
           icon = "https://github.githubassets.com/favicons/favicon.svg";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@ghc" ];
@@ -229,10 +246,11 @@ in {
       {
         name = "NixOS Packages";
         value = {
-          urls = [{
-            template =
-              "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
-          }];
+          urls = [
+            {
+              template = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
+            }
+          ];
           icon = "https://search.nixos.org/favicon.png";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@nixp" ];
@@ -241,10 +259,11 @@ in {
       {
         name = "NixOS Options";
         value = {
-          urls = [{
-            template =
-              "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
-          }];
+          urls = [
+            {
+              template = "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
+            }
+          ];
           icon = "https://search.nixos.org/favicon.png";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@nixo" ];
@@ -253,10 +272,11 @@ in {
       {
         name = "Nix Home Manager Options";
         value = {
-          urls = [{
-            template =
-              "https://home-manager-options.extranix.com/?query={searchTerms}";
-          }];
+          urls = [
+            {
+              template = "https://home-manager-options.extranix.com/?query={searchTerms}";
+            }
+          ];
           icon = "https://home-manager-options.extranix.com/images/favicon.png";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@nixhm" ];
@@ -265,8 +285,7 @@ in {
       {
         name = "DockerHub";
         value = {
-          urls =
-            [{ template = "https://hub.docker.com/search?q={searchTerms}"; }];
+          urls = [ { template = "https://hub.docker.com/search?q={searchTerms}"; } ];
           icon = "https://hub.docker.com/favicon.ico";
           updateInterval = 24 * 60 * 60 * 1000; # every day
           definedAliases = [ "@dh" ];
@@ -294,8 +313,7 @@ in {
     "feishin" = {
       icon = "feishin";
       name = "Feishin";
-      exec =
-        "feishin --disable-gpu-sandbox --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime";
+      exec = "feishin --disable-gpu-sandbox --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime";
     };
     "AriaNg" = {
       name = "AriaNg";
@@ -307,15 +325,13 @@ in {
     };
     steam-fc-override = {
       name = "Steam (fc override)";
-      exec =
-        "env FONTCONFIG_FILE=${config.home.homeDirectory}/.config/fontconfig/conf.d/10-hm-fonts.conf steam";
+      exec = "env FONTCONFIG_FILE=${config.home.homeDirectory}/.config/fontconfig/conf.d/10-hm-fonts.conf steam";
       terminal = false;
     };
     # Using fcitx instead of wayland for QT_IM_MODULE fixes https://www.github.com/fcitx/fcitx5/issues/1152.
     "org.telegram.desktop" = {
       name = "Telegram Desktop";
-      exec =
-        "env QT_IM_MODULE=fcitx QT_IM_MODULES=fcitx telegram-desktop -- %u";
+      exec = "env QT_IM_MODULE=fcitx QT_IM_MODULES=fcitx telegram-desktop -- %u";
       icon = "telegram";
       terminal = false;
       settings = {
@@ -353,13 +369,14 @@ in {
       };
       Service = {
         Type = "simple";
-        ExecStart =
-          "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
         Restart = "on-failure";
         RestartSec = 1;
         TimeoutStopSec = 10;
       };
-      Install = { WantedBy = [ "graphical-session.target" ]; };
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
     };
   };
 

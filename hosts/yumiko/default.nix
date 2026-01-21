@@ -31,12 +31,13 @@ with lib;
     };
   };
 
-  boot.kernelPackages = mkForce pkgs.linuxPackages_6_6;
-  my.essentials.zfs = {
-    enable = true;
-    enableZed = true;
-    nonRootPools = [ "tank" ];
-  };
+   boot.kernelPackages = mkForce pkgs.linuxPackages_6_6;
+   my.essentials.zfs = {
+     enable = true;
+     enableZed = true;
+     enableZfsUnstable = true;
+     nonRootPools = [ "tank" ];
+   };
   boot.zfs.requestEncryptionCredentials = false;
 
   networking = {

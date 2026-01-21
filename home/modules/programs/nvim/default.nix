@@ -1,8 +1,18 @@
-{ nixvimLib, config, lib, state, pkgs, mylib, ... }:
+{
+  nixvimLib,
+  config,
+  lib,
+  state,
+  pkgs,
+  mylib,
+  ...
+}:
 
 with lib;
-let cfg = config.my.programs.nvim;
-in {
+let
+  cfg = config.my.programs.nvim;
+in
+{
   imports = [
     ./avante.nix
     ./nix.nix
@@ -19,8 +29,7 @@ in {
   };
   config = mkIf cfg.enable (mkMerge [
     {
-      my.programs.nvim.colorscheme =
-        (if state.theme == "light" then "solarized" else "kanagawa");
+      my.programs.nvim.colorscheme = (if state.theme == "light" then "solarized" else "kanagawa");
       programs.nixvim = {
         enable = true;
         opts = {
@@ -33,7 +42,9 @@ in {
           smartcase = true;
         };
         colorscheme = cfg.colorscheme;
-        colorschemes.kanagawa = { enable = true; };
+        colorschemes.kanagawa = {
+          enable = true;
+        };
         globals.mapleader = " ";
         keymaps = [
           {
@@ -157,22 +168,34 @@ in {
           }
           # Correct the keymaps of <Home> and <End>
           {
-            mode = [ "" "!" ];
+            mode = [
+              ""
+              "!"
+            ];
             key = "<Find>";
             action = "<Home>";
           }
           {
-            mode = [ "" "!" ];
+            mode = [
+              ""
+              "!"
+            ];
             key = "<Select>";
             action = "<End>";
           }
           {
-            mode = [ "" "!" ];
+            mode = [
+              ""
+              "!"
+            ];
             key = "<A-x>";
             action = "<cmd>Telescope commands<CR>";
           }
           {
-            mode = [ "" "!" ];
+            mode = [
+              ""
+              "!"
+            ];
             key = "<C-s>";
             action = "<cmd>up<CR>";
           }
@@ -217,7 +240,9 @@ in {
               org_startup_indented = true;
             };
           };
-          neo-tree = { enable = true; };
+          neo-tree = {
+            enable = true;
+          };
           web-devicons.enable = true;
           telescope = {
             enable = true;
@@ -235,8 +260,7 @@ in {
               defaults = {
                 mappings = {
                   i = {
-                    "<ESC>" =
-                      nixvimLib.mkRaw "require('telescope.actions').close";
+                    "<ESC>" = nixvimLib.mkRaw "require('telescope.actions').close";
                     "<C-h>" = "which_key";
                   };
                 };
@@ -245,33 +269,34 @@ in {
           };
           treesitter = {
             enable = true;
-            settings = {
-              # NOTE: You can set whether `nvim-treesitter` should automatically install the grammars.
-              auto_install = false;
-              ensure_installed = [
-                "git_config"
-                "git_rebase"
-                "gitattributes"
-                "gitcommit"
-                "gitignore"
-              ];
-            };
           };
           fzf-lua.enable = true;
-          project-nvim = { enable = true; };
+          project-nvim = {
+            enable = true;
+          };
           neogit = {
             enable = true;
-            lazyLoad = { settings = { cmd = "Neogit"; }; };
+            lazyLoad = {
+              settings = {
+                cmd = "Neogit";
+              };
+            };
           };
           gitblame = {
             enable = true;
-            lazyLoad = { settings = { cmd = "GitBlameToggle"; }; };
+            lazyLoad = {
+              settings = {
+                cmd = "GitBlameToggle";
+              };
+            };
           };
           airline = {
             enable = true;
             settings.theme = "tomorrow";
           };
-          auto-session = { enable = true; };
+          auto-session = {
+            enable = true;
+          };
           yazi = {
             enable = true;
             settings = {
@@ -279,7 +304,11 @@ in {
               keymaps = false;
               clipboard_register = "";
             };
-            lazyLoad = { settings = { cmd = "Yazi"; }; };
+            lazyLoad = {
+              settings = {
+                cmd = "Yazi";
+              };
+            };
             luaConfig.pre = ''
               vim.g.loaded_netrw       = 1
               vim.g.loaded_netrwPlugin = 1
@@ -324,7 +353,9 @@ in {
               ];
             };
           };
-          rainbow = { enable = true; };
+          rainbow = {
+            enable = true;
+          };
           conform-nvim = {
             enable = true;
             settings = {
@@ -371,6 +402,10 @@ in {
         };
       };
     }
-    (mkIf cfg.viAlias { programs.zsh.shellAliases = { vi = "nvim"; }; })
+    (mkIf cfg.viAlias {
+      programs.zsh.shellAliases = {
+        vi = "nvim";
+      };
+    })
   ]);
 }

@@ -39,11 +39,12 @@ in {
     '';
   };
 
-  boot.kernelPackages = mkForce pkgs.linuxPackages_6_17;
-  my.essentials.zfs = {
-    enable = true;
-    enableZed = true;
-  };
+   boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
+   my.essentials.zfs = {
+     enable = true;
+     enableZed = true;
+     enableZfsUnstable = true;
+   };
 
   networking = {
     hostName = hostname;
