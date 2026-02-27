@@ -5,14 +5,21 @@ let
   cfg = config.my.programs.foot;
   inherit (state) theme;
 in {
-  options.my.programs.foot = { enable = mkEnableOption "Foot terminal"; };
+  options.my.programs.foot = {
+    enable = mkEnableOption "Foot terminal";
+    fontSize = mkOption {
+      type = types.int;
+      default = 14;
+      description = "Font size for Foot terminal";
+    };
+  };
   config = mkIf cfg.enable {
     programs.foot = {
       enable = true;
       settings = {
         main = {
           term = "foot";
-          font = "Sarasa Mono SC Nerd Font:size=14";
+          font = "Sarasa Mono SC Nerd Font:size=${toString cfg.fontSize}";
           dpi-aware = "yes";
           shell = "${pkgs.tmux}/bin/tmux new -A -s main";
         };
