@@ -1,10 +1,16 @@
-{ nixvimLib, config, lib, ... }:
+{
+  nixvimLib,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
   cfg = config.my.programs.nvim.avante;
   nvimCfg = config.my.programs.nvim;
-in {
+in
+{
   options.my.programs.nvim.avante = {
     enable = mkEnableOption "Avante AI assistant for Neovim";
 
@@ -107,7 +113,7 @@ in {
     moonshot = {
       model = mkOption {
         type = types.str;
-        default = "kimi-k2-0905-preview";
+        default = "kimi-k2.5";
         description = "Moonshot model to use";
       };
 
@@ -119,7 +125,7 @@ in {
 
       temperature = mkOption {
         type = types.float;
-        default = 0.4;
+        default = 1.0;
         description = "Moonshot model temperature setting";
       };
 
@@ -196,7 +202,9 @@ in {
       settings = {
         instructions_file = cfg.instructionsFile;
         provider = cfg.provider;
-        behaviour = { enable_fastapply = cfg.enableFastapply; };
+        behaviour = {
+          enable_fastapply = cfg.enableFastapply;
+        };
         mappings = {
           submit = {
             normal = "<CR>";
@@ -223,8 +231,7 @@ in {
             };
           };
           gemini = {
-            endpoint =
-              "https://generativelanguage.googleapis.com/v1beta/models";
+            endpoint = "https://generativelanguage.googleapis.com/v1beta/models";
             model = cfg.gemini.model;
             timeout = cfg.gemini.timeout;
             extra_request_body = {
@@ -241,10 +248,11 @@ in {
               max_tokens = cfg.moonshot.maxTokens;
             };
           };
-          morph = { model = cfg.morph.model; };
+          morph = {
+            model = cfg.morph.model;
+          };
         };
       };
     };
   };
 }
-

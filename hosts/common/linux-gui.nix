@@ -1,4 +1,9 @@
-{ pkgs, lib, hostname, ... }:
+{
+  pkgs,
+  lib,
+  hostname,
+  ...
+}:
 
 with lib;
 
@@ -8,19 +13,12 @@ with lib;
     exfatprogs
     pavucontrol
     pulseaudio
-    xorg.xev
+    xev
     evtest
     mpv
     deploy-rs
     mesa-demos
     ventoy
-    # support both 32- and 64-bit applications
-    wineWowPackages.stable
-    # winetricks (all versions)
-    winetricks
-    # native wayland support (unstable)
-    wineWowPackages.waylandFull
-    ryubing
   ];
 
   # Make GRUB wait indefinitely for user input.
@@ -44,7 +42,9 @@ with lib;
 
   programs.hyprland = {
     enable = true;
-    xwayland = { enable = true; };
+    xwayland = {
+      enable = true;
+    };
   };
 
   xdg.portal = {

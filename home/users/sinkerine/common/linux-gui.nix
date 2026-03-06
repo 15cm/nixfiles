@@ -25,8 +25,8 @@ in
 
   home.packages = with pkgs; [
     # For tweaking XWayland config.
-    xorg.xprop
-    xorg.xrdb
+    xprop
+    xrdb
 
     # Wayland env
     qt6.qtwayland
@@ -87,6 +87,7 @@ in
     wechat-uos
     discord
     prusa-slicer
+    repomix
   ];
 
   home.sessionVariables = {
@@ -322,11 +323,6 @@ in
     "io.github.xiaoyifang.goldendict_ng" = {
       name = "GoldenDict-ng";
       exec = "env GOLDENDICT_FORCE_WAYLAND=1 goldendict";
-    };
-    steam-fc-override = {
-      name = "Steam (fc override)";
-      exec = "env FONTCONFIG_FILE=${config.home.homeDirectory}/.config/fontconfig/conf.d/10-hm-fonts.conf steam";
-      terminal = false;
     };
     # Using fcitx instead of wayland for QT_IM_MODULE fixes https://www.github.com/fcitx/fcitx5/issues/1152.
     "org.telegram.desktop" = {

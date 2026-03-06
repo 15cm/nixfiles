@@ -2,13 +2,15 @@
   description = "Nix Flakes of Sinkerine";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/d85430e";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur = { url = "github:nix-community/NUR"; };
+    nur = {
+      url = "github:nix-community/NUR";
+    };
     flake-utils.url = "github:numtide/flake-utils";
     # nixgl is needed for alacritty outside of nixOS
     # refer to https://github.com/NixOS/nixpkgs/issues/122671
@@ -30,25 +32,46 @@
       url = "github:kmonad/kmonad?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-hardware = { url = "github:NixOS/nixos-hardware/master"; };
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+    };
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "flake-compat";
     };
-    hyprland = { url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; };
-    nixvim = { url = "github:nix-community/nixvim"; };
+    hyprland = {
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    };
+    nixvim = {
+      url = "github:nix-community/nixvim";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, nur, nixgl, sops-nix, kmonad
-    , nixos-hardware, deploy-rs, hyprland, nixvim, ... }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      nur,
+      nixgl,
+      sops-nix,
+      kmonad,
+      nixos-hardware,
+      deploy-rs,
+      hyprland,
+      nixvim,
+      ...
+    }:
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       state = (import ./home/state);
-    in rec {
+    in
+    rec {
       overlays = import ./overlays { inherit nixpkgs; };
-      packages = forAllSystems (system:
+      packages = forAllSystems (
+        system:
         import nixpkgs {
           inherit system;
           overlays = with overlays; [
@@ -65,7 +88,8 @@
             "qtwebengine-5.15.19"
             "mbedtls-2.28.10"
           ];
-        });
+        }
+      );
 
       homeConfigurationArgs = {
         "sinkerine@kazuki" = {
@@ -118,8 +142,10 @@
         };
       };
       homeConfigurations = nixpkgs.lib.pipe homeConfigurationArgs [
-        (builtins.mapAttrs (configName: v:
-          v // {
+        (builtins.mapAttrs (
+          configName: v:
+          v
+          // {
             modules = v.modules ++ [
               ./modules/home-manager
               ./home/modules
@@ -139,12 +165,15 @@
                 inherit configName;
                 projectRoot = "/nixfiles";
               };
-              mylib = (import ./lib {
-                inherit (v) pkgs;
-                inherit (v.pkgs) lib;
-              });
+              mylib = (
+                import ./lib {
+                  inherit (v) pkgs;
+                  inherit (v.pkgs) lib;
+                }
+              );
             };
-          }))
+          }
+        ))
         (builtins.mapAttrs (_: v: home-manager.lib.homeManagerConfiguration v))
       ];
 
@@ -155,12 +184,17 @@
           pkgs = (builtins.getAttr system packages) // {
             config.cudaSupport = true;
           };
-          modules = [ ./hosts/kazuki hyprland.nixosModules.default ]
-            ++ (with nixos-hardware.nixosModules; [
-              common-gpu-nvidia-nonprime
-              common-cpu-amd
-            ]);
-          specialArgs = { hostname = "kazuki"; };
+          modules = [
+            ./hosts/kazuki
+            hyprland.nixosModules.default
+          ]
+          ++ (with nixos-hardware.nixosModules; [
+            common-gpu-nvidia-nonprime
+            common-cpu-amd
+          ]);
+          specialArgs = {
+            hostname = "kazuki";
+          };
         };
         # TODO: migrate to unencrypted pool + encrypted dataset.
         "asako" = rec {
@@ -170,74 +204,94 @@
             ./hosts/asako
             hyprland.nixosModules.default
             kmonad.nixosModules.default
-          ] ++ (with nixos-hardware.nixosModules; [
+          ]
+          ++ (with nixos-hardware.nixosModules; [
             lenovo-thinkpad-z13-gen2
             common-cpu-amd-pstate
           ]);
-          specialArgs = { hostname = "asako"; };
+          specialArgs = {
+            hostname = "asako";
+          };
         };
         # TODO: migrate to unencrypted pool + encrypted dataset.
         "sachi" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
-          modules = [ ./hosts/sachi ] ++ (with nixos-hardware.nixosModules;
-            [ common-cpu-intel-cpu-only ]);
-          specialArgs = { hostname = "sachi"; };
+          modules = [ ./hosts/sachi ] ++ (with nixos-hardware.nixosModules; [ common-cpu-intel-cpu-only ]);
+          specialArgs = {
+            hostname = "sachi";
+          };
         };
         "yumiko" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
           modules = [ ./hosts/yumiko ];
-          specialArgs = { hostname = "yumiko"; };
+          specialArgs = {
+            hostname = "yumiko";
+          };
         };
         "amane" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
           modules = [ ./hosts/amane ];
-          specialArgs = { hostname = "amane"; };
+          specialArgs = {
+            hostname = "amane";
+          };
         };
       };
-      nixosConfigurations = builtins.mapAttrs (_: v:
-        nixpkgs.lib.nixosSystem (v // {
-          modules = v.modules
-            ++ [ ./modules/nixos ./hosts/modules sops-nix.nixosModules.sops ];
-          specialArgs = v.specialArgs // {
-            inherit (self) inputs;
-            mylib = (import ./lib {
-              inherit (v) pkgs;
-              inherit (v.pkgs) lib;
-            });
-          };
-        })) nixosConfigurationArgs;
+      nixosConfigurations = builtins.mapAttrs (
+        _: v:
+        nixpkgs.lib.nixosSystem (
+          v
+          // {
+            modules = v.modules ++ [
+              ./modules/nixos
+              ./hosts/modules
+              sops-nix.nixosModules.sops
+            ];
+            specialArgs = v.specialArgs // {
+              inherit (self) inputs;
+              mylib = (
+                import ./lib {
+                  inherit (v) pkgs;
+                  inherit (v.pkgs) lib;
+                }
+              );
+            };
+          }
+        )
+      ) nixosConfigurationArgs;
 
       deploy = {
-        nodes = nixpkgs.lib.genAttrs [ "sachi" "amane" "yumiko" "asako" ]
-          (hostname: {
-            inherit hostname;
-            profilesOrder = [ "system" "home" ];
-            profiles = {
-              system = {
-                sshUser = "root";
-                path = deploy-rs.lib.x86_64-linux.activate.nixos
-                  (builtins.getAttr hostname self.nixosConfigurations);
-                confirmTimeout = 60;
-                autoRollback = false;
-                magicRollback = false;
-              };
-              home = {
-                sshUser = "sinkerine";
-                path = deploy-rs.lib.x86_64-linux.activate.home-manager
-                  (builtins.getAttr "sinkerine@${hostname}"
-                    self.homeConfigurations);
-                confirmTimeout = 60;
-                autoRollback = false;
-                magicRollback = false;
-              };
+        nodes = nixpkgs.lib.genAttrs [ "sachi" "amane" "yumiko" "asako" ] (hostname: {
+          inherit hostname;
+          profilesOrder = [
+            "system"
+            "home"
+          ];
+          profiles = {
+            system = {
+              sshUser = "root";
+              path = deploy-rs.lib.x86_64-linux.activate.nixos (
+                builtins.getAttr hostname self.nixosConfigurations
+              );
+              confirmTimeout = 60;
+              autoRollback = false;
+              magicRollback = false;
             };
-          });
+            home = {
+              sshUser = "sinkerine";
+              path = deploy-rs.lib.x86_64-linux.activate.home-manager (
+                builtins.getAttr "sinkerine@${hostname}" self.homeConfigurations
+              );
+              confirmTimeout = 60;
+              autoRollback = false;
+              magicRollback = false;
+            };
+          };
+        });
       };
-      checks = builtins.mapAttrs
-        (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
       devShells = forAllSystems (system: {
         python-dev = import ./shell/python-dev.nix {
           pkgs = builtins.getAttr system packages;

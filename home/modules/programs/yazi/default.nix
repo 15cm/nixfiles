@@ -1,4 +1,11 @@
-{ config, lib, pkgs, state, mylib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  state,
+  mylib,
+  ...
+}:
 
 with lib;
 let
@@ -14,7 +21,8 @@ let
       rm -f -- "$tmp"
     }
   '';
-in {
+in
+{
   options.my.programs.yazi = {
     enable = mkEnableOption "Yazi";
     package = mkOption {
@@ -27,16 +35,23 @@ in {
     programs.yazi = {
       enable = true;
       inherit (cfg) package;
+      shellWrapperName = "yy";
     };
-    xdg.configFile."yazi/theme.toml".source = let
-      templateData = if state.theme == "light" then {
-        theme = ./themes/catppuccin-latte.toml.jinja;
-        syntectTheme = ./themes/catppuccin-latte.tmTheme;
-      } else {
-        theme = ./themes/catppuccin-mocha.toml.jinja;
-        syntectTheme = ./themes/catppuccin-mocha.tmTheme;
-      };
-    in templateFile "yazi-theme.toml" templateData templateData.theme;
+    xdg.configFile."yazi/theme.toml".source =
+      let
+        templateData =
+          if state.theme == "light" then
+            {
+              theme = ./themes/catppuccin-latte.toml.jinja;
+              syntectTheme = ./themes/catppuccin-latte.tmTheme;
+            }
+          else
+            {
+              theme = ./themes/catppuccin-mocha.toml.jinja;
+              syntectTheme = ./themes/catppuccin-mocha.tmTheme;
+            };
+      in
+      templateFile "yazi-theme.toml" templateData templateData.theme;
 
     xdg.configFile."yazi/keymap.toml".source = ./keymap.toml;
     xdg.configFile."yazi/init.lua".source = ./init.lua;
