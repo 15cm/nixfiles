@@ -1,7 +1,13 @@
 { pkgs }:
 
-let myPythonPackages = ps: with ps; [ pip docformatter ];
-in pkgs.mkShell {
+let
+  myPythonPackages =
+    ps: with ps; [
+      pip
+      docformatter
+    ];
+in
+pkgs.mkShell {
   packages = with pkgs; [
     pdm
     pyright

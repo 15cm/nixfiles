@@ -1,9 +1,18 @@
-{ config, pkgs, lib, mylib, hostname, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  mylib,
+  hostname,
+  ...
+}:
 
 with lib;
 
-let inherit (mylib) writeShellScriptFile templateFile;
-in {
+let
+  inherit (mylib) writeShellScriptFile templateFile;
+in
+{
   system.stateVersion = "22.05";
   imports = [
     ./hardware-configuration.nix
@@ -13,11 +22,16 @@ in {
     ../common/linux-gui.nix
   ];
 
-  environment.systemPackages = with pkgs; [ easyrsa ];
+  environment.systemPackages = with pkgs; [
+    easyrsa
+    brightnessctl
+  ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    secrets = { hashedPassword.neededForUsers = true; };
+    secrets = {
+      hashedPassword.neededForUsers = true;
+    };
     age = {
       keyFile = "/keys/age/${hostname}.txt";
       sshKeyPaths = [ ];
@@ -39,17 +53,19 @@ in {
     '';
   };
 
-   boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
-   my.essentials.zfs = {
-     enable = true;
-     enableZed = true;
-     enableZfsUnstable = true;
-   };
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
+  my.essentials.zfs = {
+    enable = true;
+    enableZed = true;
+    enableZfsUnstable = true;
+  };
 
   networking = {
     hostName = hostname;
     domain = "mado.moe";
-    networkmanager = { enable = true; };
+    networkmanager = {
+      enable = true;
+    };
   };
 
   services.fwupd.enable = true;
@@ -76,15 +92,20 @@ in {
   # Disable the Radeon outputs in Pipewire so that the laptop speaker is selected by default.
   services.pipewire.wireplumber.extraConfig = {
     "disable-radeon-devices" = {
-      "monitor.alsa.rules" = [{
-        "matches" = [{ "device.name" = "alsa_card.pci-0000_63_00.1"; }];
-        "actions" = { "update-props" = { "device.disabled" = true; }; };
-      }];
+      "monitor.alsa.rules" = [
+        {
+          "matches" = [ { "device.name" = "alsa_card.pci-0000_63_00.1"; } ];
+          "actions" = {
+            "update-props" = {
+              "device.disabled" = true;
+            };
+          };
+        }
+      ];
     };
   };
 
-  # Laptop backlight
-  programs.light.enable = true;
+  # Laptop backlight brightness control via brightnessctl package
   # Laptop battery
   services.upower.enable = true;
   my.services.lock = {

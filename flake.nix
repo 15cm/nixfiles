@@ -46,6 +46,9 @@
     nixvim = {
       url = "github:nix-community/nixvim";
     };
+    jailed-agents = {
+      url = "github:andersonjoseph/jailed-agents";
+    };
   };
 
   outputs =
@@ -61,6 +64,7 @@
       deploy-rs,
       hyprland,
       nixvim,
+      jailed-agents,
       ...
     }:
     let
@@ -293,6 +297,10 @@
       };
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
       devShells = forAllSystems (system: {
+        default = import ./shell/default.nix {
+          pkgs = builtins.getAttr system packages;
+          inherit jailed-agents system;
+        };
         python-dev = import ./shell/python-dev.nix {
           pkgs = builtins.getAttr system packages;
         };
