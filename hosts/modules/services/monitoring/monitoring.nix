@@ -41,6 +41,10 @@ in {
       sopsFile = ../../../common/secrets.yaml;
       owner = "grafana";
     };
+    sops.secrets.grafanaSecretKey = {
+      sopsFile = ../../../common/secrets.yaml;
+      owner = "grafana";
+    };
     services.grafana = {
       enable = true;
       dataDir = assertNotNull cfg.dataDir;
@@ -56,6 +60,8 @@ in {
           admin_user = "sinkerine";
           admin_password =
             "$__file{${config.sops.secrets.grafanaPassword.path}}";
+          secret_key =
+            "$__file{${config.sops.secrets.grafanaSecretKey.path}}";
         };
 
         smtp = {
