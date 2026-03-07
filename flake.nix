@@ -40,8 +40,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-compat.follows = "flake-compat";
     };
+    # WARNING: Do not update hyprland before https://github.com/hyprwm/Hyprland/discussions/13564 is resolved
     hyprland = {
-      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1&rev=c92fb5e85f4a5fd3a0f5ffb5892f6a61cfe1be2b";
     };
     nixvim = {
       url = "github:nix-community/nixvim";

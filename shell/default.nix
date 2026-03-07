@@ -11,6 +11,7 @@ in
 
 pkgs.mkShell {
   packages = [
+    pkgs.nix
     (jailed-agents.lib.${system}.makeJailedOpencode sharedConfig)
     (jailed-agents.lib.${system}.makeJailedClaudeCode sharedConfig)
   ];
