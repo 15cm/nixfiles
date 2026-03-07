@@ -10,6 +10,7 @@ in {
       enable = true;
       settings = {
         global = {
+          font = "Iosevka Nerd Font 10";
           mouse_left_click = "do_action, close_current";
           mouse_middle_click = "do_action";
           mouse_right_click = "close_current";

@@ -12,7 +12,7 @@ in {
     services.mako = {
       enable = true;
       defaultTimeout = 3;
-      font = "Noto Sans, Noto Sans CJK JP, Noto Color Emoji";
+      font = "Iosevka Nerd Font, Noto Color Emoji";
     };
     systemd.user.services.mako = {
       Unit = {
