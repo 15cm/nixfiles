@@ -304,6 +304,10 @@
         python-dev = import ./shell/python-dev.nix {
           pkgs = builtins.getAttr system packages;
         };
+        web-dev = import ./shell/web-dev.nix {
+          pkgs = builtins.getAttr system packages;
+          inherit jailed-agents system;
+        };
       });
     };
 }
