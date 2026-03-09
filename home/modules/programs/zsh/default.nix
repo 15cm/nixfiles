@@ -32,7 +32,7 @@ in {
       zimfw = {
         enable = true;
         modules = [
-          "mollifier/cd-gitroot"
+          "mollifier/cd-gitroot --fpath . --source cd-gitroot.plugin.zsh"
           "ohmyzsh/ohmyzsh --root plugins/git"
           "jeffreytse/zsh-vi-mode"
           "15cm/zce.zsh --source zce.plugin.zsh"

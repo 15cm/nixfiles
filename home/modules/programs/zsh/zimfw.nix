@@ -1,8 +1,15 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
-let cfg = config.programs.zsh.zimfw;
-in {
+let
+  cfg = config.programs.zsh.zimfw;
+in
+{
   options.programs.zsh.zimfw = {
     enable = mkEnableOption "Zim";
     modules = mkOption {
@@ -33,13 +40,13 @@ in {
         ${concatStringsSep "\n" (map (m: "zmodule ${m}") cfg.modules)}
       ''}
     '';
+    home.activation.zimfwInit = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      ${pkgs.zsh}/bin/zsh -c "source ${pkgs.zimfw}/zimfw.zsh init -q"
+    '';
     programs.zsh.initContent = mkOrder 550 ''
       export ZIM_HOME=${cfg.zimHome};
       export ZIM_CONFIG_FILE=${cfg.zimConfigFile};
       zstyle ':zim:zmodule' use 'degit'
-      if [[ ! $ZIM_HOME/init.zsh -nt $ZIM_CONFIG_FILE ]]; then
-        source ${pkgs.zimfw}/zimfw.zsh init -q
-      fi
       source $ZIM_HOME/init.zsh
     '';
   };
