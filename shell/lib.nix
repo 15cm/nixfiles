@@ -14,6 +14,7 @@ rec {
   defaultPkgs = with pkgs; [
     git
     git-lfs
+    jujutsu
     gh
     openssh
     nix

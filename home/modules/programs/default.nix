@@ -13,6 +13,7 @@
     ./zsh
     ./zsh/zimfw.nix
     ./git
+    ./jj
     ./python-dev-tools
     ./yazi
     ./alacritty.nix

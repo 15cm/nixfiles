@@ -1,9 +1,5 @@
 # Steps
-## 1 Clone Repo
-sudo git clone https://github.com/15cm/nixfiles /nixfiles
-sudo chown -R ${USER} /nixfiles
-
-## 2 Install Nix
+## 1 Install Nix
 ```
 curl -L https://nixos.org/nix/install > /tmp/install-nix.sh
 export NIX_FIRST_BUILD_UID=2147483000
@@ -17,6 +13,14 @@ Then reboot the system.
 
 Note: The Nix uid/gid avoid collisions with existing user (e.g. in /etc/passwd.cache) in systems that uses LDAP.
 
+## 2 Clone Repo
+```bash
+nix shell nixpkgs#jujutsu -c jj git clone --colocate git@github.com:15cm/nixfiles.git /nixfiles
+sudo chown -R ${USER} /nixfiles
+cd /nixfiles
+./bootstrap/jj-init-repo.sh
+```
+
 ## 3 [Optional] If it's a work profile
 Fill in the `home.username` and `home.homeDirectory`of the config with your username in the corporation, e.g. /nixfiles/home/users/work/desktop/default.nix
 
@@ -29,4 +33,3 @@ cp /nixfiles/home/state/default.example.nix /nixfiles/home/state/default.nix
 nix build --no-link path:/nixfiles#homeConfigurations.<username>@<hostname>.activationPackage
 "$(nix path-info path:/nixfiles#homeConfigurations.<username>@<hostname>.activationPackage)"/activate
 ```
-

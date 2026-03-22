@@ -11,5 +11,18 @@ From a packages point of view, NixOS modules cover the minimum softwares that ar
 
 From a Linux desktop environment point of view, NixOS modules control system wise and hardware wise configs. It delegates controls to Home Manager modules right after the display mananger.
 
+## Version Control
+This repo uses `jj` as the standard interface for local history, branching, and GitHub pushes. Git remains installed as the storage and interoperability layer underneath, but the documented mutating workflow is `jj`-first.
+
+Clone the repo with:
+
+```bash
+jj git clone --colocate git@github.com:15cm/nixfiles.git /nixfiles
+cd /nixfiles
+./bootstrap/jj-init-repo.sh
+```
+
+The repo uses named bookmarks for review branches. Daily commands and the Git-to-`jj` mapping live in [docs/jj.md](./docs/jj.md).
+
 ## References
 * [Wayland software list -- Are we Wayland yet?](https://arewewaylandyet.com/)
