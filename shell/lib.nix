@@ -1,4 +1,8 @@
-{ pkgs }:
+{
+  pkgs,
+  jailed-agents,
+  system,
+}:
 
 rec {
   defaultPkgs = with pkgs; [
@@ -21,4 +25,24 @@ rec {
       "/nix/store"
     ];
   };
+  makeJailedCodex =
+    {
+      name ? "jailed-codex",
+      pkg ? pkgs.codex or (throw "codex not found in pkgs; pass pkg explicitly"),
+      extraPkgs ? [ ],
+      extraReadwriteDirs ? [ ],
+      extraReadonlyDirs ? [ ],
+    }:
+    jailed-agents.lib.${system}.makeJailedAgent {
+      inherit
+        name
+        pkg
+        extraPkgs
+        extraReadwriteDirs
+        extraReadonlyDirs
+        ;
+      configPaths = [
+        "~/.codex"
+      ];
+    };
 }

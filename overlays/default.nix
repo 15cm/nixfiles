@@ -27,6 +27,7 @@ in
       patches = (old.patches or [ ]) ++ [ ./aria2-fast.patch ];
     });
     codex = prev.codex.overrideAttrs (_old: {
+      patches = (_old.patches or [ ]) ++ [ ./codex-remove-dumb-term.patch ];
       postFixup = ''
         wrapProgram $out/bin/codex \
           --prefix PATH : ${final.lib.makeBinPath [ final.ripgrep ]} \
