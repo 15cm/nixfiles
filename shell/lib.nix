@@ -26,6 +26,7 @@ rec {
   ];
   defaultReadonlyDirs = [
     "~/.config/git"
+    "~/.config/jj"
     "~/.ssh/agent-shared"
     "~/.ssh/config"
     "~/.ssh/known_hosts"
