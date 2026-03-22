@@ -16,11 +16,21 @@
     gnupg.sshKeyPaths = [ ];
   };
 
-  sops.secrets.avanteAnthropicApiKey = { sopsFile = ./secrets.yaml; };
-  sops.secrets.avanteOpenaiApiKey = { sopsFile = ./secrets.yaml; };
-  sops.secrets.avanteGeminiApiKey = { sopsFile = ./secrets.yaml; };
-  sops.secrets.avanteMoonshotApiKey = { sopsFile = ./secrets.yaml; };
-  sops.secrets.morphApiKey = { sopsFile = ./secrets.yaml; };
+  sops.secrets.avanteAnthropicApiKey = {
+    sopsFile = ./secrets.yaml;
+  };
+  sops.secrets.avanteOpenaiApiKey = {
+    sopsFile = ./secrets.yaml;
+  };
+  sops.secrets.avanteGeminiApiKey = {
+    sopsFile = ./secrets.yaml;
+  };
+  sops.secrets.avanteMoonshotApiKey = {
+    sopsFile = ./secrets.yaml;
+  };
+  sops.secrets.morphApiKey = {
+    sopsFile = ./secrets.yaml;
+  };
 
   programs.opencode = {
     enable = true;
@@ -31,5 +41,7 @@
       autoupdate = true;
     };
   };
+  programs.claude-code = {
+    enable = true;
+  };
 }
-
