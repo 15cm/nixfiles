@@ -216,6 +216,10 @@ in
             action = "<cmd>Neogit<CR>";
           }
           {
+            key = "<leader>jj";
+            action = "<cmd>Neojjit<CR>";
+          }
+          {
             key = "<leader>pp";
             action = "<cmd>Telescope projects<CR>";
           }
@@ -343,6 +347,10 @@ in
                   group = "Misc";
                 }
                 {
+                  __unkeyed-j = "<leader>j";
+                  group = "Jujutsu";
+                }
+                {
                   __unkeyed-bang = "<leader>!";
                   group = "Spell Check";
                 }
@@ -380,6 +388,18 @@ in
               sha256 = "sha256-fNytlDlYHqX1W1pqt8xLoud+AtMQDlmtUkbwZArj4bs=";
             };
           })
+          (pkgs.vimUtils.buildVimPlugin rec {
+            pname = "neojjit";
+            version = "unstable-2026-03-21";
+            src = pkgs.fetchzip {
+              url = "https://chakra.fly.dev/j/neojjit/archive/04c26116ebac033e4d079dde1bcdc3be1aa96a89.tar.gz";
+              hash = "sha256-07set+eNna0DZewTrWK3DQ9jTHdbcvB4fb+mG3AC1/A=";
+            };
+          })
+        ];
+        extraPackages = with pkgs; [
+          jujutsu
+          difftastic
         ];
         extraConfigLuaPre = ''
           get_selection = function()
@@ -393,6 +413,7 @@ in
           require("project").setup()
           require("telescope").load_extension("projects")
           require("auto-session").setup({})
+          require("neojjit").setup({})
         '';
         dependencies = {
           git.enable = true;
