@@ -13,5 +13,6 @@ in
     programs.codex = {
       enable = true;
     };
+    home.file.".codex/AGENTS.md".source = ./codex/AGENTS.md;
   };
 }
