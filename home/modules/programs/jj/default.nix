@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 let
@@ -9,13 +9,16 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ pkgs.jujutsu ];
-
-    xdg.configFile."jj/config.toml".text = ''
-      [user]
-      name = "Sinkerine"
-      email = "git@15cm.net"
-    '';
+    programs.jujutsu = {
+      enable = true;
+      settings = {
+        ui.default-command = "log";
+        user = {
+          name = "Sinkerine";
+          email = "git@15cm.net";
+        };
+      };
+    };
 
     programs.zsh.shellAliases = {
       j = "jj";
