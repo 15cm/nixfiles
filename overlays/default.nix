@@ -26,5 +26,12 @@ in
     aria2-fast = prev.aria2.overrideAttrs (old: {
       patches = (old.patches or [ ]) ++ [ ./aria2-fast.patch ];
     });
+    codex = prev.codex.overrideAttrs (_old: {
+      postFixup = ''
+        wrapProgram $out/bin/codex \
+          --prefix PATH : ${final.lib.makeBinPath [ final.ripgrep ]} \
+          --set TERM dumb
+      '';
+    });
   };
 }
