@@ -32,16 +32,22 @@
     sopsFile = ./secrets.yaml;
   };
 
-  programs.opencode = {
+  my.programs.opencode = {
     enable = true;
-    settings = {
-      theme = "opencode";
-      model = "anthropic/claude-haiku-4-5-20251001";
-      autoshare = false;
-      autoupdate = true;
-    };
+    theme = "opencode";
+    model = "anthropic/claude-haiku-4-5-20251001";
+    autoshare = false;
+    autoupdate = true;
   };
   programs.claude-code = {
+    enable = true;
+  };
+
+  my.programs.crush = {
+    enable = true;
+  };
+
+  my.programs.codex = {
     enable = true;
   };
 }

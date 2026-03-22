@@ -25,5 +25,8 @@
     ./firefox
     ./nvim
     ./baidupcs-go.nix
+    ./opencode.nix
+    ./crush.nix
+    ./codex.nix
   ];
 }
