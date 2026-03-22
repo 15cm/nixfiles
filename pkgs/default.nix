@@ -10,5 +10,6 @@ with pkgs; {
   khinsider = (callPackage ./khinsider { });
   feishin-appimage = (callPackage ./feishin-appimage { });
   lsp-ai = (callPackage ./lsp-ai { });
+  tmux-fzf = (callPackage ./tmux-fzf { });
   webos-dev-manager = (callPackage ./webos-dev-manager { });
 }

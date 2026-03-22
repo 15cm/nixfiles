@@ -7,10 +7,14 @@ set -ag terminal-overrides ",$TERM:Tc"
 
 set -ga update-environment TERM
 set -ga update-environment TERM_PROGRAM
+set-environment -g TMUX_FZF_SWITCH_CURRENT "1"
 
 # https://stackoverflow.com/questions/18600188/home-end-keys-do-not-work-in-tmux
 bind-key -n Home send Escape "OH"
 bind-key -n End send Escape "OF"
+
+# tmux-continuum requires the status line to stay on for periodic autosaves.
+set -g status on
 
 # Auto Restore
 set -g @continuum-restore 'on'
@@ -22,10 +26,13 @@ set -g @jump-key 't'
 bind R source-file ~/.config/tmux/tmux.conf\; display-message "~/.config/tmux/tmux.conf reloaded"
 bind z confirm-before "kill-window"
 bind Z confirm-before "kill-session"
-bind S command-prompt -p "New Session:" "new-session -A -s '%%'"
+bind e command-prompt -p "New Session:" "new-session -A -s '%%'"
 bind ^D detach
+bind-key s run-shell -b "{{tmuxFzfScriptsDir}}/session.sh switch"
 
 # Pane navigation
+set -g pane-border-status top
+set -g pane-border-format "#{?pane_active,#[bold],} #P #{=|24|...:pane_current_command} [#{b:pane_current_path}] @#H#{?pane_in_mode, [#{pane_mode}],}#{?pane_synchronized, [sync],} #[default]"
 bind-key h   select-pane -L
 bind-key j   select-pane -D
 bind-key k   select-pane -U
@@ -78,10 +85,6 @@ bind -T off C-q \
   set -u key-table \;\
   refresh-client -S
 
-
-# tmux fzf
-bind-key s run-shell -b "{{tmuxFzfScriptsDir}}/session.sh switch"
-bind-key w run-shell -b "{{tmuxFzfScriptsDir}}/window.sh switch"
 
 # Extrakto
 set -g @extrakto_fzf_tool fzf

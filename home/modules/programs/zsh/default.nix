@@ -103,15 +103,6 @@ in {
 
         # Editors
         ew = "$EDITOR";
-
-        # Tmux
-        ta = "tmux attach -t";
-        tad = "tmux attach -d -t";
-        ts = "tmux new -A -s";
-        tl = "tmux list-sessions";
-        tksv = "tmux kill-server";
-        tkss = "tmux kill-session -t";
-
         # Misc
         op = (if isLinux then "xdg-open" else "open");
         cpy = config.my.services.clipper.copyCommand;
