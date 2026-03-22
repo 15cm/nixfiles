@@ -25,7 +25,9 @@ with lib;
   boot.loader.timeout = -1;
 
   fonts.packages = with pkgs; [ noto-fonts ];
-  fonts.fontconfig.enable = false;
+  # GUI apps expect a system default fonts.conf. Home Manager fontconfig only
+  # adds user-level snippets and profile font paths.
+  fonts.fontconfig.enable = true;
 
   # For easy effects https://github.com/nix-community/home-manager/issues/3113
   # Required by pipewire rt mod and Flatpak.

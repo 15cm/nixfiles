@@ -13,6 +13,9 @@ in {
       enable = true;
       defaultTimeout = 3;
       font = "Iosevka Nerd Font, Noto Color Emoji";
+      extraConfig = ''
+        on-notify=exec makoctl menu -- wofi -d
+      '';
     };
     systemd.user.services.mako = {
       Unit = {
