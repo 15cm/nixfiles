@@ -43,10 +43,6 @@
     enable = true;
   };
 
-  my.programs.crush = {
-    enable = true;
-  };
-
   my.programs.codex = {
     enable = true;
   };

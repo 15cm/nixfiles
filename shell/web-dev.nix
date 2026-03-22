@@ -5,17 +5,17 @@
 }:
 
 let
-  lib = import ./lib.nix { inherit pkgs; };
-  sharedConfig = lib.mkJailedShellConfig (with pkgs; [
+  lib = import ./lib.nix { inherit pkgs jailed-agents system; };
+  webPkgs = with pkgs; [
     nodejs
     nodePackages.npm
     nodePackages.typescript
     chromium
-  ]);
+  ];
 in
 
 pkgs.mkShell {
   packages = [
-    (jailed-agents.lib.${system}.makeJailedOpencode sharedConfig)
+    (lib.makeJailedOpencode webPkgs)
   ];
 }

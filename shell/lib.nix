@@ -4,7 +4,13 @@
   system,
 }:
 
+let
+  defaultBaseJailOptions = jailed-agents.lib.${system}.commonJailOptions ++ [
+    jailed-agents.lib.${system}.internals.jail.combinators.notifications
+  ];
+in
 rec {
+  jailedLib = jailed-agents.lib.${system};
   defaultPkgs = with pkgs; [
     git
     gh
@@ -14,17 +20,24 @@ rec {
     gnugrep
     gawk
     coreutils
+    libnotify
   ];
+  defaultReadonlyDirs = [
+    "~/.config/git"
+    "~/.ssh/agent-shared"
+    "~/.ssh/config"
+    "~/.ssh/known_hosts"
+    "/nix/store"
+  ];
+  baseJailOptions = defaultBaseJailOptions;
   mkJailedShellConfig = extraPkgs: {
+    inherit baseJailOptions;
     extraPkgs = defaultPkgs ++ extraPkgs;
-    extraReadonlyDirs = [
-      "~/.config/git"
-      "~/.ssh/agent-shared"
-      "~/.ssh/config"
-      "~/.ssh/known_hosts"
-      "/nix/store"
-    ];
+    extraReadonlyDirs = defaultReadonlyDirs;
   };
+  makeJailedOpencode = extraPkgs: jailedLib.makeJailedOpencode (mkJailedShellConfig extraPkgs);
+  makeJailedClaudeCode = extraPkgs: jailedLib.makeJailedClaudeCode (mkJailedShellConfig extraPkgs);
+  makeJailedCrush = extraPkgs: jailedLib.makeJailedCrush (mkJailedShellConfig extraPkgs);
   makeJailedCodex =
     {
       name ? "jailed-codex",
@@ -32,14 +45,16 @@ rec {
       extraPkgs ? [ ],
       extraReadwriteDirs ? [ ],
       extraReadonlyDirs ? [ ],
+      baseJailOptions ? defaultBaseJailOptions,
     }:
-    jailed-agents.lib.${system}.makeJailedAgent {
+    jailedLib.makeJailedAgent {
       inherit
         name
         pkg
         extraPkgs
         extraReadwriteDirs
         extraReadonlyDirs
+        baseJailOptions
         ;
       configPaths = [
         "~/.codex"

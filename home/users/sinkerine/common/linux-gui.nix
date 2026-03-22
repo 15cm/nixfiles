@@ -64,6 +64,7 @@ in
     krita
     unflac
     wl-clipboard
+    libnotify
     grim
     slurp
     xdg-utils
