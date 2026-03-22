@@ -2,6 +2,7 @@
 
 with pkgs; {
   clipper = callPackage ./clipper { };
+  codex-notify = callPackage ./codex-notify { };
   i3-quickterm = callPackage ./i3-quickterm { };
   AriaNg = callPackage ./AriaNg { };
   sarasa-gothic-nerdfont = (callPackage ./sarasa-gothic-nerdfont { });

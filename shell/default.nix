@@ -10,11 +10,12 @@ in
 
 pkgs.mkShell {
   packages = lib.defaultPkgs ++ [
+    pkgs.codex-notify
     (lib.makeJailedOpencode [ ])
     (lib.makeJailedClaudeCode [ ])
     (lib.makeJailedCrush [ ])
     (lib.makeJailedCodex {
-      extraPkgs = lib.defaultPkgs;
+      extraPkgs = lib.defaultPkgs ++ [ pkgs.codex-notify ];
       extraReadonlyDirs = lib.defaultReadonlyDirs;
     })
   ];

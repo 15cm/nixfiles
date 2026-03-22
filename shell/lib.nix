@@ -13,6 +13,7 @@ rec {
   jailedLib = jailed-agents.lib.${system};
   defaultPkgs = with pkgs; [
     git
+    git-lfs
     gh
     openssh
     nix
