@@ -91,8 +91,6 @@ in {
             shell_environment_policy.ignore_default_excludes = true;
           };
         };
-
-        projects."/nixfiles".trust_level = "trusted";
       };
     };
 

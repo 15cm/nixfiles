@@ -196,7 +196,7 @@ in
     snoo = "switch-nix-os.sh --option substitute false";
     bno = "build-nix-os.sh";
     # Codex
-    jcodex = "nix develop /nixfiles --command jailed-codex";
+    jailedcodex = "nix develop /nixfiles --command jailed-codex";
   };
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;

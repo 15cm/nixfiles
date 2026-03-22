@@ -26,13 +26,25 @@ in
     aria2-fast = prev.aria2.overrideAttrs (old: {
       patches = (old.patches or [ ]) ++ [ ./aria2-fast.patch ];
     });
-    codex = prev.codex.overrideAttrs (_old: {
+    codex-base = prev.codex.overrideAttrs (_old: {
       patches = (_old.patches or [ ]) ++ [ ./codex-remove-dumb-term.patch ];
-      postFixup = ''
+    });
+    codex = final.symlinkJoin {
+      name = "codex-${final.codex-base.version}";
+      paths = [ final.codex-base ];
+      nativeBuildInputs = [ final.makeWrapper ];
+      postBuild = ''
         wrapProgram $out/bin/codex \
           --prefix PATH : ${final.lib.makeBinPath [ final.ripgrep ]} \
+          --run '
+            project_path=$PWD
+            project_path=''${project_path//\\/\\\\}
+            project_path=''${project_path//\"/\\\"}
+            set -- -c "projects={\"$project_path\"={trust_level=\"trusted\"}}" "$@"
+          ' \
           --set TERM dumb
       '';
-    });
+      meta = final.codex-base.meta;
+    };
   };
 }
