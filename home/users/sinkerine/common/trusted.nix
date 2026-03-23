@@ -5,6 +5,7 @@
     enable = true;
     avante.enable = true;
   };
+  my.programs.gh.enable = true;
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
@@ -17,6 +18,9 @@
   };
 
   sops.secrets.avanteAnthropicApiKey = {
+    sopsFile = ./secrets.yaml;
+  };
+  sops.secrets.githubToken = {
     sopsFile = ./secrets.yaml;
   };
   sops.secrets.avanteOpenaiApiKey = {

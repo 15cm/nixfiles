@@ -302,10 +302,14 @@
           pkgs = builtins.getAttr system packages;
           inherit jailed-agents system;
         };
-        python-dev = import ./shell/python-dev.nix {
+        tmux = import ./shell/tmux-dev.nix {
+          pkgs = builtins.getAttr system packages;
+          inherit jailed-agents system;
+        };
+        python = import ./shell/python-dev.nix {
           pkgs = builtins.getAttr system packages;
         };
-        web-dev = import ./shell/web-dev.nix {
+        web = import ./shell/web-dev.nix {
           pkgs = builtins.getAttr system packages;
           inherit jailed-agents system;
         };

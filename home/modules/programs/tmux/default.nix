@@ -29,7 +29,7 @@ in {
       prefix = "F8";
       baseIndex = 1;
       escapeTime = 0;
-      historyLimit = 20000;
+      historyLimit = 50000;
       keyMode = "vi";
       terminal = "tmux";
       plugins =

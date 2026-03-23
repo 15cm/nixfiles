@@ -2,19 +2,21 @@
   pkgs,
   jailed-agents,
   system,
+  extraPkgs ? [ ],
 }:
 
 let
   lib = import ./lib.nix { inherit pkgs jailed-agents system; };
+  shellPkgs = lib.defaultPkgs ++ extraPkgs;
 in
 
 pkgs.mkShell {
-  packages = lib.defaultPkgs ++ [
+  packages = shellPkgs ++ [
     pkgs.codex-notify
     (lib.makeJailedOpencode [ ])
     (lib.makeJailedClaudeCode [ ])
     (lib.makeJailedCodex {
-      extraPkgs = lib.defaultPkgs ++ [ pkgs.codex-notify ];
+      extraPkgs = shellPkgs ++ [ pkgs.codex-notify ];
       extraReadonlyDirs = lib.defaultReadonlyDirs;
     })
   ];

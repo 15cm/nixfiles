@@ -5,8 +5,18 @@
 }:
 
 let
+  ghTokenRuntimePath = "$HOME/.config/sops-nix/secrets/githubToken";
   defaultBaseJailOptions = jailed-agents.lib.${system}.commonJailOptions ++ [
     jailed-agents.lib.${system}.internals.jail.combinators.notifications
+    (jailed-agents.lib.${system}.internals.jail.combinators.wrap-entry (entry: ''
+      if [ -r "${ghTokenRuntimePath}" ]; then
+        GH_TOKEN="$(< "${ghTokenRuntimePath}")"
+        export GH_TOKEN
+        export GITHUB_TOKEN="$GH_TOKEN"
+      fi
+
+      exec ${entry}
+    ''))
   ];
 in
 rec {
@@ -25,6 +35,8 @@ rec {
     libnotify
   ];
   defaultReadonlyDirs = [
+    # Mounted so jailed agents can initialize GH_TOKEN inside the jail.
+    "~/.config/sops-nix/secrets/githubToken"
     "~/.config/git"
     "~/.config/jj"
     "~/.ssh/agent-shared"
