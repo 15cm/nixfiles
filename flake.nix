@@ -50,6 +50,10 @@
     jailed-agents = {
       url = "github:andersonjoseph/jailed-agents";
     };
+    tmux-omni-search = {
+      url = "path:/home/sinkerine/tech/repo/tmux-omni-search";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -66,6 +70,7 @@
       hyprland,
       nixvim,
       jailed-agents,
+      tmux-omni-search,
       ...
     }:
     let
@@ -74,7 +79,9 @@
       state = (import ./home/state);
     in
     rec {
-      overlays = import ./overlays { inherit nixpkgs; };
+      overlays = import ./overlays {
+        inherit nixpkgs tmux-omni-search;
+      };
       packages = forAllSystems (
         system:
         import nixpkgs {

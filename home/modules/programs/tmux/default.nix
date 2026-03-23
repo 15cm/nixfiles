@@ -41,6 +41,7 @@ in {
         ])
         ++ [
           pkgs.tmux-fzf
+          pkgs.tmux-omni-search
         ]
         ++ (with pkgs.tmuxPlugins; [
         # tmux-continuum should be last so its status-right hook keeps autosave working.

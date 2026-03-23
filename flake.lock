@@ -942,7 +942,8 @@
         "nixpkgs-stable": "nixpkgs-stable",
         "nixvim": "nixvim",
         "nur": "nur",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "tmux-omni-search": "tmux-omni-search"
       }
     },
     "sops-nix": {
@@ -1053,6 +1054,23 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "tmux-omni-search": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774257555,
+        "narHash": "sha256-BMQH2zbnVTnMh6Ql9bTzZ8LhoSc2vtUsJu7A5OOz8Lk=",
+        "path": "/home/sinkerine/tech/repo/tmux-omni-search",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/sinkerine/tech/repo/tmux-omni-search",
+        "type": "path"
       }
     },
     "treefmt-nix": {

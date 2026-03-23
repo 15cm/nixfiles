@@ -34,6 +34,10 @@ rec {
     coreutils
     libnotify
   ];
+  defaultReadwriteDirs = [
+    # To try all local developed projects.
+    "/nixfiles"
+  ];
   defaultReadonlyDirs = [
     # Mounted so jailed agents can initialize GH_TOKEN inside the jail.
     "~/.config/sops-nix/secrets/githubToken"
@@ -48,6 +52,7 @@ rec {
   mkJailedShellConfig = extraPkgs: {
     inherit baseJailOptions;
     extraPkgs = defaultPkgs ++ extraPkgs;
+    extraReadwriteDirs = defaultReadwriteDirs;
     extraReadonlyDirs = defaultReadonlyDirs;
   };
   makeJailedOpencode = extraPkgs: jailedLib.makeJailedOpencode (mkJailedShellConfig extraPkgs);

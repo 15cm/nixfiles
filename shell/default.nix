@@ -17,6 +17,7 @@ pkgs.mkShell {
     (lib.makeJailedClaudeCode [ ])
     (lib.makeJailedCodex {
       extraPkgs = shellPkgs ++ [ pkgs.codex-notify ];
+      extraReadwriteDirs = lib.defaultReadwriteDirs;
       extraReadonlyDirs = lib.defaultReadonlyDirs;
     })
   ];

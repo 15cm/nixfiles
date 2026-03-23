@@ -1,4 +1,4 @@
-{ nixpkgs, ... }:
+{ nixpkgs, tmux-omni-search, ... }:
 
 with nixpkgs.lib;
 let
@@ -17,7 +17,10 @@ let
 in
 {
   # Adds my custom packages
-  additions = final: _prev: import ../pkgs { pkgs = final; };
+  additions = final: _prev: import ../pkgs {
+    pkgs = final;
+    inherit tmux-omni-search;
+  };
   modifications = final: prev: rec {
     trash-cli = prev.trash-cli.overrideAttrs (old: {
       postInstall = "";
