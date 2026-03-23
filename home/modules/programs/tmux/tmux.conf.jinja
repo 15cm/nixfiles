@@ -28,7 +28,8 @@ bind z confirm-before "kill-window"
 bind Z confirm-before "kill-session"
 bind e command-prompt -p "New Session:" "new-session -A -s '%%'"
 bind ^D detach
-bind-key s run-shell -b "{{tmuxFzfScriptsDir}}/session.sh switch"
+bind-key S run-shell -b "{{tmuxFzfScriptsDir}}/session.sh switch"
+set -g @omni-search-launch-key 's'
 
 # Pane navigation
 set -g pane-border-status top
