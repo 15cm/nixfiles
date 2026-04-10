@@ -51,7 +51,7 @@
       url = "github:andersonjoseph/jailed-agents";
     };
     tmux-omni-search = {
-      url = "path:/home/sinkerine/tech/repo/tmux-omni-search";
+      url = "github:15cm/tmux-omni-search";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

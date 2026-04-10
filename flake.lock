@@ -1063,14 +1063,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1774257555,
-        "narHash": "sha256-BMQH2zbnVTnMh6Ql9bTzZ8LhoSc2vtUsJu7A5OOz8Lk=",
-        "path": "/home/sinkerine/tech/repo/tmux-omni-search",
-        "type": "path"
+        "lastModified": 1774260527,
+        "narHash": "sha256-HCU3giny9ElTz9usxSquNExcrl12L92aNZ7zgB6auQg=",
+        "owner": "15cm",
+        "repo": "tmux-omni-search",
+        "rev": "b59857ff2695c3544306657ae347482f3fc16cea",
+        "type": "github"
       },
       "original": {
-        "path": "/home/sinkerine/tech/repo/tmux-omni-search",
-        "type": "path"
+        "owner": "15cm",
+        "repo": "tmux-omni-search",
+        "type": "github"
       }
     },
     "treefmt-nix": {
