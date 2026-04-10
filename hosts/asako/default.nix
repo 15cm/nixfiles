@@ -58,6 +58,7 @@ in
     enable = true;
     enableZed = true;
     enableZfsUnstable = true;
+    arcMaxBytes = 8 * 1024 * 1024 * 1024;
   };
 
   networking = {

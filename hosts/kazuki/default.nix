@@ -39,6 +39,7 @@ with lib;
      enable = true;
      enableZed = true;
      enableZfsUnstable = true;
+     arcMaxBytes = 12 * 1024 * 1024 * 1024;
    };
 
   networking = {

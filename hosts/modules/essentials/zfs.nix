@@ -19,6 +19,11 @@ in {
       type = with types; nullOr str;
       default = null;
     };
+    arcMaxBytes = mkOption {
+      type = with types; nullOr int;
+      default = null;
+      description = "Maximum ZFS ARC size in bytes.";
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -29,6 +34,9 @@ in {
       boot.zfs.devNodes = "/dev/disk/by-path";
       services.zfs.autoScrub.enable = true;
     }
+    (mkIf (cfg.arcMaxBytes != null) {
+      boot.kernelParams = [ "zfs.zfs_arc_max=${toString cfg.arcMaxBytes}" ];
+    })
     (mkIf cfg.enableZfsUnstable { boot.zfs.package = pkgs.zfs_unstable; })
     (mkIf cfg.enableZed {
       services.zfs.zed = {
