@@ -41,7 +41,9 @@ in
       ''}
     '';
     home.activation.zimfwInit = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      ${pkgs.zsh}/bin/zsh -c "source ${pkgs.zimfw}/zimfw.zsh init -q"
+      export ZIM_HOME=${escapeShellArg (toString cfg.zimHome)}
+      export ZIM_CONFIG_FILE=${escapeShellArg (toString cfg.zimConfigFile)}
+      ${pkgs.zsh}/bin/zsh -c "source ${cfg.package}/zimfw.zsh init -q"
     '';
     programs.zsh.initContent = mkOrder 550 ''
       export ZIM_HOME=${cfg.zimHome};
