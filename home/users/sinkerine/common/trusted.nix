@@ -7,6 +7,11 @@
   };
   my.programs.gh.enable = true;
 
+  programs.zsh.shellAliases = {
+    jailedcodex = "nix develop /nixfiles --command jailed-codex";
+    jailedcodex-tmux = "nix develop /nixfiles#tmux --command jailed-codex";
+  };
+
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age = {
