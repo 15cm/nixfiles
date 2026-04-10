@@ -94,6 +94,6 @@ in {
       };
     };
 
-    home.file.".codex/AGENTS.md".source = ./codex/AGENTS.md;
+    home.file.".codex/AGENTS.md".source = ./codex/agents-template.md;
   };
 }
