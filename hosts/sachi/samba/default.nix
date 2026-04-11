@@ -55,6 +55,9 @@ with lib;
       "main-book" = {
         path = "/pool/main/media/book";
       };
+      "main-share" = {
+        path = "/pool/main/share";
+      };
       "main-sync" = {
         path = "/pool/main/sync";
       };
