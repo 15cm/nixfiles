@@ -48,10 +48,13 @@
     autoshare = false;
     autoupdate = true;
   };
-  programs.claude-code = {
+  my.programs.claude-code = {
     enable = true;
   };
 
+  my.programs.ai-agent-common = {
+    enable = true;
+  };
   my.programs.codex = {
     enable = true;
   };

@@ -30,5 +30,7 @@
     ./opencode.nix
     ./crush.nix
     ./codex.nix
+    ./ai-agent-common
+    ./claude-code.nix
   ];
 }
