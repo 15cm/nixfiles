@@ -15,7 +15,5 @@ let
 in
 
 pkgs.mkShell {
-  packages = [
-    (lib.makeJailedOpencode webPkgs)
-  ];
+  packages = webPkgs;
 }

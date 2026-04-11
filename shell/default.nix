@@ -13,8 +13,6 @@ in
 pkgs.mkShell {
   packages = shellPkgs ++ [
     pkgs.codex-notify
-    (lib.makeJailedOpencode [ ])
-    (lib.makeJailedClaudeCode [ ])
     (lib.makeJailedCodex {
       extraPkgs = shellPkgs ++ [ pkgs.codex-notify ];
       extraReadwriteDirs = lib.defaultReadwriteDirs;
