@@ -55,6 +55,7 @@ rec {
     extraReadwriteDirs = defaultReadwriteDirs;
     extraReadonlyDirs = defaultReadonlyDirs;
   };
+  makeJailedClaudeCode = extraPkgs: jailedLib.makeJailedClaudeCode (mkJailedShellConfig extraPkgs);
   makeJailedCodex =
     {
       name ? "jailed-codex",

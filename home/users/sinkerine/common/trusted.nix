@@ -8,7 +8,8 @@
   my.programs.gh.enable = true;
 
   programs.zsh.shellAliases = {
-    jailedcodex = "nix develop /nixfiles --command jailed-codex";
+    jc = "nix develop /nixfiles --command jailed-claude-code";
+    jx = "nix develop /nixfiles --command jailed-codex";
     jailedcodex-tmux = "nix develop /nixfiles#tmux --command jailed-codex";
   };
 

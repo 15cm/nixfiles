@@ -64,7 +64,7 @@ in {
           export TZ="America/Los_Angeles"
           export PATH="$PATH:$HOME/local/bin:/usr/local/bin:/usr/bin";
           export EDITOR="${editorValue}";
-          export TERM="alacritty";
+          export TERM="foot";
           export TLDR_COLOR_BLANK="blue";
           export TLDR_COLOR_DESCRIPTION="green";
           export TLDR_COLOR_PARAMETER="blue";

@@ -21,6 +21,9 @@ in {
   };
 
   config = mkIf cfg.enable {
+    # Incus on NixOS requires the nftables backend.
+    networking.nftables.enable = mkDefault true;
+
     virtualisation.incus = {
       enable = true;
       package = pkgs.incus;

@@ -17,6 +17,9 @@ in {
     programs.claude-code = {
       enable = true;
       settings = {
+        permissions.defaultMode = "bypassPermissions";
+        includeCoAuthoredBy = false;
+        skipDangerousModePermissionPrompt = true;
         hooks = {
           Stop = [
             {
@@ -34,7 +37,7 @@ in {
     };
 
     programs.zsh.shellAliases = {
-      cc = "claude --dangerously-skip-permissions";
+      cc = "claude";
     };
   };
 }

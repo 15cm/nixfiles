@@ -19,16 +19,5 @@ in {
         };
       };
     };
-
-    programs.zsh.shellAliases = {
-      j = "jj";
-      jb = "jj bookmark";
-      jc = "jj commit";
-      jd = "jj diff";
-      jg = "jj git";
-      jl = "jj log";
-      jn = "jj new";
-      js = "jj status";
-    };
   };
 }
