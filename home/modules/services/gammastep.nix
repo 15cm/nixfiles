@@ -1,9 +1,18 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
-let cfg = config.my.services.gammastep;
-in {
-  options.my.services.gammastep = { enable = mkEnableOption "gammastep"; };
+let
+  cfg = config.my.services.gammastep;
+in
+{
+  options.my.services.gammastep = {
+    enable = mkEnableOption "gammastep";
+  };
 
   config = mkIf cfg.enable {
     services.gammastep = {
@@ -13,8 +22,12 @@ in {
       duskTime = "19:00";
       provider = "geoclue2";
       temperature = {
-        day = 4000;
-        night = 3400;
+        day = 4500;
+        night = 3600;
+      };
+      settings.general = {
+        brightness-day = 1.0;
+        brightness-night = 0.7;
       };
       tray = true;
     };
@@ -23,7 +36,9 @@ in {
         PartOf = mkForce [ "tray.target" ];
         After = [ "tray.target" ];
       };
-      Install = { WantedBy = mkForce [ "tray.target" ]; };
+      Install = {
+        WantedBy = mkForce [ "tray.target" ];
+      };
     };
   };
 }

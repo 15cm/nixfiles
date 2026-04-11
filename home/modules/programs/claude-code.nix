@@ -12,27 +12,12 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [pkgs.claude-notify];
-
     programs.claude-code = {
       enable = true;
       settings = {
         permissions.defaultMode = "bypassPermissions";
         includeCoAuthoredBy = false;
         skipDangerousModePermissionPrompt = true;
-        hooks = {
-          Stop = [
-            {
-              matcher = "";
-              hooks = [
-                {
-                  type = "command";
-                  command = lib.getExe pkgs.claude-notify;
-                }
-              ];
-            }
-          ];
-        };
       };
     };
 
