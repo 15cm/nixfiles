@@ -20,6 +20,7 @@ in
     ../common/boot-loader.nix
     ../common/users.nix
     ../common/linux-gui.nix
+    ../common/trusted.nix
   ];
 
   environment.systemPackages = with pkgs; [

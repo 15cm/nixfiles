@@ -2,6 +2,7 @@
 
 with pkgs; {
   clipper = callPackage ./clipper { };
+  claude-notify = callPackage ./claude-notify { };
   codex-notify = callPackage ./codex-notify { };
   i3-quickterm = callPackage ./i3-quickterm { };
   AriaNg = callPackage ./AriaNg { };

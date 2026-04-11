@@ -9,6 +9,7 @@ with lib;
     ../common/baseline.nix
     ../common/boot-loader.nix
     ../common/users.nix
+    ../common/trusted.nix
     ./samba
   ];
 

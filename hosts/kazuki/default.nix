@@ -10,6 +10,7 @@ with lib;
     ../common/boot-loader.nix
     ../common/users.nix
     ../common/linux-gui.nix
+    ../common/trusted.nix
   ];
 
   environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];

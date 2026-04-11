@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib; let
@@ -11,8 +12,25 @@ in {
   };
 
   config = mkIf cfg.enable {
+    home.packages = [pkgs.claude-notify];
+
     programs.claude-code = {
       enable = true;
+      settings = {
+        hooks = {
+          Stop = [
+            {
+              matcher = "";
+              hooks = [
+                {
+                  type = "command";
+                  command = lib.getExe pkgs.claude-notify;
+                }
+              ];
+            }
+          ];
+        };
+      };
     };
 
     programs.zsh.shellAliases = {
