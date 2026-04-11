@@ -43,20 +43,16 @@
   };
 
   my.programs.opencode = {
+    enable = false;
+  };
+  my.programs.codex = {
     enable = true;
-    theme = "opencode";
-    model = "anthropic/claude-haiku-4-5-20251001";
-    autoshare = false;
-    autoupdate = true;
   };
   my.programs.claude-code = {
     enable = true;
   };
 
   my.programs.ai-agent-common = {
-    enable = true;
-  };
-  my.programs.codex = {
     enable = true;
   };
 }

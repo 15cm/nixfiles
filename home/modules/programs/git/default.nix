@@ -17,6 +17,7 @@ in {
         core.excludesfile = "~/.gitignore_global";
       };
       lfs = { enable = true; };
+      signing.format = null;
 
     };
     home.file.".gitignore_global".source = ./gitignore_global;

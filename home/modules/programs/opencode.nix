@@ -33,10 +33,12 @@ in
     programs.opencode = {
       enable = true;
       settings = {
-        theme = cfg.theme;
         model = cfg.model;
         autoshare = cfg.autoshare;
         autoupdate = cfg.autoupdate;
+      };
+      tui = {
+        theme = cfg.theme;
       };
     };
   };

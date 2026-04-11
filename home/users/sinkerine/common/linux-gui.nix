@@ -36,8 +36,7 @@ in
     # Development
     gnumake
     postgresql
-    nodePackages.js-beautify
-    ccls
+ccls
     ruby
     rust-analyzer
     pyright
@@ -178,10 +177,12 @@ in
       package = pkgs.kdePackages.breeze-icons;
       name = "breeze";
     };
+    gtk4.theme = config.gtk.theme;
   };
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
+    setSessionVariables = true;
   };
   my.programs.fontconfig.enableGui = true;
   my.services.gpg.enable = true;

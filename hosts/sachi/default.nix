@@ -1,4 +1,11 @@
-{ config, pkgs, lib, mylib, hostname, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  mylib,
+  hostname,
+  ...
+}:
 
 with lib;
 
@@ -17,7 +24,9 @@ with lib;
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    secrets = { hashedPassword.neededForUsers = true; };
+    secrets = {
+      hashedPassword.neededForUsers = true;
+    };
     age = {
       keyFile = "/keys/age/${hostname}.txt";
       sshKeyPaths = [ ];
@@ -35,15 +44,18 @@ with lib;
     };
   };
 
-   boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
-   my.essentials.zfs = {
-     enable = true;
-     enableNonRootEncryption = true;
-     enableZed = true;
-     enableZfsUnstable = true;
-     nonRootPools = [ "main" "sub" ];
-     encryptedZfsPath = "main";
-   };
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
+  my.essentials.zfs = {
+    enable = true;
+    enableNonRootEncryption = true;
+    enableZed = true;
+    enableZfsUnstable = true;
+    nonRootPools = [
+      "main"
+      "sub"
+    ];
+    encryptedZfsPath = "main";
+  };
 
   networking = {
     hostName = hostname;
@@ -65,15 +77,24 @@ with lib;
     powerManagement.enable = false;
     open = false;
   };
-  hardware.nvidia-container-toolkit.enable = true;
 
-  boot.kernelModules = [ "coretemp" ];
+  boot.kernelModules = [
+    "coretemp"
+    "kvm-intel"
+  ];
 
-  my.services.docker = { enable = true; };
+  virtualisation.libvirtd.enable = true;
+
+  my.services.docker = {
+    enable = false;
+  };
   my.services.zrepl = {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.sachi) sink source; };
-    openFirewallForPorts = [ "sink" "source" ];
+    openFirewallForPorts = [
+      "sink"
+      "source"
+    ];
     configTemplateFile = ./zrepl/zrepl.yaml.jinja;
     sopsCertFile = ./zrepl/sachi.m.mado.moe.crt;
     sopsKeyFile = ./zrepl/sachi.m.mado.moe.key;
@@ -81,7 +102,7 @@ with lib;
 
   my.services.gateway = {
     enable = true;
-    enableDocker = true;
+    enableDocker = false;
     internalDomain = "${hostname}.m.mado.moe";
     externalDomain = "mado.moe";
     lanOnlyIpRanges = [
@@ -93,12 +114,13 @@ with lib;
       config.my.ip.ranges.dockerRootless
     ];
   };
-  services.traefik.dynamicConfigOptions.http.middlewares.mastodon-auth-proxy.redirectRegex =
-    {
+  services.traefik.dynamicConfigOptions.http.middlewares = mkIf config.my.services.gateway.enable {
+    mastodon-auth-proxy.redirectRegex = {
       permanent = true;
       regex = "^https://mado.moe/\\.well-known/webfinger";
       replacement = "https://mastodon.mado.moe/.well-known/webfinger";
     };
+  };
   my.services.headscale.enable = true;
   my.services.tailscale = {
     enable = true;
@@ -116,7 +138,13 @@ with lib;
   my.services.monitoring = {
     enable = true;
     domain = "monitoring.${hostname}.m.mado.moe";
-    datasourceHosts = [ "sachi" "kazuki" "amane" "yumiko" "asako" ];
+    datasourceHosts = [
+      "sachi"
+      "kazuki"
+      "amane"
+      "yumiko"
+      "asako"
+    ];
     dataDir = "/pool/main/appdata/grafana";
   };
   my.services.aria2 = {
