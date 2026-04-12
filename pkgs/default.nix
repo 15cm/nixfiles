@@ -2,6 +2,7 @@
 
 with pkgs; {
   clipper = callPackage ./clipper { };
+  caveman = callPackage ./caveman { };
   claude-notify = callPackage ./claude-notify { };
   codex-trusted = callPackage ./codex-trusted { };
   codex-notify = callPackage ./codex-notify { };

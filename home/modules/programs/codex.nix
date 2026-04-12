@@ -6,6 +6,7 @@
 }:
 with lib; let
   cfg = config.my.programs.codex;
+  caveman = pkgs.caveman;
 in {
   options.my.programs.codex = {
     enable = mkEnableOption "Codex";
@@ -17,11 +18,31 @@ in {
       pkgs.codex-trusted
     ];
 
+    home.file.".codex/hooks.json".source = "${caveman}/.codex/hooks.json";
+    home.file.".codex/plugins/caveman" = {
+      source = "${caveman}/plugins/caveman";
+    };
+    home.file.".agents/skills/caveman" = {
+      source = "${caveman}/skills/caveman";
+    };
+    home.file.".agents/skills/caveman-commit" = {
+      source = "${caveman}/skills/caveman-commit";
+    };
+    home.file.".agents/skills/caveman-help" = {
+      source = "${caveman}/skills/caveman-help";
+    };
+    home.file.".agents/skills/caveman-review" = {
+      source = "${caveman}/skills/caveman-review";
+    };
+    home.file.".agents/skills/caveman-compress" = {
+      source = "${caveman}/caveman-compress";
+    };
+
     programs.zsh.shellAliases = {
       codex = "codex-trusted";
-      cx = "codex-trusted --profile fast";
+      cx = "codex-trusted";
       cx-deep = "cx --profile deep";
-      cx-fast = "cx";
+      cx-fast = "codex-trusted --profile fast";
       cx-offline = "cx --profile offline";
       cx-quick = "cx --profile quick";
       cx-unsafe = "cx --profile unsafe";
@@ -35,6 +56,7 @@ in {
           shell_snapshot = true;
           multi_agent = true;
           apps = true;
+          skills = true;
           prevent_idle_sleep = true;
           undo = true;
         };

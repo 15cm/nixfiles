@@ -196,6 +196,8 @@ ccls
     sno = "switch-nix-os.sh";
     snoo = "switch-nix-os.sh --option substitute false";
     bno = "build-nix-os.sh";
+    webos-dev-manager =
+      "NIXPKGS_ALLOW_UNFREE=1 nix run --impure github:nix-community/nixGL -- webos-dev-manager";
   };
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
