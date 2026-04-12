@@ -7,7 +7,6 @@
     ./set-theme
     ./i3
     ./nixGL.nix
-    ./hyprland
     ./hm-switch.nix
     ./fontconfig
     ./zsh
@@ -25,6 +24,7 @@
     ./powerline
     ./jetbrains
     ./firefox
+    ./obsidian.nix
     ./nvim
     ./baidupcs-go.nix
     ./opencode.nix
