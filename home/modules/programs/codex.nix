@@ -18,7 +18,6 @@ in {
       pkgs.codex-trusted
     ];
 
-    home.file.".codex/hooks.json".source = "${caveman}/.codex/hooks.json";
     home.file.".codex/plugins/caveman" = {
       source = "${caveman}/plugins/caveman";
     };
@@ -40,12 +39,18 @@ in {
 
     programs.zsh.shellAliases = {
       codex = "codex-trusted";
-      cx = "codex-trusted";
-      cx-deep = "cx --profile deep";
-      cx-fast = "codex-trusted --profile fast";
-      cx-offline = "cx --profile offline";
-      cx-quick = "cx --profile quick";
-      cx-unsafe = "cx --profile unsafe";
+      cx = "codex-trusted '$caveman'";
+      cxp = "codex-trusted";
+      cx-deep = "codex-trusted --profile deep '$caveman'";
+      cxp-deep = "codex-trusted --profile deep";
+      cx-fast = "codex-trusted --profile fast '$caveman'";
+      cxp-fast = "codex-trusted --profile fast";
+      cx-offline = "codex-trusted --profile offline '$caveman'";
+      cxp-offline = "codex-trusted --profile offline";
+      cx-quick = "codex-trusted --profile quick '$caveman'";
+      cxp-quick = "codex-trusted --profile quick";
+      cx-unsafe = "codex-trusted --profile unsafe '$caveman'";
+      cxp-unsafe = "codex-trusted --profile unsafe";
     };
 
     programs.codex = {
