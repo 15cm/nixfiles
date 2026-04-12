@@ -11,11 +11,13 @@ with lib;
 
 {
   system.stateVersion = "22.05";
+  my.isHeaded = false;
   imports = [
     ./hardware-configuration.nix
     ../common/baseline.nix
     ../common/boot-loader.nix
     ../common/users.nix
+    ../common/linux-gui.nix
     ../common/trusted.nix
     ./samba
   ];

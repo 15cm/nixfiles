@@ -8,7 +8,7 @@ let
 in {
   options.my.services.waybar = {
     enable = mkEnableOption "waybar";
-    zfsRootPoolName = mkOption {
+    zfsPoolName = mkOption {
       type = types.str;
       default = null;
     };
@@ -29,6 +29,12 @@ in {
         Install.WantedBy = [ "waybar.service" ];
       };
       services.waybar = {
+        Unit = {
+          PartOf = mkForce [ "tray.target" "hyprland-session.target" ];
+        };
+        Install = {
+          WantedBy = mkForce [ "tray.target" "hyprland-session.target" ];
+        };
         Service = {
           # Wait for the waybar tray to be ready for the auto start GUI apps.
           ExecStartPost = "${pkgs.coreutils}/bin/sleep 5";
@@ -44,7 +50,7 @@ in {
           position = "top";
           height = 36;
           modules-left = [ "cpu" "memory" ]
-            ++ optionals (cfg.zfsRootPoolName != null) [ "custom/zfs" ]
+            ++ optionals (cfg.zfsPoolName != null) [ "custom/zfs" ]
             ++ [ "network" "network#speed" "pulseaudio" ]
             ++ optionals (hostname == "asako") [ "backlight" ];
           modules-center = [ "hyprland/workspaces" "custom/isMaximized" ];
@@ -127,7 +133,7 @@ in {
           "custom/zfs" = {
             format = " {}";
             exec = pkgs.writeShellScript "waybar-custom-zfs.sh" ''
-              zfs list -o available ${cfg.zfsRootPoolName} | tr -d "AVAIL\n" | tr -d " "
+              zfs list -o available ${cfg.zfsPoolName} | tr -d "AVAIL\n" | tr -d " "
             '';
             interval = 30;
             min-length = 8;

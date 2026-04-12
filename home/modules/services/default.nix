@@ -4,7 +4,7 @@
     ./syncthing.nix
     ./polybar.nix
     ./hyprpaper.nix
-    ./gammastep.nix
+    ./hyprsunset.nix
     ./waybar
     ./mako.nix
     ./copyq.nix
