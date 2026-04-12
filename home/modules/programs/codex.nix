@@ -19,8 +19,9 @@ in {
 
     programs.zsh.shellAliases = {
       codex = "codex-trusted";
-      cx = "codex-trusted";
+      cx = "codex-trusted --profile fast";
       cx-deep = "cx --profile deep";
+      cx-fast = "cx";
       cx-offline = "cx --profile offline";
       cx-quick = "cx --profile quick";
       cx-unsafe = "cx --profile unsafe";
@@ -74,6 +75,15 @@ in {
             model_verbosity = "high";
             plan_mode_reasoning_effort = "xhigh";
             web_search = "live";
+          };
+
+          fast = {
+            model_reasoning_effort = "low";
+            model_reasoning_summary = "none";
+            model_verbosity = "low";
+            plan_mode_reasoning_effort = "medium";
+            service_tier = "fast";
+            web_search = "disabled";
           };
 
           quick = {
