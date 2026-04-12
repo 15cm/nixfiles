@@ -110,6 +110,9 @@ in
   # Laptop backlight brightness control via brightnessctl package
   # Laptop battery
   services.upower.enable = true;
+  programs.virt-manager.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
+
   my.services.lock = {
     enable = true;
     lockService = "hyprlock.service";

@@ -72,8 +72,6 @@ with lib;
   };
 
   programs.virt-manager.enable = true;
-  users.groups.libvirtd.members = [ "sinkerine" ];
-  virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
 
   my.services.aria2 = {

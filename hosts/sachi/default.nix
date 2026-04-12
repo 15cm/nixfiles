@@ -83,8 +83,6 @@ with lib;
     "kvm-intel"
   ];
 
-  virtualisation.libvirtd.enable = true;
-
   my.services.docker = {
     enable = false;
   };
