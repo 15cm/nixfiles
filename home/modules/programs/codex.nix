@@ -18,6 +18,22 @@ in {
       pkgs.codex-trusted
     ];
 
+    home.file.".codex/hooks.json".text = builtins.toJSON {
+      hooks = {
+        SessionStart = [
+          {
+            hooks = [
+              {
+                type = "command";
+                command = "echo 'CAVEMAN MODE ACTIVE. Rules: Drop articles/filler/pleasantries/hedging. Fragments OK. Short synonyms. Pattern: [thing] [action] [reason]. [next step]. Not: Sure! I would be happy to help you with that. Yes: Bug in auth middleware. Fix: Code/commits/security: write normal. User says stop caveman or normal mode to deactivate.'";
+                statusMessage = "Loading caveman mode...";
+                timeout = 10;
+              }
+            ];
+          }
+        ];
+      };
+    };
     home.file.".codex/plugins/caveman" = {
       source = "${caveman}/plugins/caveman";
     };
@@ -39,18 +55,12 @@ in {
 
     programs.zsh.shellAliases = {
       codex = "codex-trusted";
-      cx = "codex-trusted '$caveman'";
-      cxp = "codex-trusted";
-      cx-deep = "codex-trusted --profile deep '$caveman'";
-      cxp-deep = "codex-trusted --profile deep";
-      cx-fast = "codex-trusted --profile fast '$caveman'";
-      cxp-fast = "codex-trusted --profile fast";
-      cx-offline = "codex-trusted --profile offline '$caveman'";
-      cxp-offline = "codex-trusted --profile offline";
-      cx-quick = "codex-trusted --profile quick '$caveman'";
-      cxp-quick = "codex-trusted --profile quick";
-      cx-unsafe = "codex-trusted --profile unsafe '$caveman'";
-      cxp-unsafe = "codex-trusted --profile unsafe";
+      cx = "codex-trusted";
+      cx-deep = "cx --profile deep";
+      cx-fast = "codex-trusted --profile fast";
+      cx-offline = "cx --profile offline";
+      cx-quick = "cx --profile quick";
+      cx-unsafe = "cx --profile unsafe";
     };
 
     programs.codex = {
@@ -58,6 +68,7 @@ in {
       enableMcpIntegration = true;
       settings = {
         features = {
+          codex_hooks = true;
           shell_snapshot = true;
           multi_agent = true;
           apps = true;

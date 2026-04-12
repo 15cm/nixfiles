@@ -13,6 +13,10 @@ in {
   };
 
   config = mkIf cfg.enable {
+    home.file.".claude/hooks" = {
+      source = "${caveman}/hooks";
+    };
+
     home.file.".claude/commands" = {
       source = "${caveman}/commands";
     };
@@ -39,12 +43,41 @@ in {
         permissions.defaultMode = "bypassPermissions";
         includeCoAuthoredBy = false;
         skipDangerousModePermissionPrompt = true;
+        hooks = {
+          SessionStart = [
+            {
+              hooks = [
+                {
+                  type = "command";
+                  command = "if [ -f ~/.claude/hooks/caveman-activate.js ]; then node ~/.claude/hooks/caveman-activate.js; fi";
+                  timeout = 5;
+                  statusMessage = "Loading caveman mode...";
+                }
+              ];
+            }
+          ];
+          UserPromptSubmit = [
+            {
+              hooks = [
+                {
+                  type = "command";
+                  command = "if [ -f ~/.claude/hooks/caveman-mode-tracker.js ]; then node ~/.claude/hooks/caveman-mode-tracker.js; fi";
+                  timeout = 5;
+                  statusMessage = "Tracking caveman mode...";
+                }
+              ];
+            }
+          ];
+        };
+        statusLine = {
+          type = "command";
+          command = "if [ -f ~/.claude/hooks/caveman-statusline.sh ]; then bash ~/.claude/hooks/caveman-statusline.sh; fi";
+        };
       };
     };
 
     programs.zsh.shellAliases = {
-      cc = "claude '/caveman'";
-      ccp = "claude";
+      cc = "claude";
     };
   };
 }
