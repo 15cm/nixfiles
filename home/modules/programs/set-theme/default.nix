@@ -1,4 +1,4 @@
-{ pkgs, config, lib, nixinfo, mylib, isLinuxGui, state, ... }:
+{ pkgs, config, lib, nixinfo, mylib, state, ... }:
 
 with lib;
 let

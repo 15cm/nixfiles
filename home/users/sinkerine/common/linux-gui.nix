@@ -1,22 +1,18 @@
 {
   config,
   pkgs,
-  lib,
-  hostname,
   mylib,
   ...
 }:
 
-with lib;
 let
   inherit (mylib)
-    applyXwaylandEnvsToDesktopExec
     applyChromeFlagsToDesktopExec
-    applyElectronFlagsToDesktopExec
     ;
 in
 {
   imports = [
+    ./hyprland.nix
     # Essentials
     ../../../features/conf/ssh
     # XSession related. Needed by xWayland as well.
@@ -36,7 +32,7 @@ in
     # Development
     gnumake
     postgresql
-ccls
+    ccls
     ruby
     rust-analyzer
     pyright
@@ -93,40 +89,9 @@ ccls
   home.sessionVariables = {
     PATH = "${config.home.homeDirectory}/.nix-profile/bin:$PATH";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    # Hyprland
-    XDG_SESSION_TYPE = "wayland";
-    GDK_BACKEND = "wayland,x11";
-    QT_QPA_PLATFORM = "wayland;xcb";
   };
 
-  my.programs.hyprland = {
-    enable = true;
-    inherit (config.my.display) monitors;
-    inherit (config.my.display) scale;
-    musicPlayer = "Feishin";
-    musicPlayerDesktopFileName = "feishin.desktop";
-  };
-
-  # Only pass scale env variables for XWayland apps.
-  my.env = {
-    QT_SCREEN_SCALE_FACTORS = builtins.toString config.my.display.scale;
-    GDK_SCALE = builtins.toString config.my.display.scale;
-    GDK_DPI_SCALE = builtins.toString (builtins.div 1 config.my.display.scale);
-  };
-
-  programs.wofi.enable = true;
-  my.services.waybar = {
-    enable = true;
-    zfsRootPoolName = "rpool";
-    inherit (config.my.display) monitors;
-  };
-  my.services.hyprpaper = {
-    enable = true;
-    wallpapers = map (name: {
-      monitor = config.my.display.monitors.${name}.output;
-      path = config.my.display.monitors.${name}.wallpaper;
-    }) (builtins.attrNames config.my.display.monitors);
-  };
+  my.programs.hyprland.enableHyprsunset = true;
 
   qt = {
     enable = true;
@@ -196,12 +161,10 @@ ccls
     sno = "switch-nix-os.sh";
     snoo = "switch-nix-os.sh --option substitute false";
     bno = "build-nix-os.sh";
-    webos-dev-manager =
-      "NIXPKGS_ALLOW_UNFREE=1 nix run --impure github:nix-community/nixGL -- webos-dev-manager";
+    webos-dev-manager = "NIXPKGS_ALLOW_UNFREE=1 nix run --impure github:nix-community/nixGL -- webos-dev-manager";
   };
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-
   my.services.clipper = {
     enable = true;
     extraSettings = {
@@ -357,7 +320,7 @@ ccls
   };
   my.services.playerctld.enable = true;
   my.programs.foot.enable = true;
-  my.services.gammastep.enable = true;
+  my.programs.obsidian.enable = true;
 
   my.programs.pythonDevTools.enable = true;
 

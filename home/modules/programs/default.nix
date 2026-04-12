@@ -2,6 +2,7 @@
   imports = [
     ./emacs
     ./networkmanager-dmenu.nix
+    ./hyprland
     ./keychain.nix
     ./navi.nix
     ./set-theme

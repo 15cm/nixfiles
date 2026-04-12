@@ -108,7 +108,6 @@
           modules = [ ./home/users/sinkerine/kazuki ];
           extraSpecialArgs = {
             hostname = "kazuki";
-            isLinuxGui = true;
           };
         };
         "sinkerine@asako" = {
@@ -116,7 +115,6 @@
           modules = [ ./home/users/sinkerine/asako ];
           extraSpecialArgs = {
             hostname = "asako";
-            isLinuxGui = true;
           };
         };
         "sinkerine@sachi" = {
@@ -124,7 +122,6 @@
           modules = [ ./home/users/sinkerine/sachi ];
           extraSpecialArgs = {
             hostname = "sachi";
-            isLinuxGui = false;
           };
         };
         "sinkerine@yumiko" = {
@@ -132,7 +129,6 @@
           modules = [ ./home/users/sinkerine/yumiko ];
           extraSpecialArgs = {
             hostname = "yumiko";
-            isLinuxGui = false;
           };
         };
         "sinkerine@amane" = {
@@ -140,7 +136,6 @@
           modules = [ ./home/users/sinkerine/amane ];
           extraSpecialArgs = {
             hostname = "amane";
-            isLinuxGui = false;
           };
         };
         "work@desktop" = {
@@ -148,7 +143,6 @@
           modules = [ ./home/users/work/desktop/default.nix ];
           extraSpecialArgs = {
             hostname = "desktop";
-            isLinuxGui = true;
           };
         };
       };
@@ -160,7 +154,6 @@
             modules = v.modules ++ [
               ./modules/home-manager
               ./home/modules
-              hyprland.homeManagerModules.default
               {
                 imports = [
                   nur.modules.homeManager.default
@@ -228,7 +221,10 @@
         "sachi" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
-          modules = [ ./hosts/sachi ] ++ (with nixos-hardware.nixosModules; [ common-cpu-intel-cpu-only ]);
+          modules = [
+            ./hosts/sachi
+            hyprland.nixosModules.default
+          ] ++ (with nixos-hardware.nixosModules; [ common-cpu-intel-cpu-only ]);
           specialArgs = {
             hostname = "sachi";
           };

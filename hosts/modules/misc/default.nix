@@ -1,5 +1,11 @@
 { lib, ... }:
 
-with lib; {
-  imports = [ ./ids.nix ./trusts.nix ./ports.nix ./ip.nix ];
+with lib;
+{
+  imports = [
+    ./ids.nix
+    ./trusts.nix
+    ./ports.nix
+    ./ip.nix
+  ];
 }
