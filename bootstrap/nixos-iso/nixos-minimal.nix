@@ -14,4 +14,6 @@ with lib;
 
   networking.networkmanager.enable = true;
   networking.wireless.enable = mkImageMediaOverride false;
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }
