@@ -12,10 +12,14 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [pkgs.codex-notify];
+    home.packages = [
+      pkgs.codex-notify
+      pkgs.codex-trusted
+    ];
 
     programs.zsh.shellAliases = {
-      cx = "codex";
+      codex = "codex-trusted";
+      cx = "codex-trusted";
       cx-deep = "cx --profile deep";
       cx-offline = "cx --profile offline";
       cx-quick = "cx --profile quick";

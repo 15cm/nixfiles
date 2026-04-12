@@ -59,7 +59,7 @@ rec {
   makeJailedCodex =
     {
       name ? "jailed-codex",
-      pkg ? pkgs.codex or (throw "codex not found in pkgs; pass pkg explicitly"),
+      pkg ? pkgs.codex-trusted or (throw "codex-trusted not found in pkgs; pass pkg explicitly"),
       extraPkgs ? [ ],
       extraReadwriteDirs ? [ ],
       extraReadonlyDirs ? [ ],
