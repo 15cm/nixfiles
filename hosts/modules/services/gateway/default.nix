@@ -1,14 +1,20 @@
-{ config, lib, mylib, ... }:
+{ config, lib, mylib, pkgs, ... }:
 
 with lib;
 let
   cfg = config.my.services.gateway;
   inherit (mylib) mkDefaultTrueEnableOption assertNotNull;
+  lanOnlyIpRanges = concatStringsSep " " cfg.lanOnlyIpRanges;
+  wanIpRanges =
+    concatStringsSep " " (cfg.lanOnlyIpRanges ++ cfg.externalAllowListIpRanges);
+  caddyWithCloudflare = pkgs.caddy.withPlugins {
+    plugins = [ "github.com/caddy-dns/cloudflare@v0.2.4" ];
+    hash = "sha256-i7OoxiHJ4Stfp7SnxOryLAXS6w5+PJCnEydOakhFYcE=";
+  };
 in {
   options.my.services.gateway = {
-    enable = mkEnableOption "traefik gateway";
-    enableDocker = mkEnableOption "docker integration";
-    enableDashboardProxy = mkDefaultTrueEnableOption "dashboard proxy";
+    enable = mkEnableOption "caddy gateway";
+    enableDashboardProxy = mkDefaultTrueEnableOption "gateway status page";
     internalDomain = mkOption {
       type = with types; nullOr str;
       default = null;
@@ -31,90 +37,49 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      networking.firewall.allowedTCPPorts = [ 80 443 ];
-      sops.secrets.traefik-env = {
-        format = "binary";
-        sopsFile = ./traefik.env.txt;
-        owner = "traefik";
+      sops.secrets.caddyCloudflareApiToken = {
+        sopsFile = ../../../common/secrets.yaml;
+        owner = config.services.caddy.user;
       };
-      services.traefik = {
-        enable = true;
-        staticConfigOptions = {
-          log.level = "info";
-          api = {
-            dashboard = true;
-            insecure = true;
-          };
-          entryPoints = {
-            web = {
-              address = ":80";
-              http.redirections.entryPoint = {
-                to = "websecure";
-                scheme = "https";
-                permanent = false;
-              };
-            };
-            websecure = {
-              address = ":443";
-              http.tls.certResolver = "default";
-            };
-          };
-          certificatesResolvers = {
-            default = {
-              acme = {
-                email = "acme@15cm.net";
-                storage = "${config.services.traefik.dataDir}/acme.json";
-                dnsChallenge = {
-                  provider = "cloudflare";
-                  delayBeforeCheck = 5;
-                  resolvers = [ "1.1.1.1:53" "8.8.8.8:53" ];
-                };
-              };
-            };
-          };
-        };
-        dynamicConfigOptions = {
-          http = {
-            middlewares = {
-              lan-only.ipAllowList.sourceRange = cfg.lanOnlyIpRanges;
-              wan.ipAllowList.sourceRange = cfg.lanOnlyIpRanges
-                ++ cfg.externalAllowListIpRanges;
-            };
-          };
-        };
+      sops.templates."caddy-cloudflare.env" = {
+        content = ''
+          CLOUDFLARE_API_TOKEN=${config.sops.placeholder.caddyCloudflareApiToken}
+        '';
+        owner = config.services.caddy.user;
+        group = config.services.caddy.group;
       };
 
-      systemd.services.traefik = {
-        serviceConfig = {
-          EnvironmentFile = [ config.sops.secrets.traefik-env.path ];
-        };
+      services.caddy = {
+        enable = true;
+        package = caddyWithCloudflare;
+        email = "acme@15cm.net";
+        environmentFile = config.sops.templates."caddy-cloudflare.env".path;
+        logFormat = mkForce ''
+          level INFO
+        '';
+        openFirewall = true;
+        globalConfig = ''
+          acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+        '';
+        extraConfig = ''
+          (lan-only) {
+            @denied not remote_ip ${lanOnlyIpRanges}
+            respond @denied "Forbidden" 403
+          }
+
+          (wan-only) {
+            @denied not remote_ip ${wanIpRanges}
+            respond @denied "Forbidden" 403
+          }
+        '';
       };
-      users.users.traefik = { uid = config.my.ids.uids.traefik; };
-      users.groups.traefik.gid = config.my.ids.uids.traefik;
     }
-    (mkIf cfg.enableDocker {
-      services.traefik.group = "docker";
-      services.traefik.staticConfigOptions.providers = {
-        docker = {
-          watch = true;
-          endpoint = "unix:///var/run/docker.sock";
-          exposedbydefault = false;
-          network = "g_proxy";
-        };
-      };
-    })
     (mkIf cfg.enableDashboardProxy {
-      services.traefik.dynamicConfigOptions.http = {
-        routers.gatewayApi = {
-          rule = "Host(`gateway.${assertNotNull cfg.internalDomain}`)";
-          middlewares = [ "lan-only@file" ];
-          service = "gatewayApi";
-        };
-        services = {
-          gatewayApi.loadBalancer.servers = [{
-            url = "http://127.0.0.1:${toString config.my.ports.gateway.listen}";
-          }];
-        };
+      services.caddy.virtualHosts."gateway.${assertNotNull cfg.internalDomain}" = {
+        extraConfig = ''
+          import lan-only
+          respond "Caddy gateway active"
+        '';
       };
     })
   ]);

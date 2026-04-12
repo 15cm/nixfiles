@@ -100,7 +100,6 @@ with lib;
 
   my.services.gateway = {
     enable = true;
-    enableDocker = false;
     internalDomain = "${hostname}.m.mado.moe";
     externalDomain = "mado.moe";
     lanOnlyIpRanges = [
@@ -112,12 +111,11 @@ with lib;
       config.my.ip.ranges.dockerRootless
     ];
   };
-  services.traefik.dynamicConfigOptions.http.middlewares = mkIf config.my.services.gateway.enable {
-    mastodon-auth-proxy.redirectRegex = {
-      permanent = true;
-      regex = "^https://mado.moe/\\.well-known/webfinger";
-      replacement = "https://mastodon.mado.moe/.well-known/webfinger";
-    };
+  services.caddy.virtualHosts."${config.my.services.gateway.externalDomain}" = mkIf config.my.services.gateway.enable {
+    extraConfig = ''
+      @webfinger path /.well-known/webfinger
+      redir @webfinger https://mastodon.mado.moe{uri} permanent
+    '';
   };
   my.services.headscale.enable = true;
   my.services.tailscale = {

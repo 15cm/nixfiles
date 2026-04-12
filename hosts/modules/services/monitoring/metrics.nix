@@ -31,20 +31,13 @@ in {
         }];
       };
 
-      services.traefik.dynamicConfigOptions.http = {
-        routers.metrics = {
-          rule = "Host(`metrics.${
-              assertNotNull config.my.services.gateway.internalDomain
-            }`)";
-          middlewares = [ "lan-only@file" ];
-          service = "metrics";
-        };
-        services = {
-          metrics.loadBalancer.servers = [{
-            url =
-              "http://127.0.0.1:${toString config.my.ports.prometheus.listen}";
-          }];
-        };
+      services.caddy.virtualHosts."metrics.${
+        assertNotNull config.my.services.gateway.internalDomain
+      }" = {
+        extraConfig = ''
+          import lan-only
+          reverse_proxy 127.0.0.1:${toString config.my.ports.prometheus.listen}
+        '';
       };
     }
     (mkIf cfg.enableScrapeZrepl {

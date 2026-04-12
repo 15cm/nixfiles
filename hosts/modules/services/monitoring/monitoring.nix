@@ -22,19 +22,13 @@ in {
   };
 
   config = mkIf cfg.enable (mkMerge [{
-    services.traefik.dynamicConfigOptions.http = {
-      routers.monitoring = {
-        rule = "Host(`monitoring.${
-            assertNotNull config.my.services.gateway.internalDomain
-          }`)";
-        middlewares = [ "lan-only@file" ];
-        service = "monitoring";
-      };
-      services = {
-        monitoring.loadBalancer.servers = [{
-          url = "http://127.0.0.1:${toString config.my.ports.grafana.listen}";
-        }];
-      };
+    services.caddy.virtualHosts."monitoring.${
+      assertNotNull config.my.services.gateway.internalDomain
+    }" = {
+      extraConfig = ''
+        import lan-only
+        reverse_proxy 127.0.0.1:${toString config.my.ports.grafana.listen}
+      '';
     };
     users.users.grafana.extraGroups = [ "smtp-secret" ];
     sops.secrets.grafanaPassword = {

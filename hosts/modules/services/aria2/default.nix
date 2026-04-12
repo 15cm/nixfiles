@@ -71,19 +71,13 @@ in {
       '';
     })
     (mkIf cfg.enableReverseProxy {
-      services.traefik.dynamicConfigOptions.http = {
-        routers.aria2 = {
-          rule = "Host(`aria2.${
-              assertNotNull config.my.services.gateway.internalDomain
-            }`)";
-          middlewares = [ "lan-only@file" ];
-          service = "aria2";
-        };
-        services = {
-          aria2.loadBalancer.servers = [{
-            url = "http://127.0.0.1:${toString config.my.ports.aria2.listen}";
-          }];
-        };
+      services.caddy.virtualHosts."aria2.${
+        assertNotNull config.my.services.gateway.internalDomain
+      }" = {
+        extraConfig = ''
+          import lan-only
+          reverse_proxy 127.0.0.1:${toString config.my.ports.aria2.listen}
+        '';
       };
     })
   ]);
