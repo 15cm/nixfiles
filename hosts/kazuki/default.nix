@@ -86,6 +86,7 @@ with lib;
   };
   my.services.gateway = {
     enable = true;
+    enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
     lanOnlyIpRanges = [
       config.my.ip.ranges.local

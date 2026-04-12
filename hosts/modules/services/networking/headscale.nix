@@ -31,12 +31,18 @@ in {
       };
     };
 
-    services.caddy.virtualHosts."headscale.${
-      assertNotNull config.my.services.gateway.externalDomain
-    }" = {
-      extraConfig = ''
-        reverse_proxy 127.0.0.1:${toString config.my.ports.headscale.listen}
-      '';
+    services.traefik.dynamicConfigOptions.http = {
+      routers.headscale = {
+        rule = "Host(`headscale.${
+            assertNotNull config.my.services.gateway.externalDomain
+          }`)";
+        service = "headscale";
+      };
+      services = {
+        headscale.loadBalancer.servers = [{
+          url = "http://127.0.0.1:${toString config.my.ports.headscale.listen}";
+        }];
+      };
     };
   };
 }

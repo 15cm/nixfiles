@@ -16,6 +16,7 @@ in {
           base = config.my.ip.ranges.docker;
           size = 24;
         }];
+        ip-forward-no-drop = true;
         log-driver = mkForce "local";
       };
       autoPrune.enable = true;

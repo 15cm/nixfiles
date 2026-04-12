@@ -77,6 +77,7 @@ with lib;
     powerManagement.enable = false;
     open = false;
   };
+  hardware.nvidia-container-toolkit.enable = true;
 
   boot.kernelModules = [
     "coretemp"
@@ -84,7 +85,7 @@ with lib;
   ];
 
   my.services.docker = {
-    enable = false;
+    enable = true;
   };
   my.services.zrepl = {
     enable = true;
@@ -100,6 +101,7 @@ with lib;
 
   my.services.gateway = {
     enable = true;
+    enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
     externalDomain = "mado.moe";
     lanOnlyIpRanges = [
@@ -111,11 +113,12 @@ with lib;
       config.my.ip.ranges.dockerRootless
     ];
   };
-  services.caddy.virtualHosts."${config.my.services.gateway.externalDomain}" = mkIf config.my.services.gateway.enable {
-    extraConfig = ''
-      @webfinger path /.well-known/webfinger
-      redir @webfinger https://mastodon.mado.moe{uri} permanent
-    '';
+  services.traefik.dynamicConfigOptions.http.middlewares = mkIf config.my.services.gateway.enable {
+    mastodon-auth-proxy.redirectRegex = {
+      permanent = true;
+      regex = "^https://mado.moe/\\.well-known/webfinger";
+      replacement = "https://mastodon.mado.moe/.well-known/webfinger";
+    };
   };
   my.services.headscale.enable = true;
   my.services.tailscale = {

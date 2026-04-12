@@ -24,10 +24,26 @@ in {
     };
     users.groups.nix-serve = { gid = config.my.ids.uids.nix-serve; };
 
-    services.caddy.virtualHosts."nixcache.mado.moe" = {
-      extraConfig = ''
-        reverse_proxy 127.0.0.1:${builtins.toString config.services.nix-serve.port}
-      '';
+    services.traefik = {
+      dynamicConfigOptions.http = {
+        routers = {
+          nixcache = {
+            rule = "Host(`nixcache.mado.moe`)";
+            entryPoints = [ "websecure" ];
+            service = "nixcache";
+          };
+        };
+        services = {
+          nixcache.loadBalancer = {
+            passHostHeader = true;
+            servers = [{
+              url = "http://localhost:${
+                  builtins.toString config.services.nix-serve.port
+                }";
+            }];
+          };
+        };
+      };
     };
   };
 }

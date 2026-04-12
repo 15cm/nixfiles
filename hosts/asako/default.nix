@@ -138,6 +138,7 @@ in
   };
   my.services.gateway = {
     enable = true;
+    enableDocker = true;
     internalDomain = "${hostname}.m.mado.moe";
   };
   my.services.smartd.enable = true;

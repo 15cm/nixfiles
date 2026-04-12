@@ -1,4 +1,10 @@
-{ config, lib, pkgs, mylib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  mylib,
+  ...
+}:
 
 with lib;
 let
@@ -7,7 +13,8 @@ let
   templateData = { inherit (cfg) downloadDir maxConnectionPerServer; };
   aria2Config = templateFile "aria2-conf" templateData ./aria2.conf.jinja;
   sessionFile = "${cfg.programDir}/aria2.session";
-in {
+in
+{
   options.my.services.aria2 = {
     enable = mkEnableOption "Aria2";
     package = mkOption {
@@ -46,16 +53,20 @@ in {
         wantedBy = [ "multi-user.target" ];
         serviceConfig = {
           EnvironmentFile = [ config.sops.secrets.aria2-env.path ];
-          ExecStart = pkgs.writeShellScript "aria2-wrapper"
-            (concatStringsSep " " ([
-              "${cfg.package}/bin/aria2c"
-              "--conf-path=${aria2Config}"
-              "--rpc-secret=$ARIA2_RPC_SECERT"
-            ] ++ (optionals cfg.enableSession [
-              "--input-file=${sessionFile}"
-              "--save-session=${sessionFile}"
-              "--save-session-interval=60"
-            ])));
+          ExecStart = pkgs.writeShellScript "aria2-wrapper" (
+            concatStringsSep " " (
+              [
+                "${cfg.package}/bin/aria2c"
+                "--conf-path=${aria2Config}"
+                "--rpc-secret=$ARIA2_RPC_SECRET"
+              ]
+              ++ (optionals cfg.enableSession [
+                "--input-file=${sessionFile}"
+                "--save-session=${sessionFile}"
+                "--save-session-interval=60"
+              ])
+            )
+          );
           ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
           User = "${cfg.user}";
           Group = "${cfg.user}";
@@ -71,13 +82,19 @@ in {
       '';
     })
     (mkIf cfg.enableReverseProxy {
-      services.caddy.virtualHosts."aria2.${
-        assertNotNull config.my.services.gateway.internalDomain
-      }" = {
-        extraConfig = ''
-          import lan-only
-          reverse_proxy 127.0.0.1:${toString config.my.ports.aria2.listen}
-        '';
+      services.traefik.dynamicConfigOptions.http = {
+        routers.aria2 = {
+          rule = "Host(`aria2.${assertNotNull config.my.services.gateway.internalDomain}`)";
+          middlewares = [ "lan-only@file" ];
+          service = "aria2";
+        };
+        services = {
+          aria2.loadBalancer.servers = [
+            {
+              url = "http://127.0.0.1:${toString config.my.ports.aria2.listen}";
+            }
+          ];
+        };
       };
     })
   ]);
