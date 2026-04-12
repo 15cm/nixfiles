@@ -15,10 +15,11 @@ in {
     home.packages = [pkgs.codex-notify];
 
     programs.zsh.shellAliases = {
-      codex-deep = "codex --profile deep";
-      codex-offline = "codex --profile offline";
-      codex-quick = "codex --profile quick";
-      codex-unsafe = "codex --profile unsafe";
+      cx = "codex";
+      cx-deep = "cx --profile deep";
+      cx-offline = "cx --profile offline";
+      cx-quick = "cx --profile quick";
+      cx-unsafe = "cx --profile unsafe";
     };
 
     programs.codex = {
