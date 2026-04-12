@@ -5,9 +5,13 @@
 
   imports = [
     ../common
-    ../common/linux-gui.nix
     ../common/trusted.nix
   ];
+
+  my.essentials.gui = {
+    enable = true;
+    headed = true;
+  };
 
   home.packages = with pkgs; [ radeontop ];
 

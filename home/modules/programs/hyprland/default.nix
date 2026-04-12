@@ -82,7 +82,7 @@ in
       package = null;
       portalPackage = null;
       xwayland.enable = true;
-      systemd.variables = [ "--all" ];
+      systemd.enable = false;
       settings.exec-once = [
         "hyprctl setcursor breeze_cursors ${builtins.toString config.my.display.cursorSize}"
       ];

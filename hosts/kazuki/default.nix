@@ -1,4 +1,11 @@
-{ config, pkgs, lib, mylib, hostname, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  mylib,
+  hostname,
+  ...
+}:
 
 with lib;
 
@@ -9,15 +16,19 @@ with lib;
     ../common/baseline.nix
     ../common/boot-loader.nix
     ../common/users.nix
-    ../common/linux-gui.nix
     ../common/trusted.nix
   ];
 
-  environment.systemPackages = with pkgs; [ easyrsa i2c-tools ];
+  environment.systemPackages = with pkgs; [
+    easyrsa
+    i2c-tools
+  ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    secrets = { hashedPassword.neededForUsers = true; };
+    secrets = {
+      hashedPassword.neededForUsers = true;
+    };
     age = {
       keyFile = "/keys/age/${hostname}.txt";
       sshKeyPaths = [ ];
@@ -35,18 +46,24 @@ with lib;
     };
   };
 
-   boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
-   my.essentials.zfs = {
-     enable = true;
-     enableZed = true;
-     enableZfsUnstable = true;
-     arcMaxBytes = 12 * 1024 * 1024 * 1024;
-   };
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
+  my.essentials.zfs = {
+    enable = true;
+    enableZed = true;
+    enableZfsUnstable = true;
+    arcMaxBytes = 12 * 1024 * 1024 * 1024;
+  };
+  my.essentials.gui = {
+    enable = true;
+    headed = true;
+  };
 
   networking = {
     hostName = hostname;
     domain = "mado.moe";
-    networkmanager = { enable = true; };
+    networkmanager = {
+      enable = true;
+    };
     firewall.enable = mkForce false;
   };
 
@@ -58,9 +75,15 @@ with lib;
     open = true;
   };
 
-  boot.kernelParams =
-    [ "acpi_enforce_resources=lax" "transparent_hugepage=never" ];
-  hardware = { i2c = { enable = true; }; };
+  boot.kernelParams = [
+    "acpi_enforce_resources=lax"
+    "transparent_hugepage=never"
+  ];
+  hardware = {
+    i2c = {
+      enable = true;
+    };
+  };
   services.fwupd.enable = true;
 
   my.services.zrepl = {

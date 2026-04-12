@@ -1,1 +1,1 @@
-{ imports = [ ./zfs.nix ]; }
+{ imports = [ ./zfs.nix ./gui.nix ]; }

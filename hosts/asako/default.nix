@@ -19,7 +19,6 @@ in
     ../common/baseline.nix
     ../common/boot-loader.nix
     ../common/users.nix
-    ../common/linux-gui.nix
     ../common/trusted.nix
   ];
 
@@ -60,6 +59,10 @@ in
     enableZed = true;
     enableZfsUnstable = true;
     arcMaxBytes = 8 * 1024 * 1024 * 1024;
+  };
+  my.essentials.gui = {
+    enable = true;
+    headed = true;
   };
 
   networking = {

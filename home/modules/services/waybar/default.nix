@@ -30,10 +30,12 @@ in {
       };
       services.waybar = {
         Unit = {
-          PartOf = mkForce [ "tray.target" "hyprland-session.target" ];
+          PartOf = mkForce [ "graphical-session.target" ];
+          Wants = [ "tray.target" ];
+          Before = [ "tray.target" ];
         };
         Install = {
-          WantedBy = mkForce [ "tray.target" "hyprland-session.target" ];
+          WantedBy = mkForce [ "graphical-session.target" ];
         };
         Service = {
           # Wait for the waybar tray to be ready for the auto start GUI apps.

@@ -8,6 +8,8 @@
     ../common/trusted.nix
   ];
 
+  my.essentials.gui.enable = true;
+
   # Fallback monitor rule for Hyprland on this host.
   my.display.monitors.one = {
     output = "";

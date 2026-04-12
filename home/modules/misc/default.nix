@@ -6,5 +6,6 @@ with lib;
     ./env.nix
     ./display.nix
     ./ids.nix
+    ./gui.nix
   ];
 }

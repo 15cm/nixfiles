@@ -56,6 +56,7 @@ with lib;
     ];
     encryptedZfsPath = "main";
   };
+  my.essentials.gui.enable = true;
 
   networking = {
     hostName = hostname;
