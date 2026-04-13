@@ -27,6 +27,10 @@ in {
       type = with types; listOf str;
       default = config.my.ip.ranges.cloudFlareList;
     };
+    vmOnlyIpRanges = mkOption {
+      type = with types; listOf str;
+      default = [ "10.77.233.0/24" ];
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -79,6 +83,8 @@ in {
               lan-only.ipAllowList.sourceRange = cfg.lanOnlyIpRanges;
               wan.ipAllowList.sourceRange = cfg.lanOnlyIpRanges
                 ++ cfg.externalAllowListIpRanges;
+              vm-only.ipAllowList.sourceRange = cfg.vmOnlyIpRanges;
+              lan-or-vm.ipAllowList.sourceRange = cfg.lanOnlyIpRanges ++ cfg.vmOnlyIpRanges;
             };
           };
         };

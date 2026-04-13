@@ -37,8 +37,13 @@ in {
       source = "${caveman}/caveman-compress";
     };
 
+    programs.mcp.servers.obsidian = {
+      url = "https://mcp-obsidian.sachi.m.mado.moe";
+    };
+
     programs.claude-code = {
       enable = true;
+      enableMcpIntegration = true;
       settings = {
         permissions.defaultMode = "bypassPermissions";
         includeCoAuthoredBy = false;

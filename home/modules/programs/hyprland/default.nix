@@ -59,7 +59,7 @@ in
       type = types.bool;
       default = true;
     };
-    enableHyprsunset = mkOption {
+    enableGammastep = mkOption {
       type = types.bool;
       default = false;
     };
@@ -112,6 +112,6 @@ in
       }) (builtins.attrNames cfg.monitors);
     };
 
-    my.services.hyprsunset.enable = cfg.enableHyprsunset;
+    my.services.gammastep.enable = cfg.enableGammastep;
   };
 }

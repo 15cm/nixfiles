@@ -2,12 +2,14 @@
   config,
   pkgs,
   lib,
+  mylib,
   hostname,
   ...
 }:
 
 let
   cfg = config.my.essentials.gui;
+  inherit (mylib) applyChromeFlagsToDesktopExec;
 in
 {
   options.my.essentials.gui = {
@@ -17,13 +19,15 @@ in
 
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
-      {
+      (lib.mkIf cfg.headed {
         my.programs.hyprland = {
           enable = true;
           inherit (config.my.display) monitors scale;
           musicPlayer = "Feishin";
           musicPlayerDesktopFileName = "feishin.desktop";
         };
+      })
+      {
         home.sessionVariables = {
           PATH = "${config.home.homeDirectory}/.nix-profile/bin:$PATH";
           QT_AUTO_SCREEN_SCALE_FACTOR = "1";
@@ -115,7 +119,7 @@ in
           repomix
         ];
 
-        my.programs.hyprland.enableHyprsunset = true;
+        my.programs.hyprland.enableGammastep = true;
 
         xdg.configFile."ssh/interactive.conf".source = ../../features/conf/ssh/interactive.conf;
         qt = {
@@ -262,7 +266,112 @@ in
                 definedAliases = [ "@nixo" ];
               };
             }
+            {
+              name = "Nix Home Manager Options";
+              value = {
+                urls = [
+                  {
+                    template = "https://home-manager-options.extranix.com/?query={searchTerms}";
+                  }
+                ];
+                icon = "https://home-manager-options.extranix.com/images/favicon.png";
+                updateInterval = 24 * 60 * 60 * 1000; # every day
+                definedAliases = [ "@nixhm" ];
+              };
+            }
+            {
+              name = "DockerHub";
+              value = {
+                urls = [ { template = "https://hub.docker.com/search?q={searchTerms}"; } ];
+                icon = "https://hub.docker.com/favicon.ico";
+                updateInterval = 24 * 60 * 60 * 1000; # every day
+                definedAliases = [ "@dh" ];
+              };
+            }
           ];
+          searchEnginesOrderPrepend = [ "google" ];
+        };
+
+        # Name the entry same as the entry that comes with the package to overwrite it.
+        xdg.desktopEntries = {
+          google-chrome = {
+            name = "Google Chrome";
+            exec = applyChromeFlagsToDesktopExec "google-chrome-stable";
+          };
+          "com.github.iwalton3.jellyfin-media-player" = {
+            name = "Jellyfin Media Player";
+            exec = "jellyfinmediaplayer --platform=xcb";
+          };
+          insomnia = {
+            icon = "insomnia";
+            name = "Insomnia";
+            exec = "insomnia --disable-gpu-sandbox";
+          };
+          feishin = {
+            icon = "feishin";
+            name = "Feishin";
+            exec = "feishin --disable-gpu-sandbox --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime";
+          };
+          AriaNg = {
+            name = "AriaNg";
+            exec = "firefox --new-window http://localhost:3001";
+          };
+          "io.github.xiaoyifang.goldendict_ng" = {
+            name = "GoldenDict-ng";
+            exec = "env GOLDENDICT_FORCE_WAYLAND=1 goldendict";
+          };
+          # Using fcitx instead of wayland for QT_IM_MODULE fixes https://www.github.com/fcitx/fcitx5/issues/1152.
+          "org.telegram.desktop" = {
+            name = "Telegram Desktop";
+            exec = "env QT_IM_MODULE=fcitx QT_IM_MODULES=fcitx telegram-desktop -- %u";
+            icon = "telegram";
+            terminal = false;
+            settings = {
+              DBusActivatable = "true";
+              StartupWMClass = "TelegramDesktop";
+              MimeType = "x-scheme-handler/tg;x-scheme-handler/tonsite";
+              SingleMainWindow = "true";
+            };
+          };
+        };
+
+        home.pointerCursor = {
+          name = "breeze_cursors";
+          package = pkgs.kdePackages.breeze;
+          size = config.my.display.cursorSize;
+          x11.enable = true;
+          gtk.enable = true;
+        };
+
+        my.services.fcitx5 = {
+          enable = true;
+          enableWaylandEnv = true;
+        };
+        my.services.playerctld.enable = true;
+        my.programs.foot.enable = true;
+        my.programs.obsidian.enable = true;
+        my.programs.pythonDevTools.enable = true;
+
+        systemd.user.services.polkit-gnome-authentication-agent-1 = {
+          Unit = {
+            Description = "polkit-gnome-authentication-agent-1";
+            PartOf = [ "graphical-session.target" ];
+          };
+          Service = {
+            Type = "simple";
+            ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+            Restart = "on-failure";
+            RestartSec = 1;
+            TimeoutStopSec = 10;
+          };
+          Install = {
+            WantedBy = [ "graphical-session.target" ];
+          };
+        };
+
+        programs.obs-studio = {
+          enable = true;
+          plugins = with pkgs.obs-studio-plugins; [ wlrobs ];
         };
       })
     ]
