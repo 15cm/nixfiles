@@ -8,6 +8,15 @@ with lib; let
 in {
   options.my.programs.ai-agent-common = {
     enable = mkEnableOption "AI agent common configuration";
+    mcpServers = {
+      obsidian = {
+        url = mkOption {
+          type = types.str;
+          default = "https://mcp-obsidian.sachi.m.mado.moe/mcp";
+          description = "Obsidian MCP server URL";
+        };
+      };
+    };
   };
 
   config = mkIf cfg.enable {
