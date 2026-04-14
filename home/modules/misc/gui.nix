@@ -113,7 +113,7 @@ in
           kdePackages.kdenlive
           darktable
           webos-dev-manager
-          wechat-uos
+          wechat
           discord
           prusa-slicer
           repomix
