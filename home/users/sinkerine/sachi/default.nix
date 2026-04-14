@@ -9,4 +9,6 @@
   ];
 
   my.programs.baidupcs-go.enable = true;
+
+  home.packages = with pkgs; [ nodejs ];
 }
