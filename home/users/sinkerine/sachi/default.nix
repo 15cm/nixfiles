@@ -8,7 +8,5 @@
     ../common/trusted.nix
   ];
 
-  my.essentials.gui.enable = true;
-
   my.programs.baidupcs-go.enable = true;
 }

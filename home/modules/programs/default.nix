@@ -32,5 +32,6 @@
     ./codex.nix
     ./ai-agent-common
     ./claude-code.nix
+    ./obsidian.nix
   ];
 }

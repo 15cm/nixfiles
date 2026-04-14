@@ -14,19 +14,18 @@ in
 {
   options.my.essentials.gui = {
     enable = lib.mkEnableOption "linux gui";
-    headed = lib.mkEnableOption "headed linux gui";
   };
 
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
-      (lib.mkIf cfg.headed {
+      {
         my.programs.hyprland = {
           enable = true;
           inherit (config.my.display) monitors scale;
           musicPlayer = "Feishin";
           musicPlayerDesktopFileName = "feishin.desktop";
         };
-      })
+      }
       {
         home.sessionVariables = {
           PATH = "${config.home.homeDirectory}/.nix-profile/bin:$PATH";
@@ -51,7 +50,7 @@ in
         my.programs.fontconfig.enableGui = true;
       }
 
-      (lib.mkIf cfg.headed {
+      {
         home.packages = with pkgs; [
           # For tweaking XWayland config.
           xprop
@@ -372,7 +371,7 @@ in
           enable = true;
           plugins = with pkgs.obs-studio-plugins; [ wlrobs ];
         };
-      })
+      }
     ]
   );
 }

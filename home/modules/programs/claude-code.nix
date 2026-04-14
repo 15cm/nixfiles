@@ -7,6 +7,7 @@
 with lib; let
   cfg = config.my.programs.claude-code;
   caveman = pkgs.caveman;
+  ccstatusline = pkgs.ccstatusline;
 in {
   options.my.programs.claude-code = {
     enable = mkEnableOption "Claude Code";
@@ -21,20 +22,12 @@ in {
       source = "${caveman}/commands";
     };
 
-    home.file.".claude/skills/caveman" = {
-      source = "${caveman}/skills/caveman";
-    };
-    home.file.".claude/skills/caveman-commit" = {
-      source = "${caveman}/skills/caveman-commit";
-    };
-    home.file.".claude/skills/caveman-help" = {
-      source = "${caveman}/skills/caveman-help";
-    };
-    home.file.".claude/skills/caveman-review" = {
-      source = "${caveman}/skills/caveman-review";
-    };
-    home.file.".claude/skills/caveman-compress" = {
-      source = "${caveman}/caveman-compress";
+    programs.claude-code.skills = {
+      caveman = "${caveman}/skills/caveman";
+      caveman-commit = "${caveman}/skills/caveman-commit";
+      caveman-help = "${caveman}/skills/caveman-help";
+      caveman-review = "${caveman}/skills/caveman-review";
+      caveman-compress = "${caveman}/caveman-compress";
     };
 
     programs.claude-code = {
@@ -71,7 +64,7 @@ in {
         };
         statusLine = {
           type = "command";
-          command = "if [ -f ~/.claude/hooks/caveman-statusline.sh ]; then bash ~/.claude/hooks/caveman-statusline.sh; fi";
+          command = "${lib.getExe ccstatusline}";
         };
       };
     };

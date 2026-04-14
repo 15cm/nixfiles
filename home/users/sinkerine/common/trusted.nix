@@ -55,4 +55,7 @@
   my.programs.ai-agent-common = {
     enable = true;
   };
+  my.programs.obsidian = {
+    enable = true;
+  };
 }

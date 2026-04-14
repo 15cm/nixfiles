@@ -8,10 +8,7 @@
     ../common/trusted.nix
   ];
 
-  my.essentials.gui = {
-    enable = true;
-    headed = true;
-  };
+  my.essentials.gui.enable = true;
 
   home.packages = with pkgs; [
     handbrake

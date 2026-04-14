@@ -12,11 +12,10 @@ in
 {
   options.my.essentials.gui = {
     enable = mkEnableOption "linux gui";
-    headed = mkEnableOption "headed linux gui";
   };
 
   config = mkIf cfg.enable (mkMerge [
-    (mkIf cfg.headed {
+    {
       programs.hyprland = {
         enable = true;
         withUWSM = true;
@@ -24,19 +23,8 @@ in
           enable = true;
         };
       };
-    })
-    (mkIf (!cfg.headed) {
-      programs.uwsm = {
-        enable = true;
-        waylandCompositors.weston = {
-          prettyName = "Weston";
-          comment = "Weston compositor managed by UWSM";
-          binPath = "${pkgs.weston}/bin/weston";
-        };
-      };
-      environment.systemPackages = [ pkgs.weston ];
-    })
-    (mkIf cfg.headed {
+    }
+    {
       environment.systemPackages = with pkgs; [
         exfat
         exfatprogs
@@ -132,6 +120,6 @@ in
         SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789ABCD]?", MODE:="0666"
         KERNEL=="ttyACM*", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", MODE:="0666"
       '';
-    })
+    }
   ]);
 }
