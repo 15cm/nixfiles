@@ -1,6 +1,8 @@
 { config, pkgs, lib, hostname, ... }:
 
 with lib; {
+  services.dbus.implementation = "broker";
+
   environment.systemPackages = with pkgs; [
     sops
     acpi
