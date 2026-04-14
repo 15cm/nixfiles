@@ -30,5 +30,11 @@ in {
     (mkIf config.my.programs.codex.enable {
       home.file.".agents/skills/obsidian-cli".source = obsidianCliSkillDir;
     })
+    (mkIf config.my.programs.firefox.enable {
+      programs.firefox.profiles.default.settings = {
+        "network.protocol-handler.expose.obsidian" = false;
+        "network.protocol-handler.external.obsidian" = true;
+      };
+    })
   ]);
 }
