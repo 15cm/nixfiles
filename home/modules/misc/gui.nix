@@ -349,7 +349,6 @@ in
         };
         my.services.playerctld.enable = true;
         my.programs.foot.enable = true;
-        my.programs.obsidian.enable = true;
         my.programs.pythonDevTools.enable = true;
 
         systemd.user.services.polkit-gnome-authentication-agent-1 = {

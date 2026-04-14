@@ -39,10 +39,6 @@ in {
 
     programs.claude-code = {
       enable = true;
-      mcpServers.obsidian = {
-        type = "http";
-        url = config.my.programs.ai-agent-common.mcpServers.obsidian.url;
-      };
       settings = {
         permissions.defaultMode = "bypassPermissions";
         includeCoAuthoredBy = false;

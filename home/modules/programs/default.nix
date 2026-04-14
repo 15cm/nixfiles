@@ -25,7 +25,6 @@
     ./powerline
     ./jetbrains
     ./firefox
-    ./obsidian.nix
     ./nvim
     ./baidupcs-go.nix
     ./opencode.nix

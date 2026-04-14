@@ -11,5 +11,4 @@
   my.essentials.gui.enable = true;
 
   my.programs.baidupcs-go.enable = true;
-  my.programs.obsidian.enable = true;
 }

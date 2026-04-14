@@ -66,7 +66,6 @@ in {
     programs.codex = {
       enable = true;
       settings = {
-        mcp_servers.obsidian.url = config.my.programs.ai-agent-common.mcpServers.obsidian.url;
         features = {
           codex_hooks = true;
           shell_snapshot = true;
