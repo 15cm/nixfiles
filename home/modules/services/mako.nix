@@ -1,33 +1,29 @@
-{ pkgs, config, lib, mylib, ... }:
-
-with lib;
+{
+  config,
+  lib,
+  ...
+}:
 let
   cfg = config.my.services.mako;
-  inherit (mylib) templateFile;
-  templateData = { };
-in {
-  options.my.services.mako = { enable = mkEnableOption "mako"; };
+in
+{
+  options.my.services.mako = {
+    enable = lib.mkEnableOption "mako";
+  };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.mako = {
       enable = true;
-      defaultTimeout = 3;
-      font = "Iosevka Nerd Font, Noto Color Emoji";
+      settings = {
+        default-timeout = 3000;
+        font = "Noto Sans CJK SC 12";
+      };
       extraConfig = ''
-        on-notify=exec makoctl menu -- wofi -d
+        [app-name="claude-notify"]
+        on-notify=none
+        default-timeout=0
+        on-button-left=invoke-default-action
       '';
-    };
-    systemd.user.services.mako = {
-      Unit = {
-        Description = "Mako";
-        PartOf = [ "graphical-session.target" ];
-        After = [ "graphical-session.target" ];
-      };
-      Install = { WantedBy = [ "graphical-session.target" ]; };
-      Service = {
-        Type = "simple";
-        ExecStart = "${config.services.mako.package}/bin/mako";
-      };
     };
   };
 }

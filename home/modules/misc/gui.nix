@@ -106,7 +106,6 @@ in
           goldendict-ng
           yt-dlp
           feishin
-          qmk
           ffmpeg
           telegram-desktop
           kdePackages.kdenlive
@@ -209,7 +208,7 @@ in
           };
         };
         my.services.network-manager-applet.enable = true;
-        my.services.dunst.enable = true;
+        my.services.mako.enable = true;
         my.programs.firefox = {
           enable = true;
           searchEngines = [
@@ -347,6 +346,7 @@ in
           enableWaylandEnv = true;
         };
         my.services.playerctld.enable = true;
+        my.programs.ergodox.enable = true;
         my.programs.foot.enable = true;
         my.programs.pythonDevTools.enable = true;
 

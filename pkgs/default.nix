@@ -1,9 +1,11 @@
 { pkgs ? null, tmux-omni-search, ... }:
 
 with pkgs; {
+  ergodox-layout = callPackage ./ergodox-layout { };
   ccstatusline = callPackage ./ccstatusline { };
   clipper = callPackage ./clipper { };
   caveman = callPackage ./caveman { };
+  jujutsu-skill = callPackage ./jujutsu-skill { };
   claude-notify = callPackage ./claude-notify { };
   codex-trusted = callPackage ./codex-trusted { };
   codex-notify = callPackage ./codex-notify { };

@@ -33,5 +33,6 @@
     ./ai-agent-common
     ./claude-code.nix
     ./obsidian.nix
+    ./ergodox.nix
   ];
 }

@@ -7,6 +7,7 @@
 with lib; let
   cfg = config.my.programs.codex;
   caveman = pkgs.caveman;
+  jujutsu-skill = pkgs.jujutsu-skill;
 in {
   options.my.programs.codex = {
     enable = mkEnableOption "Codex";
@@ -51,6 +52,9 @@ in {
     };
     home.file.".agents/skills/caveman-compress" = {
       source = "${caveman}/caveman-compress";
+    };
+    home.file.".agents/skills/jujutsu" = {
+      source = "${jujutsu-skill}/skills/jujutsu";
     };
 
     programs.zsh.shellAliases = {

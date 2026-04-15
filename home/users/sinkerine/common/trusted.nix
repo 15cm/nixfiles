@@ -41,6 +41,9 @@
   sops.secrets.morphApiKey = {
     sopsFile = ./secrets.yaml;
   };
+  sops.secrets.myPwd = {
+    sopsFile = ./secrets.yaml;
+  };
 
   my.programs.opencode = {
     enable = false;

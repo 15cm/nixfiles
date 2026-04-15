@@ -6,8 +6,11 @@
 }:
 with lib; let
   cfg = config.my.programs.claude-code;
+  guiEnabled = config.my.essentials.gui.enable;
   caveman = pkgs.caveman;
   ccstatusline = pkgs.ccstatusline;
+  claude-notify = pkgs.claude-notify;
+  jujutsu-skill = pkgs.jujutsu-skill;
 in {
   options.my.programs.claude-code = {
     enable = mkEnableOption "Claude Code";
@@ -28,6 +31,7 @@ in {
       caveman-help = "${caveman}/skills/caveman-help";
       caveman-review = "${caveman}/skills/caveman-review";
       caveman-compress = "${caveman}/caveman-compress";
+      jujutsu = "${jujutsu-skill}/skills/jujutsu";
     };
 
     programs.claude-code = {
@@ -57,6 +61,29 @@ in {
                   command = "if [ -f ~/.claude/hooks/caveman-mode-tracker.js ]; then node ~/.claude/hooks/caveman-mode-tracker.js; fi";
                   timeout = 5;
                   statusMessage = "Tracking caveman mode...";
+                }
+              ];
+            }
+          ];
+        } // optionalAttrs guiEnabled {
+          Stop = [
+            {
+              hooks = [
+                {
+                  type = "command";
+                  command = "${lib.getExe claude-notify}";
+                  background = true;
+                }
+              ];
+            }
+          ];
+          Notification = [
+            {
+              hooks = [
+                {
+                  type = "command";
+                  command = "${lib.getExe claude-notify}";
+                  timeout = 5;
                 }
               ];
             }
