@@ -19,6 +19,7 @@ in
         addons = with pkgs; [
           fcitx5-rime
           fcitx5-mozc
+          fcitx5-vinput
         ];
       };
     };
@@ -31,6 +32,7 @@ in
     home.packages = with pkgs; [
       fcitx5-gtk
       kdePackages.fcitx5-qt
+      fcitx5-vinput
     ];
 
     home.sessionVariables = {

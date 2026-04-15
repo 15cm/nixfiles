@@ -1,4 +1,4 @@
-{ nixpkgs, tmux-omni-search, ... }:
+{ nixpkgs, tmux-omni-search, fcitx5-vinput, ... }:
 
 with nixpkgs.lib;
 let
@@ -17,9 +17,11 @@ let
 in
 {
   # Adds my custom packages
-  additions = final: _prev: import ../pkgs {
+  additions = final: _prev: (import ../pkgs {
     pkgs = final;
     inherit tmux-omni-search;
+  }) // {
+    fcitx5-vinput = fcitx5-vinput.packages.${final.stdenv.hostPlatform.system}.default;
   };
   modifications = final: prev: rec {
     trash-cli = prev.trash-cli.overrideAttrs (old: {

@@ -1,6 +1,13 @@
 {
   description = "Nix Flakes of Sinkerine";
 
+  nixConfig = {
+    extra-substituters = [ "https://fcitx5-vinput.cachix.org" ];
+    extra-trusted-public-keys = [
+      "fcitx5-vinput.cachix.org-1:XpX3AA6+dDIX4qJhb1QM7sbTwX6/qSlGvW8Z5NK6XdU="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -53,6 +60,9 @@
       url = "github:15cm/tmux-omni-search";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fcitx5-vinput = {
+      url = "github:xifan2333/fcitx5-vinput";
+    };
   };
 
   outputs =
@@ -70,6 +80,7 @@
       nixvim,
       jailed-agents,
       tmux-omni-search,
+      fcitx5-vinput,
       ...
     }:
     let
@@ -79,7 +90,7 @@
     in
     rec {
       overlays = import ./overlays {
-        inherit nixpkgs tmux-omni-search;
+        inherit nixpkgs tmux-omni-search fcitx5-vinput;
       };
       packages = forAllSystems (
         system:
@@ -224,7 +235,8 @@
           modules = [
             ./hosts/sachi
             hyprland.nixosModules.default
-          ] ++ (with nixos-hardware.nixosModules; [ common-cpu-intel-cpu-only ]);
+          ]
+          ++ (with nixos-hardware.nixosModules; [ common-cpu-intel-cpu-only ]);
           specialArgs = {
             hostname = "sachi";
           };
