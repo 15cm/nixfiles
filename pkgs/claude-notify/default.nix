@@ -5,6 +5,7 @@
   hyprland,
   procps,
   tmux,
+  notify-lib,
   writeShellApplication,
 }:
 
@@ -17,6 +18,11 @@ writeShellApplication {
     procps
     tmux
   ];
+  excludeShellChecks = [ "SC1091" ];
 
-  text = builtins.readFile ./claude-notify.sh;
+  text = ''
+    # shellcheck source=/dev/null
+    source "${notify-lib}/lib/notify-lib.sh"
+    ${builtins.readFile ./claude-notify.sh}
+  '';
 }

@@ -72,7 +72,7 @@ in {
                 {
                   type = "command";
                   command = "${lib.getExe claude-notify}";
-                  background = true;
+                  async = true;
                 }
               ];
             }
@@ -83,7 +83,7 @@ in {
                 {
                   type = "command";
                   command = "${lib.getExe claude-notify}";
-                  timeout = 5;
+                  async = true;
                 }
               ];
             }

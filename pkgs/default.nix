@@ -1,6 +1,7 @@
 { pkgs ? null, tmux-omni-search, ... }:
 
 with pkgs; {
+  notify-lib = callPackage ./notify-lib { };
   ergodox-layout = callPackage ./ergodox-layout { };
   ccstatusline = callPackage ./ccstatusline { };
   clipper = callPackage ./clipper { };

@@ -22,7 +22,12 @@ in
         [app-name="claude-notify"]
         on-notify=none
         default-timeout=0
-        on-button-left=invoke-default-action
+        on-button-left=invoke-action focus
+
+        [app-name="codex-notify"]
+        on-notify=none
+        default-timeout=0
+        on-button-left=invoke-action focus
       '';
     };
   };
