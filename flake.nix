@@ -1,15 +1,7 @@
 {
   description = "Nix Flakes of Sinkerine";
 
-  nixConfig = {
-    extra-substituters = [
-      "https://fcitx5-vinput.cachix.org"
-      "https://cache.saumon.network/proxmox-nixos"
-    ];
-    extra-trusted-public-keys = [
-      "fcitx5-vinput.cachix.org-1:XpX3AA6+dDIX4qJhb1QM7sbTwX6/qSlGvW8Z5NK6XdU="
-    ];
-  };
+  nixConfig = { };
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
