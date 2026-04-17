@@ -2,7 +2,10 @@
   description = "Nix Flakes of Sinkerine";
 
   nixConfig = {
-    extra-substituters = [ "https://fcitx5-vinput.cachix.org" ];
+    extra-substituters = [
+      "https://fcitx5-vinput.cachix.org"
+      "https://cache.saumon.network/proxmox-nixos"
+    ];
     extra-trusted-public-keys = [
       "fcitx5-vinput.cachix.org-1:XpX3AA6+dDIX4qJhb1QM7sbTwX6/qSlGvW8Z5NK6XdU="
     ];
@@ -63,6 +66,8 @@
     fcitx5-vinput = {
       url = "github:xifan2333/fcitx5-vinput";
     };
+    # Do not add inputs.nixpkgs.follows — proxmox-nixos pins nixpkgs-stable intentionally.
+    proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
   };
 
   outputs =
@@ -81,6 +86,7 @@
       jailed-agents,
       tmux-omni-search,
       fcitx5-vinput,
+      proxmox-nixos,
       ...
     }:
     let

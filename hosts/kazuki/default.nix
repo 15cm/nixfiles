@@ -120,6 +120,12 @@ with lib;
     serverAddress = "direct.15cm.net";
   };
 
+  my.services.proxmox = {
+    enable = true;
+    ipAddress = "192.168.88.29";
+    enableDashboardProxy = true;
+  };
+
   my.services.smartd.enable = true;
   my.services.metrics = {
     enable = true;

@@ -18,5 +18,6 @@
     ./openrgb.nix
     ./vsftpd
     ./incus.nix
+    ./proxmox
   ];
 }
