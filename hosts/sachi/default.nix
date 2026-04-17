@@ -62,10 +62,21 @@ with lib;
     hostName = hostname;
     domain = "mado.moe";
     useDHCP = false;
-    defaultGateway = "192.168.88.1";
+    defaultGateway = {
+      address = "192.168.88.1";
+      interface = "enp13s0";
+    };
     # Delegate home firewall to the router.
     firewall.enable = mkForce false;
-    interfaces.enp13s0.useDHCP = true;
+    interfaces.enp13s0 = {
+      useDHCP = false;
+      ipv4.addresses = [
+        {
+          address = "192.168.88.30";
+          prefixLength = 24;
+        }
+      ];
+    };
     # Disable the 1G NIC to make sure the 10G NIC is always used.
     interfaces.eno1.useDHCP = false;
     interfaces.eno2.useDHCP = false;
@@ -133,11 +144,21 @@ with lib;
     ipAddress = "192.168.88.30";
     bridges = [ "vmbr0" ];
     networking = {
+      defaultGateway.interface = mkForce "vmbr0";
       bridges.vmbr0.interfaces = [ "enp13s0" ];
       interfaces = {
-        enp13s0.useDHCP = mkForce false;
+        enp13s0 = {
+          useDHCP = mkForce false;
+          ipv4.addresses = mkForce [ ];
+        };
         vmbr0 = {
-          useDHCP = mkForce true;
+          useDHCP = mkForce false;
+          ipv4.addresses = [
+            {
+              address = "192.168.88.30";
+              prefixLength = 24;
+            }
+          ];
         };
       };
     };

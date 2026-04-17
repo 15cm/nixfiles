@@ -64,8 +64,19 @@ with lib;
       enable = false;
     };
     useDHCP = false;
-    defaultGateway = "192.168.88.1";
-    interfaces.enp22s0.useDHCP = true;
+    defaultGateway = {
+      address = "192.168.88.1";
+      interface = "enp22s0";
+    };
+    interfaces.enp22s0 = {
+      useDHCP = false;
+      ipv4.addresses = [
+        {
+          address = "192.168.88.29";
+          prefixLength = 24;
+        }
+      ];
+    };
     firewall.enable = mkForce false;
   };
 
@@ -74,11 +85,21 @@ with lib;
     ipAddress = "192.168.88.29";
     bridges = [ "vmbr0" ];
     networking = {
+      defaultGateway.interface = mkForce "vmbr0";
       bridges.vmbr0.interfaces = [ "enp22s0" ];
       interfaces = {
-        enp22s0.useDHCP = mkForce false;
+        enp22s0 = {
+          useDHCP = mkForce false;
+          ipv4.addresses = mkForce [ ];
+        };
         vmbr0 = {
-          useDHCP = mkForce true;
+          useDHCP = mkForce false;
+          ipv4.addresses = [
+            {
+              address = "192.168.88.29";
+              prefixLength = 24;
+            }
+          ];
         };
       };
     };

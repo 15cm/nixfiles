@@ -15,19 +15,25 @@ in
     services.mako = {
       enable = true;
       settings = {
-        default-timeout = 3000;
-        font = "Noto Sans CJK SC 10";
+        default-timeout = 10000;
+        font = "sans-serif 10";
+        format = "%s\n%b";
+        height = 300;
+        width = 420;
+        ignore-timeout = true;
+        markup = false;
+        max-history = 100;
       };
       extraConfig = ''
         [app-name="claude-notify"]
         on-notify=none
         default-timeout=0
-        on-button-left=invoke-action focus
+        on-button-left=invoke-default-action
 
         [app-name="codex-notify"]
         on-notify=none
         default-timeout=0
-        on-button-left=invoke-action focus
+        on-button-left=invoke-default-action
       '';
     };
   };
