@@ -3,6 +3,7 @@
   lib,
   mylib,
   inputs,
+  pkgs,
   ...
 }:
 
@@ -11,6 +12,19 @@ with lib;
 let
   cfg = config.my.services.proxmox;
   inherit (mylib) assertNotNull;
+  pveFakeSubscriptionSrc = pkgs.fetchFromGitHub {
+    owner = "Jamesits";
+    repo = "pve-fake-subscription";
+    rev = "v0.0.11";
+    hash = "sha256-HP+4Njk0nmEcjfZlNhLQD91+3B54Y3Yc85yWVukpZZI=";
+  };
+  pveFakeSubscriptionPkg = pkgs.writeShellApplication {
+    name = "pve-fake-subscription";
+    runtimeInputs = [ pkgs.python3 ];
+    text = ''
+      exec python3 ${pveFakeSubscriptionSrc}/usr/bin/pve-fake-subscription "$@"
+    '';
+  };
 in
 {
   # Always import to register services.proxmox-ve options.
@@ -51,6 +65,23 @@ in
     };
 
     enableDashboardProxy = mkEnableOption "Proxmox dashboard reverse proxy via gateway";
+
+    fakeSubscription = {
+      enable = mkEnableOption "declaratively refresh a fake Proxmox subscription cache to suppress the no-subscription prompt";
+
+      package = mkOption {
+        type = types.package;
+        default = pveFakeSubscriptionPkg;
+        defaultText = literalExpression "pveFakeSubscriptionPkg";
+        description = "Package providing the `pve-fake-subscription` executable.";
+      };
+
+      blockRemoteChecks = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Add `shop.maurer-it.com` to `/etc/hosts` as localhost to block remote key checks.";
+      };
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -76,6 +107,39 @@ in
       # proxmox-nixos sets AcceptEnv as a string; NixOS expects list of string.
       services.openssh.settings.AcceptEnv = lib.mkForce [ "LANG" "LC_*" ];
     }
+    (mkIf cfg.fakeSubscription.enable {
+      environment.systemPackages = [ cfg.fakeSubscription.package ];
+
+      networking.extraHosts = mkIf cfg.fakeSubscription.blockRemoteChecks ''
+        127.0.0.1 shop.maurer-it.com
+      '';
+
+      # Upstream runs the script immediately on install. Mirror that on
+      # `nixos-rebuild switch` so the prompt does not linger until the timer fires.
+      system.activationScripts.pveFakeSubscription.text = ''
+        ${lib.getExe cfg.fakeSubscription.package}
+      '';
+
+      systemd.services.pve-fake-subscription = {
+        description = "Refresh fake Proxmox subscription cache";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = lib.getExe cfg.fakeSubscription.package;
+        };
+      };
+
+      systemd.timers.pve-fake-subscription = {
+        description = "Refresh fake Proxmox subscription cache every day";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnActiveSec = "0s";
+          OnBootSec = "0s";
+          OnCalendar = "daily";
+          RandomizedDelaySec = "60s";
+          Persistent = true;
+        };
+      };
+    })
     (mkIf cfg.enableDashboardProxy {
       services.traefik.staticConfigOptions = {
         accessLog = { };
