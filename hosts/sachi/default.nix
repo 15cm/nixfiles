@@ -40,9 +40,11 @@ with lib;
     settings = {
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
-      PermitRootLogin = "prohibit-password";
+      PermitRootLogin = "yes";
     };
   };
+
+  users.users.root.hashedPasswordFile = config.sops.secrets.hashedPassword.path;
 
   boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
   my.essentials.zfs = {
@@ -59,9 +61,11 @@ with lib;
   networking = {
     hostName = hostname;
     domain = "mado.moe";
-    useDHCP = true;
+    useDHCP = false;
+    defaultGateway = "192.168.88.1";
     # Delegate home firewall to the router.
     firewall.enable = mkForce false;
+    interfaces.enp13s0.useDHCP = true;
     # Disable the 1G NIC to make sure the 10G NIC is always used.
     interfaces.eno1.useDHCP = false;
     interfaces.eno2.useDHCP = false;
@@ -124,6 +128,27 @@ with lib;
     enable = true;
     useRoutingFeatures = "server";
   };
+  my.services.proxmox = {
+    enable = true;
+    ipAddress = "192.168.88.30";
+    bridges = [ "vmbr0" ];
+    networking = {
+      bridges.vmbr0.interfaces = [ "enp13s0" ];
+      interfaces = {
+        enp13s0.useDHCP = mkForce false;
+        vmbr0 = {
+          useDHCP = mkForce true;
+          ipv4.addresses = [
+            {
+              address = "192.168.88.30";
+              prefixLength = 24;
+            }
+          ];
+        };
+      };
+    };
+    enableDashboardProxy = true;
+  };
 
   my.services.smartd.enable = true;
   my.services.ups.enable = true;
@@ -151,6 +176,10 @@ with lib;
     maxConnectionPerServer = 128;
     downloadDir = "/pool/sub/download/aria2";
     enableSession = true;
+    enableReverseProxy = true;
+  };
+  my.programs.AriaNg = {
+    enable = true;
     enableReverseProxy = true;
   };
   my.services.vsftpd = {

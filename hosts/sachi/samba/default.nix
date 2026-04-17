@@ -58,6 +58,9 @@ with lib;
       "main-sync" = {
         path = "/pool/main/sync";
       };
+      "main-proxmox" = {
+        path = "/pool/main/proxmox";
+      };
       "sub-aria2" = {
         path = "/pool/sub/download/aria2";
       };

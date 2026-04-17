@@ -31,6 +31,19 @@ in
       description = "Linux or OVS bridges visible in the Proxmox web interface.";
     };
 
+    networking = mkOption {
+      type = types.attrs;
+      default = { };
+      description = "Additional `networking` configuration applied when Proxmox is enabled.";
+      example = {
+        bridges.vmbr0.interfaces = [ "enp1s0" ];
+        interfaces = {
+          enp1s0.useDHCP = false;
+          vmbr0.useDHCP = true;
+        };
+      };
+    };
+
     openFirewall = mkOption {
       type = types.bool;
       default = true;
@@ -50,17 +63,43 @@ in
         inherit (cfg) ipAddress bridges openFirewall;
       };
 
+      networking = cfg.networking;
+
+      # Bridged traffic does not need bridge netfilter on this host and the
+      # extra hooks noticeably slow large LAN transfers such as SMB mounts.
+      boot.kernel.sysctl = {
+        "net.bridge.bridge-nf-call-iptables" = 0;
+        "net.bridge.bridge-nf-call-ip6tables" = 0;
+        "net.bridge.bridge-nf-call-arptables" = 0;
+      };
+
       # proxmox-nixos sets AcceptEnv as a string; NixOS expects list of string.
       services.openssh.settings.AcceptEnv = lib.mkForce [ "LANG" "LC_*" ];
     }
     (mkIf cfg.enableDashboardProxy {
+      services.traefik.staticConfigOptions = {
+        accessLog = { };
+        log.level = mkForce "DEBUG";
+      };
+
+      # Proxmox uploads large ISOs via the web UI. Traefik's default
+      # entrypoint read timeout can abort slow uploads before the body finishes.
+      services.traefik.staticConfigOptions.entryPoints.websecure.transport.respondingTimeouts.readTimeout = 0;
       services.traefik.dynamicConfigOptions.http = {
         routers.proxmox = {
           rule = "Host(`vm.${assertNotNull config.my.services.gateway.internalDomain}`)";
           middlewares = [ "lan-only@file" ];
           service = "proxmox";
         };
-        services.proxmox.loadBalancer.servers = [ { url = "http://127.0.0.1:8006"; } ];
+        services.proxmox.loadBalancer = {
+          servers = [ { url = "https://127.0.0.1:8006"; } ];
+          passHostHeader = true;
+          serversTransport = "proxmox";
+        };
+        serversTransports.proxmox = {
+          insecureSkipVerify = true;
+          disableHTTP2 = true;
+        };
       };
     })
   ]);

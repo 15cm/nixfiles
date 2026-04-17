@@ -1,6 +1,13 @@
-{ config, pkgs, lib, hostname, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  hostname,
+  ...
+}:
 
-with lib; {
+with lib;
+{
   services.dbus.implementation = "broker";
 
   environment.systemPackages = with pkgs; [
@@ -36,7 +43,10 @@ with lib; {
       dates = "weekly";
     };
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       substituters = [
         "https://nix-community.cachix.org"
         "https://cache.nixos.org/"
@@ -47,7 +57,10 @@ with lib; {
       ];
       trusted-public-keys = config.my.trusts.cache.pubKeys;
       # Allows deploy-rs to add nix closure as non-root users in the wheel group. It resolves the error in home-manager: "cannot add path xxx because it lacks a signature by a trusted key"
-      trusted-users = [ "root" "@wheel" ];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
       download-buffer-size = 209715200; # 200 MiB
     };
   };
@@ -130,14 +143,19 @@ with lib; {
     enable = true;
     # https://docs.syncthing.net/users/firewall.html
     allowedTCPPorts = [ 22000 ];
-    allowedUDPPorts = [ 22000 21027 ];
+    allowedUDPPorts = [
+      22000
+      21027
+    ];
   };
-  # Hosts doesn't support wildcard but I don't want to introduce a DNS server on each machine.
-  networking.extraHosts = ''
-    127.0.0.1 gateway.${hostname}.m.mado.moe
-    127.0.0.1 metrics.${hostname}.m.mado.moe
-    127.0.0.1 monitoring.${hostname}.m.mado.moe
-  '';
+  services.dnsmasq = {
+    enable = false;
+    settings = {
+      listen-address = "127.0.0.1";
+      bind-interfaces = true;
+      address = [ "/.${hostname}.m.mado.moe/127.0.0.1" ];
+    };
+  };
 
   sops.secrets.smtpPassword = {
     sopsFile = ./secrets.yaml;

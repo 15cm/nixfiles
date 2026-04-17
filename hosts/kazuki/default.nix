@@ -37,6 +37,8 @@ with lib;
     gnupg.sshKeyPaths = [ ];
   };
 
+  users.users.root.hashedPasswordFile = config.sops.secrets.hashedPassword.path;
+
   services.openssh = {
     enable = true;
     settings = {
@@ -59,9 +61,34 @@ with lib;
     hostName = hostname;
     domain = "mado.moe";
     networkmanager = {
-      enable = true;
+      enable = false;
     };
+    useDHCP = false;
+    defaultGateway = "192.168.88.1";
+    interfaces.enp22s0.useDHCP = true;
     firewall.enable = mkForce false;
+  };
+
+  my.services.proxmox = {
+    enable = true;
+    ipAddress = "192.168.88.29";
+    bridges = [ "vmbr0" ];
+    networking = {
+      bridges.vmbr0.interfaces = [ "enp22s0" ];
+      interfaces = {
+        enp22s0.useDHCP = mkForce false;
+        vmbr0 = {
+          useDHCP = mkForce true;
+          ipv4.addresses = [
+            {
+              address = "192.168.88.29";
+              prefixLength = 24;
+            }
+          ];
+        };
+      };
+    };
+    enableDashboardProxy = true;
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -118,12 +145,6 @@ with lib;
   my.services.shadowsocks-client = {
     enable = true;
     serverAddress = "direct.15cm.net";
-  };
-
-  my.services.proxmox = {
-    enable = true;
-    ipAddress = "192.168.88.29";
-    enableDashboardProxy = true;
   };
 
   my.services.smartd.enable = true;

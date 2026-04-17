@@ -17,7 +17,6 @@
     ./aria2
     ./openrgb.nix
     ./vsftpd
-    ./incus.nix
     ./proxmox
   ];
 }
