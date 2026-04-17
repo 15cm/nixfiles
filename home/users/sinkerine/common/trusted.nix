@@ -1,4 +1,4 @@
-{ hostname, ... }:
+{ hostname, pkgs, ... }:
 
 {
   my.programs.nvim = {
@@ -51,6 +51,7 @@
   my.programs.codex = {
     enable = true;
   };
+  home.packages = [ pkgs.codex-auth ];
   my.programs.claude-code = {
     enable = true;
   };

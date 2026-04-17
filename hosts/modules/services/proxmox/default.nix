@@ -49,6 +49,9 @@ in
         enable = true;
         inherit (cfg) ipAddress bridges openFirewall;
       };
+
+      # proxmox-nixos sets AcceptEnv as a string; NixOS expects list of string.
+      services.openssh.settings.AcceptEnv = lib.mkForce [ "LANG" "LC_*" ];
     }
     (mkIf cfg.enableDashboardProxy {
       services.traefik.dynamicConfigOptions.http = {
