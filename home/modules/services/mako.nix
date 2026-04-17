@@ -16,7 +16,7 @@ in
       enable = true;
       settings = {
         default-timeout = 3000;
-        font = "Noto Sans CJK SC 12";
+        font = "Noto Sans CJK SC 10";
       };
       extraConfig = ''
         [app-name="claude-notify"]
