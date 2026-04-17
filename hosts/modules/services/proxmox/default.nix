@@ -94,6 +94,11 @@ in
         inherit (cfg) ipAddress bridges openFirewall;
       };
 
+      virtualisation.libvirtd = {
+        enable = true;
+        qemu.vhostUserPackages = [ pkgs.virtiofsd ];
+      };
+
       networking = cfg.networking;
 
       # Bridged traffic does not need bridge netfilter on this host and the
