@@ -4,14 +4,15 @@
   pkgs,
   ...
 }:
-with lib; let
+with lib;
+let
   cfg = config.my.programs.claude-code;
   guiEnabled = config.my.essentials.gui.enable;
   caveman = pkgs.caveman;
   ccstatusline = pkgs.ccstatusline;
   claude-notify = pkgs.claude-notify;
-  jujutsu-skill = pkgs.jujutsu-skill;
-in {
+in
+{
   options.my.programs.claude-code = {
     enable = mkEnableOption "Claude Code";
   };
@@ -31,7 +32,6 @@ in {
       caveman-help = "${caveman}/skills/caveman-help";
       caveman-review = "${caveman}/skills/caveman-review";
       caveman-compress = "${caveman}/caveman-compress";
-      jujutsu = "${jujutsu-skill}/skills/jujutsu";
     };
 
     programs.claude-code = {
@@ -65,19 +65,9 @@ in {
               ];
             }
           ];
-        } // optionalAttrs guiEnabled {
+        }
+        // optionalAttrs guiEnabled {
           Stop = [
-            {
-              hooks = [
-                {
-                  type = "command";
-                  command = "${lib.getExe claude-notify}";
-                  async = true;
-                }
-              ];
-            }
-          ];
-          Notification = [
             {
               hooks = [
                 {

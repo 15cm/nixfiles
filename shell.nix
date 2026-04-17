@@ -15,7 +15,6 @@ pkgs.mkShell {
     nix
     home-manager
     git
-    jujutsu
 
     sops
     gnupg

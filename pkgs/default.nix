@@ -6,10 +6,10 @@ with pkgs; {
   ccstatusline = callPackage ./ccstatusline { };
   clipper = callPackage ./clipper { };
   caveman = callPackage ./caveman { };
-  jujutsu-skill = callPackage ./jujutsu-skill { };
   claude-notify = callPackage ./claude-notify { };
   codex-trusted = callPackage ./codex-trusted { };
   codex-notify = callPackage ./codex-notify { };
+  codex-auth = callPackage ./codex-auth { };
   i3-quickterm = callPackage ./i3-quickterm { };
   AriaNg = callPackage ./AriaNg { };
   sarasa-gothic-nerdfont = (callPackage ./sarasa-gothic-nerdfont { });

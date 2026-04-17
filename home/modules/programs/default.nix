@@ -14,7 +14,6 @@
     ./zsh/zimfw.nix
     ./git
     ./gh.nix
-    ./jj
     ./python-dev-tools
     ./yazi
     ./alacritty.nix

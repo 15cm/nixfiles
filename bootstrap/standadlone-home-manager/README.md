@@ -15,10 +15,9 @@ Note: The Nix uid/gid avoid collisions with existing user (e.g. in /etc/passwd.c
 
 ## 2 Clone Repo
 ```bash
-nix shell nixpkgs#jujutsu -c jj git clone --colocate git@github.com:15cm/nixfiles.git /nixfiles
+nix shell nixpkgs#git -c git clone git@github.com:15cm/nixfiles.git /nixfiles
 sudo chown -R ${USER} /nixfiles
 cd /nixfiles
-./bootstrap/jj-init-repo.sh
 ```
 
 ## 3 [Optional] If it's a work profile

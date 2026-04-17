@@ -15,7 +15,6 @@ in
 {
   imports = [
     ./avante.nix
-    ./jj.nix
     ./nix.nix
     ./clipper.nix
     ./text-edit.nix

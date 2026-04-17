@@ -24,7 +24,6 @@ rec {
   defaultPkgs = with pkgs; [
     git
     git-lfs
-    jujutsu
     gh
     openssh
     nix
@@ -42,7 +41,6 @@ rec {
     # Mounted so jailed agents can initialize GH_TOKEN inside the jail.
     "~/.config/sops-nix/secrets/githubToken"
     "~/.config/git"
-    "~/.config/jj"
     "~/.ssh/agent-shared"
     "~/.ssh/config"
     "~/.ssh/known_hosts"
