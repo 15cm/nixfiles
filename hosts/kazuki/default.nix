@@ -79,12 +79,6 @@ with lib;
         enp22s0.useDHCP = mkForce false;
         vmbr0 = {
           useDHCP = mkForce true;
-          ipv4.addresses = [
-            {
-              address = "192.168.88.29";
-              prefixLength = 24;
-            }
-          ];
         };
       };
     };
