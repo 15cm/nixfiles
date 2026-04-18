@@ -177,7 +177,7 @@ with lib;
     enable = true;
     domain = "monitoring.${hostname}.m.mado.moe";
     datasourceHosts = [
-      "sachi"
+      "agent-sachi"
       "kazuki"
       "amane"
       "yumiko"

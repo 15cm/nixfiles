@@ -101,16 +101,11 @@ in
 
       networking = cfg.networking;
 
-      # Bridged traffic does not need bridge netfilter on this host and the
-      # extra hooks noticeably slow large LAN transfers such as SMB mounts.
-      boot.kernel.sysctl = {
-        "net.bridge.bridge-nf-call-iptables" = 0;
-        "net.bridge.bridge-nf-call-ip6tables" = 0;
-        "net.bridge.bridge-nf-call-arptables" = 0;
-      };
-
       # proxmox-nixos sets AcceptEnv as a string; NixOS expects list of string.
-      services.openssh.settings.AcceptEnv = lib.mkForce [ "LANG" "LC_*" ];
+      services.openssh.settings.AcceptEnv = lib.mkForce [
+        "LANG"
+        "LC_*"
+      ];
     }
     (mkIf cfg.fakeSubscription.enable {
       environment.systemPackages = [ cfg.fakeSubscription.package ];
@@ -153,7 +148,8 @@ in
 
       # Proxmox uploads large ISOs via the web UI. Traefik's default
       # entrypoint read timeout can abort slow uploads before the body finishes.
-      services.traefik.staticConfigOptions.entryPoints.websecure.transport.respondingTimeouts.readTimeout = 0;
+      services.traefik.staticConfigOptions.entryPoints.websecure.transport.respondingTimeouts.readTimeout =
+        0;
       services.traefik.dynamicConfigOptions.http = {
         routers.proxmox = {
           rule = "Host(`vm.${assertNotNull config.my.services.gateway.internalDomain}`)";

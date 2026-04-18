@@ -131,11 +131,11 @@
             hostname = "asako";
           };
         };
-        "sinkerine@sachi" = {
+        "sinkerine@agent-sachi" = {
           pkgs = packages."x86_64-linux";
           modules = [ ./home/users/sinkerine/sachi ];
           extraSpecialArgs = {
-            hostname = "sachi";
+            hostname = "agent-sachi";
           };
         };
         "sinkerine@yumiko" = {
@@ -232,7 +232,7 @@
           };
         };
         # TODO: migrate to unencrypted pool + encrypted dataset.
-        "sachi" = rec {
+        "agent-sachi" = rec {
           system = "x86_64-linux";
           pkgs = builtins.getAttr system packages;
           modules = [
@@ -241,7 +241,7 @@
           ]
           ++ (with nixos-hardware.nixosModules; [ common-cpu-intel-cpu-only ]);
           specialArgs = {
-            hostname = "sachi";
+            hostname = "agent-sachi";
           };
         };
         "yumiko" = rec {
@@ -285,7 +285,7 @@
       ) nixosConfigurationArgs;
 
       deploy = {
-        nodes = nixpkgs.lib.genAttrs [ "sachi" "amane" "yumiko" "asako" ] (hostname: {
+        nodes = nixpkgs.lib.genAttrs [ "agent-sachi" "amane" "yumiko" "asako" ] (hostname: {
           inherit hostname;
           profilesOrder = [
             "system"

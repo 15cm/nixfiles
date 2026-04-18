@@ -9,6 +9,13 @@
 
 with lib;
 
+let
+  wanIf = "enp22s0";
+  brIf = "vmbr0";
+
+  hostIp = "192.168.88.29/24";
+  gateway = "192.168.88.1";
+in
 {
   system.stateVersion = "22.05";
   imports = [
@@ -57,52 +64,61 @@ with lib;
   };
   my.essentials.gui.enable = true;
 
-  networking = {
-    hostName = hostname;
-    domain = "mado.moe";
-    networkmanager = {
-      enable = false;
+  networking.useDHCP = false;
+  networking.networkmanager.enable = false;
+  networking.firewall.enable = mkForce false;
+
+  systemd.network.enable = true;
+
+  # Bridged traffic does not need bridge netfilter on this host and the
+  # extra hooks noticeably slow large LAN transfers such as SMB mounts.
+  boot.kernel.sysctl = {
+    "net.bridge.bridge-nf-call-iptables" = 0;
+    "net.bridge.bridge-nf-call-ip6tables" = 0;
+    "net.bridge.bridge-nf-call-arptables" = 0;
+  };
+
+  systemd.network.netdevs."10-${brIf}" = {
+    netdevConfig = {
+      Name = brIf;
+      Kind = "bridge";
     };
-    useDHCP = false;
-    defaultGateway = {
-      address = "192.168.88.1";
-      interface = "enp22s0";
+    bridgeConfig = {
+      STP = false;
+      ForwardDelaySec = 0;
     };
-    interfaces.enp22s0 = {
-      useDHCP = false;
-      ipv4.addresses = [
-        {
-          address = "192.168.88.29";
-          prefixLength = 24;
-        }
-      ];
+  };
+
+  systemd.network.networks."10-${wanIf}" = {
+    matchConfig.Name = wanIf;
+    networkConfig = {
+      Bridge = brIf;
+      DHCP = "no";
+      LinkLocalAddressing = "no";
+      IPv6AcceptRA = false;
     };
-    firewall.enable = mkForce false;
+  };
+
+  systemd.network.networks."20-${brIf}" = {
+    matchConfig.Name = brIf;
+    address = [ hostIp ];
+    networkConfig = {
+      DHCP = "no";
+      IPv6AcceptRA = false;
+      LinkLocalAddressing = "ipv6";
+    };
+    routes = [
+      {
+        Gateway = gateway;
+        GatewayOnLink = true;
+      }
+    ];
   };
 
   my.services.proxmox = {
     enable = true;
     ipAddress = "192.168.88.29";
     bridges = [ "vmbr0" ];
-    networking = {
-      defaultGateway.interface = mkForce "vmbr0";
-      bridges.vmbr0.interfaces = [ "enp22s0" ];
-      interfaces = {
-        enp22s0 = {
-          useDHCP = mkForce false;
-          ipv4.addresses = mkForce [ ];
-        };
-        vmbr0 = {
-          useDHCP = mkForce false;
-          ipv4.addresses = [
-            {
-              address = "192.168.88.29";
-              prefixLength = 24;
-            }
-          ];
-        };
-      };
-    };
     enableDashboardProxy = true;
   };
 
