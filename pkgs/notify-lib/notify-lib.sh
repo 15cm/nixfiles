@@ -61,7 +61,7 @@ send_notify() {
       action=$(
         notify-send --wait \
           --app-name="$app_name" \
-          --action=focus=Focus \
+          --action=default=Focus \
           "$title" "$message"
       )
     else
@@ -71,7 +71,7 @@ send_notify() {
           "$title" "$message"
       )
     fi
-    if [ "$action" = "focus" ] && [ -n "$addr" ]; then
+    if [ "$action" = "default" ] && [ -n "$addr" ]; then
       hyprctl dispatch focuswindow "address:$addr" 2>/dev/null
       if [ -n "$tmux_pane" ]; then
         tmux switch-client -t "$tmux_session"
