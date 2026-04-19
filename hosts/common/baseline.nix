@@ -66,6 +66,7 @@ with lib;
     };
   };
 
+  networking.hostName = lib.mkDefault hostname;
   # For zfs to identify machines.
   networking.hostId = builtins.getAttr hostname config.my.ids.hostIds;
 
