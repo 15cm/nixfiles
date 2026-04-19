@@ -34,6 +34,9 @@ in
         on-notify=none
         default-timeout=0
         on-button-left=invoke-default-action
+
+        [app-name="Telegram Desktop"]
+        on-button-left=exec hyprctl dispatch focuswindow class:org.telegram.desktop
       '';
     };
 
