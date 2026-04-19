@@ -17,7 +17,7 @@ in
       settings = {
         default-timeout = 10000;
         font = "sans-serif 10";
-        format = "%s\n%b";
+        format = "%s\\n%b";
         height = 300;
         width = 420;
         ignore-timeout = true;
@@ -36,5 +36,12 @@ in
         on-button-left=invoke-default-action
       '';
     };
+
+    # Mask the user unit entirely after Home Manager writes files. Keep D-Bus
+    # activation path from the package, but block systemd user unit startup.
+    home.activation.maskMakoUserService = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      mkdir -p "$HOME/.config/systemd/user"
+      ln -snf /dev/null "$HOME/.config/systemd/user/mako.service"
+    '';
   };
 }

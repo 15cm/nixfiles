@@ -40,6 +40,9 @@ with lib;
       "main-storage" = {
         path = "/pool/main/storage";
       };
+      "main-agent-storage" = {
+        path = "/pool/main/agent-storage";
+      };
       "main-storage-inbox" = {
         path = "/pool/main/storage/inbox";
       };
