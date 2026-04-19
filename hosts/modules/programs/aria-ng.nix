@@ -30,7 +30,7 @@ in
       services.nginx.enable = true;
       services.nginx.virtualHosts.ariang = {
         root = "${pkgs.AriaNg}/share/AriaNg";
-        serverName = "_";
+        serverName = "localhost";
         default = true;
         listen = [
           {

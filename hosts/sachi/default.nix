@@ -9,6 +9,13 @@
 
 with lib;
 
+let
+  wanIf = "enp13s0";
+  brIf = "vmbr0";
+
+  hostIp = "192.168.88.30/24";
+  gateway = "192.168.88.1";
+in
 {
   system.stateVersion = "22.05";
   imports = [
@@ -58,30 +65,56 @@ with lib;
     ];
     encryptedZfsPath = "main";
   };
-  networking = {
-    hostName = hostname;
-    domain = "mado.moe";
-    useDHCP = false;
-    defaultGateway = {
-      address = "192.168.88.1";
-      interface = "enp13s0";
+  networking.useDHCP = false;
+  networking.networkmanager.enable = false;
+  networking.firewall.enable = mkForce false;
+
+  systemd.network.enable = true;
+
+  # Bridged traffic does not need bridge netfilter on this host and the
+  # extra hooks noticeably slow large LAN transfers such as SMB mounts.
+  boot.kernel.sysctl = {
+    "net.bridge.bridge-nf-call-iptables" = 0;
+    "net.bridge.bridge-nf-call-ip6tables" = 0;
+    "net.bridge.bridge-nf-call-arptables" = 0;
+  };
+
+  systemd.network.netdevs."10-${brIf}" = {
+    netdevConfig = {
+      Name = brIf;
+      Kind = "bridge";
     };
-    # Delegate home firewall to the router.
-    firewall.enable = mkForce false;
-    interfaces.enp13s0 = {
-      useDHCP = false;
-      ipv4.addresses = [
-        {
-          address = "192.168.88.30";
-          prefixLength = 24;
-        }
-      ];
+    bridgeConfig = {
+      STP = false;
+      ForwardDelaySec = 0;
     };
-    # Disable the 1G NIC to make sure the 10G NIC is always used.
-    interfaces.eno1.useDHCP = false;
-    interfaces.eno2.useDHCP = false;
-    interfaces.eno3.useDHCP = false;
-    interfaces.eno4.useDHCP = false;
+  };
+
+  systemd.network.networks."10-${wanIf}" = {
+    matchConfig.Name = wanIf;
+    networkConfig = {
+      Bridge = brIf;
+      DHCP = "no";
+      LinkLocalAddressing = "no";
+      IPv6AcceptRA = false;
+    };
+  };
+
+  systemd.network.networks."20-${brIf}" = {
+    matchConfig.Name = brIf;
+    address = [ hostIp ];
+    networkConfig = {
+      DHCP = "no";
+      DNS = [ gateway ];
+      IPv6AcceptRA = false;
+      LinkLocalAddressing = "ipv6";
+    };
+    routes = [
+      {
+        Gateway = gateway;
+        GatewayOnLink = true;
+      }
+    ];
   };
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -143,25 +176,6 @@ with lib;
     enable = true;
     ipAddress = "192.168.88.30";
     bridges = [ "vmbr0" ];
-    networking = {
-      defaultGateway.interface = mkForce "vmbr0";
-      bridges.vmbr0.interfaces = [ "enp13s0" ];
-      interfaces = {
-        enp13s0 = {
-          useDHCP = mkForce false;
-          ipv4.addresses = mkForce [ ];
-        };
-        vmbr0 = {
-          useDHCP = mkForce false;
-          ipv4.addresses = [
-            {
-              address = "192.168.88.30";
-              prefixLength = 24;
-            }
-          ];
-        };
-      };
-    };
     enableDashboardProxy = true;
   };
 
@@ -177,7 +191,7 @@ with lib;
     enable = true;
     domain = "monitoring.${hostname}.m.mado.moe";
     datasourceHosts = [
-      "agent-sachi"
+      "sachi"
       "kazuki"
       "amane"
       "yumiko"

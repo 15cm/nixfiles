@@ -104,6 +104,7 @@ in
     address = [ hostIp ];
     networkConfig = {
       DHCP = "no";
+      DNS = [ gateway ];
       IPv6AcceptRA = false;
       LinkLocalAddressing = "ipv6";
     };

@@ -52,10 +52,11 @@ with lib;
         "https://cache.nixos.org/"
         "https://hyprland.cachix.org"
         "https://cuda-maintainers.cachix.org"
-        "https://fcitx5-vinput.cachix.org"
         "https://cache.saumon.network/proxmox-nixos"
-      ];
-      trusted-public-keys = config.my.trusts.cache.pubKeys;
+      ] ++ optionals config.my.essentials.gui.enable [ config.my.trusts.cache.fcitx5Vinput.substituter ];
+      trusted-public-keys =
+        config.my.trusts.cache.pubKeys
+        ++ optionals config.my.essentials.gui.enable [ config.my.trusts.cache.fcitx5Vinput.pubKey ];
       # Allows deploy-rs to add nix closure as non-root users in the wheel group. It resolves the error in home-manager: "cannot add path xxx because it lacks a signature by a trusted key"
       trusted-users = [
         "root"
@@ -148,15 +149,6 @@ with lib;
       21027
     ];
   };
-  services.dnsmasq = {
-    enable = false;
-    settings = {
-      listen-address = "127.0.0.1";
-      bind-interfaces = true;
-      address = [ "/.${hostname}.m.mado.moe/127.0.0.1" ];
-    };
-  };
-
   sops.secrets.smtpPassword = {
     sopsFile = ./secrets.yaml;
     mode = "0440";
