@@ -53,6 +53,9 @@
     nixvim = {
       url = "github:nix-community/nixvim";
     };
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+    };
     jailed-agents = {
       url = "github:andersonjoseph/jailed-agents";
     };
@@ -80,6 +83,7 @@
       deploy-rs,
       hyprland,
       nixvim,
+      llm-agents,
       jailed-agents,
       tmux-omni-search,
       fcitx5-vinput,
@@ -93,7 +97,12 @@
     in
     rec {
       overlays = import ./overlays {
-        inherit nixpkgs tmux-omni-search fcitx5-vinput;
+        inherit
+          nixpkgs
+          llm-agents
+          tmux-omni-search
+          fcitx5-vinput
+          ;
       };
       packages = forAllSystems (
         system:

@@ -1,7 +1,14 @@
-{ nixpkgs, tmux-omni-search, fcitx5-vinput, ... }:
+{
+  nixpkgs,
+  llm-agents,
+  tmux-omni-search,
+  fcitx5-vinput,
+  ...
+}:
 
 with nixpkgs.lib;
 let
+  llmAgentsFor = system: llm-agents.packages.${system};
   overrideElectronDesktopItemForWayland = (
     old: rec {
       desktopItems = (
@@ -17,12 +24,20 @@ let
 in
 {
   # Adds my custom packages
-  additions = final: _prev: (import ../pkgs {
-    pkgs = final;
-    inherit tmux-omni-search;
-  }) // {
-    fcitx5-vinput = fcitx5-vinput.packages.${final.stdenv.hostPlatform.system}.default;
-  };
+  additions =
+    final: _prev:
+    let
+      llmAgentsPkgs = llmAgentsFor final.stdenv.hostPlatform.system;
+    in
+    (import ../pkgs {
+      pkgs = final;
+      inherit tmux-omni-search;
+    })
+    // {
+      inherit (llmAgentsPkgs) codex;
+      "claude-code" = llmAgentsPkgs.claude-code;
+      fcitx5-vinput = fcitx5-vinput.packages.${final.stdenv.hostPlatform.system}.default;
+    };
   modifications = final: prev: rec {
     trash-cli = prev.trash-cli.overrideAttrs (old: {
       postInstall = "";
