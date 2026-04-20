@@ -7,6 +7,12 @@
 with lib; let
   cfg = config.my.programs.codex;
   caveman = pkgs.caveman;
+  superpowers = pkgs.fetchFromGitHub {
+    owner = "obra";
+    repo = "superpowers";
+    rev = "b55764852ac78870e65c6565fb585b6cd8b3c5c9";
+    hash = "sha256-cobQloF7Y6K0IC0/6xSnA2Io+fKgk2SRmCwoZZtVCco=";
+  };
 in {
   options.my.programs.codex = {
     enable = mkEnableOption "Codex";
@@ -51,6 +57,9 @@ in {
     };
     home.file.".agents/skills/caveman-compress" = {
       source = "${caveman}/caveman-compress";
+    };
+    home.file.".agents/skills/superpowers" = {
+      source = "${superpowers}/skills";
     };
 
     programs.zsh.shellAliases = {
