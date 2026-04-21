@@ -37,6 +37,8 @@ in
       in
       pkgs.writeShellScript "flash-ergodox.sh" ''
         set -e
+        echo "==> Switching nix home..."
+        switch-nix-home.sh
         if [ ! -d "$HOME/qmk_firmware" ]; then
           echo "==> Setting up QMK firmware..."
           qmk setup --yes
