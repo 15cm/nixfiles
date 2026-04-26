@@ -27,7 +27,10 @@ in
     ./samba
   ];
 
-  environment.systemPackages = with pkgs; [ nvidia-container-toolkit ];
+  environment.systemPackages = with pkgs; [
+    deploy-rs
+    nvidia-container-toolkit
+  ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;

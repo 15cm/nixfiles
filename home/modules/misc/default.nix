@@ -7,5 +7,7 @@ with lib;
     ./display.nix
     ./ids.nix
     ./gui.nix
+    ./ai-agents.nix
+    ./trusted.nix
   ];
 }

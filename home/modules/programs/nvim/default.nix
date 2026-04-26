@@ -14,7 +14,6 @@ let
 in
 {
   imports = [
-    ./avante.nix
     ./nix.nix
     ./clipper.nix
     ./text-edit.nix

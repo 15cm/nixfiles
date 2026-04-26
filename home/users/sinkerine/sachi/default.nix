@@ -3,10 +3,9 @@
 {
   home.stateVersion = "23.05";
 
-  imports = [
-    ../common
-    ../common/trusted.nix
-  ];
+  imports = [ ../common ];
+
+  my.profiles.trusted.enable = true;
 
   my.programs.baidupcs-go.enable = true;
 
