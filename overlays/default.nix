@@ -2,7 +2,6 @@
   nixpkgs,
   llm-agents,
   tmux-omni-search,
-  fcitx5-vinput,
   ...
 }:
 
@@ -36,7 +35,6 @@ in
     // {
       inherit (llmAgentsPkgs) codex;
       "claude-code" = llmAgentsPkgs.claude-code;
-      fcitx5-vinput = fcitx5-vinput.packages.${final.stdenv.hostPlatform.system}.default;
     };
   modifications = final: prev: rec {
     trash-cli = prev.trash-cli.overrideAttrs (old: {

@@ -1,13 +1,6 @@
 {
   description = "Nix Flakes of Sinkerine";
 
-  nixConfig = {
-    extra-substituters = [ "https://fcitx5-vinput.cachix.org" ];
-    extra-trusted-public-keys = [
-      "fcitx5-vinput.cachix.org-1:XpX3AA6+dDIX4qJhb1QM7sbTwX6/qSlGvW8Z5NK6XdU="
-    ];
-  };
-
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
@@ -63,9 +56,6 @@
       url = "github:15cm/tmux-omni-search";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fcitx5-vinput = {
-      url = "github:xifan2333/fcitx5-vinput";
-    };
     # Do not add inputs.nixpkgs.follows — proxmox-nixos pins nixpkgs-stable intentionally.
     proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
   };
@@ -86,7 +76,6 @@
       llm-agents,
       jailed-agents,
       tmux-omni-search,
-      fcitx5-vinput,
       proxmox-nixos,
       ...
     }:
@@ -101,7 +90,6 @@
           nixpkgs
           llm-agents
           tmux-omni-search
-          fcitx5-vinput
           ;
       };
       packages = forAllSystems (

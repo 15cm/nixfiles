@@ -1,27 +1,11 @@
 { lib, ... }:
 
 with lib;
-let
-  fcitx5VinputCache = {
-    substituter = "https://fcitx5-vinput.cachix.org";
-    pubKey = "fcitx5-vinput.cachix.org-1:XpX3AA6+dDIX4qJhb1QM7sbTwX6/qSlGvW8Z5NK6XdU=";
-  };
-in
 {
   options.my.trusts = {
     cache.pubKeys = mkOption {
       default = [ ];
       type = with types; listOf str;
-    };
-    cache.fcitx5Vinput = {
-      substituter = mkOption {
-        type = types.str;
-        default = fcitx5VinputCache.substituter;
-      };
-      pubKey = mkOption {
-        type = types.str;
-        default = fcitx5VinputCache.pubKey;
-      };
     };
     ssh.pubKeys = mkOption {
       default = [ ];
