@@ -54,6 +54,8 @@ in
   };
 
   boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
+  # Work around amdgpu eDP/display hangs by disabling Panel Self Refresh.
+  boot.kernelParams = [ "amdgpu.dcdebugmask=0x10" ];
   my.essentials.zfs = {
     enable = true;
     enableZed = true;
