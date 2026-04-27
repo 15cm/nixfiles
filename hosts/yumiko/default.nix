@@ -46,6 +46,8 @@ with lib;
     useDHCP = true;
   };
 
+  nix.gc.options = mkForce "-d";
+
   my.services.zrepl = {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.yumiko) sink pull; };

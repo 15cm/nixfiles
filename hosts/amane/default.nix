@@ -66,6 +66,8 @@ with lib;
     };
   };
 
+  nix.gc.options = mkForce "-d";
+
   my.services.zrepl = {
     enable = true;
     ports = { inherit (config.my.ports.zrepl.amane) push; };
