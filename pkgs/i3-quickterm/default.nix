@@ -5,6 +5,7 @@ let
   version = "1.1";
 in python3.pkgs.buildPythonPackage {
   inherit pname version;
+  pyproject = true;
 
   src = fetchFromGitHub {
     owner = "lbonn";
@@ -13,6 +14,7 @@ in python3.pkgs.buildPythonPackage {
     hash = "sha256-kHj3hiOm4HvrQ9Xr80wgtX1Tq830XIiFbeet7lLSNCI=";
   };
 
+  build-system = [ python3.pkgs.setuptools ];
   propagatedBuildInputs = [ pkgs.python3Packages.i3ipc ];
   doCheck = false;
 

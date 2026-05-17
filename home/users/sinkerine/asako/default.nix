@@ -1,11 +1,12 @@
 { config, pkgs, ... }:
 
 {
-  home.stateVersion = "23.05";
+  home.stateVersion = "26.05";
 
   imports = [ ../common ];
 
   my.profiles.trusted.enable = true;
+  my.programs.codex.enableCLIProxyAPI = true;
 
   my.essentials.gui.enable = true;
 

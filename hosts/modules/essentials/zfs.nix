@@ -30,6 +30,7 @@ in {
     {
       boot.supportedFilesystems = [ "zfs" ];
       boot.zfs.forceImportAll = true;
+      boot.zfs.forceImportRoot = true;
       boot.zfs.extraPools = cfg.nonRootPools;
       boot.zfs.devNodes = "/dev/disk/by-path";
       services.zfs.autoScrub.enable = true;

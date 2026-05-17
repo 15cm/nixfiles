@@ -7,12 +7,6 @@
 with lib; let
   cfg = config.my.programs.codex;
   caveman = pkgs.caveman;
-  superpowers = pkgs.fetchFromGitHub {
-    owner = "obra";
-    repo = "superpowers";
-    rev = "b55764852ac78870e65c6565fb585b6cd8b3c5c9";
-    hash = "sha256-cobQloF7Y6K0IC0/6xSnA2Io+fKgk2SRmCwoZZtVCco=";
-  };
 in {
   options.my.programs.codex = {
     enable = mkEnableOption "Codex";
@@ -59,9 +53,6 @@ in {
     home.file.".agents/skills/caveman-compress" = {
       source = "${caveman}/caveman-compress";
     };
-    home.file.".agents/skills/superpowers" = {
-      source = "${superpowers}/skills";
-    };
     home.file.".codex/auth.json" = mkIf cfg.enableCLIProxyAPI {
       text = builtins.toJSON {
         OPENAI_API_KEY = "sk-dummy";
@@ -71,11 +62,10 @@ in {
     programs.zsh.shellAliases = {
       codex = "codex-trusted";
       cx = "codex-trusted";
-      cx-deep = "cx --profile deep";
+      cx-deep = "codex-trusted --profile deep";
       cx-fast = "codex-trusted --profile fast";
-      cx-offline = "cx --profile offline";
-      cx-quick = "cx --profile quick";
-      cx-unsafe = "cx --profile unsafe";
+      cx-offline = "codex-trusted --profile offline";
+      cx-quick = "codex-trusted --profile quick";
     };
 
     programs.codex = {
@@ -83,7 +73,7 @@ in {
       settings =
         {
           features = {
-            codex_hooks = true;
+            hooks = true;
             shell_snapshot = true;
             multi_agent = true;
             apps = true;
@@ -97,7 +87,9 @@ in {
             max_bytes = 104857600;
           };
 
-          model = if cfg.enableCLIProxyAPI then "gpt-5.4-codex" else "gpt-5.4";
+          hooks.state."/home/sinkerine/.codex/hooks.json:session_start:0:0".trusted_hash = "sha256:9106e42acfdabf4c89dfa2d44eff9326047a7003afe2ea9ed7ed682f68429135";
+
+          model = "gpt-5.5";
           model_reasoning_effort = "medium";
           plan_mode_reasoning_effort = "high";
 
@@ -139,11 +131,11 @@ in {
             };
 
             quick = {
+              model = "gpt-5.4";
               model_reasoning_effort = "low";
               model_reasoning_summary = "none";
               model_verbosity = "low";
               plan_mode_reasoning_effort = "medium";
-              service_tier = "fast";
               web_search = "disabled";
             };
 
@@ -152,11 +144,6 @@ in {
               web_search = "disabled";
             };
 
-            unsafe = {
-              approval_policy = "never";
-              sandbox_mode = "danger-full-access";
-              shell_environment_policy.ignore_default_excludes = true;
-            };
           };
         }
         // optionalAttrs cfg.enableCLIProxyAPI {

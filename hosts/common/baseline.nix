@@ -43,6 +43,7 @@ with lib;
       dates = "weekly";
     };
     settings = {
+      accept-flake-config = true;
       experimental-features = [
         "nix-command"
         "flakes"
@@ -50,6 +51,7 @@ with lib;
       substituters = [
         "https://nix-community.cachix.org"
         "https://cache.nixos.org/"
+        "https://cache.numtide.com"
         "https://hyprland.cachix.org"
         "https://cuda-maintainers.cachix.org"
         "https://cache.saumon.network/proxmox-nixos"

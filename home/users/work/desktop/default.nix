@@ -1,11 +1,11 @@
 { config, pkgs, lib, ... }:
 
 with lib; {
-  home.stateVersion = "23.05";
+  home.stateVersion = "26.05";
 
   home = rec {
-    username = null;
-    homeDirectory = null;
+    username = "work";
+    homeDirectory = "/home/work";
   };
 
   imports = [
@@ -78,6 +78,7 @@ with lib; {
   };
 
   my.programs.nixGL.enable = true;
+  my.programs.nixGL.package = pkgs.nixgl.nixGLMesa;
   my.programs.hmSwitch.useImpure = true;
   my.services.playerctld.enable = true;
   my.programs.alacritty.enable = true;

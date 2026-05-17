@@ -1,5 +1,9 @@
 {
   description = "Nix Flakes of Sinkerine";
+  nixConfig = {
+    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-trusted-public-keys = [ "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g=" ];
+  };
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -82,7 +86,13 @@
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      state = (import ./home/state);
+      state =
+        import (
+          if builtins.pathExists ./home/state/default.nix then
+            ./home/state
+          else
+            ./home/state/default.example.nix
+        );
     in
     rec {
       overlays = import ./overlays {
@@ -106,7 +116,7 @@
           config.nvidia.acceptLicense = true;
           config.permittedInsecurePackages = [
             "electron-36.9.5"
-            "ventoy-1.1.10"
+            "ventoy-1.1.12"
             "qtwebengine-5.15.19"
             "mbedtls-2.28.10"
           ];
