@@ -26,7 +26,6 @@ in {
         wqy_zenhei
         # Not sure why Font Manager doesn't work well with FontAwesome v6
         font-awesome_5
-        symbola
         nerd-fonts.symbols-only
       ];
       # So that font manager can see the user installed fonts.
