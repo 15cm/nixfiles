@@ -9,18 +9,11 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      pdm
+      # pdm is blocked for now by https://github.com/NixOS/nixpkgs/pull/513116.
       pyright
       black
       isort
       python3Packages.docformatter
     ];
-
-    xdg.configFile."pdm/config.toml".text = ''
-      check_update = false
-
-      [python]
-      use_venv = false
-    '';
   };
 }

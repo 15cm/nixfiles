@@ -9,7 +9,7 @@ let
 in
 pkgs.mkShell {
   packages = with pkgs; [
-    pdm
+    # pdm is blocked for now by https://github.com/NixOS/nixpkgs/pull/513116.
     pyright
     black
     isort
