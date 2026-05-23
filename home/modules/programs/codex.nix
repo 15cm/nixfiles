@@ -2,15 +2,17 @@
   config,
   lib,
   pkgs,
+  mylib,
   ...
 }:
 with lib; let
   cfg = config.my.programs.codex;
   caveman = pkgs.caveman;
+  inherit (mylib) mkDefaultTrueEnableOption;
 in {
   options.my.programs.codex = {
     enable = mkEnableOption "Codex";
-    enableCLIProxyAPI = mkEnableOption "CLIProxyAPI for Codex";
+    enableCLIProxyAPI = mkDefaultTrueEnableOption "CLIProxyAPI for Codex";
   };
 
   config = mkIf cfg.enable {

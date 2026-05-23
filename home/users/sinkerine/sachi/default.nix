@@ -6,7 +6,6 @@
   imports = [ ../common ];
 
   my.profiles.trusted.enable = true;
-  my.programs.codex.enableCLIProxyAPI = true;
 
   programs.zsh.shellAliases = {
     snh = "switch-nix-home.sh";

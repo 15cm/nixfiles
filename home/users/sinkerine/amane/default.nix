@@ -6,5 +6,4 @@ args@{ pkgs, ... }:
   imports = [ ../common ];
 
   my.programs.ai-agents.enable = true;
-  my.programs.codex.enableCLIProxyAPI = true;
 }

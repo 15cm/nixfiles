@@ -121,9 +121,9 @@ in
   };
 
   services.logind.settings.Login = mkForce {
-    lidSwitch = "suspend";
-    lidSwitchDocked = "suspend";
-    lidSwitchExternalPower = "ignore";
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchDocked = "suspend";
+    HandleLidSwitchExternalPower = "ignore";
   };
 
   my.services.zrepl = {

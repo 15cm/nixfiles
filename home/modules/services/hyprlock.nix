@@ -82,7 +82,7 @@ in {
       Unit = { Description = "Hyprlock"; };
       Service = {
         ExecStart =
-          concatStringsSep " " [ "${cfg.package}/bin/hyprlock" "--immediate" ];
+          concatStringsSep " " [ "${cfg.package}/bin/hyprlock" "--grace" "0" ];
         Type = "simple";
       };
     };
