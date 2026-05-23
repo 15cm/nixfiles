@@ -9,14 +9,17 @@ The root of the `darwin-dotfiles` repository directly corresponds to your system
 ---
 
 ## ⚙️ Application Rules & Methods
-Different components of these dotfiles require distinct installation methods due to macOS-specific behaviors (such as preference caching and application import models). Follow these explicit guidelines:
+
+> [!IMPORTANT]
+> **Symlink Rule**: Every single file and directory in this repository—**with the sole exception of those located inside `app-export/`**—must be managed as a **symlink** on the target system. Do not copy them directly; changes must propagate instantly and remain in sync.
+
 
 | Component | Dotfiles Source Path | System Target Path | Method | Rationale |
 | :--- | :--- | :--- | :--- | :--- |
-| **Zsh Config** | `/.zshrc` | `~/.zshrc` | **Symlink** | Core shell logic; updates should propagate instantly. |
+| **Zsh Config** | `/.zshrc` | `~/.zshrc` | **Symlink** | Core shell logic; updates propagate instantly. |
 | **Zim Config** | `/.zimrc` | `~/.zimrc` | **Symlink** | Direct package manager inputs for Zimfw. |
 | **Tmux Config** | `/.config/tmux/tmux.conf` | `~/.config/tmux/tmux.conf` | **Symlink** | Instantly reloadable terminal multiplexer setup. |
-| **Preference Library** | `/Library/Preferences/` | `~/Library/Preferences/` | **Copy** | macOS caches preference plist files via the `cfprefsd` daemon. Symlinking plists frequently breaks preference updates or results in files being overwritten. |
+| **Preference Library** | `/Library/Preferences/` | `~/Library/Preferences/` | **Symlink** | Linked directly (e.g. Amethyst preferences). Flush caches using `defaults read` if cached. |
 | **Alfred Prefs** | `/app-export/Alfred.alfredpreferences` | `~/Library/Application Support/Alfred/Alfred.alfredpreferences` | **Copy/Sync** | Contains your Alfred workflows, snippets, and theme settings. |
 | **Application Exports** | `/app-export/` | *Manual Import* | **App Import** | App settings (e.g., iStat Menus) must be applied manually through the app's built-in "Import Settings" menus. |
 
@@ -38,12 +41,13 @@ source ~/.zshrc
 
 The shell will automatically hook the remaining Zsh (`.zimrc`) and Tmux (`.config/tmux/tmux.conf`) symlinks into place!
 
-### Step 2: Copy macOS Preference Plists
-macOS application preferences (like Amethyst) must be copied directly into your Library to avoid cache conflicts:
+### Step 2: Symlink macOS Preference Plists
+macOS application preferences (like Amethyst) are symlinked directly into your Library:
 
 ```bash
-# Copy Amethyst plist to system preferences
-cp ~/nixfiles/darwin-dotfiles/Library/Preferences/com.amethyst.Amethyst.plist ~/Library/Preferences/com.amethyst.Amethyst.plist
+# Symlink Amethyst plist to system preferences
+rm -f ~/Library/Preferences/com.amethyst.Amethyst.plist
+ln -s ~/nixfiles/darwin-dotfiles/Library/Preferences/com.amethyst.Amethyst.plist ~/Library/Preferences/com.amethyst.Amethyst.plist
 
 # Reload preferences daemon (to flush the cache and apply immediately)
 defaults read com.amethyst.Amethyst
@@ -58,3 +62,4 @@ For tools with proprietary export formats stored in `app-export/`:
    cp -R ~/nixfiles/darwin-dotfiles/app-export/Alfred.alfredpreferences "~/Library/Application Support/Alfred/"
    ```
    Then open **Alfred Preferences** $\rightarrow$ select the **Advanced** tab $\rightarrow$ click **Set Preference Folder...** $\rightarrow$ select `~/Library/Application Support/Alfred/Alfred.alfredpreferences`.
+
