@@ -1,0 +1,17 @@
+# ==========================================
+# Custom Git Configuration (Darwin / macOS)
+# Derived from user Nix configuration
+# ==========================================
+
+[user]
+	name = Sinkerine
+	email = git@15cm.net
+
+[pull]
+	rebase = true
+
+[init]
+	defaultBranch = main
+
+[core]
+	excludesfile = ~/.gitignore_global
