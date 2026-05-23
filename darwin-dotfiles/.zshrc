@@ -53,6 +53,15 @@ if [[ ! -h ~/.config/tmux/tmux.conf || "$(readlink ~/.config/tmux/tmux.conf)" !=
   ln -s "${0:A:h}/.config/tmux/tmux.conf" ~/.config/tmux/tmux.conf
 fi
 
+# Ensure TPM (Tmux Plugin Manager) is installed
+if [[ ! -d ~/.tmux/plugins/tpm ]]; then
+  echo "Installing Tmux Plugin Manager (TPM)..."
+  mkdir -p ~/.tmux/plugins
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+  echo "TPM installed. Press prefix + I in Tmux to install plugins."
+fi
+
+
 # Ensure ~/Library/Preferences/com.amethyst.Amethyst.plist is symlinked
 if [[ ! -h ~/Library/Preferences/com.amethyst.Amethyst.plist || "$(readlink ~/Library/Preferences/com.amethyst.Amethyst.plist)" != *"/darwin-dotfiles/Library/Preferences/com.amethyst.Amethyst.plist" ]]; then
   echo "Creating ~/Library/Preferences/com.amethyst.Amethyst.plist symlink..."
@@ -94,8 +103,6 @@ if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
       https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 fi
 
-# Source zimfw.zsh
-source ${ZIM_HOME}/zimfw.zsh
 
 # Read active modules from ~/.zimrc to check if installation is needed
 local install_needed=0
