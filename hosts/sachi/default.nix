@@ -30,12 +30,85 @@ in
   environment.systemPackages = with pkgs; [
     deploy-rs
     nvidia-container-toolkit
+    v2ray
   ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = {
       hashedPassword.neededForUsers = true;
+      v2rayClientId = {
+        owner = "v2ray";
+        group = "v2ray";
+      };
+      v2raySniClientId = {
+        owner = "v2ray";
+        group = "v2ray";
+      };
+      v2rayTlsCert = {
+        format = "binary";
+        sopsFile = ./zrepl/sachi.m.mado.moe.crt;
+        owner = "v2ray";
+        group = "v2ray";
+      };
+      v2rayTlsKey = {
+        format = "binary";
+        sopsFile = ./zrepl/sachi.m.mado.moe.key;
+        owner = "v2ray";
+        group = "v2ray";
+      };
+    };
+    templates."v2ray.json" = {
+      owner = "v2ray";
+      group = "v2ray";
+      content =
+        let
+          vmessClient = {
+            id = config.sops.placeholder.v2rayClientId;
+            alterId = 0;
+          };
+          vmessSniClient = {
+            id = config.sops.placeholder.v2raySniClientId;
+            alterId = 0;
+          };
+        in
+        builtins.toJSON {
+          log.loglevel = "warning";
+          inbounds = [
+            {
+              listen = "0.0.0.0";
+              port = config.my.ports.v2ray.listen;
+              protocol = "vmess";
+              settings.clients = [ vmessClient ];
+              streamSettings.network = "tcp";
+            }
+            {
+              listen = "0.0.0.0";
+              port = config.my.ports.v2ray.listenTls;
+              protocol = "vmess";
+              settings.clients = [ vmessSniClient ];
+              streamSettings = {
+                network = "tcp";
+                security = "tls";
+                tlsSettings = {
+                  serverName = "google-analytics.com";
+                  certificates = [
+                    {
+                      certificateFile = config.sops.secrets.v2rayTlsCert.path;
+                      keyFile = config.sops.secrets.v2rayTlsKey.path;
+                    }
+                  ];
+                };
+              };
+            }
+          ];
+          outbounds = [
+            {
+              protocol = "freedom";
+            }
+          ];
+        };
+      restartUnits = [ "v2ray.service" ];
     };
     age = {
       keyFile = "/keys/age/${hostname}.txt";
@@ -175,6 +248,24 @@ in
     enable = true;
     useRoutingFeatures = "server";
   };
+  users.users.v2ray = {
+    group = "v2ray";
+    isSystemUser = true;
+  };
+  users.groups.v2ray = { };
+  services.v2ray = {
+    enable = true;
+    configFile = config.sops.templates."v2ray.json".path;
+  };
+  systemd.services.v2ray.serviceConfig = {
+    DynamicUser = mkForce false;
+    User = "v2ray";
+    Group = "v2ray";
+  };
+  networking.firewall.allowedTCPPorts = with config.my.ports.v2ray; [
+    listen
+    listenTls
+  ];
   my.services.proxmox = {
     enable = true;
     ipAddress = "192.168.88.30";

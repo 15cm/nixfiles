@@ -1,1 +1,1 @@
-{ imports = [ ./shadowsocks-client.nix ]; }
+{ imports = [ ]; }

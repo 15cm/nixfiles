@@ -1,8 +1,10 @@
 { lib, mylib, ... }:
 
 with lib;
-let inherit (mylib) attrsOption;
-in {
+let
+  inherit (mylib) attrsOption;
+in
+{
   options = {
     my.ports = {
       gateway = attrsOption;
@@ -12,17 +14,26 @@ in {
       tailscale = attrsOption;
       grafana = attrsOption;
       aria2 = attrsOption;
+      v2ray = attrsOption;
     };
   };
-  config.my.ports.gateway = { listen = 8080; };
+  config.my.ports.gateway = {
+    listen = 8080;
+  };
   config.my.ports.zrepl = rec {
-    asako = { push = sachi.sink; };
-    kazuki = { push = sachi.sink; };
+    asako = {
+      push = sachi.sink;
+    };
+    kazuki = {
+      push = sachi.sink;
+    };
     sachi = {
       sink = 38888;
       source = 38889;
     };
-    amane = { push = yumiko.sink; };
+    amane = {
+      push = yumiko.sink;
+    };
     yumiko = {
       sink = 38888;
       pull = sachi.source;
@@ -36,8 +47,20 @@ in {
     node = 9814;
     smartctl = 9815;
   };
-  config.my.ports.grafana = { listen = 9290; };
-  config.my.ports.headscale = { listen = 7001; };
-  config.my.ports.tailscale = { listen = 41641; };
-  config.my.ports.aria2 = { listen = 6800; };
+  config.my.ports.grafana = {
+    listen = 9290;
+  };
+  config.my.ports.headscale = {
+    listen = 7001;
+  };
+  config.my.ports.tailscale = {
+    listen = 41641;
+  };
+  config.my.ports.aria2 = {
+    listen = 6800;
+  };
+  config.my.ports.v2ray = {
+    listen = 10086;
+    listenTls = 10087;
+  };
 }

@@ -6,7 +6,6 @@
     ./docker.nix
     ./docker-rootless.nix
     ./autofs
-    ./shadowsocks
     ./monitoring/metrics.nix
     ./monitoring/monitoring.nix
     ./networking/headscale.nix
