@@ -301,7 +301,7 @@ in
     enableSession = true;
     enableReverseProxy = true;
   };
-  my.programs.AriaNg = {
+  my.services.ariang = {
     enable = true;
     enableReverseProxy = true;
   };

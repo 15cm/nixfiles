@@ -86,8 +86,6 @@ in
         enableSession = true;
         enableReverseProxy = true;
       };
-      my.programs.AriaNg.enable = true;
-
       services.printing = {
         enable = true;
         drivers = with pkgs; [ hplip ];

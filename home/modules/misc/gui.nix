@@ -310,10 +310,6 @@ in
             name = "Feishin";
             exec = "feishin --disable-gpu-sandbox --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime";
           };
-          AriaNg = {
-            name = "AriaNg";
-            exec = "firefox --new-window http://localhost:3001";
-          };
           "io.github.xiaoyifang.goldendict_ng" = {
             name = "GoldenDict-ng";
             exec = "env GOLDENDICT_FORCE_WAYLAND=1 goldendict";

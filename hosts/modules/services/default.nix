@@ -14,6 +14,7 @@
     ./smartd.nix
     ./lock.nix
     ./aria2
+    ./ariang.nix
     ./openrgb.nix
     ./vsftpd
     ./proxmox
