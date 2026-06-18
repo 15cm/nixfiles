@@ -1,8 +1,7 @@
 { config, pkgs, lib, state, nixinfo, hostname, ... }:
 
 with lib;
-let parallel = pkgs.parallel-full.override (old: { willCite = true; });
-in {
+{
   programs.home-manager.enable = true;
 
   home.packages = (with pkgs; [
@@ -10,7 +9,6 @@ in {
     fd
     htop
     lsof
-    silver-searcher
     bind
     hunspell
     hunspellDicts.en_US-large

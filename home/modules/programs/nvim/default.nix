@@ -31,6 +31,7 @@ in
       my.programs.nvim.colorscheme = (if state.theme == "light" then "solarized" else "kanagawa");
       programs.nixvim = {
         enable = true;
+        nixpkgs.pkgs = pkgs;
         opts = {
           number = true; # Show line numbers
           relativenumber = true; # Show relative line numbers
