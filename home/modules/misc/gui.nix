@@ -195,8 +195,8 @@ in
         my.services.clipper = {
           enable = true;
           extraSettings = {
-            executable = "/home/sinkerine/.nix-profile/bin/wl-copy";
-            flags = "-n";
+            executable = "${pkgs.wl-clipboard}/bin/wl-copy";
+            flags = "";
           };
         };
         my.services.copyq.enable = true;

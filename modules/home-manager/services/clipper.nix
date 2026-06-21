@@ -7,8 +7,7 @@ let
   preStartScript = pkgs.writeShellScript "clipper-pre-start" ''
     mkdir -p ${cfg.logDir}
   '';
-  configFile =
-    pipe cfg.settings [ builtins.toJSON (builtins.toFile "clipper-config") ];
+  configFile = pkgs.writeText "clipper-config" (builtins.toJSON cfg.settings);
 in {
   meta.maintainers = [ "i@15cm.net" ];
 
