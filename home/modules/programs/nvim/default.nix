@@ -393,9 +393,7 @@ in
           vim.o.termguicolors = true
         '';
         extraConfigLua = ''
-          require("project").setup()
           require("telescope").load_extension("projects")
-          require("auto-session").setup({})
         '';
         dependencies = {
           git.enable = true;
