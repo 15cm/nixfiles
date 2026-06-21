@@ -60,6 +60,10 @@
       url = "github:15cm/tmux-omni-search";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fcitx5-vinput = {
+      url = "github:xifan2333/fcitx5-vinput";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # Do not add inputs.nixpkgs.follows — proxmox-nixos pins nixpkgs-stable intentionally.
     proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
   };
@@ -80,6 +84,7 @@
       llm-agents,
       jailed-agents,
       tmux-omni-search,
+      fcitx5-vinput,
       proxmox-nixos,
       ...
     }:
@@ -100,6 +105,7 @@
           nixpkgs
           llm-agents
           tmux-omni-search
+          fcitx5-vinput
           ;
       };
       packages = forAllSystems (

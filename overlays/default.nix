@@ -2,12 +2,14 @@
   nixpkgs,
   llm-agents,
   tmux-omni-search,
+  fcitx5-vinput,
   ...
 }:
 
 with nixpkgs.lib;
 let
   llmAgentsFor = system: llm-agents.packages.${system};
+  fcitx5VinputFor = system: fcitx5-vinput.packages.${system};
   overrideElectronDesktopItemForWayland = (
     old: rec {
       desktopItems = (
@@ -35,6 +37,7 @@ in
     // {
       inherit (llmAgentsPkgs) codex;
       "claude-code" = llmAgentsPkgs.claude-code;
+      inherit (fcitx5VinputFor final.stdenv.hostPlatform.system) fcitx5-vinput;
     };
   modifications = final: prev: rec {
     trash-cli = prev.trash-cli.overrideAttrs (old: {
