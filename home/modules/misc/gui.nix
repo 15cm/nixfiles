@@ -341,6 +341,7 @@ in
           enable = true;
           enableWaylandEnv = true;
         };
+        my.services.vinput.enable = true;
         my.services.playerctld.enable = true;
         my.programs.ergodox.enable = true;
         my.programs.foot.enable = true;

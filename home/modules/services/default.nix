@@ -10,6 +10,7 @@
     ./copyq.nix
     ./gtklock.nix
     ./fcitx5.nix
+    ./vinput.nix
     ./playerctld.nix
     ./nix-home-manager-gc.nix
     ./network-manager-applet.nix
