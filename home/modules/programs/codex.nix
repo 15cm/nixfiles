@@ -41,6 +41,7 @@ with lib; let
   };
   defaultCodexModel = "gpt-5.6-sol";
   reasoningEfforts = [
+    "medium"
     "high"
     "xhigh"
     "max"
@@ -155,7 +156,7 @@ in {
     programs.zsh.shellAliases =
       {
         codex = "codex-trusted";
-        cx = "codex-trusted --profile high";
+        cx = "codex-trusted --profile medium";
       }
       // codexProfileAliases;
 
