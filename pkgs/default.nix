@@ -18,6 +18,7 @@ with pkgs; {
   feishin-appimage = (callPackage ./feishin-appimage { });
   lsp-ai = (callPackage ./lsp-ai { });
   tmux-fzf = (callPackage ./tmux-fzf { });
+  tmux-agent-sidebar = (callPackage ./tmux-agent-sidebar { });
   tmux-omni-search = tmuxPlugins.mkTmuxPlugin {
     pluginName = "tmux-omni-search";
     rtpFilePath = "tmux-omni-search.tmux";

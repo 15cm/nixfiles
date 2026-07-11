@@ -31,6 +31,7 @@ in {
       escapeTime = 0;
       historyLimit = 50000;
       keyMode = "vi";
+      mouse = true;
       terminal = "tmux";
       plugins =
         (with pkgs.tmuxPlugins; [
@@ -41,6 +42,7 @@ in {
         ])
         ++ [
           pkgs.tmux-fzf
+          pkgs.tmux-agent-sidebar
           pkgs.tmux-omni-search
         ]
         ++ (with pkgs.tmuxPlugins; [
