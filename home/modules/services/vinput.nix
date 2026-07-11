@@ -98,7 +98,14 @@ in
                   "args": [
                     "${config.home.homeDirectory}/.local/share/vinput/providers/openai-compatible/${asrProvider}"
                   ],
-                  "env": ${builtins.toJSON asrEnv},
+                  "env": ${
+                    builtins.toJSON (
+                      asrEnv
+                      // {
+                        VINPUT_ASR_PROMPT = "Transcribe as any or a mix of these languages: english, simplified chinese";
+                      }
+                    )
+                  },
                   "timeout_ms": 60000
                 }
               ]

@@ -43,6 +43,15 @@ in
     trash-cli = prev.trash-cli.overrideAttrs (old: {
       postInstall = "";
     });
+    powerline = prev.powerline.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace powerline/commands/daemon.py \
+          --replace-fail $'\texclusive_group = parser.add_mutually_exclusive_group()\n' "" \
+          --replace-fail $'\texclusive_group.add_argument' $'\tparser.add_argument' \
+          --replace-fail $'\treplace_group = exclusive_group.add_argument_group()\n' "" \
+          --replace-fail $'\treplace_group.add_argument' $'\tparser.add_argument'
+      '';
+    });
     # pdm is blocked for now by https://github.com/NixOS/nixpkgs/pull/513116.
     feishin = prev.feishin.overrideAttrs overrideElectronDesktopItemForWayland;
     aria2-fast = prev.aria2.overrideAttrs (old: {

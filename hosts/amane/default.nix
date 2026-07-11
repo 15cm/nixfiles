@@ -73,7 +73,7 @@ with lib;
 
   environment.systemPackages = with pkgs; [ v2ray ];
 
-  boot.kernelPackages = mkForce pkgs.linuxPackages_6_6;
+  boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
   my.essentials.zfs = {
     enable = true;
     enableNonRootEncryption = true;

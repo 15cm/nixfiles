@@ -330,6 +330,7 @@ in
         };
 
         home.pointerCursor = {
+          enable = true;
           name = "breeze_cursors";
           package = pkgs.kdePackages.breeze;
           size = config.my.display.cursorSize;

@@ -72,6 +72,7 @@
     {
       self,
       nixpkgs,
+      nixpkgs-stable,
       home-manager,
       nur,
       nixgl,
@@ -195,6 +196,19 @@
               nixinfo = {
                 inherit configName;
                 projectRoot = "/nixfiles";
+              };
+              pkgsStable = import nixpkgs-stable {
+                system = v.pkgs.stdenv.hostPlatform.system;
+                config = {
+                  allowUnfree = true;
+                  nvidia.acceptLicense = true;
+                  permittedInsecurePackages = [
+                    "electron-36.9.5"
+                    "ventoy-1.1.12"
+                    "qtwebengine-5.15.19"
+                    "mbedtls-2.28.10"
+                  ];
+                };
               };
               mylib = (
                 import ./lib {

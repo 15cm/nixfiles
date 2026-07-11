@@ -13,7 +13,7 @@ in {
       pyright
       black
       isort
-      python3Packages.docformatter
+      python313Packages.docformatter
     ];
   };
 }

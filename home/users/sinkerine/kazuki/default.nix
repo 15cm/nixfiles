@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  pkgsStable,
+  ...
+}:
 
 {
   home.stateVersion = "26.05";
@@ -10,7 +15,7 @@
   my.essentials.gui.enable = true;
 
   home.packages = with pkgs; [
-    handbrake
+    pkgsStable.handbrake
   ];
 
   systemd = {

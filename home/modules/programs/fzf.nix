@@ -46,11 +46,11 @@ in {
         hl = colorPalette.magenta;
         "hl+" = colorPalette.cyan;
       };
-      fileWidgetOptions = [
+      fileWidget.options = [
         "--preview '(([ -f {} ] && (highlight -O ansi -l {} 2> /dev/null || cat {})) || ([ -d {} ] && $_tree_cmd {} )) | head -200'"
       ];
-      changeDirWidgetOptions = [ "--preview '$_tree_cmd {} | head -200'" ];
-      historyWidgetOptions = [
+      changeDirWidget.options = [ "--preview '$_tree_cmd {} | head -200'" ];
+      historyWidget.options = [
         "--exact"
         "--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
       ];
