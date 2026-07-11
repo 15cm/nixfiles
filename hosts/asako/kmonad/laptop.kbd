@@ -10,9 +10,9 @@
  )
 
 (defalias
-  ecl (tap-hold 175 esc lctl)
-  f8m (tap-hold 175 f8 lmet)
-  spclte (tap-hold 175 spc (layer-toggle edit))
+  ecl (tap-hold 100 esc lctl)
+  f8m (tap-hold 100 f8 lmet)
+  spclte (tap-hold 100 spc (layer-toggle edit))
   crt C-rght
   clt C-left
   cbc C-bspc
