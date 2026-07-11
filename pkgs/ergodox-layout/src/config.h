@@ -2,9 +2,8 @@
 #define DEBOUNCE 20
 
 #undef TAPPING_TERM
-#define TAPPING_TERM 150
+#define TAPPING_TERM 100
 
 #define USB_SUSPEND_WAKEUP_DELAY 0
 #define SERIAL_NUMBER "rOw4Q/Oazl7r"
 #define LAYER_STATE_8BIT
-
