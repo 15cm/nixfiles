@@ -41,9 +41,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [1] = LAYOUT_ergodox_pretty(
     KC_TRANSPARENT, KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_MEDIA_PREV_TRACK,                                KC_AUDIO_MUTE,  KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_F13,         KC_F14,         KC_MEDIA_NEXT_TRACK,                                KC_AUDIO_VOL_UP,KC_HOME,        KC_PGDN,        KC_PAGE_UP,     KC_END,         KC_CAPS,        KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, LGUI(LCTL(KC_SPACE)),LALT(LGUI(KC_SPACE)),KC_F15,         KC_F16,                                                                                    KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT,       LCTL(KC_LEFT),  LCTL(KC_RIGHT),
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_F17,         KC_F18,         KC_MEDIA_PLAY_PAUSE,                                KC_AUDIO_VOL_DOWN,KC_TRANSPARENT, KC_TRANSPARENT, LCTL(KC_BSPC),  LCTL(KC_DELETE),KC_TRANSPARENT, KC_TRANSPARENT,
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_F14,         KC_F15,         KC_MEDIA_NEXT_TRACK,                                KC_AUDIO_VOL_UP,KC_HOME,        KC_PGDN,        KC_PAGE_UP,     KC_END,         KC_CAPS,        KC_TRANSPARENT,
+    KC_TRANSPARENT, KC_TRANSPARENT, LGUI(LCTL(KC_SPACE)),LALT(LGUI(KC_SPACE)),KC_F16,         KC_F17,                                                                                    KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT,       LCTL(KC_LEFT),  LCTL(KC_RIGHT),
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_F18,         KC_F19,         KC_TRANSPARENT, KC_MEDIA_PLAY_PAUSE,                                KC_AUDIO_VOL_DOWN,KC_TRANSPARENT, KC_TRANSPARENT, LCTL(KC_BSPC),  LCTL(KC_DELETE),KC_TRANSPARENT, KC_TRANSPARENT,
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT,
