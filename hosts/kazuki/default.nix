@@ -134,6 +134,10 @@ in
   boot.kernelParams = [
     "acpi_enforce_resources=lax"
     "transparent_hugepage=never"
+    # Trace udev events in both initrd and the real system. Useful when a
+    # worker hangs while initrd udev is stopped during the stage-1 handoff.
+    "rd.udev.log_level=debug"
+    "udev.log_level=debug"
   ];
   hardware = {
     i2c = {
@@ -141,6 +145,12 @@ in
     };
   };
   services.fwupd.enable = true;
+
+  # Bound hangs while retaining debug logs needed to identify the worker and
+  # device. The initrd instance stops during stage-1 handoff; the normal
+  # instance stops during shutdown.
+  boot.initrd.systemd.services.systemd-udevd.serviceConfig.TimeoutStopSec = 10;
+  systemd.services.systemd-udevd.serviceConfig.TimeoutStopSec = 10;
 
   my.services.zrepl = {
     enable = true;
