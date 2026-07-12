@@ -28,6 +28,7 @@ bind R source-file ~/.config/tmux/tmux.conf\; display-message "~/.config/tmux/tm
 bind z confirm-before "kill-window"
 bind Z confirm-before "kill-session"
 bind e command-prompt -p "New Session:" "new-session -A -s '%%'"
+bind-key "'" command-prompt -p "New Session:" "new-session -A -s '%%'"
 bind ^D detach
 bind-key s run-shell -b "{{tmuxFzfScriptsDir}}/session.sh switch"
 set -g @omni-search-launch-key 'S'

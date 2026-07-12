@@ -102,7 +102,6 @@ in
           unzip
           sqlite
           kooha
-          tremotesf
           goldendict-ng
           yt-dlp
           feishin

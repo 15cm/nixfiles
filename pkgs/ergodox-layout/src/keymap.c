@@ -10,6 +10,22 @@ enum custom_keycodes {
   RGB_SLD = ZSA_SAFE_RANGE,
 };
 
+static uint32_t num_lock_init_timer;
+static bool num_lock_initialized;
+
+void keyboard_post_init_user(void) {
+  num_lock_init_timer = timer_read32();
+}
+
+void matrix_scan_user(void) {
+  if (!num_lock_initialized && timer_elapsed32(num_lock_init_timer) > 1000) {
+    num_lock_initialized = true;
+    if (!host_keyboard_led_state().num_lock) {
+      tap_code(KC_NUM_LOCK);
+    }
+  }
+}
+
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -25,9 +41,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [1] = LAYOUT_ergodox_pretty(
     KC_TRANSPARENT, KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,          KC_MEDIA_PREV_TRACK,                                KC_AUDIO_MUTE,  KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_MEDIA_NEXT_TRACK,                                KC_AUDIO_VOL_UP,KC_HOME,        KC_PGDN,        KC_PAGE_UP,     KC_END,         KC_CAPS,        KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, LGUI(LCTL(KC_SPACE)),LALT(LGUI(KC_SPACE)),LALT(LGUI(LCTL(KC_SPACE))),KC_TRANSPARENT,                                                                 KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT,       LCTL(KC_LEFT),  LCTL(KC_RIGHT),
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_MEDIA_PLAY_PAUSE,                                KC_AUDIO_VOL_DOWN,KC_TRANSPARENT, KC_TRANSPARENT, LCTL(KC_BSPC),  LCTL(KC_DELETE),KC_TRANSPARENT, KC_TRANSPARENT,
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_F13,         KC_F14,         KC_MEDIA_NEXT_TRACK,                                KC_AUDIO_VOL_UP,KC_HOME,        KC_PGDN,        KC_PAGE_UP,     KC_END,         KC_CAPS,        KC_TRANSPARENT,
+    KC_TRANSPARENT, KC_TRANSPARENT, LGUI(LCTL(KC_SPACE)),LALT(LGUI(KC_SPACE)),KC_F15,         KC_F16,                                                                                    KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT,       LCTL(KC_LEFT),  LCTL(KC_RIGHT),
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_F17,         KC_F18,         KC_MEDIA_PLAY_PAUSE,                                KC_AUDIO_VOL_DOWN,KC_TRANSPARENT, KC_TRANSPARENT, LCTL(KC_BSPC),  LCTL(KC_DELETE),KC_TRANSPARENT, KC_TRANSPARENT,
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                                                                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
                                                                                                                     KC_TRANSPARENT, KC_TRANSPARENT,
@@ -110,4 +126,3 @@ uint8_t layer_state_set_user(uint8_t state) {
   }
   return state;
 };
-
