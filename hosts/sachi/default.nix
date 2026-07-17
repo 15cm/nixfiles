@@ -15,6 +15,47 @@ let
 
   hostIp = "192.168.88.30/24";
   gateway = "192.168.88.1";
+
+  dockerServiceInit = pkgs.writeShellApplication {
+    name = "docker-service-init";
+    runtimeInputs = [
+      config.boot.zfs.package
+      pkgs.coreutils
+    ];
+    text = ''
+      if [[ $# -ne 1 || ! $1 =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+        echo "usage: docker-service-init <service>" >&2
+        exit 2
+      fi
+
+      service=$1
+      dataset="main/docker/available/$service"
+      mountpoint="/pool/main/docker/available/$service"
+
+      if zfs list -H -o name "$dataset" >/dev/null 2>&1; then
+        echo "refusing existing dataset: $dataset" >&2
+        exit 1
+      fi
+
+      created=false
+      cleanup() {
+        status=$?
+        if [[ $status -ne 0 && $created == true ]]; then
+          zfs destroy "$dataset" || true
+        fi
+        exit "$status"
+      }
+      trap cleanup EXIT
+
+      zfs create "$dataset"
+      created=true
+      chown sinkerine:sinkerine "$mountpoint"
+      created=false
+      trap - EXIT
+
+      echo "created $dataset at $mountpoint"
+    '';
+  };
 in
 {
   system.stateVersion = "22.05";
@@ -29,8 +70,21 @@ in
 
   environment.systemPackages = with pkgs; [
     deploy-rs
+    dockerServiceInit
     nvidia-container-toolkit
     v2ray
+  ];
+
+  security.sudo.extraRules = [
+    {
+      users = [ "sinkerine" ];
+      commands = [
+        {
+          command = "${dockerServiceInit}/bin/docker-service-init";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
   ];
 
   sops = {
