@@ -114,8 +114,8 @@ in
               "providers": [
                 {
                   "id": "OpenAI",
-                  "base_url": "https://api.openai.com/v1",
-                  "api_key": "${config.sops.placeholder.vinputOpenAIAPIKey}"
+                  "base_url": "https://cpa.sachi.m.mado.moe/v1",
+                  "api_key": "sk-dummy"
                 }
               ],
               "adapters": []
