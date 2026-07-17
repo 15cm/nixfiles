@@ -198,6 +198,9 @@ in
             flags = "";
           };
         };
+        systemd.user.services.clipper.Unit.After = [
+          "wayland-session@hyprland\\x2duwsm.desktop.target"
+        ];
         my.services.copyq.enable = true;
         my.services.syncthing.enable = true;
         my.programs.networkmanager-dmenu = {
