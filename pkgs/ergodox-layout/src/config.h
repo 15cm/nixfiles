@@ -2,7 +2,7 @@
 #define DEBOUNCE 20
 
 #undef TAPPING_TERM
-#define TAPPING_TERM 100
+#define TAPPING_TERM 150
 
 #define USB_SUSPEND_WAKEUP_DELAY 0
 #define SERIAL_NUMBER "rOw4Q/Oazl7r"
