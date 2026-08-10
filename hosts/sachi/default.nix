@@ -182,6 +182,7 @@ in
   };
 
   users.users.root.hashedPasswordFile = config.sops.secrets.hashedPassword.path;
+  users.users.sinkerine.linger = true;
 
   boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
   my.essentials.zfs = {

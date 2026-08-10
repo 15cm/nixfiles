@@ -14,5 +14,10 @@
 
   my.programs.baidupcs-go.enable = true;
 
+  my.services.orca = {
+    enable = true;
+    pairingAddress = "sachi.m.mado.moe";
+  };
+
   home.packages = with pkgs; [ nodejs ];
 }

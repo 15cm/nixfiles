@@ -15,6 +15,7 @@
   my.essentials.gui.enable = true;
 
   home.packages = with pkgs; [
+    orca-ide
     pkgsStable.handbrake
   ];
 
