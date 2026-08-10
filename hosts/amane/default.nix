@@ -73,6 +73,8 @@ with lib;
 
   environment.systemPackages = with pkgs; [ v2ray ];
 
+  users.users.sinkerine.linger = true;
+
   boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
   my.essentials.zfs = {
     enable = true;
@@ -120,6 +122,11 @@ with lib;
   };
   my.services.docker = {
     enable = true;
+    serviceInit = {
+      enable = true;
+      rootDir = "/pool/tank/docker";
+      datasetRoot = "tank/encrypted/docker/available";
+    };
   };
   my.services.metrics.enable = true;
   my.services.tailscale = {

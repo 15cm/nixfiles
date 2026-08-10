@@ -167,6 +167,9 @@ in {
         ".agents/skills/caveman-compress" = {
           source = "${caveman}/caveman-compress";
         };
+        ".agents/skills/manage-docker-services" = {
+          source = ./codex-skills/manage-docker-services;
+        };
       }
       // optionalAttrs cfg.enableCLIProxyAPI {
         ".codex/auth.json".text = builtins.toJSON {
