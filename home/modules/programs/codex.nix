@@ -8,6 +8,26 @@
 with lib; let
   cfg = config.my.programs.codex;
   caveman = pkgs.caveman;
+  orcaSkills = pkgs.fetchFromGitHub {
+    owner = "stablyai";
+    repo = "orca";
+    rev = "v${pkgs.orca-ide.version}";
+    hash = "sha256-DgHpLT8OSf6vG6dBGekIp78Py8alrCsYnzyGF4KF/qk=";
+  };
+  orcaSkillNames = [
+    "computer-use"
+    "orca-cli"
+    "orca-emulator"
+    "orca-emulator-android"
+    "orca-linear"
+    "orca-per-workspace-env"
+    "orchestration"
+  ];
+  orcaSkillFiles = listToAttrs (map (skill:
+    nameValuePair ".agents/skills/${skill}" {
+      source = "${orcaSkills}/skills/${skill}";
+    })
+  orcaSkillNames);
   tmuxAgentSidebarHook = "${pkgs.tmux-agent-sidebar}/share/tmux-plugins/agent-sidebar/hook.sh";
   tmuxAgentSidebarCommand = event:
     "${lib.getExe pkgs.bash} ${tmuxAgentSidebarHook} codex ${event}";
@@ -101,6 +121,7 @@ in {
 
     home.file =
       codexProfileFiles
+      // orcaSkillFiles
       // {
         ".codex/hooks.json".text = builtins.toJSON {
           hooks = {
