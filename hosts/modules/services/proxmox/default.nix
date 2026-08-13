@@ -87,7 +87,18 @@ in
   config = mkIf cfg.enable (mkMerge [
     {
       # Proxmox packages come from the proxmox-nixos overlay.
-      nixpkgs.overlays = [ inputs.proxmox-nixos.overlays.x86_64-linux ];
+      nixpkgs.overlays = [
+        inputs.proxmox-nixos.overlays.x86_64-linux
+        (_final: prev: {
+          # Upstream fetches mutable Meson subprojects in postFetch, so its
+          # fixed-output hash can change without a pve-qemu revision change.
+          pve-qemu = prev.pve-qemu.overrideAttrs (old: {
+            src = old.src.overrideAttrs (_: {
+              outputHash = "sha256-aCXlDuKYp8PZ4hVmRfyzqUwEWcDDHowI88eY/5a4pRY=";
+            });
+          });
+        })
+      ];
 
       services.proxmox-ve = {
         enable = true;
