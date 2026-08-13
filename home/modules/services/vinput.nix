@@ -102,7 +102,7 @@ in
                     builtins.toJSON (
                       asrEnv
                       // {
-                        VINPUT_ASR_PROMPT = "Transcribe as any or a mix of these languages: english, simplified chinese";
+                        VINPUT_ASR_PROMPT = "Transcribe speech in English, Simplified Chinese, or any mix of them. Always render Chinese content using Simplified Chinese characters; never use Traditional Chinese characters.";
                       }
                     )
                   },
@@ -129,7 +129,7 @@ in
                 },
                 {
                   "id": "__command__",
-                  "prompt": "# Command Mode Prompt\n\n## Role\n\nYou are an assistant that applies a spoken command to the user-provided text.\n\n## Context\n\n- The user message is the source text to operate on.\n- The spoken command may contain ASR errors.\n- The spoken command is appended at runtime in the `## Task` section.\n\n## Task\n",
+                  "prompt": "# Command Mode Prompt\n\n## Role\n\nYou are an assistant that applies a spoken command to the user-provided text.\n\n## Output Language\n\n- Always render Chinese output using Simplified Chinese characters.\n- Never output Traditional Chinese characters; convert any Traditional Chinese source text to Simplified Chinese.\n- Preserve non-Chinese languages unless the spoken command requests translation.\n\n## Context\n\n- The user message is the source text to operate on.\n- The spoken command may contain ASR errors.\n- The spoken command is appended at runtime in the `## Task` section.\n\n## Task\n",
                   "provider_id": "OpenAI",
                   "model": "gpt-5.4-mini"
                 }
