@@ -121,7 +121,7 @@ in
               "adapters": []
             },
             "scenes": {
-              "active_scene": "__command__",
+              "active_scene": "__raw__",
               "definitions": [
                 {
                   "id": "__raw__",
