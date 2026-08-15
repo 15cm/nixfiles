@@ -102,7 +102,7 @@ in
                     builtins.toJSON (
                       asrEnv
                       // {
-                        VINPUT_ASR_PROMPT = "Transcribe speech in English, Simplified Chinese, or any mix of them. Always render Chinese content using Simplified Chinese characters; never use Traditional Chinese characters.";
+                        VINPUT_ASR_PROMPT = "Transcribe speech in English, Simplified Chinese, or any mix of them. Always render Chinese content using Simplified Chinese characters; never use Traditional Chinese characters. Always separate adjacent Chinese and English text with a single space.";
                       }
                     )
                   },
