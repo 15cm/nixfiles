@@ -277,6 +277,10 @@ in
     ipAddress = "192.168.88.30";
     bridges = [ "vmbr0" ];
     enableDashboardProxy = true;
+    fakeSubscription = {
+      enable = true;
+      blockRemoteChecks = true;
+    };
   };
 
   my.services.smartd.enable = true;

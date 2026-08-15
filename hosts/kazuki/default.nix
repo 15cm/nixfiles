@@ -121,6 +121,10 @@ in
     ipAddress = "192.168.88.29";
     bridges = [ "vmbr0" ];
     enableDashboardProxy = true;
+    fakeSubscription = {
+      enable = true;
+      blockRemoteChecks = true;
+    };
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];

@@ -170,6 +170,9 @@ in {
         ".agents/skills/manage-docker-services" = {
           source = ./codex-skills/manage-docker-services;
         };
+        ".agents/skills/nix-deploy-rs" = {
+          source = ./codex-skills/nix-deploy-rs;
+        };
       }
       // optionalAttrs cfg.enableCLIProxyAPI {
         ".codex/auth.json".text = builtins.toJSON {
