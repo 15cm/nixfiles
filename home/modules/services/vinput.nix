@@ -34,22 +34,38 @@ in
           "sha256-RQPa3xvz/G/+Jsi1/VJ6fE2Of8e5p0n2IOH3wSJbK3g="
         else
           "sha256-Dvf9IlGTsq5gChHBw+tTRzkA/IXIdw2K6pS4v56MC4A=";
-      asrPrompt = "Transcribe speech in English, Simplified Chinese, or any mix of them. Always render Chinese content using Simplified Chinese characters; never use Traditional Chinese characters. Always separate adjacent Chinese and English text with a single space.";
       asrProviderPath = "${config.home.homeDirectory}/.local/share/vinput/providers/openai-compatible/${asrProvider}";
+      pangu = pkgs.python3Packages.buildPythonPackage {
+        pname = "pangu";
+        version = "5.0.0";
+        format = "wheel";
+        src = pkgs.fetchPypi {
+          pname = "pangu";
+          version = "5.0.0";
+          format = "wheel";
+          dist = "py3";
+          python = "py3";
+          hash = "sha256-Z5ozHnEw/X1VF3c/6eRRDrJ6AT/1lJQbxAU/+bQjOLg=";
+        };
+        pythonImportsCheck = [ "pangu" ];
+      };
+      asrPostprocessorPython = pkgs.python3.withPackages (_: [
+        pangu
+        pkgs.python3Packages.opencc
+      ]);
       asrPostprocessor = pkgs.writeText "vinput-asr-postprocessor.py" ''
         import json
-        import re
         import subprocess
         import sys
 
-        han = "\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff"
-        boundary = re.compile(
-            rf"(?<=[{han}])(?=[A-Za-z])|(?<=[A-Za-z])(?=[{han}])"
-        )
+        import pangu
+        from opencc import OpenCC
+
+        opencc = OpenCC("t2s")
 
 
-        def add_spaces(text):
-            return boundary.sub(" ", text)
+        def format_text(text):
+            return pangu.spacing_text(opencc.convert(text))
 
 
         provider = subprocess.Popen(
@@ -62,18 +78,17 @@ in
             for line in provider.stdout:
                 event = json.loads(line)
                 if isinstance(event.get("text"), str):
-                    event["text"] = add_spaces(event["text"])
+                    event["text"] = format_text(event["text"])
                 print(json.dumps(event, ensure_ascii=False), flush=True)
         else:
             transcript = provider.stdout.read().decode("utf-8")
-            sys.stdout.write(add_spaces(transcript))
+            sys.stdout.write(format_text(transcript))
 
         raise SystemExit(provider.wait())
       '';
       asrEnv = {
         VINPUT_ASR_API_KEY = config.sops.placeholder.vinputOpenAIAPIKey;
         VINPUT_ASR_MODEL = if cfg.enableStreaming then "gpt-realtime-whisper" else "gpt-4o-transcribe";
-        VINPUT_ASR_PROMPT = asrPrompt;
         VINPUT_ASR_URL =
           if cfg.enableStreaming then
             "wss://api.openai.com/v1/realtime"
@@ -131,7 +146,7 @@ in
                 {
                   "id": "${asrProviderId}",
                   "type": "command",
-                  "command": "python3",
+                  "command": "${asrPostprocessorPython}/bin/python3",
                   "args": ${
                     builtins.toJSON [
                       asrPostprocessor
@@ -139,7 +154,14 @@ in
                       asrProvider
                     ]
                   },
-                  "env": ${builtins.toJSON asrEnv},
+                  "env": ${
+                    builtins.toJSON (
+                      asrEnv
+                      // {
+                        VINPUT_ASR_PROMPT = "Transcribe speech in English, Simplified Chinese, or any mix of them. Always render Chinese content using Simplified Chinese characters; never use Traditional Chinese characters. Always separate adjacent Chinese and English text with a single space.";
+                      }
+                    )
+                  },
                   "timeout_ms": 60000
                 }
               ]
@@ -179,7 +201,8 @@ in
           Description = "Vinput voice input daemon";
           After = [ "pipewire.service" ];
           X-Restart-Triggers = [
-            (builtins.hashString "sha256" (builtins.toJSON { inherit asrEnv asrPostprocessor; }))
+            asrPostprocessor
+            asrPostprocessorPython
           ];
         };
         Service = {
