@@ -35,60 +35,9 @@ in
         else
           "sha256-Dvf9IlGTsq5gChHBw+tTRzkA/IXIdw2K6pS4v56MC4A=";
       asrProviderPath = "${config.home.homeDirectory}/.local/share/vinput/providers/openai-compatible/${asrProvider}";
-      pangu = pkgs.python3Packages.buildPythonPackage {
-        pname = "pangu";
-        version = "5.0.0";
-        format = "wheel";
-        src = pkgs.fetchPypi {
-          pname = "pangu";
-          version = "5.0.0";
-          format = "wheel";
-          dist = "py3";
-          python = "py3";
-          hash = "sha256-Z5ozHnEw/X1VF3c/6eRRDrJ6AT/1lJQbxAU/+bQjOLg=";
-        };
-        pythonImportsCheck = [ "pangu" ];
-      };
-      asrPostprocessorPython = pkgs.python3.withPackages (_: [
-        pangu
-        pkgs.python3Packages.opencc
-      ]);
-      asrPostprocessor = pkgs.writeText "vinput-asr-postprocessor.py" ''
-        import json
-        import subprocess
-        import sys
-
-        import pangu
-        from opencc import OpenCC
-
-        opencc = OpenCC("t2s")
-
-
-        def format_text(text):
-            return pangu.spacing_text(opencc.convert(text))
-
-
-        provider = subprocess.Popen(
-            [sys.executable, sys.argv[1]],
-            stdin=sys.stdin.buffer,
-            stdout=subprocess.PIPE,
-        )
-
-        if sys.argv[2] == "streaming":
-            for line in provider.stdout:
-                event = json.loads(line)
-                if isinstance(event.get("text"), str):
-                    event["text"] = format_text(event["text"])
-                print(json.dumps(event, ensure_ascii=False), flush=True)
-        else:
-            transcript = provider.stdout.read().decode("utf-8")
-            sys.stdout.write(format_text(transcript))
-
-        raise SystemExit(provider.wait())
-      '';
       asrEnv = {
         VINPUT_ASR_API_KEY = config.sops.placeholder.vinputOpenAIAPIKey;
-        VINPUT_ASR_MODEL = if cfg.enableStreaming then "gpt-realtime-whisper" else "gpt-4o-transcribe";
+        VINPUT_ASR_MODEL = if cfg.enableStreaming then "gpt-realtime-whisper" else "gpt-transcribe";
         VINPUT_ASR_URL =
           if cfg.enableStreaming then
             "wss://api.openai.com/v1/realtime"
@@ -113,6 +62,7 @@ in
       };
 
       sops.secrets.vinputOpenAIAPIKey = { };
+      sops.secrets.vinputDeepSeekAPIKey = { };
       sops.templates."vinput-config.json" = {
         path = "${config.xdg.configHome}/vinput/config.json";
         content = ''
@@ -146,14 +96,8 @@ in
                 {
                   "id": "${asrProviderId}",
                   "type": "command",
-                  "command": "${asrPostprocessorPython}/bin/python3",
-                  "args": ${
-                    builtins.toJSON [
-                      asrPostprocessor
-                      asrProviderPath
-                      asrProvider
-                    ]
-                  },
+                  "command": "${pkgs.python3}/bin/python3",
+                  "args": ${builtins.toJSON [ asrProviderPath ]},
                   "env": ${
                     builtins.toJSON (
                       asrEnv
@@ -172,6 +116,11 @@ in
                   "id": "OpenAI",
                   "base_url": "https://cpa.sachi.m.mado.moe/v1",
                   "api_key": "sk-dummy"
+                },
+                {
+                  "id": "DeepSeek",
+                  "base_url": "https://api.deepseek.com/v1",
+                  "api_key": "${config.sops.placeholder.vinputDeepSeekAPIKey}"
                 }
               ],
               "adapters": []
@@ -184,10 +133,20 @@ in
                   "candidate_count": 0
                 },
                 {
+                  "id": "default",
+                  "label": "DeepSeek correction",
+                  "prompt": "You are a transcription corrector, not a translator. Correct only obvious speech-recognition errors and remove accidental filler words. Preserve the original meaning, tone, and language of every span. Never translate between languages. English speech must remain English; Chinese speech must remain Chinese. Preserve code-switching, names, product names, and technical terms. Never replace English words or phrases with Chinese equivalents, even when surrounded by Chinese. Render only Chinese spans using Simplified Chinese characters. Add a single space between adjacent Chinese and English text. Return only the corrected transcript; never explain or answer its content.",
+                  "provider_id": "DeepSeek",
+                  "model": "deepseek-v4-flash",
+                  "context_lines": 3,
+                  "candidate_count": 1,
+                  "timeout_ms": 60000
+                },
+                {
                   "id": "__command__",
                   "prompt": "# Command Mode Prompt\n\n## Role\n\nYou are an assistant that applies a spoken command to the user-provided text.\n\n## Output Language\n\n- Always render Chinese output using Simplified Chinese characters.\n- Never output Traditional Chinese characters; convert any Traditional Chinese source text to Simplified Chinese.\n- Preserve non-Chinese languages unless the spoken command requests translation.\n\n## Context\n\n- The user message is the source text to operate on.\n- The spoken command may contain ASR errors.\n- The spoken command is appended at runtime in the `## Task` section.\n\n## Task\n",
-                  "provider_id": "OpenAI",
-                  "model": "gpt-5.4-mini",
+                  "provider_id": "DeepSeek",
+                  "model": "deepseek-v4-flash",
                   "timeout_ms": 30000
                 }
               ]
@@ -200,10 +159,7 @@ in
         Unit = {
           Description = "Vinput voice input daemon";
           After = [ "pipewire.service" ];
-          X-Restart-Triggers = [
-            asrPostprocessor
-            asrPostprocessorPython
-          ];
+          X-Restart-Triggers = [ config.sops.templates."vinput-config.json".file ];
         };
         Service = {
           Type = "dbus";
