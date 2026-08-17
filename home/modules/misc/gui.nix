@@ -327,11 +327,11 @@ in
           # Using fcitx instead of wayland for QT_IM_MODULE fixes https://www.github.com/fcitx/fcitx5/issues/1152.
           "org.telegram.desktop" = {
             name = "Telegram Desktop";
-            exec = "env QT_IM_MODULE=fcitx QT_IM_MODULES=fcitx telegram-desktop -- %u";
+            exec = "env QT_IM_MODULE=fcitx QT_IM_MODULES=fcitx Telegram -- %U";
             icon = "telegram";
             terminal = false;
             settings = {
-              DBusActivatable = "true";
+              DBusActivatable = "false";
               StartupWMClass = "TelegramDesktop";
               MimeType = "x-scheme-handler/tg;x-scheme-handler/tonsite";
               SingleMainWindow = "true";

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  hostname,
   ...
 }:
 
@@ -106,6 +107,9 @@ in
         end = [
           "media"
           "clock"
+        ]
+        ++ lib.optional (hostname == "asako") "battery"
+        ++ [
           "tray"
           "notifications"
           "clipboard"
@@ -114,7 +118,7 @@ in
         ];
       };
       widget = {
-        clock.format = "{:%H:%M %Y/%m/%d %a}";
+        clock.format = "{:%Y/%m/%d %a %H:%M}";
         cpu = {
           type = "sysmon";
           stat = "cpu_usage";
