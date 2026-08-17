@@ -150,6 +150,7 @@ in
         ];
       };
       widget = {
+        clock.format = "{:%H:%M %Y/%m/%d %a}";
         cpu = {
           type = "sysmon";
           stat = "cpu_usage";
