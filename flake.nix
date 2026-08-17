@@ -134,20 +134,22 @@
         }
       );
 
+      noctaliaHomeModules = [
+        ./home/modules/programs/noctalia
+        noctalia.homeModules.default
+      ];
+
       homeConfigurationArgs = {
         "sinkerine@kazuki" = {
           pkgs = packages."x86_64-linux";
-          modules = [
-            ./home/users/sinkerine/kazuki
-            noctalia.homeModules.default
-          ];
+          modules = [ ./home/users/sinkerine/kazuki ] ++ noctaliaHomeModules;
           extraSpecialArgs = {
             hostname = "kazuki";
           };
         };
         "sinkerine@asako" = {
           pkgs = packages."x86_64-linux";
-          modules = [ ./home/users/sinkerine/asako ];
+          modules = [ ./home/users/sinkerine/asako ] ++ noctaliaHomeModules;
           extraSpecialArgs = {
             hostname = "asako";
           };

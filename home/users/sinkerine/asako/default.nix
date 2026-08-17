@@ -19,8 +19,4 @@
   };
   my.display.scale = 1.25;
   my.programs.foot.fontSize = 8;
-  my.services.hyprlock = {
-    enable = true;
-    image = "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
-  };
 }

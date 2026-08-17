@@ -117,7 +117,7 @@ in
 
   my.services.lock = {
     enable = true;
-    lockService = "hyprlock.service";
+    lockService = "noctalia-lock.service";
   };
 
   services.logind.settings.Login = mkForce {
