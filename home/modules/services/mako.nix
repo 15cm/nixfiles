@@ -15,7 +15,7 @@ in
     services.mako = {
       enable = true;
       settings = {
-        default-timeout = 5000;
+        default-timeout = 10000;
         font = "sans-serif 10";
         format = "%s\\n%b";
         height = 300;
@@ -27,12 +27,15 @@ in
       extraConfig = ''
         [app-name="claude-notify"]
         on-notify=none
-        default-timeout=5000
+        default-timeout=10000
         on-button-left=invoke-default-action
 
         [app-name="codex-notify"]
         on-notify=none
-        default-timeout=5000
+        default-timeout=10000
+        on-button-left=invoke-default-action
+
+        [app-name="Orca"]
         on-button-left=invoke-default-action
 
         [app-name="Telegram Desktop"]
