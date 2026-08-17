@@ -66,11 +66,11 @@ input {
 # Frequently used shortcuts
 bind = $mainMod, Q, killactive
 bind = $mainMod, return, exec, foot
-bind = $mainMod, D, exec, wofi -iI --show drun
-bind = $mainMod, W, exec, {{windowSwitcherScript}}
+bind = $mainMod, D, exec, {{appLauncherCommand}}
+bind = $mainMod, W, exec, {{windowSwitcherCommand}}
 bind = $mainMod, I, exec, keepassxc
 bind = $mainMod, I, focuswindow, ^(org.keepassxc.KeePassXC)$
-bind = $mainMod, C, exec, copyq toggle
+bind = $mainMod, C, exec, {{clipboardCommand}}
 
 # App launcher.
 bind = $mainMod, O, submap, open
@@ -81,15 +81,15 @@ bind = , C, exec, dex "$HOME/.nix-profile/share/applications/google-chrome.deskt
 bind = , C, submap, reset
 bind = , D, exec, nemo
 bind = , D, submap, reset
-bind = , S, exec, slurp | grim -g - - | wl-copy && wl-paste > "$HOME/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png')"
+bind = , S, exec, {{screenshotCommand}}
 bind = , S, submap, reset
 bind = , M, exec, dex "$HOME/.nix-profile/share/applications/{{musicPlayerDesktopFileName}}"
 bind = , M, submap, reset
-bind = , N, exec, makoctl dismiss --all
+bind = , N, exec, {{dismissNotificationsCommand}}
 bind = , N, submap, reset
-bind = SHIFT, N, exec, makoctl restore
+bind = SHIFT, N, exec, {{restoreNotificationCommand}}
 bind = SHIFT, N, submap, reset
-bind = , W, exec, networkmanager_dmenu
+bind = , W, exec, {{networkCommand}}
 bind = , W, submap, reset
 bind = , g, exec, dex "$HOME/.nix-profile/share/applications/io.github.xiaoyifang.goldendict_ng.desktop"
 bind = , g, focuswindow, ^(GoldenDict)$
@@ -214,11 +214,11 @@ bind = , XF86AudioPause, exec, playerctl -p {{musicPlayer}} play-pause
 bind = , XF86AudioPlay, exec, playerctl -p {{musicPlayer}} play-pause
 bind = , XF86AudioNext, exec, playerctl -p {{musicPlayer}} next
 bind = , XF86AudioPrev, exec, playerctl -p {{musicPlayer}} previous
-binde = , XF86MonBrightnessUp, exec, brightnessctl set 5%+
-binde = , XF86MonBrightnessDown, exec, brightnessctl set 5%-
-bind = , XF86AudioMute, exec, pactl set-sink-mute 0 toggle
-binde = , XF86AudioRaiseVolume, exec, pactl set-sink-mute 0 false && pactl set-sink-volume 0 +5%
-binde = , XF86AudioLowerVolume, exec, pactl set-sink-volume 0 -5%
+binde = , XF86MonBrightnessUp, exec, {{brightnessUpCommand}}
+binde = , XF86MonBrightnessDown, exec, {{brightnessDownCommand}}
+bind = , XF86AudioMute, exec, {{muteCommand}}
+binde = , XF86AudioRaiseVolume, exec, {{volumeUpCommand}}
+binde = , XF86AudioLowerVolume, exec, {{volumeDownCommand}}
 # fn+F12 on Thinkpad Z13
 bind = , XF86Favorites, exec, playerctl -p {{musicPlayer}} play-pause
 

@@ -13,12 +13,23 @@ let
     (templateFile "hyprland.conf" {
       inherit (cfg) monitors scale;
       inherit (cfg)
+        appLauncherCommand
+        brightnessDownCommand
+        brightnessUpCommand
+        clipboardCommand
+        dismissNotificationsCommand
         musicPlayer
         musicPlayerDesktopFileName
         lockCommand
+        muteCommand
+        networkCommand
+        restoreNotificationCommand
+        screenshotCommand
+        volumeDownCommand
+        volumeUpCommand
+        windowSwitcherCommand
         ;
       musicPlayerLower = toLower cfg.musicPlayer;
-      windowSwitcherScript = "python ${./window_switcher.py}";
       cliphistWofiImgScript = "bash ${config.my.services.cliphist.wofiImgScript} | wl-copy";
     })
     builtins.readFile
@@ -38,6 +49,54 @@ in
     lockCommand = mkOption {
       type = types.str;
       default = "hyprlock";
+    };
+    appLauncherCommand = mkOption {
+      type = types.str;
+      default = "wofi -iI --show drun";
+    };
+    windowSwitcherCommand = mkOption {
+      type = types.str;
+      default = "python ${./window_switcher.py}";
+    };
+    clipboardCommand = mkOption {
+      type = types.str;
+      default = "copyq toggle";
+    };
+    dismissNotificationsCommand = mkOption {
+      type = types.str;
+      default = "makoctl dismiss --all";
+    };
+    restoreNotificationCommand = mkOption {
+      type = types.str;
+      default = "makoctl restore";
+    };
+    networkCommand = mkOption {
+      type = types.str;
+      default = "networkmanager_dmenu";
+    };
+    screenshotCommand = mkOption {
+      type = types.str;
+      default = ''slurp | grim -g - - | wl-copy && wl-paste > "$HOME/Screenshots/$(date +'%Y-%m-%d-%H%M%S_grim.png')"'';
+    };
+    brightnessUpCommand = mkOption {
+      type = types.str;
+      default = "brightnessctl set 5%+";
+    };
+    brightnessDownCommand = mkOption {
+      type = types.str;
+      default = "brightnessctl set 5%-";
+    };
+    muteCommand = mkOption {
+      type = types.str;
+      default = "pactl set-sink-mute 0 toggle";
+    };
+    volumeUpCommand = mkOption {
+      type = types.str;
+      default = "pactl set-sink-mute 0 false && pactl set-sink-volume 0 +5%";
+    };
+    volumeDownCommand = mkOption {
+      type = types.str;
+      default = "pactl set-sink-volume 0 -5%";
     };
     monitors = mkOption {
       type = types.attrs;

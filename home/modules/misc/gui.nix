@@ -14,6 +14,9 @@ in
 {
   options.my.essentials.gui = {
     enable = lib.mkEnableOption "linux gui";
+    enablePolkitAgent = lib.mkEnableOption "polkit-gnome authentication agent" // {
+      default = true;
+    };
   };
 
   config = lib.mkIf cfg.enable (
@@ -355,7 +358,7 @@ in
         my.programs.foot.enable = true;
         my.programs.pythonDevTools.enable = true;
 
-        systemd.user.services.polkit-gnome-authentication-agent-1 = {
+        systemd.user.services.polkit-gnome-authentication-agent-1 = lib.mkIf cfg.enablePolkitAgent {
           Unit = {
             Description = "polkit-gnome-authentication-agent-1";
             PartOf = [ "graphical-session.target" ];

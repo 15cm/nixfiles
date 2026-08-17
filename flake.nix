@@ -47,6 +47,10 @@
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
     };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixvim = {
       url = "github:nix-community/nixvim";
     };
@@ -81,6 +85,7 @@
       nixos-hardware,
       deploy-rs,
       hyprland,
+      noctalia,
       nixvim,
       llm-agents,
       jailed-agents,
@@ -92,13 +97,12 @@
     let
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      state =
-        import (
-          if builtins.pathExists ./home/state/default.nix then
-            ./home/state
-          else
-            ./home/state/default.example.nix
-        );
+      state = import (
+        if builtins.pathExists ./home/state/default.nix then
+          ./home/state
+        else
+          ./home/state/default.example.nix
+      );
     in
     rec {
       overlays = import ./overlays {
@@ -133,7 +137,10 @@
       homeConfigurationArgs = {
         "sinkerine@kazuki" = {
           pkgs = packages."x86_64-linux";
-          modules = [ ./home/users/sinkerine/kazuki ];
+          modules = [
+            ./home/users/sinkerine/kazuki
+            noctalia.homeModules.default
+          ];
           extraSpecialArgs = {
             hostname = "kazuki";
           };
