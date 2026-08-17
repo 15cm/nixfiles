@@ -11,6 +11,7 @@ let
   caveman = pkgs.caveman;
   ccstatusline = pkgs.ccstatusline;
   claude-notify = pkgs.claude-notify;
+  notificationsEnabled = false;
   rtkRewrite = pkgs.writeShellScript "rtk-rewrite.sh" ''
     #!${pkgs.bash}/bin/bash
     # rtk-hook-version: 3
@@ -169,7 +170,7 @@ in
             }
           ];
         }
-        // optionalAttrs guiEnabled {
+        // optionalAttrs (guiEnabled && notificationsEnabled) {
           Stop = [
             {
               hooks = [

@@ -189,8 +189,14 @@ in
           bno = "build-nix-os.sh";
           webos-dev-manager = "NIXPKGS_ALLOW_UNFREE=1 nix run --impure github:nix-community/nixGL -- webos-dev-manager";
         };
-        programs.direnv.enable = true;
-        programs.direnv.nix-direnv.enable = true;
+        programs.direnv = {
+          enable = true;
+          nix-direnv.enable = true;
+          config.whitelist.prefix = [
+            "${config.home.homeDirectory}/tech/repo/"
+            "${config.home.homeDirectory}/orca/workspaces/"
+          ];
+        };
         my.services.clipper = {
           enable = true;
           extraSettings = {

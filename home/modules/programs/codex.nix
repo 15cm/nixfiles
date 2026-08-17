@@ -60,6 +60,7 @@ with lib; let
     luna = "gpt-5.6-luna";
   };
   defaultCodexModel = "gpt-5.6-sol";
+  notificationsEnabled = false;
   reasoningEfforts = [
     "medium"
     "high"
@@ -223,7 +224,6 @@ in {
           model_reasoning_effort = "medium";
           plan_mode_reasoning_effort = "high";
 
-          notify = [(lib.getExe pkgs.codex-notify)];
           personality = "pragmatic";
 
           project_root_markers = [
@@ -243,6 +243,9 @@ in {
             "five-hour-limit"
           ];
 
+        }
+        // optionalAttrs notificationsEnabled {
+          notify = [(lib.getExe pkgs.codex-notify)];
         }
         // optionalAttrs cfg.enableCLIProxyAPI {
           model_provider = "cliproxyapi";

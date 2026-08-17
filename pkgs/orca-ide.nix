@@ -85,6 +85,10 @@ stdenvNoCC.mkDerivation {
     libnotify
   ];
 
+  # Electron loads libnotify with dlopen when checking Notification.isSupported().
+  # Keep it in the runtime search path even though no ELF DT_NEEDED entry exists.
+  runtimeDependencies = [ libnotify ];
+
   installPhase = ''
     runHook preInstall
 
