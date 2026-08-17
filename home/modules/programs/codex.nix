@@ -184,7 +184,7 @@ in {
     programs.zsh.shellAliases =
       {
         codex = "codex-trusted";
-        cx = "codex-trusted --profile medium";
+        cx = "codex-trusted --profile luna-max";
       }
       // codexProfileAliases;
 
