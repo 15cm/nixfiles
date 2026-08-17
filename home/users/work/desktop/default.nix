@@ -24,7 +24,6 @@ with lib; {
   home.packages = with pkgs; [
     keepassxc
     firefox-devedition-bin
-    trash-cli
     clementine
     nautilus
     kdePackages.ark

@@ -110,7 +110,6 @@ in {
           (if cfg.isXorg then "xclip -o" else "wl-paste")
         else
           "pbpaste");
-        th = (if isLinux then "trash-put" else "trash");
         dockerrl = "DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock docker";
       } // optionalAttrs isLinux {
         sc = "sudo systemctl";

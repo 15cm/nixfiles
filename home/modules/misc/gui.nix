@@ -71,7 +71,6 @@ in
 
           keepassxc
           google-chrome
-          trash-cli
           jellyfin-media-player
           clementine
           nemo

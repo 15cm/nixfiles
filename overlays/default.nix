@@ -39,25 +39,7 @@ in
       "claude-code" = llmAgentsPkgs.claude-code;
       inherit (fcitx5VinputFor final.stdenv.hostPlatform.system) fcitx5-vinput;
     };
-  modifications =
-    final: prev:
-    let
-      orcaPatchedResources = final.fetchurl {
-        url = "https://github.com/15cm/orca/releases/download/nix-v1.4.177-notification-focus.1/orca-linux-resources-v1.4.177-notification-focus.1.tar.zst";
-        hash = "sha256-2RK9xlfMRVOe4nqbW25huDIJS6UQwQQMmxIKtUn/ldI=";
-      };
-    in
-    rec {
-      orca-ide = prev.orca-ide.overrideAttrs (old: {
-        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.zstd ];
-        postInstall = (old.postInstall or "") + ''
-          rm -rf $out/opt/orca-ide/resources/app.asar{,.unpacked}
-          tar --zstd -xf ${orcaPatchedResources} -C $out/opt/orca-ide/resources
-        '';
-      });
-      trash-cli = prev.trash-cli.overrideAttrs (old: {
-        postInstall = "";
-      });
+  modifications = final: prev: rec {
       powerline = prev.powerline.overrideAttrs (old: {
         postPatch = (old.postPatch or "") + ''
           substituteInPlace powerline/commands/daemon.py \
@@ -72,5 +54,5 @@ in
       aria2-fast = prev.aria2.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [ ./aria2-fast.patch ];
       });
-    };
+  };
 }
