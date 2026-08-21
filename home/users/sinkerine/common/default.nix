@@ -19,7 +19,6 @@
       (builtins.elem hostname [
         "sachi"
         "amane"
-        "asako"
       ])
       {
         enable = true;

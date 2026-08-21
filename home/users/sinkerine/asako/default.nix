@@ -9,7 +9,14 @@
 
   my.essentials.gui.enable = true;
 
-  home.packages = with pkgs; [ radeontop ];
+  home.packages = with pkgs; [
+    orca-ide
+    radeontop
+  ];
+
+  wayland.windowManager.hyprland.settings.windowrule = [
+    "focus_on_activate on, match:class orca"
+  ];
 
   my.display.monitors = {
     one = {
