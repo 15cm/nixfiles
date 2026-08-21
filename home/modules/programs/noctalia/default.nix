@@ -37,7 +37,7 @@ in
     windowSwitcherCommand = "${noctalia} msg window-switcher";
     clipboardCommand = "${noctalia} msg panel-toggle clipboard";
     dismissNotificationsCommand = "${noctalia} msg notification-clear-active";
-    restoreNotificationCommand = "${noctalia} msg panel-toggle notifications";
+    restoreNotificationCommand = "${noctalia} msg panel-toggle control-center notifications";
     networkCommand = "${noctalia} msg panel-toggle control-center network";
     screenshotCommand = "${noctalia} msg screenshot-region";
     lockCommand = "${noctalia} msg session lock";
