@@ -141,6 +141,9 @@ in {
         ".agents/skills/nix-deploy-rs" = {
           source = ./codex-skills/nix-deploy-rs;
         };
+        ".agents/skills/orca-skill-discovery" = {
+          source = ./codex-skills/orca-skill-discovery;
+        };
       }
       // optionalAttrs cfg.enableCLIProxyAPI {
         ".codex/auth.json".text = builtins.toJSON {
