@@ -60,10 +60,6 @@
     jailed-agents = {
       url = "github:andersonjoseph/jailed-agents";
     };
-    tmux-omni-search = {
-      url = "github:15cm/tmux-omni-search";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     fcitx5-vinput = {
       url = "github:xifan2333/fcitx5-vinput";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -89,7 +85,6 @@
       nixvim,
       llm-agents,
       jailed-agents,
-      tmux-omni-search,
       fcitx5-vinput,
       proxmox-nixos,
       ...
@@ -109,7 +104,6 @@
         inherit
           nixpkgs
           llm-agents
-          tmux-omni-search
           fcitx5-vinput
           ;
       };

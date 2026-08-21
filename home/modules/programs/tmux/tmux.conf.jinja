@@ -15,7 +15,6 @@ bind-key -n End send Escape "OF"
 
 # tmux-continuum requires the status line to stay on for periodic autosaves.
 set -g status on
-set -g @sidebar_notifications off
 
 # Auto Restore
 set -g @continuum-restore 'on'
@@ -31,7 +30,6 @@ bind e command-prompt -p "New Session:" "new-session -A -s '%%'"
 bind-key "'" command-prompt -p "New Session:" "new-session -A -s '%%'"
 bind ^D detach
 bind-key s run-shell -b "{{tmuxFzfScriptsDir}}/session.sh switch"
-set -g @omni-search-launch-key 'S'
 
 # Pane navigation
 set -g pane-border-status top

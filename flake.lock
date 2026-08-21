@@ -1149,8 +1149,7 @@
         "noctalia": "noctalia",
         "nur": "nur",
         "proxmox-nixos": "proxmox-nixos",
-        "sops-nix": "sops-nix",
-        "tmux-omni-search": "tmux-omni-search"
+        "sops-nix": "sops-nix"
       }
     },
     "sherpa-onnx": {
@@ -1312,26 +1311,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "tmux-omni-search": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1776227903,
-        "narHash": "sha256-v+mOZGpW5/3yk+8tObGtnrkwokf4ve6ZdFSMpV34TdE=",
-        "owner": "15cm",
-        "repo": "tmux-omni-search",
-        "rev": "846d6cc67e329617ed8cd0a2ceb8239226ac6d9f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "15cm",
-        "repo": "tmux-omni-search",
         "type": "github"
       }
     },

@@ -1,7 +1,6 @@
 {
   nixpkgs,
   llm-agents,
-  tmux-omni-search,
   fcitx5-vinput,
   ...
 }:
@@ -32,7 +31,6 @@ in
     in
     (import ../pkgs {
       pkgs = final;
-      inherit tmux-omni-search;
     })
     // {
       inherit (llmAgentsPkgs) codex;

@@ -1,4 +1,4 @@
-{ pkgs ? null, tmux-omni-search, ... }:
+{ pkgs ? null, ... }:
 
 with pkgs; {
   notify-lib = callPackage ./notify-lib { };
@@ -18,21 +18,6 @@ with pkgs; {
   feishin-appimage = (callPackage ./feishin-appimage { });
   lsp-ai = (callPackage ./lsp-ai { });
   tmux-fzf = (callPackage ./tmux-fzf { });
-  tmux-agent-sidebar = (callPackage ./tmux-agent-sidebar { });
-  tmux-omni-search = tmuxPlugins.mkTmuxPlugin {
-    pluginName = "tmux-omni-search";
-    rtpFilePath = "tmux-omni-search.tmux";
-    version = "unstable-${builtins.substring 0 8 (tmux-omni-search.lastModifiedDate or "19700101")}";
-
-    src = "${tmux-omni-search.packages.${stdenv.hostPlatform.system}.default}/share/tmux-plugins/tmux-omni-search";
-
-    meta = {
-      homepage = "https://github.com/sinkerine/tmux-omni-search";
-      description = "Popup-based tmux pane full-text search plugin";
-      license = lib.licenses.mit;
-      platforms = lib.platforms.unix;
-    };
-  };
   webos-dev-manager = (callPackage ./webos-dev-manager { });
   orca-ide = callPackage ./orca-ide.nix { };
   xurl = (callPackage ./xurl { });

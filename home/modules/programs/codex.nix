@@ -28,30 +28,6 @@ with lib; let
       source = "${orcaSkills}/skills/${skill}";
     })
   orcaSkillNames);
-  tmuxAgentSidebarHook = "${pkgs.tmux-agent-sidebar}/share/tmux-plugins/agent-sidebar/hook.sh";
-  tmuxAgentSidebarCommand = event:
-    "${lib.getExe pkgs.bash} ${tmuxAgentSidebarHook} codex ${event}";
-  tmuxAgentSidebarHookConfig = event: matcher: {
-    inherit matcher;
-    hooks = [
-      {
-        type = "command";
-        command = tmuxAgentSidebarCommand event;
-      }
-    ];
-  };
-  tmuxAgentSidebarTrustedHash = eventName: event: matcher:
-    "sha256:${builtins.hashString "sha256" (builtins.toJSON ({
-      event_name = eventName;
-      hooks = [
-        {
-          type = "command";
-          command = tmuxAgentSidebarCommand event;
-          timeout = 600;
-          async = false;
-        }
-      ];
-    } // optionalAttrs (matcher != null) { inherit matcher; }))}";
   codexHooksPath = "${config.home.homeDirectory}/.codex/hooks.json";
   inherit (mylib) mkDefaultTrueEnableOption;
   toml = pkgs.formats.toml {};
@@ -126,9 +102,6 @@ in {
       // {
         ".codex/hooks.json".text = builtins.toJSON {
           hooks = {
-            PostToolUse = [
-              (tmuxAgentSidebarHookConfig "activity-log" "")
-            ];
             SessionStart = [
               {
                 hooks = [
@@ -140,13 +113,6 @@ in {
                   }
                 ];
               }
-              (tmuxAgentSidebarHookConfig "session-start" "startup|resume")
-            ];
-            Stop = [
-              (tmuxAgentSidebarHookConfig "stop" "")
-            ];
-            UserPromptSubmit = [
-              (tmuxAgentSidebarHookConfig "user-prompt-submit" "")
             ];
           };
         };
@@ -207,18 +173,8 @@ in {
             max_bytes = 104857600;
           };
 
-          hooks.state = {
-            "${codexHooksPath}:post_tool_use:0:0".trusted_hash =
-              tmuxAgentSidebarTrustedHash "post_tool_use" "activity-log" "";
-            "${codexHooksPath}:session_start:0:0".trusted_hash =
-              "sha256:9106e42acfdabf4c89dfa2d44eff9326047a7003afe2ea9ed7ed682f68429135";
-            "${codexHooksPath}:session_start:1:0".trusted_hash =
-              tmuxAgentSidebarTrustedHash "session_start" "session-start" "startup|resume";
-            "${codexHooksPath}:stop:0:0".trusted_hash =
-              tmuxAgentSidebarTrustedHash "stop" "stop" null;
-            "${codexHooksPath}:user_prompt_submit:0:0".trusted_hash =
-              tmuxAgentSidebarTrustedHash "user_prompt_submit" "user-prompt-submit" null;
-          };
+          hooks.state."${codexHooksPath}:session_start:0:0".trusted_hash =
+            "sha256:9106e42acfdabf4c89dfa2d44eff9326047a7003afe2ea9ed7ed682f68429135";
 
           model = defaultCodexModel;
           model_reasoning_effort = "medium";
