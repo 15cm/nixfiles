@@ -3,6 +3,7 @@
 with lib;
 {
   programs.home-manager.enable = true;
+  news.display = "silent";
 
   home.packages = (with pkgs; [
     eza
