@@ -35,6 +35,80 @@ in
         else
           "sha256-Dvf9IlGTsq5gChHBw+tTRzkA/IXIdw2K6pS4v56MC4A=";
       asrProviderPath = "${config.home.homeDirectory}/.local/share/vinput/providers/openai-compatible/${asrProvider}";
+      pangu = pkgs.python3Packages.buildPythonPackage {
+        pname = "pangu";
+        version = "5.0.0";
+        format = "wheel";
+        src = pkgs.fetchPypi {
+          pname = "pangu";
+          version = "5.0.0";
+          format = "wheel";
+          dist = "py3";
+          python = "py3";
+          hash = "sha256-Z5ozHnEw/X1VF3c/6eRRDrJ6AT/1lJQbxAU/+bQjOLg=";
+        };
+        pythonImportsCheck = [ "pangu" ];
+      };
+      asrPostprocessorPython = pkgs.python3.withPackages (_: [
+        pangu
+        pkgs.python3Packages.opencc
+      ]);
+      asrPostprocessor = pkgs.writeText "vinput-asr-postprocessor.py" ''
+        import json
+        import subprocess
+        import sys
+
+        import pangu
+        from opencc import OpenCC
+
+        opencc = OpenCC("t2s")
+
+
+        def format_text(text):
+            return pangu.spacing_text(opencc.convert(text))
+
+
+        def terminate_provider(provider):
+            if provider.poll() is not None:
+                return
+
+            provider.terminate()
+            try:
+                provider.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                provider.kill()
+                provider.wait()
+
+
+        provider_path, mode = sys.argv[1:3]
+        if mode not in ("batch", "streaming"):
+            raise SystemExit(f"unsupported ASR provider mode: {mode}")
+
+        provider = subprocess.Popen(
+            [sys.executable, provider_path],
+            stdin=sys.stdin.buffer,
+            stdout=subprocess.PIPE,
+            stderr=sys.stderr,
+        )
+
+        try:
+            if mode == "streaming":
+                for line in provider.stdout:
+                    event = json.loads(line)
+                    if isinstance(event, dict) and isinstance(event.get("text"), str):
+                        event["text"] = format_text(event["text"])
+                    sys.stdout.write(json.dumps(event, ensure_ascii=False) + "\n")
+                    sys.stdout.flush()
+            else:
+                transcript = provider.stdout.read().decode("utf-8")
+                sys.stdout.write(format_text(transcript))
+                sys.stdout.flush()
+        except BaseException:
+            terminate_provider(provider)
+            raise
+
+        raise SystemExit(provider.wait())
+      '';
       asrEnv = {
         VINPUT_ASR_API_KEY = config.sops.placeholder.vinputOpenAIAPIKey;
         VINPUT_ASR_MODEL = if cfg.enableStreaming then "gpt-realtime-whisper" else "gpt-transcribe";
@@ -96,8 +170,14 @@ in
                 {
                   "id": "${asrProviderId}",
                   "type": "command",
-                  "command": "${pkgs.python3}/bin/python3",
-                  "args": ${builtins.toJSON [ asrProviderPath ]},
+                  "command": "${asrPostprocessorPython}/bin/python3",
+                  "args": ${
+                    builtins.toJSON [
+                      asrPostprocessor
+                      asrProviderPath
+                      asrProvider
+                    ]
+                  },
                   "env": ${
                     builtins.toJSON (
                       asrEnv
