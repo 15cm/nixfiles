@@ -74,6 +74,11 @@ in
         show_app_name = true;
         show_actions = true;
       };
+      osd.kinds = {
+        keyboard_layout = false;
+        media = false;
+        privacy = false;
+      };
       lockscreen = {
         enabled = true;
         wallpaper = "${config.home.homeDirectory}/Pictures/lockscreens/yurucamp1@2x.png";
