@@ -35,7 +35,8 @@ with lib; let
     terra = "gpt-5.6-terra";
     luna = "gpt-5.6-luna";
   };
-  defaultCodexModel = "gpt-5.6-sol";
+  defaultCodexModelName = "sol";
+  defaultCodexModel = "gpt-5.6-${defaultCodexModelName}";
   notificationsEnabled = false;
   reasoningEfforts = [
     "medium"
@@ -55,7 +56,7 @@ with lib; let
     )
     codexModels));
   defaultReasoningProfiles = builtins.listToAttrs (map (effort:
-      nameValuePair effort {
+      nameValuePair "${defaultCodexModelName}-${effort}" {
         model = defaultCodexModel;
         model_reasoning_effort = effort;
         plan_mode_reasoning_effort = effort;
@@ -69,7 +70,7 @@ with lib; let
     })
   codexModels;
   defaultUltraProfile = {
-    ultra = {
+    "${defaultCodexModelName}-ultra" = {
       model = defaultCodexModel;
       model_reasoning_effort = "ultra";
       plan_mode_reasoning_effort = "ultra";
