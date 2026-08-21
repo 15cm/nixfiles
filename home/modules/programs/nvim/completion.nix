@@ -12,7 +12,17 @@ in {
   config = mkIf (cfg.enable && completionCfg.enable) {
     programs.nixvim = {
       plugins = {
-        lspconfig = { enable = true; };
+        lsp = {
+          enable = true;
+          servers.ty = {
+            enable = true;
+            extraOptions = {
+              cmd = [ "ty" "server" ];
+              filetypes = [ "python" ];
+              root_markers = [ "pyproject.toml" "ty.toml" ".git" ];
+            };
+          };
+        };
         cmp = {
           enable = true;
           autoEnableSources = true;
@@ -44,4 +54,3 @@ in {
     };
   };
 }
-

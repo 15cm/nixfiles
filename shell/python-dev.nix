@@ -10,7 +10,7 @@ in
 pkgs.mkShell {
   packages = with pkgs; [
     # pdm is blocked for now by https://github.com/NixOS/nixpkgs/pull/513116.
-    pyright
+    ty
     black
     isort
     (python3.withPackages myPythonPackages)

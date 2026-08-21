@@ -10,7 +10,7 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       # pdm is blocked for now by https://github.com/NixOS/nixpkgs/pull/513116.
-      pyright
+      ty
       black
       isort
       python313Packages.docformatter

@@ -70,8 +70,6 @@ in
           ccls
           ruby
           rust-analyzer
-          pyright
-
           keepassxc
           google-chrome
           jellyfin-media-player
