@@ -10,8 +10,9 @@ let
   cfg = config.my.programs.hyprland;
   inherit (mylib) templateFile;
   extraConfig = pipe ./hyprland.conf.jinja [
-    (templateFile "hyprland.conf" {
+    (templateFile "hyprland.lua" {
       inherit (cfg) monitors scale;
+      cursorSize = builtins.toString config.my.display.cursorSize;
       inherit (cfg)
         appLauncherCommand
         brightnessDownCommand
@@ -138,14 +139,11 @@ in
 
     wayland.windowManager.hyprland = {
       enable = true;
-      configType = "hyprlang";
+      configType = "lua";
       package = null;
       portalPackage = null;
       xwayland.enable = true;
       systemd.enable = false;
-      settings.exec-once = [
-        "hyprctl setcursor breeze_cursors ${builtins.toString config.my.display.cursorSize}"
-      ];
       inherit extraConfig;
     };
 
