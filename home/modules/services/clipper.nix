@@ -17,7 +17,7 @@ in {
       type = types.str;
       readOnly = true;
       default = concatStringsSep " " ([ "nc" ]
-        ++ optionals pkgs.stdenv.isLinux [ "-N" ]
+        ++ optionals pkgs.stdenv.hostPlatform.isLinux [ "-N" ]
         ++ [ cfg.address (toString cfg.port) ]);
     };
     logDir = mkOption {

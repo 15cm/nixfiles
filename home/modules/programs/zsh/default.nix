@@ -3,8 +3,8 @@
 with lib;
 let
   cfg = config.my.programs.zsh;
-  isLinux = pkgs.stdenv.isLinux;
-  isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.hostPlatform.isLinux;
+  isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
   editorValue =
     if config.my.programs.nvim.enable then "nvim"
     else if config.my.programs.emacs.enable then "${config.home.homeDirectory}/local/bin/exec-editor.sh"
