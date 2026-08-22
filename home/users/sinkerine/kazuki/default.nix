@@ -14,10 +14,7 @@
 
   my.essentials.gui.enable = true;
 
-  home.packages = with pkgs; [
-    orca-ide
-    pkgsStable.handbrake
-  ];
+  home.packages = with pkgs; [ pkgsStable.handbrake ];
 
   my.programs.hyprland = {
     extraSessionVariables = {

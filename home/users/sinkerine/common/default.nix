@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   lib,
   nixinfo,
@@ -14,14 +15,9 @@
 
   imports = [ ../../../common/baseline.nix ];
 
-  my.services.orca =
-    lib.mkIf
-      (builtins.elem hostname [
-        "sachi"
-        "amane"
-      ])
-      {
-        enable = true;
-        pairingAddress = "${hostname}.m.mado.moe";
-      };
+  my.services.orca = {
+    enable = true;
+    mode = lib.mkDefault (if config.my.essentials.gui.enable then "gui" else "headless");
+    pairingAddress = "${hostname}.m.mado.moe";
+  };
 }

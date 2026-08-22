@@ -21,9 +21,18 @@ let
 in
 {
   options.my.services.orca = {
-    enable = lib.mkEnableOption "headless Orca runtime";
+    enable = lib.mkEnableOption "Orca IDE";
 
     package = lib.mkPackageOption pkgs "orca-ide" { };
+
+    mode = lib.mkOption {
+      type = lib.types.enum [
+        "gui"
+        "headless"
+      ];
+      default = "headless";
+      description = "Whether Orca runs as a GUI or headless runtime server.";
+    };
 
     port = lib.mkOption {
       type = lib.types.port;
@@ -45,12 +54,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [
-      cfg.package
-      pkgs.xorg-server
-    ];
+    home.packages = [ cfg.package ] ++ lib.optional (cfg.mode == "headless") pkgs.xorg-server;
 
-    systemd.user.services.orca = {
+    systemd.user.services.orca = lib.mkIf (cfg.mode == "headless") {
       Unit = {
         Description = "Orca headless runtime server";
         Documentation = "https://github.com/stablyai/orca/blob/main/docs/reference/headless-linux-server.md";
