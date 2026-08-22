@@ -59,6 +59,7 @@ in
         polkit_agent = true;
         clipboard_enabled = true;
         clipboard_history_max_entries = 100;
+        screenshot.directory = "${config.home.homeDirectory}/Screenshots";
         launcher.providers.windows = {
           prefix = "win";
           global = false;
