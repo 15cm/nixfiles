@@ -31,6 +31,7 @@ with lib;
   my.programs.navi.enable = true;
   my.programs.hmSwitch.enable = true;
   my.programs.powerline.enable = true;
+  my.programs.codex.enableCLIProxyAPI = true;
 
   programs.bottom = {
     enable = true;

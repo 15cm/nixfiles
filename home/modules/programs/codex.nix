@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  mylib,
   ...
 }:
 with lib; let
@@ -29,7 +28,6 @@ with lib; let
     })
   orcaSkillNames);
   codexHooksPath = "${config.home.homeDirectory}/.codex/hooks.json";
-  inherit (mylib) mkDefaultTrueEnableOption;
   toml = pkgs.formats.toml {};
   codexModels = {
     terra = "gpt-5.6-terra";
@@ -88,7 +86,11 @@ with lib; let
 in {
   options.my.programs.codex = {
     enable = mkEnableOption "Codex";
-    enableCLIProxyAPI = mkDefaultTrueEnableOption "CLIProxyAPI for Codex";
+    enableCLIProxyAPI = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Use CLIProxyAPI endpoint and API-key auth instead of default Codex auth.";
+    };
   };
 
   config = mkIf cfg.enable {
