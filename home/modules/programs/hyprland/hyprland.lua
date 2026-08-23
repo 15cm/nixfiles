@@ -98,7 +98,6 @@ hl.config({
   master = {
     new_status = "slave",
     new_on_top = false,
-    special_scale_factor = 0.8,
   },
 })
 
