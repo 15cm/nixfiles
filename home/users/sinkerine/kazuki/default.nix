@@ -26,8 +26,12 @@
     };
   };
 
-  wayland.windowManager.hyprland.settings.windowrule = [
-    "focus_on_activate on, match:class orca"
+  wayland.windowManager.hyprland.settings.window_rule = [
+    {
+      name = "focus-orca";
+      match.class = "orca";
+      focus_on_activate = true;
+    }
   ];
 
   my.display.monitors = {

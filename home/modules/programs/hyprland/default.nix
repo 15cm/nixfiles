@@ -1,39 +1,57 @@
 {
   config,
   lib,
-  mylib,
   ...
 }:
 
 with lib;
 let
   cfg = config.my.programs.hyprland;
-  inherit (mylib) templateFile;
-  extraConfig = pipe ./hyprland.conf.jinja [
-    (templateFile "hyprland.conf" {
-      inherit (cfg) monitors scale;
-      inherit (cfg)
-        appLauncherCommand
-        brightnessDownCommand
-        brightnessUpCommand
-        clipboardCommand
-        dismissNotificationsCommand
-        musicPlayer
-        musicPlayerDesktopFileName
-        lockCommand
-        muteCommand
-        networkCommand
-        restoreNotificationCommand
-        screenshotCommand
-        volumeDownCommand
-        volumeUpCommand
-        windowSwitcherCommand
-        ;
-      musicPlayerLower = toLower cfg.musicPlayer;
-      cliphistWofiImgScript = "bash ${config.my.services.cliphist.wofiImgScript} | wl-copy";
-    })
-    builtins.readFile
-  ];
+  toLua = generators.toLua { };
+  extraConfig = builtins.replaceStrings
+    [
+      "@appLauncherCommand@"
+      "@brightnessDownCommand@"
+      "@brightnessUpCommand@"
+      "@clipboardCommand@"
+      "@cursorSize@"
+      "@dismissNotificationsCommand@"
+      "@lockCommand@"
+      "@monitorOne@"
+      "@monitorTwo@"
+      "@musicPlayer@"
+      "@musicPlayerDesktopFileName@"
+      "@muteCommand@"
+      "@networkCommand@"
+      "@restoreNotificationCommand@"
+      "@scale@"
+      "@screenshotCommand@"
+      "@volumeDownCommand@"
+      "@volumeUpCommand@"
+      "@windowSwitcherCommand@"
+    ]
+    [
+      (toLua cfg.appLauncherCommand)
+      (toLua cfg.brightnessDownCommand)
+      (toLua cfg.brightnessUpCommand)
+      (toLua cfg.clipboardCommand)
+      (toLua config.my.display.cursorSize)
+      (toLua cfg.dismissNotificationsCommand)
+      (toLua cfg.lockCommand)
+      (toLua cfg.monitors.one.output)
+      (toLua (if cfg.monitors ? two then cfg.monitors.two.output else null))
+      (toLua cfg.musicPlayer)
+      (toLua cfg.musicPlayerDesktopFileName)
+      (toLua cfg.muteCommand)
+      (toLua cfg.networkCommand)
+      (toLua cfg.restoreNotificationCommand)
+      (toLua (builtins.toJSON cfg.scale))
+      (toLua cfg.screenshotCommand)
+      (toLua cfg.volumeDownCommand)
+      (toLua cfg.volumeUpCommand)
+      (toLua cfg.windowSwitcherCommand)
+    ]
+    (builtins.readFile ./hyprland.lua);
 in
 {
   options.my.programs.hyprland = {
@@ -138,16 +156,16 @@ in
 
     wayland.windowManager.hyprland = {
       enable = true;
-      configType = "hyprlang";
+      configType = "lua";
       package = null;
       portalPackage = null;
       xwayland.enable = true;
       systemd.enable = false;
-      settings.exec-once = [
-        "hyprctl setcursor breeze_cursors ${builtins.toString config.my.display.cursorSize}"
-      ];
       inherit extraConfig;
     };
+
+    # Replace stale/generated Hyprland Lua files from previous activations.
+    xdg.configFile."hypr/hyprland.lua".force = true;
 
     # Only pass scale env variables for XWayland apps.
     my.env = {
