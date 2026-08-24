@@ -127,6 +127,8 @@ in
     };
   };
 
+  my.services.guiTestSandbox.enable = true;
+
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.stable;

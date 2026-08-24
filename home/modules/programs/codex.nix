@@ -146,6 +146,9 @@ in {
         ".agents/skills/orca-skill-discovery" = {
           source = ./codex-skills/orca-skill-discovery;
         };
+        ".agents/skills/gui-sandbox" = {
+          source = ./codex-skills/gui-sandbox;
+        };
       }
       // optionalAttrs cfg.enableCLIProxyAPI {
         ".codex/auth.json".text = builtins.toJSON {
