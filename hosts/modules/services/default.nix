@@ -18,5 +18,6 @@
     ./openrgb.nix
     ./vsftpd
     ./proxmox
+    ./gui-test-sandbox
   ];
 }
