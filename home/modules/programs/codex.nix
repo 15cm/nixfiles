@@ -122,19 +122,19 @@ in {
         ".codex/plugins/caveman" = {
           source = "${caveman}/plugins/caveman";
         };
-        ".agents/skills/caveman" = {
-          source = "${caveman}/skills/caveman";
+        ".agents/skills/caveman/SKILL.md" = {
+          source = "${caveman}/skills/caveman/SKILL.md";
         };
-        ".agents/skills/caveman-commit" = {
+        ".agents/skills/caveman/caveman-commit" = {
           source = "${caveman}/skills/caveman-commit";
         };
-        ".agents/skills/caveman-help" = {
+        ".agents/skills/caveman/caveman-help" = {
           source = "${caveman}/skills/caveman-help";
         };
-        ".agents/skills/caveman-review" = {
+        ".agents/skills/caveman/caveman-review" = {
           source = "${caveman}/skills/caveman-review";
         };
-        ".agents/skills/caveman-compress" = {
+        ".agents/skills/caveman/caveman-compress" = {
           source = "${caveman}/caveman-compress";
         };
         ".agents/skills/manage-docker-services" = {
