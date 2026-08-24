@@ -17,6 +17,7 @@ export GUI_SANDBOX_ARTIFACT_DIR="$GUI_SANDBOX_STATE_DIR/artifacts"
 export GUI_SANDBOX_SSH_DIR="$GUI_SANDBOX_STATE_DIR/ssh"
 export GUI_SANDBOX_LOCK_FILE="$GUI_SANDBOX_STATE_DIR/lock"
 export GUI_SANDBOX_ALLOWED_WORKTREE_ROOT="$test_root/workspaces"
+export GUI_SANDBOX_STORAGE_CONFIG="$test_root/storage.cfg"
 GUI_SANDBOX_TARGET_UID=$(id -u)
 GUI_SANDBOX_TARGET_GID=$(id -g)
 export GUI_SANDBOX_TARGET_UID GUI_SANDBOX_TARGET_GID
@@ -157,12 +158,36 @@ fake_zfs() {
 }
 fake_pvesm() {
   case "$1" in
-    config) return 1 ;;
     add) printf '%s\n' "$*" >> "$storage_log" ;;
   esac
 }
 GUI_SANDBOX_ZFS=fake_zfs GUI_SANDBOX_PVESM=fake_pvesm ensure_storage
 assert rg -q '^add zfspool agent-sandbox --pool rpool/proxmox/agent-sandbox --content rootdir --sparse 1$' "$storage_log"
+
+cat > "$GUI_SANDBOX_STORAGE_CONFIG" <<'EOF'
+zfspool: agent-sandbox
+	pool rpool/proxmox/agent-sandbox
+	content rootdir
+	sparse 1
+EOF
+storage_log="$test_root/storage-existing.log"
+fake_zfs_existing() {
+  case "$1" in
+    list) return 0 ;;
+    get) printf 'filesystem\n' ;;
+  esac
+}
+GUI_SANDBOX_ZFS=fake_zfs_existing GUI_SANDBOX_PVESM=fake_pvesm ensure_storage
+assert test ! -e "$storage_log"
+
+cat > "$GUI_SANDBOX_STORAGE_CONFIG" <<'EOF'
+zfspool: agent-sandbox
+	pool rpool/proxmox/wrong-pool
+EOF
+if (GUI_SANDBOX_ZFS=fake_zfs_existing GUI_SANDBOX_PVESM=fake_pvesm ensure_storage); then
+  printf 'unexpected storage pool acceptance\n' >&2
+  exit 1
+fi
 
 fake_cua_ssh() {
   local remote_command=${!#}

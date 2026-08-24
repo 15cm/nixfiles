@@ -32,6 +32,7 @@ let
 
       dataset=${escapeShellArg cfg.storageDataset}
       storage_id=${escapeShellArg cfg.storageId}
+      storage_config=/etc/pve/storage.cfg
 
       if ! zfs list -H -o name "$dataset" >/dev/null 2>&1; then
         zfs create -p -o mountpoint=none "$dataset"
@@ -45,13 +46,31 @@ let
         echo "gui-sandbox: pvesm is unavailable" >&2
         exit 1
       }
-      if pvesm config "$storage_id" >/dev/null 2>&1; then
-        storage_config=$(pvesm config "$storage_id")
-        grep -Fxq "zfspool: $storage_id" <<<"$storage_config" || {
+      if [[ -e $storage_config && ! -r $storage_config ]]; then
+        echo "gui-sandbox: Proxmox storage config is not readable: $storage_config" >&2
+        exit 1
+      fi
+      storage_type=$(awk -v expected="$storage_id" '
+        /^[^[:space:]]/ && $2 == expected {
+          type = $1
+          sub(/:$/, "", type)
+          print type
+          exit
+        }
+      ' "$storage_config" 2>/dev/null || true)
+      if [[ -n $storage_type ]]; then
+        [[ $storage_type == zfspool ]] || {
           echo "gui-sandbox: existing Proxmox storage $storage_id is not zfspool" >&2
           exit 1
         }
-        awk -v expected="$dataset" '$1 == "pool" && $2 == expected { found = 1 } END { exit !found }' <<<"$storage_config" || {
+        storage_block=$(awk -v expected="$storage_id" '
+          /^[^[:space:]]/ {
+            in_target = ($2 == expected)
+            next
+          }
+          in_target { print }
+        ' "$storage_config")
+        awk -v expected="$dataset" '$1 == "pool" && $2 == expected { found = 1 } END { exit !found }' <<<"$storage_block" || {
           echo "gui-sandbox: existing Proxmox storage $storage_id points at a different pool" >&2
           exit 1
         }

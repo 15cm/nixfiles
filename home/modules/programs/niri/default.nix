@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hostname, ... }:
 
 with lib;
 let
@@ -11,7 +11,7 @@ let
       "position x=${toString (if name == "one" then 0 else 1920)} y=0" = { };
     }) config.my.display.monitors;
   workspaceSettings =
-    if config.my.display.monitors ? two then
+    if hostname == "kazuki" && config.my.display.monitors ? two then
       (map
         (workspace: {
           workspace = {
@@ -29,10 +29,17 @@ let
         })
         (range 6 10))
     else
-      [ ];
+      map
+        (workspace: {
+          workspace = {
+            _args = [ (toString workspace) ];
+          };
+        })
+        (range 1 10);
   screenshotDir = "${config.home.homeDirectory}/Screenshots";
   noctalia = lib.getExe config.programs.noctalia.package;
   screenshot = command: "mkdir -p ${escapeShellArg screenshotDir}; ${command} ${screenshotDir}/$(date +%Y-%m-%d-%H%M%S.png)";
+  playerCommand = action: [ "playerctl" "-p" cfg.musicPlayer action ];
   focusOrLaunchOrca = pkgs.writeShellScript "focus-or-launch-orca" ''
     set -eu
     window_id="$(${pkgs.jq}/bin/jq -r '.[] | select((."app-id" // "") == "orca" or (."app-id" // "") == "orca-ide") | .id' < <(${pkgs.niri}/bin/niri msg --json windows) | head -n 1)"
@@ -54,6 +61,10 @@ in
 {
   options.my.programs.niri = {
     enable = mkEnableOption "Niri";
+    musicPlayer = mkOption {
+      type = types.str;
+      default = "Feishin";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -89,6 +100,7 @@ in
             natural-scroll = { };
           };
         };
+        gestures."hot-corners".off = { };
         cursor = {
           xcursor-theme = "breeze_cursors";
           xcursor-size = config.my.display.cursorSize;
@@ -111,6 +123,7 @@ in
           {
             window-rule._children = [
               { match._props = { app-id = "^orca(-ide)?$"; }; }
+              { draw-border-with-background = false; }
               { opacity = 0.9; }
             ];
           }
@@ -180,7 +193,17 @@ in
           "Ctrl+Alt+Delete" = { quit = {}; };
           "Print" = { spawn = [ "sh" "-c" (screenshot "grim") ]; };
           "Ctrl+Print" = { spawn = [ "sh" "-c" (screenshot "grim -g \"$(slurp)\"") ]; };
-          "Mod+Shift+P" = { power-off-monitors = {}; };
+          # Sony headphones send XF86AudioPause and XF86AudioPlay in turn.
+          "XF86AudioPause" = { spawn = playerCommand "play-pause"; };
+          "XF86AudioPlay" = { spawn = playerCommand "play-pause"; };
+          "XF86AudioNext" = { spawn = playerCommand "next"; };
+          "XF86AudioPrev" = { spawn = playerCommand "previous"; };
+          "XF86Favorites" = { spawn = playerCommand "play-pause"; };
+          "XF86MonBrightnessUp" = { spawn = [ "brightnessctl" "set" "5%+" ]; };
+          "XF86MonBrightnessDown" = { spawn = [ "brightnessctl" "set" "5%-" ]; };
+          "XF86AudioMute" = { spawn = [ "pactl" "set-sink-mute" "0" "toggle" ]; };
+          "XF86AudioRaiseVolume" = { spawn = [ "sh" "-c" "pactl set-sink-mute 0 false && pactl set-sink-volume 0 +5%" ]; };
+          "XF86AudioLowerVolume" = { spawn = [ "pactl" "set-sink-volume" "0" "-5%" ]; };
         };
       } // outputSettings;
     };

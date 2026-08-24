@@ -58,11 +58,11 @@ in
     enable = mkEnableOption "Hyprland";
     musicPlayer = mkOption {
       type = types.str;
-      default = "clementine";
+      default = "Feishin";
     };
     musicPlayerDesktopFileName = mkOption {
       type = types.str;
-      default = "org.clementine_player.Clementine.desktop";
+      default = "feishin.desktop";
     };
     lockCommand = mkOption {
       type = types.str;

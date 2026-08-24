@@ -77,10 +77,9 @@ After the built configuration is activated, storage bootstrap is idempotent:
 ~~~sh
 sudo systemctl start gui-test-sandbox-storage.service
 zfs list rpool/proxmox/agent-sandbox
-pvesm config agent-sandbox
 ~~~
 
-It creates the ZFS filesystem with mountpoint=none, verifies that it is a filesystem, and either verifies an existing agent-sandbox zfspool points at the exact dataset or adds it with rootdir content and sparse volumes. A mismatched existing storage fails closed.
+It creates the ZFS filesystem with mountpoint=none, verifies that it is a filesystem, and reads `/etc/pve/storage.cfg` to either verify an existing `agent-sandbox` zfspool points at the exact dataset or adds it with rootdir content and sparse volumes. A mismatched existing storage fails closed. This avoids the unsupported `pvesm config` command on Proxmox 9.1.
 
 Build the pinned template explicitly:
 

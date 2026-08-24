@@ -25,10 +25,11 @@ in
         my.programs.hyprland = {
           enable = true;
           inherit (config.my.display) monitors scale;
-          musicPlayer = "Feishin";
-          musicPlayerDesktopFileName = "feishin.desktop";
         };
-        my.programs.niri.enable = true;
+        my.programs.niri = {
+          enable = true;
+          musicPlayer = config.my.programs.hyprland.musicPlayer;
+        };
       }
       {
         home.sessionVariables = {

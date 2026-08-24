@@ -97,6 +97,12 @@ in
               outputHash = "sha256-aCXlDuKYp8PZ4hVmRfyzqUwEWcDDHowI88eY/5a4pRY=";
             });
           });
+          # pct is copied with -T, which suppresses the Nix Perl module path.
+          pve-ha-manager = prev.pve-ha-manager.overrideAttrs (old: {
+            postFixup = (old.postFixup or "") + ''
+              sed -i '1s/ -T//' "$out/bin/.pct-wrapped"
+            '';
+          });
         })
       ];
 

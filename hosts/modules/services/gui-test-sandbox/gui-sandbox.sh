@@ -17,6 +17,7 @@ fi
 : "${GUI_SANDBOX_ALLOWED_WORKTREE_ROOT:=/home/sinkerine/orca/workspaces}"
 : "${GUI_SANDBOX_STORAGE_ID:=agent-sandbox}"
 : "${GUI_SANDBOX_STORAGE_DATASET:=rpool/proxmox/agent-sandbox}"
+: "${GUI_SANDBOX_STORAGE_CONFIG:=/etc/pve/storage.cfg}"
 : "${GUI_SANDBOX_TEMPLATE_CACHE:=/var/lib/vz/template/cache}"
 : "${GUI_SANDBOX_TEMPLATE_VMID:=9000}"
 : "${GUI_SANDBOX_FIRST_VMID:=9100}"
@@ -318,15 +319,32 @@ check_gpu_host() {
 }
 
 ensure_storage() {
-  local dataset=$GUI_SANDBOX_STORAGE_DATASET storage_id=$GUI_SANDBOX_STORAGE_ID storage_config
+  local dataset=$GUI_SANDBOX_STORAGE_DATASET storage_id=$GUI_SANDBOX_STORAGE_ID storage_type storage_block
   if ! "$GUI_SANDBOX_ZFS" list -H -o name "$dataset" >/dev/null 2>&1; then
     "$GUI_SANDBOX_ZFS" create -p -o mountpoint=none "$dataset"
   fi
   [[ $("$GUI_SANDBOX_ZFS" get -H -o value type "$dataset") == filesystem ]] || die "storage dataset is not a ZFS filesystem: $dataset"
-  if "$GUI_SANDBOX_PVESM" config "$storage_id" >/dev/null 2>&1; then
-    storage_config=$("$GUI_SANDBOX_PVESM" config "$storage_id")
-    printf '%s\n' "$storage_config" | grep -Fxq "zfspool: $storage_id" || die "existing Proxmox storage $storage_id is not zfspool"
-    printf '%s\n' "$storage_config" | awk -v expected="$dataset" '$1 == "pool" && $2 == expected { found = 1 } END { exit !found }' || die "existing Proxmox storage $storage_id points at a different pool"
+  if [[ -e $GUI_SANDBOX_STORAGE_CONFIG && ! -r $GUI_SANDBOX_STORAGE_CONFIG ]]; then
+    die "Proxmox storage config is not readable: $GUI_SANDBOX_STORAGE_CONFIG"
+  fi
+  storage_type=$(awk -v expected="$storage_id" '
+    /^[^[:space:]]/ && $2 == expected {
+      type = $1
+      sub(/:$/, "", type)
+      print type
+      exit
+    }
+  ' "$GUI_SANDBOX_STORAGE_CONFIG" 2>/dev/null || true)
+  if [[ -n $storage_type ]]; then
+    [[ $storage_type == zfspool ]] || die "existing Proxmox storage $storage_id is not zfspool"
+    storage_block=$(awk -v expected="$storage_id" '
+      /^[^[:space:]]/ {
+        in_target = ($2 == expected)
+        next
+      }
+      in_target { print }
+    ' "$GUI_SANDBOX_STORAGE_CONFIG")
+    printf '%s\n' "$storage_block" | awk -v expected="$dataset" '$1 == "pool" && $2 == expected { found = 1 } END { exit !found }' || die "existing Proxmox storage $storage_id points at a different pool"
   else
     "$GUI_SANDBOX_PVESM" add zfspool "$storage_id" --pool "$dataset" --content rootdir --sparse 1
   fi

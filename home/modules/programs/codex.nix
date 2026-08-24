@@ -67,11 +67,13 @@ with lib; let
   reasoningProfiles = builtins.listToAttrs (flatten (mapAttrsToList (
       modelName: model:
         map (effort:
-          nameValuePair "${modelName}-${effort}" {
+          nameValuePair "${modelName}-${effort}" ({
             inherit model;
             model_reasoning_effort = effort;
             plan_mode_reasoning_effort = effort;
-          })
+          } // optionalAttrs (modelName == "luna") {
+            service_tier = "priority";
+          }))
         reasoningEfforts
     )
     codexModels));
@@ -83,11 +85,13 @@ with lib; let
       })
     reasoningEfforts);
   ultraProfiles = mapAttrs' (modelName: model:
-    nameValuePair "${modelName}-ultra" {
+    nameValuePair "${modelName}-ultra" ({
       inherit model;
       model_reasoning_effort = "ultra";
       plan_mode_reasoning_effort = "ultra";
-    })
+    } // optionalAttrs (modelName == "luna") {
+      service_tier = "priority";
+    }))
   codexModels;
   defaultUltraProfile = {
     "${defaultCodexModelName}-ultra" = {

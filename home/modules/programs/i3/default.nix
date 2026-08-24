@@ -17,7 +17,7 @@ in {
     enable = mkEnableOption "i3";
     musicPlayer = mkOption {
       type = types.str;
-      default = "clementine";
+      default = "Feishin";
     };
     monitors = mkOption {
       type = with types; attrsOf str;
