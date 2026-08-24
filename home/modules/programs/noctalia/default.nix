@@ -8,6 +8,7 @@
 
 let
   noctalia = lib.getExe config.programs.noctalia.package;
+  niriActiveWorkspacePlugin = ./niri-active-workspace;
   setNoctaliaWallpapers = pkgs.writeShellScript "set-noctalia-wallpapers" ''
     set -eu
 
@@ -27,6 +28,18 @@ let
   '';
 in
 {
+  # Local source overrides the community copy for a multi-monitor bug:
+  # Noctalia 5.0.0 drops bar output context from async/stream callbacks.
+  # Remove this override when the upstream plugin or Noctalia carries the fix.
+  home.file = {
+    ".local/share/noctalia/plugins/niri-active-workspace/plugin.toml".source =
+      "${niriActiveWorkspacePlugin}/plugin.toml";
+    ".local/share/noctalia/plugins/niri-active-workspace/widget.luau".source =
+      "${niriActiveWorkspacePlugin}/widget.luau";
+    ".local/share/noctalia/plugins/niri-active-workspace/translations/en.json".source =
+      "${niriActiveWorkspacePlugin}/translations/en.json";
+  };
+
   my.essentials.gui.enablePolkitAgent = false;
 
   my.programs.hyprland = {
@@ -52,6 +65,7 @@ in
     enable = true;
     systemd.enable = true;
     settings = {
+      plugins.enabled = [ "salemsayed/niri-active-workspace" ];
       shell = {
         font_family = "sans-serif";
         time_format = "{:%H:%M}";
@@ -116,7 +130,7 @@ in
           "network_tx"
           "volume"
         ];
-        center = [ "workspaces" ];
+        center = [ "salemsayed/niri-active-workspace:active-workspace" ];
         end = [
           "media"
           "clock"
@@ -132,7 +146,7 @@ in
       };
       widget = {
         clock.format = "{:%Y/%m/%d %a %H:%M}";
-        workspaces.label_source = "name";
+        "salemsayed/niri-active-workspace:active-workspace".label_mode = "name";
         cpu = {
           type = "sysmon";
           stat = "cpu_usage";
