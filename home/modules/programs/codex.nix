@@ -27,6 +27,28 @@ with lib; let
       source = "${orcaSkills}/skills/${skill}";
     })
   orcaSkillNames);
+  cavemanSkillNamespace = pkgs.linkFarm "caveman-agent-skills" [
+    {
+      name = "SKILL.md";
+      path = "${caveman}/skills/caveman/SKILL.md";
+    }
+    {
+      name = "caveman-commit";
+      path = "${caveman}/skills/caveman-commit";
+    }
+    {
+      name = "caveman-help";
+      path = "${caveman}/skills/caveman-help";
+    }
+    {
+      name = "caveman-review";
+      path = "${caveman}/skills/caveman-review";
+    }
+    {
+      name = "caveman-compress";
+      path = "${caveman}/caveman-compress";
+    }
+  ];
   codexHooksPath = "${config.home.homeDirectory}/.codex/hooks.json";
   toml = pkgs.formats.toml {};
   codexModels = {
@@ -122,20 +144,8 @@ in {
         ".codex/plugins/caveman" = {
           source = "${caveman}/plugins/caveman";
         };
-        ".agents/skills/caveman/SKILL.md" = {
-          source = "${caveman}/skills/caveman/SKILL.md";
-        };
-        ".agents/skills/caveman/caveman-commit" = {
-          source = "${caveman}/skills/caveman-commit";
-        };
-        ".agents/skills/caveman/caveman-help" = {
-          source = "${caveman}/skills/caveman-help";
-        };
-        ".agents/skills/caveman/caveman-review" = {
-          source = "${caveman}/skills/caveman-review";
-        };
-        ".agents/skills/caveman/caveman-compress" = {
-          source = "${caveman}/caveman-compress";
+        ".agents/skills/caveman" = {
+          source = cavemanSkillNamespace;
         };
         ".agents/skills/manage-docker-services" = {
           source = ./codex-skills/manage-docker-services;

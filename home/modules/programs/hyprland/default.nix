@@ -82,11 +82,11 @@ in
     };
     dismissNotificationsCommand = mkOption {
       type = types.str;
-      default = "makoctl dismiss --all";
+      default = "noctalia msg notification-clear-active";
     };
     restoreNotificationCommand = mkOption {
       type = types.str;
-      default = "makoctl restore";
+      default = "noctalia msg panel-toggle control-center notifications";
     };
     networkCommand = mkOption {
       type = types.str;

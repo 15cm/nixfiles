@@ -218,7 +218,6 @@ in
           };
         };
         my.services.network-manager-applet.enable = true;
-        my.services.mako.enable = true;
         my.programs.firefox = {
           enable = true;
           searchEngines = [

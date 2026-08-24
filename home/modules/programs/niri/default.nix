@@ -10,6 +10,26 @@ let
       scale = config.my.display.scale;
       "position x=${toString (if name == "one" then 0 else 1920)} y=0" = { };
     }) config.my.display.monitors;
+  workspaceSettings =
+    if config.my.display.monitors ? two then
+      (map
+        (workspace: {
+          workspace = {
+            _args = [ (toString workspace) ];
+            "open-on-output" = removePrefix "desc:" config.my.display.monitors.one.output;
+          };
+        })
+        (range 1 5))
+      ++ (map
+        (workspace: {
+          workspace = {
+            _args = [ (toString workspace) ];
+            "open-on-output" = removePrefix "desc:" config.my.display.monitors.two.output;
+          };
+        })
+        (range 6 10))
+    else
+      [ ];
   screenshotDir = "${config.home.homeDirectory}/Screenshots";
   noctalia = lib.getExe config.programs.noctalia.package;
   screenshot = command: "mkdir -p ${escapeShellArg screenshotDir}; ${command} ${screenshotDir}/$(date +%Y-%m-%d-%H%M%S.png)";
@@ -21,52 +41,14 @@ let
     fi
     exec ${pkgs.orca-ide}/bin/orca-ide open
   '';
-  openWindowInColumn = pkgs.writeShellScript "niri-open-window-in-column" ''
-    set -euo pipefail
+  nameDynamicWorkspace = pkgs.writeShellScript "niri-name-dynamic-workspace" ''
+    set -eu
+    niri=${lib.getExe pkgs.niri}
+    jq=${lib.getExe pkgs.jq}
 
-    niri=${escapeShellArg (lib.getExe pkgs.niri)}
-    jq=${escapeShellArg (lib.getExe pkgs.jq)}
-    known_ids=[]
-
-    if [ "$#" -eq 0 ]; then
-      echo "usage: niri-open-window-in-column COMMAND [ARGUMENT... ]" >&2
-      exit 64
+    if "$niri" msg --json workspaces | "$jq" -e 'any(.[]; .is_focused and ((.name // "") == ""))' >/dev/null; then
+      "$niri" msg action set-workspace-name "+"
     fi
-
-    # Subscribe before spawning so window-open event cannot race the command.
-    exec {event_fd}< <("$niri" msg --json event-stream)
-
-    # Event stream starts with a complete state snapshot. Ignore those windows.
-    while IFS= read -r event <&"$event_fd"; do
-      if "$jq" -e 'has("WindowsChanged")' <<<"$event" >/dev/null; then
-        known_ids="$("$jq" -c '.WindowsChanged.windows | map(.id)' <<<"$event")"
-        break
-      fi
-    done
-
-    "$@" &
-    child_pid=$!
-
-    while IFS= read -r event <&"$event_fd"; do
-      window_id="$("$jq" -r --argjson known_ids "$known_ids" '
-        .WindowOpenedOrChanged.window as $window
-        | select($window != null)
-        | select(($known_ids | index($window.id)) == null)
-        | $window.id
-      ' <<<"$event")"
-
-      if [ -n "$window_id" ]; then
-        "$niri" msg action consume-or-expel-window-left --id "$window_id"
-        exit 0
-      fi
-
-      if ! kill -0 "$child_pid" 2>/dev/null; then
-        wait "$child_pid"
-        exit 1
-      fi
-    done
-
-    wait "$child_pid"
   '';
 in
 {
@@ -96,9 +78,12 @@ in
         hotkey-overlay.skip-at-startup = true;
         input = {
           keyboard = { repeat-rate = 20; repeat-delay = 200; };
-          mouse.accel-profile = "flat";
-          mouse.accel-speed = 0.5;
+          focus-follows-mouse = { };
+          mouse.accel-profile = "adaptive";
+          mouse.accel-speed = 0.6;
           touchpad = {
+            accel-profile = "adaptive";
+            accel-speed = 0.6;
             tap = { };
             click-method = "clickfinger";
             natural-scroll = { };
@@ -116,70 +101,79 @@ in
           border = { width = 5; active-color = "#33ccffee"; inactive-color = "#595959aa"; };
           default-column-width = { proportion = 0.5; };
         };
-        _children = [
+        _children = workspaceSettings ++ [
           {
             window-rule._children = [
               { match._props = { app-id = "^foot$"; }; }
-              { opacity = 0.7; }
+              { opacity = 0.9; }
             ];
           }
           {
             window-rule._children = [
               { match._props = { app-id = "^orca(-ide)?$"; }; }
-              { opacity = 0.7; }
+              { opacity = 0.9; }
             ];
           }
         ];
         binds = {
           "Mod+O" = { spawn = [ "wlr-which-key" "apps" ]; };
-          "Mod+Shift+Z" = { spawn = [ "wlr-which-key" "power" ]; };
           "Mod+Return" = { spawn = [ "foot" ]; };
-          "Mod+Semicolon" = { spawn = [ (toString openWindowInColumn) (lib.getExe pkgs.foot) ]; };
           "Mod+D" = { spawn = [ noctalia "msg" "panel-toggle" "launcher" ]; };
-          "Mod+X" = { spawn = [ noctalia "msg" "panel-toggle" "clipboard" ]; };
+          "Mod+C" = { spawn = [ noctalia "msg" "panel-toggle" "clipboard" ]; };
           "Super+Alt+L" = { spawn = [ noctalia "msg" "session" "lock" ]; };
           "Mod+W" = { spawn = [ (toString focusOrLaunchOrca) ]; };
-          "Mod+V" = { toggle-overview = {}; };
-          "Mod+T" = { toggle-column-tabbed-display = {}; };
-          "Mod+C" = { center-column = {}; };
-          "Mod+Ctrl+C" = { center-visible-columns = {}; };
+          "Mod+S" = { toggle-overview = {}; };
+          "Mod+X" = { toggle-column-tabbed-display = {}; };
+          "Mod+R" = { switch-preset-column-width = {}; };
+          "Mod+Minus" = { set-column-width = "-10%"; };
+          "Mod+Equal" = { set-column-width = "+10%"; };
+          "Mod+A" = { center-column = {}; };
+          "Mod+Shift+A" = { center-visible-columns = {}; };
+          "Mod+Shift+Z" = { spawn = [ "wlr-which-key" "power" ]; };
           "Mod+F" = { maximize-column = {}; };
           "Mod+Shift+F" = { fullscreen-window = {}; };
           "Mod+N" = { focus-monitor-left = {}; };
           "Mod+M" = { focus-monitor-right = {}; };
           "Mod+Shift+N" = { move-window-to-monitor-left = {}; };
           "Mod+Shift+M" = { move-window-to-monitor-right = {}; };
-          "Mod+B" = { toggle-window-floating = {}; };
+          "Mod+V" = { toggle-window-floating = {}; };
           "Mod+Shift+B" = { switch-focus-between-floating-and-tiling = {}; };
           "Mod+Q" = { close-window = {}; };
           "Mod+H" = { focus-column-left = {}; };
           "Mod+J" = { focus-window-down = {}; };
           "Mod+K" = { focus-window-up = {}; };
           "Mod+L" = { focus-column-right = {}; };
+          "Mod+Shift+H" = { move-column-left = {}; };
+          "Mod+Shift+J" = { move-window-down = {}; };
+          "Mod+Shift+K" = { move-window-up = {}; };
+          "Mod+Shift+L" = { move-column-right = {}; };
           "Mod+Left" = { focus-column-left = {}; };
           "Mod+Right" = { focus-column-right = {}; };
           "Mod+Up" = { focus-window-up = {}; };
           "Mod+Down" = { focus-window-down = {}; };
           "Mod+U" = { focus-workspace-down = {}; };
           "Mod+I" = { focus-workspace-up = {}; };
-          "Mod+1" = { focus-workspace = 1; };
-          "Mod+2" = { focus-workspace = 2; };
-          "Mod+3" = { focus-workspace = 3; };
-          "Mod+4" = { focus-workspace = 4; };
-          "Mod+5" = { focus-workspace = 5; };
-          "Mod+6" = { focus-workspace = 6; };
-          "Mod+7" = { focus-workspace = 7; };
-          "Mod+8" = { focus-workspace = 8; };
-          "Mod+9" = { focus-workspace = 9; };
-          "Mod+Shift+1" = { move-column-to-workspace = 1; };
-          "Mod+Shift+2" = { move-column-to-workspace = 2; };
-          "Mod+Shift+3" = { move-column-to-workspace = 3; };
-          "Mod+Shift+4" = { move-column-to-workspace = 4; };
-          "Mod+Shift+5" = { move-column-to-workspace = 5; };
-          "Mod+Shift+6" = { move-column-to-workspace = 6; };
-          "Mod+Shift+7" = { move-column-to-workspace = 7; };
-          "Mod+Shift+8" = { move-column-to-workspace = 8; };
-          "Mod+Shift+9" = { move-column-to-workspace = 9; };
+          "Mod+Shift+W" = { spawn = [ (toString nameDynamicWorkspace) ]; };
+          "Mod+1" = { focus-workspace = "1"; };
+          "Mod+2" = { focus-workspace = "2"; };
+          "Mod+3" = { focus-workspace = "3"; };
+          "Mod+4" = { focus-workspace = "4"; };
+          "Mod+5" = { focus-workspace = "5"; };
+          "Mod+6" = { focus-workspace = "6"; };
+          "Mod+7" = { focus-workspace = "7"; };
+          "Mod+8" = { focus-workspace = "8"; };
+          "Mod+9" = { focus-workspace = "9"; };
+          "Mod+0" = { focus-workspace = "10"; };
+          "Mod+Shift+1" = { move-column-to-workspace = "1"; };
+          "Mod+Shift+2" = { move-column-to-workspace = "2"; };
+          "Mod+Shift+3" = { move-column-to-workspace = "3"; };
+          "Mod+Shift+4" = { move-column-to-workspace = "4"; };
+          "Mod+Shift+5" = { move-column-to-workspace = "5"; };
+          "Mod+Shift+6" = { move-column-to-workspace = "6"; };
+          "Mod+Shift+7" = { move-column-to-workspace = "7"; };
+          "Mod+Shift+8" = { move-column-to-workspace = "8"; };
+          "Mod+Shift+9" = { move-column-to-workspace = "9"; };
+          "Mod+Shift+0" = { move-column-to-workspace = "10"; };
           "Mod+Shift+Slash" = { show-hotkey-overlay = {}; };
           "Mod+Escape" = { toggle-keyboard-shortcuts-inhibit = {}; };
           "Mod+Shift+E" = { quit = {}; };
@@ -204,8 +198,8 @@ in
         - { key: c, desc: Chrome, cmd: google-chrome-stable }
         - { key: d, desc: Nemo, cmd: nemo }
         - { key: s, desc: Screenshot, cmd: ${noctalia} msg screenshot-region }
-        - { key: m, desc: Music, cmd: gtk-launch feishin.desktop }
-        - { key: n, desc: Dismiss notifications, cmd: makoctl dismiss --all }
+        - { key: m, desc: Music, cmd: dex "$HOME/.nix-profile/share/applications/feishin.desktop" }
+        - { key: n, desc: Dismiss notifications, cmd: ${noctalia} msg notification-clear-active }
         - { key: h, desc: Notification history, cmd: ${noctalia} msg panel-toggle control-center notifications }
         - { key: g, desc: GoldenDict, cmd: goldendict }
     '';
@@ -220,8 +214,10 @@ in
       menu:
         - { key: l, desc: Lock, cmd: ${noctalia} msg session lock }
         - { key: s, desc: Suspend, cmd: systemctl suspend }
-        - { key: r, desc: Reboot, cmd: systemctl reboot }
+        - { key: q, desc: Quit Niri, cmd: niri msg action quit }
+        - { key: r, desc: Reload Niri config, cmd: niri msg action load-config-file }
         - { key: p, desc: Shutdown, cmd: systemctl poweroff }
+        - { key: P, desc: Reboot, cmd: systemctl reboot }
     '';
   };
 }

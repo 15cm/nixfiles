@@ -132,6 +132,7 @@ in
       };
       widget = {
         clock.format = "{:%Y/%m/%d %a %H:%M}";
+        workspaces.label_source = "name";
         cpu = {
           type = "sysmon";
           stat = "cpu_usage";
@@ -194,6 +195,5 @@ in
   my.programs.networkmanager-dmenu.enable = lib.mkForce false;
   my.services.copyq.enable = lib.mkForce false;
   my.services.hyprlock.enable = lib.mkForce false;
-  my.services.mako.enable = lib.mkForce false;
   my.services.network-manager-applet.enable = lib.mkForce false;
 }
