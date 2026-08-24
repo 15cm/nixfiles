@@ -74,6 +74,13 @@ in
         enable_daemon = true;
         show_app_name = true;
         show_actions = true;
+        filters = [
+          {
+            name = "default";
+            match_content = ".*";
+            override_duration = 10000;
+          }
+        ];
       };
       osd.kinds = {
         keyboard_layout = false;
