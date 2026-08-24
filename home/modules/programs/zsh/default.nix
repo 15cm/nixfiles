@@ -90,6 +90,24 @@ in {
           zstyle :omz:plugins:ssh-agent quiet yes
         '')
         (mkOrder 650 (builtins.readFile ./zshrc))
+        (mkAfter ''
+          # Niri's IPC socket contains the compositor PID and changes on restart.
+          if (( $+commands[systemctl] )); then
+            autoload -Uz add-zsh-hook
+            _niri_refresh_socket() {
+              local socket
+              socket="$(systemctl --user show-environment 2>/dev/null |
+                sed -n 's/^NIRI_SOCKET=//p')"
+              if [[ -S "$socket" ]]; then
+                export NIRI_SOCKET="$socket"
+              else
+                unset NIRI_SOCKET
+              fi
+            }
+            add-zsh-hook precmd _niri_refresh_socket
+            _niri_refresh_socket
+          fi
+        '')
       ];
 
       shellAliases = {

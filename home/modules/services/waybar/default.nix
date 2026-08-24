@@ -55,11 +55,11 @@ in {
             ++ optionals (cfg.zfsPoolName != null) [ "custom/zfs" ]
             ++ [ "network" "network#speed" "pulseaudio" ]
             ++ optionals (hostname == "asako") [ "backlight" ];
-          modules-center = [ "hyprland/workspaces" "custom/isMaximized" ];
+          modules-center = [ "niri/workspaces" ];
           modules-right = [ "mpris" ]
             ++ optionals (hostname == "asako") [ "battery" ]
             ++ [ "clock" "tray" ];
-          "wlr/workspaces" = {
+          "niri/workspaces" = {
             format = "{icon}";
             all-outputs = true;
             on-click = "activate";
@@ -140,16 +140,6 @@ in {
             interval = 30;
             min-length = 8;
             max-length = 10;
-          };
-          "custom/isMaximized" = {
-            format = "{}";
-            interval = 1;
-            exec = pkgs.writeShellScript "waybar-custom-is-maximized.sh" ''
-              result=$(hyprctl activewindow -j | jq ". | select(.fullscreen == 1)")
-              if [ -n "$result" ]; then
-                echo "M"
-              fi
-            '';
           };
           "mpris" = {
             "format" = "{player_icon} {dynamic}";

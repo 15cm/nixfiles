@@ -149,7 +149,6 @@ in
   config = mkIf cfg.enable {
     home.sessionVariables = {
       XDG_SESSION_TYPE = "wayland";
-      GDK_BACKEND = "wayland,x11";
       QT_QPA_PLATFORM = "wayland;xcb";
     }
     // cfg.extraSessionVariables;

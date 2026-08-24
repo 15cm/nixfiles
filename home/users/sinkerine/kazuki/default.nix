@@ -21,9 +21,15 @@
       LIBVA_DRIVER_NAME = "nvidia";
       NVD_BACKEND = "direct";
       __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      WLR_NO_HARDWARE_CURSORS = "1";
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
     };
+  };
+
+  home.sessionVariables = {
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    LIBVA_DRIVER_NAME = "nvidia";
+    NVD_BACKEND = "direct";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
   };
 
   wayland.windowManager.hyprland.settings.window_rule = [

@@ -12,8 +12,8 @@ let
     set -eu
 
     set_wallpaper() {
-      output="$(hyprctl monitors -j | ${lib.getExe pkgs.jq} -r --arg output "$1" \
-        '.[] | select(.name == $output or .description == $output) | .name' | head -n 1)"
+      output="$(${lib.getExe pkgs.niri} msg --json outputs | ${lib.getExe pkgs.jq} -r --arg output "$1" \
+        '.[$output] // empty | .name // $output' | head -n 1)"
       if [ -n "$output" ]; then
         ${noctalia} msg wallpaper-set "$output" "$2"
       fi

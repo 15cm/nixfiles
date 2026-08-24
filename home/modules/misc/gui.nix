@@ -28,6 +28,7 @@ in
           musicPlayer = "Feishin";
           musicPlayerDesktopFileName = "feishin.desktop";
         };
+        my.programs.niri.enable = true;
       }
       {
         home.sessionVariables = {
@@ -205,6 +206,7 @@ in
           };
         };
         systemd.user.services.clipper.Unit.After = [
+          "wayland-session@niri-uwsm\\x2duwsm.desktop.target"
           "wayland-session@hyprland\\x2duwsm.desktop.target"
         ];
         my.services.copyq.enable = true;

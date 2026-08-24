@@ -3,6 +3,7 @@
     ./emacs
     ./networkmanager-dmenu.nix
     ./hyprland
+    ./niri
     ./keychain.nix
     ./navi.nix
     ./set-theme

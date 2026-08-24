@@ -23,6 +23,17 @@ in
           enable = true;
         };
       };
+      programs.niri = {
+        enable = true;
+        package = pkgs.niri;
+      };
+      programs.uwsm.waylandCompositors.niri = {
+        prettyName = "Niri";
+        comment = "Niri compositor managed by UWSM";
+        binPath = "/run/current-system/sw/bin/niri";
+        extraArgs = [ "--session" ];
+      };
+      services.displayManager.defaultSession = "niri-uwsm";
     }
     {
       environment.systemPackages = with pkgs; [
