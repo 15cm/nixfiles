@@ -36,10 +36,10 @@ in
         on-button-left=invoke-default-action
 
         [app-name="Orca"]
-        on-button-left=exec makoctl invoke -n "$id" default; makoctl dismiss -n "$id"; hyprctl dispatch focuswindow class:orca
+        on-button-left=invoke-default-action
 
         [app-name="Telegram Desktop"]
-        on-button-left=exec hyprctl dispatch focuswindow class:org.telegram.desktop
+        on-button-left=invoke-default-action
       '';
     };
 
