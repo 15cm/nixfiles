@@ -37,6 +37,10 @@ in {
           local_umask=007
         '';
       };
+
+      security.pam.services.vsftpd = {
+        unixAuth = true;
+      };
     }
     (mkIf cfg.enableSsl {
       sops.secrets = {
