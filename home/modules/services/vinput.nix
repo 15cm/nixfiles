@@ -33,7 +33,7 @@ in
         if cfg.enableStreaming then
           "sha256-RQPa3xvz/G/+Jsi1/VJ6fE2Of8e5p0n2IOH3wSJbK3g="
         else
-          "sha256-Dvf9IlGTsq5gChHBw+tTRzkA/IXIdw2K6pS4v56MC4A=";
+          "sha256-u7XqXkuRb4xL5m8gdS7omOY9zTuexCK1p3YLZToWVaM=";
       asrProviderPath = "${config.home.homeDirectory}/.local/share/vinput/providers/openai-compatible/${asrProvider}";
       pangu = pkgs.python3Packages.buildPythonPackage {
         pname = "pangu";
