@@ -166,6 +166,10 @@ in
           "Mod+Down" = { focus-window-down = {}; };
           "Mod+U" = { focus-workspace-down = {}; };
           "Mod+I" = { focus-workspace-up = {}; };
+          "Mod+Shift+U" = { move-window-to-workspace-down = {}; };
+          "Mod+Shift+I" = { move-window-to-workspace-up = {}; };
+          "Mod+Comma" = { consume-window-into-column = {}; };
+          "Mod+Period" = { expel-window-from-column = {}; };
           "Mod+Shift+W" = { spawn = [ (toString nameDynamicWorkspace) ]; };
           "Mod+1" = { focus-workspace = "1"; };
           "Mod+2" = { focus-workspace = "2"; };
