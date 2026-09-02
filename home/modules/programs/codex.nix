@@ -10,8 +10,8 @@ with lib; let
   orcaSkills = pkgs.fetchFromGitHub {
     owner = "stablyai";
     repo = "orca";
-    rev = "v${pkgs.orca-ide.version}";
-    hash = "sha256-DgHpLT8OSf6vG6dBGekIp78Py8alrCsYnzyGF4KF/qk=";
+    rev = "fa0180dc61a0b1e83ee0aed69555b56a097142aa";
+    hash = "sha256-/VW8gMiYbuMxMfIkzlPxJZpq/qVs8rNfx+Iz5yV8mRc=";
   };
   orcaSkillNames = [
     "computer-use"
@@ -71,8 +71,6 @@ with lib; let
             inherit model;
             model_reasoning_effort = effort;
             plan_mode_reasoning_effort = effort;
-          } // optionalAttrs (modelName == "luna") {
-            service_tier = "priority";
           }))
         reasoningEfforts
     )
@@ -89,8 +87,6 @@ with lib; let
       inherit model;
       model_reasoning_effort = "ultra";
       plan_mode_reasoning_effort = "ultra";
-    } // optionalAttrs (modelName == "luna") {
-      service_tier = "priority";
     }))
   codexModels;
   defaultUltraProfile = {
@@ -173,7 +169,7 @@ in {
     programs.zsh.shellAliases =
       {
         codex = "codex-trusted";
-        cx = "codex-trusted --profile luna-max";
+        cx = "codex-trusted --profile luna-medium";
       }
       // codexProfileAliases;
 
