@@ -24,7 +24,7 @@ with lib;
   my.programs.fontconfig.enable = true;
   my.programs.nvim.enable = true;
   my.programs.vim.enable = true;
-  my.programs.tmux.enable = true;
+  my.programs.herdr.enable = true;
   my.programs.fzf.enable = true;
   my.programs.set-theme.enable = true;
   my.programs.yazi = { enable = true; };

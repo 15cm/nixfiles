@@ -11,7 +11,6 @@
   imports = [ ../common ];
 
   my.profiles.trusted.enable = true;
-
   my.essentials.gui.enable = true;
 
   home.packages = with pkgs; [ pkgsStable.handbrake ];

@@ -11,8 +11,8 @@ in {
       enable = true;
       settings = {
         terminal.shell = {
-          program = "${pkgs.tmux}/bin/tmux";
-          args = [ "new" "-A" "-s" "main" ];
+          program = "${pkgs.herdr}/bin/herdr";
+          args = [ ];
         };
         font = {
           normal = {

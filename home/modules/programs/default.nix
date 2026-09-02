@@ -21,6 +21,7 @@
     ./foot.nix
     ./vim
     ./tmux
+    ./herdr.nix
     ./fzf.nix
     ./powerline
     ./jetbrains

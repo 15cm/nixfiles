@@ -22,7 +22,6 @@ in {
           font = "Sarasa Mono SC Nerd Font:size=${toString cfg.fontSize}";
           dpi-aware = "yes";
           initial-color-theme = theme;
-          shell = "${pkgs.tmux}/bin/tmux new -A -s main";
         };
         mouse = { hide-when-typing = "yes"; };
         colors-dark = {
