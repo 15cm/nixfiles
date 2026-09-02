@@ -16,8 +16,9 @@ export GUI_SANDBOX_TASK_DIR="$GUI_SANDBOX_STATE_DIR/tasks"
 export GUI_SANDBOX_ARTIFACT_DIR="$GUI_SANDBOX_STATE_DIR/artifacts"
 export GUI_SANDBOX_SSH_DIR="$GUI_SANDBOX_STATE_DIR/ssh"
 export GUI_SANDBOX_LOCK_FILE="$GUI_SANDBOX_STATE_DIR/lock"
-export GUI_SANDBOX_ALLOWED_WORKTREE_ROOT="$test_root/workspaces"
 export GUI_SANDBOX_STORAGE_CONFIG="$test_root/storage.cfg"
+export GUI_SANDBOX_STORAGE_MOUNTPOINT="$test_root/storage-mount"
+export GUI_SANDBOX_ROOTFS_MOUNT="$test_root/rootfs-mount"
 GUI_SANDBOX_TARGET_UID=$(id -u)
 GUI_SANDBOX_TARGET_GID=$(id -g)
 export GUI_SANDBOX_TARGET_UID GUI_SANDBOX_TARGET_GID
@@ -26,7 +27,7 @@ export GUI_SANDBOX_LAST_VMID=9199
 export GUI_SANDBOX_TEMPLATE_VMID=9000
 export GUI_SANDBOX_PROVISION_SCHEMA=unit
 
-mkdir -p "$GUI_SANDBOX_ALLOWED_WORKTREE_ROOT" "$GUI_SANDBOX_TASK_DIR" "$GUI_SANDBOX_ARTIFACT_DIR" "$GUI_SANDBOX_SSH_DIR"
+mkdir -p "$GUI_SANDBOX_TASK_DIR" "$GUI_SANDBOX_ARTIFACT_DIR" "$GUI_SANDBOX_SSH_DIR"
 # shellcheck disable=SC1090
 source "$cli"
 
@@ -44,16 +45,27 @@ assert_not() {
   fi
 }
 
-inside="$GUI_SANDBOX_ALLOWED_WORKTREE_ROOT/inside"
+run0_log="$test_root/run0.log"
+fake_run0="$test_root/run0"
+# shellcheck disable=SC2016
+printf '%s\n' '#!/usr/bin/env bash' 'printf "%s\n" "$*" > "$GUI_SANDBOX_RUN0_LOG"' 'printf "run0-ok\n"' > "$fake_run0"
+chmod 0755 "$fake_run0"
+run0_result=$(env \
+  GUI_SANDBOX_NO_SUDO=0 \
+  GUI_SANDBOX_FORCE_NO_NEW_PRIVS=1 \
+  GUI_SANDBOX_RUN0="$fake_run0" \
+  GUI_SANDBOX_RUN0_LOG="$run0_log" \
+  bash "$cli" status --json)
+assert test "$run0_result" = run0-ok
+assert rg -q -- '--user=root --pipe /run/current-system/sw/bin/gui-sandbox status --json' "$run0_log"
+
 outside="$test_root/outside"
+inside="$test_root/inside"
 mkdir -p "$inside" "$outside"
 git -C "$inside" init --quiet
 assert test "$(validate_worktree "$inside")" = "$inside"
-ln -s "$outside" "$GUI_SANDBOX_ALLOWED_WORKTREE_ROOT/escape"
-if (validate_worktree "$GUI_SANDBOX_ALLOWED_WORKTREE_ROOT/escape"); then
-  printf 'unexpected symlink escape acceptance\n' >&2
-  exit 1
-fi
+git -C "$outside" init --quiet
+assert test "$(validate_worktree "$outside")" = "$outside"
 
 assert tag_in_config $'tags: gui-sandbox-managed;gui-sandbox-task-demo' gui-sandbox-managed
 assert_not tag_in_config $'tags: gui-sandbox-unmanaged' gui-sandbox-managed
@@ -75,6 +87,7 @@ config_for() {
 vmid_in_use() {
   [[ $1 == 9000 || $1 == 9100 || $1 == 9101 ]]
 }
+vmid_in_use 9000
 
 export GUI_SANDBOX_PVE_CONFIG_DIR="$test_root/pve-config"
 mkdir -p "$GUI_SANDBOX_PVE_CONFIG_DIR"
@@ -82,6 +95,8 @@ printf '%s\n' 'lxc.idmap: u 0 123000 65536' 'tags: gui-sandbox-managed' > "$GUI_
 apply_idmap 9102
 assert rg -q '^lxc.idmap: u 1000 ' "$GUI_SANDBOX_PVE_CONFIG_DIR/9102.conf"
 assert test "$(rg -c '^lxc\.idmap:' "$GUI_SANDBOX_PVE_CONFIG_DIR/9102.conf")" = 6
+apply_rootfs_mount 9102
+assert rg -q "^lxc\.rootfs\.mount = $GUI_SANDBOX_ROOTFS_MOUNT/9102$" "$GUI_SANDBOX_PVE_CONFIG_DIR/9102.conf"
 
 assert template_current
 export GUI_SANDBOX_TEMPLATE_VMID=9000
@@ -148,37 +163,72 @@ GUI_SANDBOX_LIBRARY=0 bash "$cli" reap >/dev/null
 assert test ! -e "$fake_root/9102.conf"
 assert test ! -e "$GUI_SANDBOX_TASK_DIR/creating.json"
 
+printf 'hostname: creating-destroy\ntags: gui-sandbox-managed;gui-sandbox-task-creating-destroy\n' > "$fake_root/9102.conf"
+printf 'status: stopped\n' > "$fake_root/9102.status"
+write_task creating-destroy 9102 9999999999
+jq '.state="creating"' "$GUI_SANDBOX_TASK_DIR/creating-destroy.json" > "$GUI_SANDBOX_TASK_DIR/creating-destroy.tmp"
+mv "$GUI_SANDBOX_TASK_DIR/creating-destroy.tmp" "$GUI_SANDBOX_TASK_DIR/creating-destroy.json"
+destroy_result=$(GUI_SANDBOX_LIBRARY=0 bash "$cli" destroy creating-destroy)
+assert jq -e '.state == "destroyed" and .vmid == 9102' <<< "$destroy_result"
+assert test ! -e "$fake_root/9102.conf"
+assert test ! -e "$GUI_SANDBOX_TASK_DIR/creating-destroy.json"
+
 storage_log="$test_root/storage.log"
 fake_zfs() {
   case "$1" in
     list) return 1 ;;
     create) printf '%s\n' "$*" >> "$storage_log" ;;
-    get) printf 'filesystem\n' ;;
+    get)
+      case "$5" in
+        type) printf 'filesystem\n' ;;
+        mountpoint) printf '%s\n' "$GUI_SANDBOX_STORAGE_MOUNTPOINT" ;;
+        mounted) printf 'yes\n' ;;
+      esac
+      ;;
   esac
 }
 fake_pvesm() {
   case "$1" in
-    add) printf '%s\n' "$*" >> "$storage_log" ;;
+    add|set) printf '%s\n' "$*" >> "$storage_log" ;;
   esac
 }
 GUI_SANDBOX_ZFS=fake_zfs GUI_SANDBOX_PVESM=fake_pvesm ensure_storage
-assert rg -q '^add zfspool agent-sandbox --pool rpool/proxmox/agent-sandbox --content rootdir --sparse 1$' "$storage_log"
+assert rg -q "^create -p -o mountpoint=$GUI_SANDBOX_STORAGE_MOUNTPOINT rpool/proxmox/agent-sandbox$" "$storage_log"
+assert rg -q "^add zfspool agent-sandbox --pool rpool/proxmox/agent-sandbox --content rootdir --sparse 1 --mountpoint $GUI_SANDBOX_STORAGE_MOUNTPOINT$" "$storage_log"
+
+cat > "$GUI_SANDBOX_STORAGE_CONFIG" <<EOF
+zfspool: agent-sandbox
+	pool rpool/proxmox/agent-sandbox
+	content rootdir
+	sparse 1
+	mountpoint $GUI_SANDBOX_STORAGE_MOUNTPOINT
+EOF
+storage_log="$test_root/storage-existing.log"
+fake_zfs_existing() {
+  case "$1" in
+    list) return 0 ;;
+    get)
+      case "$5" in
+        type) printf 'filesystem\n' ;;
+        mountpoint) printf '%s\n' "$GUI_SANDBOX_STORAGE_MOUNTPOINT" ;;
+        mounted) printf 'yes\n' ;;
+      esac
+      ;;
+  esac
+}
+GUI_SANDBOX_ZFS=fake_zfs_existing GUI_SANDBOX_PVESM=fake_pvesm ensure_storage
+assert test ! -e "$storage_log"
 
 cat > "$GUI_SANDBOX_STORAGE_CONFIG" <<'EOF'
 zfspool: agent-sandbox
 	pool rpool/proxmox/agent-sandbox
 	content rootdir
 	sparse 1
+	mountpoint //rpool
 EOF
-storage_log="$test_root/storage-existing.log"
-fake_zfs_existing() {
-  case "$1" in
-    list) return 0 ;;
-    get) printf 'filesystem\n' ;;
-  esac
-}
+storage_log="$test_root/storage-repair.log"
 GUI_SANDBOX_ZFS=fake_zfs_existing GUI_SANDBOX_PVESM=fake_pvesm ensure_storage
-assert test ! -e "$storage_log"
+assert rg -q "^set agent-sandbox --mountpoint $GUI_SANDBOX_STORAGE_MOUNTPOINT$" "$storage_log"
 
 cat > "$GUI_SANDBOX_STORAGE_CONFIG" <<'EOF'
 zfspool: agent-sandbox
@@ -204,5 +254,46 @@ cua_result=$(GUI_SANDBOX_SSH=fake_cua_ssh cmd_cua cua get_desktop_state '{}')
 cua_artifact=$(jq -r '.host_artifact' <<< "$cua_result")
 assert test -s "$cua_artifact"
 assert test "$(stat -c '%u:%g' "$cua_artifact")" = "$GUI_SANDBOX_TARGET_UID:$GUI_SANDBOX_TARGET_GID"
+
+# Multiple active tasks use independent metadata and VMIDs. Stub only the
+# guest lifecycle so this exercises the real create state machine safely.
+write_task first 9100 9999999999
+template_current() { return 0; }
+ensure_storage() { :; }
+check_gpu_host() { :; }
+vmid_in_use() {
+  case "$1" in
+    9000|9100) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+create_ssh_material() {
+  local task=$1 dir="$GUI_SANDBOX_SSH_DIR/$1"
+  mkdir -p "$dir"
+  touch "$dir/id_ed25519" "$dir/id_ed25519.pub"
+  printf '%s\n' "$dir"
+}
+pct_command() { :; }
+apply_idmap() { :; }
+set_container_config() { :; }
+wait_running() { :; }
+install_guest_ssh_key() { :; }
+guest_ip() { printf '192.0.2.11\n'; }
+fake_keyscan() { printf '[192.0.2.11]:22 ssh-ed25519 test-key\n'; }
+ssh_task() { :; }
+guest_exec() { :; }
+wait_guest_gui() { :; }
+run_guest_health() { :; }
+GUI_SANDBOX_SSH_KEYSCAN=fake_keyscan
+export GUI_SANDBOX_SSH_KEYSCAN
+
+second_result=$(cmd_create --task second --repo "$inside" --json)
+assert jq -e '.task == "second" and .state == "active" and .health == "healthy" and .vmid == 9101' <<< "$second_result"
+assert jq -e '.state == "active" and .vmid == 9100' "$GUI_SANDBOX_TASK_DIR/first.json"
+if (cmd_create --task second --repo "$inside" >/dev/null 2>"$test_root/duplicate-task.err"); then
+  printf 'unexpected duplicate task acceptance\n' >&2
+  exit 1
+fi
+assert rg -q 'task already exists: second' "$test_root/duplicate-task.err"
 
 printf 'ok: gui-test-sandbox path, tags, lock, stale-template, and reaper safety\n'

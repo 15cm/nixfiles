@@ -12,6 +12,75 @@ with lib;
 let
   cfg = config.my.services.proxmox;
   inherit (mylib) assertNotNull;
+  pvePerl = lib.head (
+    lib.splitString " " (
+      lib.removePrefix "#!"
+        (lib.head (lib.splitString "\n" (builtins.readFile "${pkgs.pve-ha-manager}/bin/.pct-wrapped")))
+    )
+  );
+  pvePerlEnv = builtins.dirOf (builtins.dirOf pvePerl);
+  pveHookCompat = hook:
+    pkgs.writeShellApplication {
+      name = "${hook}-compat";
+      text = ''
+        exec ${pvePerl} \
+          -I${pvePerlEnv}/lib/perl5/site_perl \
+          -I${pvePerlEnv}/lib/perl5/site_perl/5.40.0 \
+          -I${pkgs.pve-ha-manager}/lib/perl5/site_perl \
+          -I${pkgs.pve-ha-manager}/lib/perl5/site_perl/5.40.0 \
+          -I${pkgs.pve-rados2}/lib/perl5/site_perl \
+          -I${pkgs.pve-rados2}/lib/perl5/site_perl/5.40.0 \
+          -e 'my ($path) = ($ENV{PATH} =~ /^(.*)$/); $ENV{PATH} = $path; require PVE::Tools; my $read = \&PVE::Tools::file_get_contents; no warnings "redefine"; *PVE::Tools::file_get_contents = sub { my ($path, @rest) = @_; $path = "${pkgs.lxc}/share/lxc/config/common.seccomp" if $path eq "${pkgs.pve-container}/share/lxc/config/common.seccomp"; return $read->($path, @rest); }; my $script = shift @ARGV; ($script) = ($script =~ /^(.*)$/); do $script; die $@ if $@;' \
+          ${pkgs.pve-container}/share/lxc/hooks/${hook} "$@"
+      '';
+    };
+  pvePrestartHookCompat = pveHookCompat "lxc-pve-prestart-hook";
+  pveAutodevHookCompat = pveHookCompat "lxc-pve-autodev-hook";
+  pvePoststopHookCompat = pveHookCompat "lxc-pve-poststop-hook";
+  pveLxcCommonConfig = pkgs.writeText "pve-lxc-common.conf" ''
+    lxc.include = ${pkgs.lxc}/share/lxc/config/common.conf
+    lxc.hook.pre-start = ${pvePrestartHookCompat}/bin/lxc-pve-prestart-hook-compat
+    lxc.hook.autodev = ${pveAutodevHookCompat}/bin/lxc-pve-autodev-hook-compat
+    lxc.hook.post-stop = ${pvePoststopHookCompat}/bin/lxc-pve-poststop-hook-compat
+  '';
+  pveLxcUsernsConfig = pkgs.writeText "pve-lxc-userns.conf" ''
+    lxc.include = ${pkgs.lxc}/share/lxc/config/userns.conf
+    lxc.include = ${pkgs.pve-container}/share/lxc/config/userns.conf.d/
+  '';
+  lxcConfigPathCompat = pkgs.writeShellApplication {
+    name = "proxmox-lxc-config-path-compat";
+    runtimeInputs = [ pkgs.coreutils pkgs.diffutils pkgs.gnused ];
+    text = ''
+      set -euo pipefail
+
+      vmid=''${1:?missing VMID}
+      config="/var/lib/lxc/$vmid/config"
+      [[ -f $config ]] || exit 0
+      sandbox_rootfs=0
+      if [[ -r /etc/pve/lxc/$vmid.conf ]] && grep -Fq 'lxc.rootfs.mount = /run/gui-test-sandbox/rootfs/' "/etc/pve/lxc/$vmid.conf"; then
+        sandbox_rootfs=1
+      fi
+
+      tmp=$(mktemp "$config.XXXXXX")
+      trap 'rm -f -- "$tmp"' EXIT
+      sed -E \
+        -e 's#^(lxc\.include = )[^[:space:]]+/share/lxc/config/common\.conf$#\1${pveLxcCommonConfig}#' \
+        -e 's#^(lxc\.include = )[^[:space:]]+/share/lxc/config/userns\.conf$#\1${pveLxcUsernsConfig}#' \
+        -e 's#^(lxc\.include = )[^[:space:]]+/share/lxc/config/(nesting\.conf|oci\.common\.conf)$#\1${pkgs.lxc}/share/lxc/config/\2#' \
+        "$config" > "$tmp"
+      if ((sandbox_rootfs)); then
+        sed -i -E '/^lxc\.rootfs\.options[[:space:]]*=/d' "$tmp"
+        printf 'lxc.rootfs.options = rw\n' >> "$tmp"
+      fi
+      if cmp -s "$config" "$tmp"; then
+        exit 0
+      fi
+      chmod --reference="$config" "$tmp"
+      chown --reference="$config" "$tmp"
+      mv -f -- "$tmp" "$config"
+      trap - EXIT
+    '';
+  };
   pveFakeSubscriptionSrc = pkgs.fetchFromGitHub {
     owner = "Jamesits";
     repo = "pve-fake-subscription";
@@ -97,18 +166,65 @@ in
               outputHash = "sha256-aCXlDuKYp8PZ4hVmRfyzqUwEWcDDHowI88eY/5a4pRY=";
             });
           });
-          # pct is copied with -T, which suppresses the Nix Perl module path.
-          pve-ha-manager = prev.pve-ha-manager.overrideAttrs (old: {
-            postFixup = (old.postFixup or "") + ''
-              sed -i '1s/ -T//' "$out/bin/.pct-wrapped"
-            '';
-          });
         })
       ];
 
       services.proxmox-ve = {
         enable = true;
         inherit (cfg) ipAddress bridges openFirewall;
+      };
+
+      # LXC invokes Proxmox hooks directly; provide their FHS paths.
+      system.activationScripts.proxmoxPerlInterpreter = ''
+        install -d -m 0755 /usr/bin
+        install -d -m 0755 /sbin
+        ln -sfn ${pvePerl} /usr/bin/perl
+        ln -sfn ${pkgs.iproute2}/bin/ip /sbin/ip
+      '';
+
+      # The unprivileged PVE LXC network helper reads this allowlist.
+      environment.etc."lxc/lxc-usernet".text = concatMapStrings (bridge: "root veth ${bridge} 10\n") cfg.bridges;
+
+      # pct invokes lxc-usernsexec by name while extracting and starting CTs.
+      environment.systemPackages = [ pkgs.lxc ];
+
+      security.wrappers.lxc-user-nic = {
+        source = "${pkgs.lxc}/libexec/lxc/lxc-user-nic";
+        owner = "root";
+        group = "root";
+        setuid = true;
+      };
+
+      systemd.services."pve-container@" = {
+        description = "PVE LXC Container: %i";
+        after = [ "lxc.service" ];
+        wants = [ "lxc.service" ];
+        path = [
+          pkgs.iproute2
+          pkgs.binutils
+          pkgs.lxc
+          pkgs.pve-container
+          pkgs.util-linux
+          pkgs.zfs
+        ];
+
+        unitConfig = {
+          DefaultDependencies = false;
+          Documentation = "man:lxc-start man:lxc man:pct";
+        };
+
+        serviceConfig = {
+          Type = "simple";
+          Delegate = true;
+          KillMode = "mixed";
+          TimeoutStopSec = 120;
+          ExecStartPre = "${lib.getExe lxcConfigPathCompat} %i";
+          ExecStart = "${pkgs.lxc}/bin/lxc-start -F -l DEBUG -o /run/pve/lxc-%i.log -n %i";
+          ExecStop = "${pkgs.pve-container}/share/lxc/pve-container-stop-wrapper %i";
+          ExecStopPost = "${pkgs.coreutils}/bin/chmod 0644 /run/pve/lxc-%i.log";
+          StandardOutput = "journal";
+          StandardError = "file:/run/pve/ct-%i.stderr";
+        };
       };
 
       virtualisation.libvirtd = {

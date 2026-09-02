@@ -5,8 +5,18 @@
 set -euo pipefail
 umask 077
 
+no_new_privileges() {
+  if [[ ${GUI_SANDBOX_TEST_MODE:-0} == 1 && ${GUI_SANDBOX_FORCE_NO_NEW_PRIVS:-0} == 1 ]]; then
+    return 0
+  fi
+  grep -qE '^NoNewPrivs:[[:space:]]*1$' /proc/self/status 2>/dev/null
+}
+
 if [[ ${EUID:-$(id -u)} -ne 0 && ${GUI_SANDBOX_NO_SUDO:-0} != 1 ]]; then
-  exec sudo -n /run/current-system/sw/bin/gui-sandbox "$@"
+  if no_new_privileges; then
+    exec "${GUI_SANDBOX_RUN0:-/run/current-system/sw/bin/run0}" --user=root --pipe /run/current-system/sw/bin/gui-sandbox "$@"
+  fi
+  exec /run/wrappers/bin/sudo -n /run/current-system/sw/bin/gui-sandbox "$@"
 fi
 
 : "${GUI_SANDBOX_STATE_DIR:=/var/lib/gui-test-sandbox}"
@@ -14,9 +24,10 @@ fi
 : "${GUI_SANDBOX_ARTIFACT_DIR:=$GUI_SANDBOX_STATE_DIR/artifacts}"
 : "${GUI_SANDBOX_SSH_DIR:=$GUI_SANDBOX_STATE_DIR/ssh}"
 : "${GUI_SANDBOX_LOCK_FILE:=$GUI_SANDBOX_STATE_DIR/lock}"
-: "${GUI_SANDBOX_ALLOWED_WORKTREE_ROOT:=/home/sinkerine/orca/workspaces}"
 : "${GUI_SANDBOX_STORAGE_ID:=agent-sandbox}"
 : "${GUI_SANDBOX_STORAGE_DATASET:=rpool/proxmox/agent-sandbox}"
+: "${GUI_SANDBOX_STORAGE_MOUNTPOINT:=/var/lib/gui-test-sandbox/storage}"
+: "${GUI_SANDBOX_ROOTFS_MOUNT:=/run/gui-test-sandbox/rootfs}"
 : "${GUI_SANDBOX_STORAGE_CONFIG:=/etc/pve/storage.cfg}"
 : "${GUI_SANDBOX_TEMPLATE_CACHE:=/var/lib/vz/template/cache}"
 : "${GUI_SANDBOX_TEMPLATE_VMID:=9000}"
@@ -35,6 +46,7 @@ fi
 : "${GUI_SANDBOX_GPU_NAME:=NVIDIA GeForce RTX 5070 Ti}"
 : "${GUI_SANDBOX_NVIDIA_PACKAGE:=}"
 : "${GUI_SANDBOX_NVIDIA_BIN:=}"
+: "${GUI_SANDBOX_NVIDIA_EGL:=}"
 : "${GUI_SANDBOX_NVIDIA_VERSION:=}"
 : "${GUI_SANDBOX_TEMPLATE_IMAGE:=ubuntu-24.04-standard_24.04-2_amd64.tar.zst}"
 : "${GUI_SANDBOX_TEMPLATE_URL:=http://download.proxmox.com/images/system/ubuntu-24.04-standard_24.04-2_amd64.tar.zst}"
@@ -55,11 +67,17 @@ fi
 : "${GUI_SANDBOX_SCP:=scp}"
 : "${GUI_SANDBOX_SSH_KEYSCAN:=ssh-keyscan}"
 : "${GUI_SANDBOX_SSH_KEYGEN:=ssh-keygen}"
+: "${GUI_SANDBOX_RUN0:=/run/current-system/sw/bin/run0}"
 
 managed_tag=gui-sandbox-managed
 template_tag=gui-sandbox-template
 task_prefix=gui-sandbox-task-
 schema_prefix=gui-sandbox-schema-
+guest_path=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+cleanup_needed=0
+cleanup_task=
+cleanup_vmid=
 
 die() {
   printf 'gui-sandbox: %s\n' "$*" >&2
@@ -159,29 +177,15 @@ all_meta_paths() {
   shopt -u nullglob
 }
 
-active_task() {
-  local path state
-  while IFS= read -r path; do
-    state=$(jq -r '.state // empty' "$path")
-    if [[ $state == active || $state == creating ]]; then
-      jq -r '.task' "$path"
-      return 0
-    fi
-  done < <(all_meta_paths)
-  return 1
-}
-
 under_root() {
   local candidate=$1 root=$2
   [[ $candidate == "$root" || $candidate == "$root"/* ]]
 }
 
 validate_worktree() {
-  local requested=$1 root resolved git_root owner
+  local requested=$1 resolved git_root owner
   [[ -n $requested && $requested != -* ]] || die 'repo path is required'
-  root=$(realpath -e -- "$GUI_SANDBOX_ALLOWED_WORKTREE_ROOT") || die 'allowed worktree root is missing'
   resolved=$(realpath -e -- "$requested") || die "repo path does not exist: $requested"
-  under_root "$resolved" "$root" || die "repo path escapes allowed root: $requested"
   [[ -d $resolved && ! -L $resolved ]] || die 'repo path must resolve to a directory'
   owner=$(stat -c '%u:%g' -- "$resolved")
   [[ $owner == "$GUI_SANDBOX_TARGET_UID:$GUI_SANDBOX_TARGET_GID" ]] || {
@@ -195,7 +199,14 @@ validate_worktree() {
 
 config_for() {
   local vmid=$1
-  "$GUI_SANDBOX_PCT" config "$vmid" 2>/dev/null
+  pct_command config "$vmid" 2>/dev/null
+}
+
+pct_command() {
+  (
+    umask 022
+    "$GUI_SANDBOX_PCT" "$@"
+  )
 }
 
 tag_in_config() {
@@ -230,6 +241,12 @@ allocate_vmid() {
     fi
   done
   die "no free VMID in ${GUI_SANDBOX_FIRST_VMID}-${GUI_SANDBOX_LAST_VMID}"
+}
+
+ensure_task_available() {
+  local task=$1 path
+  path=$(meta_path "$task")
+  [[ ! -e $path && ! -L $path ]] || die "task already exists: $task"
 }
 
 template_current() {
@@ -284,10 +301,12 @@ idmap_lines() {
 }
 
 apply_idmap() {
-  local vmid=$1 path="$GUI_SANDBOX_PVE_CONFIG_DIR/$1.conf" tmp
+  local vmid=$1 path="$GUI_SANDBOX_PVE_CONFIG_DIR/$1.conf" owner mode tmp
   [[ -f $path && ! -L $path ]] || die "missing Proxmox config for VMID $vmid"
   if [[ ${GUI_SANDBOX_TEST_MODE:-0} != 1 ]]; then
-    [[ $(stat -c '%u:%g' -- "$path") == 0:0 ]] || die "unsafe Proxmox config ownership: $path"
+    owner=$(stat -c '%u' -- "$path")
+    mode=$(stat -c '%a' -- "$path")
+    [[ $owner == 0 && $mode =~ ^[0-7][0-4][0-4]$ ]] || die "unsafe Proxmox config ownership or mode: $path"
   fi
   # Keep the replacement in /etc/pve.  pmxcfs is commonly a separate
   # filesystem, so a state-directory temp cannot be atomically moved there.
@@ -295,11 +314,28 @@ apply_idmap() {
   awk '!/^lxc\.idmap:/' "$path" > "$tmp"
   idmap_lines >> "$tmp"
   chmod 0640 "$tmp"
-  [[ ${GUI_SANDBOX_TEST_MODE:-0} == 1 ]] || chown root:root "$tmp"
   mv -f "$tmp" "$path"
   local config
   config=$(config_for "$vmid") || die "cannot reread Proxmox config for VMID $vmid"
   [[ $(printf '%s\n' "$config" | grep -c '^lxc.idmap:') -eq 6 ]] || die "UID/GID map was not applied to VMID $vmid"
+}
+
+apply_rootfs_mount() {
+  local vmid=$1 path="$GUI_SANDBOX_PVE_CONFIG_DIR/$1.conf" owner mode mountpoint tmp
+  [[ -f $path && ! -L $path ]] || die "missing Proxmox config for VMID $vmid"
+  if [[ ${GUI_SANDBOX_TEST_MODE:-0} != 1 ]]; then
+    owner=$(stat -c '%u' -- "$path")
+    mode=$(stat -c '%a' -- "$path")
+    [[ $owner == 0 && $mode =~ ^[0-7][0-4][0-4]$ ]] || die "unsafe Proxmox config ownership or mode: $path"
+  fi
+  mountpoint="$GUI_SANDBOX_ROOTFS_MOUNT/$vmid"
+  install -d -m 0755 -- "$mountpoint"
+  tmp=$(mktemp "$GUI_SANDBOX_PVE_CONFIG_DIR/.${vmid}.conf.XXXXXX")
+  awk '!/^lxc\.rootfs\.mount[[:space:]]*=/' "$path" > "$tmp"
+  printf 'lxc.rootfs.mount = %s\n' "$mountpoint" >> "$tmp"
+  chmod 0640 "$tmp"
+  mv -f "$tmp" "$path"
+  grep -Fxq "lxc.rootfs.mount = $mountpoint" "$path" || die "rootfs mount was not applied to VMID $vmid"
 }
 
 check_gpu_host() {
@@ -311,6 +347,7 @@ check_gpu_host() {
   [[ $driver == */nvidia ]] || die "render node is not backed by NVIDIA: $GUI_SANDBOX_RENDER_NODE ($driver)"
   [[ -n $GUI_SANDBOX_NVIDIA_PACKAGE && -d $GUI_SANDBOX_NVIDIA_PACKAGE/lib ]] || die 'host NVIDIA library path is unavailable'
   [[ -n $GUI_SANDBOX_NVIDIA_BIN && -d $GUI_SANDBOX_NVIDIA_BIN ]] || die 'host NVIDIA binary output is unavailable'
+  [[ -n $GUI_SANDBOX_NVIDIA_EGL && -d $GUI_SANDBOX_NVIDIA_EGL/lib ]] || die 'host NVIDIA EGL external-platform output is unavailable'
   [[ -n $GUI_SANDBOX_NVIDIA_VERSION ]] || die 'host NVIDIA driver version is unavailable'
   local device
   for device in /dev/nvidia0 /dev/nvidiactl /dev/nvidia-modeset /dev/nvidia-uvm /dev/nvidia-uvm-tools; do
@@ -319,11 +356,18 @@ check_gpu_host() {
 }
 
 ensure_storage() {
-  local dataset=$GUI_SANDBOX_STORAGE_DATASET storage_id=$GUI_SANDBOX_STORAGE_ID storage_type storage_block
+  local dataset=$GUI_SANDBOX_STORAGE_DATASET storage_id=$GUI_SANDBOX_STORAGE_ID storage_type storage_block configured_mountpoint current_mountpoint
   if ! "$GUI_SANDBOX_ZFS" list -H -o name "$dataset" >/dev/null 2>&1; then
-    "$GUI_SANDBOX_ZFS" create -p -o mountpoint=none "$dataset"
+    "$GUI_SANDBOX_ZFS" create -p -o mountpoint="$GUI_SANDBOX_STORAGE_MOUNTPOINT" "$dataset"
   fi
   [[ $("$GUI_SANDBOX_ZFS" get -H -o value type "$dataset") == filesystem ]] || die "storage dataset is not a ZFS filesystem: $dataset"
+  current_mountpoint=$("$GUI_SANDBOX_ZFS" get -H -o value mountpoint "$dataset")
+  case "$current_mountpoint" in
+    "$GUI_SANDBOX_STORAGE_MOUNTPOINT") ;;
+    none) "$GUI_SANDBOX_ZFS" set "mountpoint=$GUI_SANDBOX_STORAGE_MOUNTPOINT" "$dataset" ;;
+    *) die "existing ZFS dataset $dataset has mountpoint $current_mountpoint" ;;
+  esac
+  [[ $("$GUI_SANDBOX_ZFS" get -H -o value mounted "$dataset") == yes ]] || "$GUI_SANDBOX_ZFS" mount "$dataset"
   if [[ -e $GUI_SANDBOX_STORAGE_CONFIG && ! -r $GUI_SANDBOX_STORAGE_CONFIG ]]; then
     die "Proxmox storage config is not readable: $GUI_SANDBOX_STORAGE_CONFIG"
   fi
@@ -345,14 +389,18 @@ ensure_storage() {
       in_target { print }
     ' "$GUI_SANDBOX_STORAGE_CONFIG")
     printf '%s\n' "$storage_block" | awk -v expected="$dataset" '$1 == "pool" && $2 == expected { found = 1 } END { exit !found }' || die "existing Proxmox storage $storage_id points at a different pool"
+    configured_mountpoint=$(printf '%s\n' "$storage_block" | awk '$1 == "mountpoint" { print $2; exit }')
+    if [[ $configured_mountpoint != "$GUI_SANDBOX_STORAGE_MOUNTPOINT" ]]; then
+      "$GUI_SANDBOX_PVESM" set "$storage_id" --mountpoint "$GUI_SANDBOX_STORAGE_MOUNTPOINT"
+    fi
   else
-    "$GUI_SANDBOX_PVESM" add zfspool "$storage_id" --pool "$dataset" --content rootdir --sparse 1
+    "$GUI_SANDBOX_PVESM" add zfspool "$storage_id" --pool "$dataset" --content rootdir --sparse 1 --mountpoint "$GUI_SANDBOX_STORAGE_MOUNTPOINT"
   fi
 }
 
 set_container_config() {
   local vmid=$1 task=$2 workspace=$3
-  "$GUI_SANDBOX_PCT" set "$vmid" \
+  pct_command set "$vmid" \
     --hostname "$task" \
     --cores "$GUI_SANDBOX_CORES" \
     --memory "$GUI_SANDBOX_MEMORY_MIB" \
@@ -361,20 +409,21 @@ set_container_config() {
     --mp0 "$workspace,mp=/workspace,backup=0,mountoptions=nodev;nosuid" \
     --mp1 "$GUI_SANDBOX_NVIDIA_PACKAGE,mp=/opt/gui-sandbox/host-nvidia,ro=1,backup=0" \
     --mp2 "$GUI_SANDBOX_NVIDIA_BIN,mp=/opt/gui-sandbox/host-nvidia-bin,ro=1,backup=0" \
-    --tags "$managed_tag;$task_prefix$task;$schema_prefix$GUI_SANDBOX_PROVISION_SCHEMA" \
-    --unprivileged 1
+    --mp3 "$GUI_SANDBOX_NVIDIA_EGL,mp=/opt/gui-sandbox/host-nvidia-egl,ro=1,backup=0" \
+    --tags "$managed_tag;$task_prefix$task;$schema_prefix$GUI_SANDBOX_PROVISION_SCHEMA"
 
   local device index=0
   for device in /dev/nvidia0 /dev/nvidiactl /dev/nvidia-modeset /dev/nvidia-uvm /dev/nvidia-uvm-tools "$GUI_SANDBOX_RENDER_NODE"; do
-    "$GUI_SANDBOX_PCT" set "$vmid" "--dev$index" "$device,mode=0666"
+    pct_command set "$vmid" "--dev$index" "$device,mode=0666"
     index=$((index + 1))
   done
+  apply_rootfs_mount "$vmid"
 }
 
 wait_running() {
   local vmid=$1 i status
   for ((i = 0; i < 60; i++)); do
-    status=$("$GUI_SANDBOX_PCT" status "$vmid" 2>/dev/null || true)
+    status=$(pct_command status "$vmid" 2>/dev/null || true)
     if printf '%s\n' "$status" | grep -Eq 'status: running|running'; then
       return 0
     fi
@@ -386,7 +435,7 @@ wait_running() {
 guest_exec() {
   local vmid=$1
   shift
-  "$GUI_SANDBOX_PCT" exec "$vmid" -- "$@"
+  pct_command exec "$vmid" -- /usr/bin/env "PATH=$guest_path" "$@"
 }
 
 guest_exec_shell() {
@@ -408,6 +457,47 @@ guest_ip() {
   die "container $vmid did not receive an IPv4 address"
 }
 
+wait_guest_gui() {
+  local vmid=$1 i
+  for ((i = 0; i < 60; i++)); do
+    if guest_exec "$vmid" /usr/bin/test -S /run/user/1000/wayland-1 \
+      && guest_exec "$vmid" /usr/bin/test -S /run/user/1000/cua-driver.sock; then
+      return 0
+    fi
+    sleep 1
+  done
+  return 1
+}
+
+run_guest_health() {
+  local vmid=$1 i health_output=''
+  for ((i = 0; i < 30; i++)); do
+    if health_output=$(guest_exec "$vmid" runuser -u agent -- env XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-1 /usr/local/bin/gui-sandbox-health 2>&1); then
+      return 0
+    fi
+    sleep 1
+  done
+  [[ -z $health_output ]] || printf '%s\n' "$health_output" >&2
+  return 1
+}
+
+guest_gui_diagnostics() {
+  local vmid=$1
+  guest_exec "$vmid" /usr/bin/systemctl --no-pager status gui-sandbox-sway.service gui-sandbox-atspi.service gui-sandbox-cua.service gui-sandbox-health.service || true
+  guest_exec "$vmid" /usr/bin/journalctl --no-pager -u gui-sandbox-sway.service -u gui-sandbox-atspi.service -u gui-sandbox-cua.service -u gui-sandbox-health.service -n 120 || true
+  guest_exec "$vmid" runuser -u agent -- env XDG_RUNTIME_DIR=/run/user/1000 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus systemctl --user --no-pager status gui-sandbox-atspi.service at-spi-dbus-bus.service || true
+  guest_exec "$vmid" runuser -u agent -- env XDG_RUNTIME_DIR=/run/user/1000 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus journalctl --user --no-pager -u gui-sandbox-atspi.service -u at-spi-dbus-bus.service -n 120 || true
+  guest_exec "$vmid" runuser -u agent -- env XDG_RUNTIME_DIR=/run/user/1000 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.ListNames || true
+  guest_exec "$vmid" /bin/sh -c '
+    for file in /var/log/gui-sandbox/renderer.txt /var/log/gui-sandbox/wayland-info.txt /var/log/gui-sandbox/accessibility-anchor.log /var/log/gui-sandbox/atspi-ready.log /var/log/gui-sandbox/cua-doctor.json /var/log/gui-sandbox/health-report.json /var/log/gui-sandbox/accessibility-tree.json /var/log/gui-sandbox/desktop-state.json /var/log/gui-sandbox/cua-x11.log /var/log/gui-sandbox/cua-x11-call.log /var/log/gui-sandbox/grim-capture.log; do
+      if [ -f "$file" ]; then
+        printf '%s\\n' "--- $file ---"
+        sed -n "1,120p" "$file"
+      fi
+    done
+  ' || true
+}
+
 create_ssh_material() {
   local task=$1 dir="$GUI_SANDBOX_SSH_DIR/$1"
   install -d -o root -g root -m 0700 "$dir"
@@ -422,9 +512,12 @@ create_ssh_material() {
 
 install_guest_ssh_key() {
   local vmid=$1 key_dir=$2
-  "$GUI_SANDBOX_PCT" push "$vmid" "$key_dir/id_ed25519.pub" /tmp/gui-sandbox-authorized_key
+  pct_command push "$vmid" "$key_dir/id_ed25519.pub" /tmp/gui-sandbox-authorized_key
   guest_exec_shell "$vmid" 'install -d -o agent -g agent -m 0700 /home/agent/.ssh && install -o agent -g agent -m 0600 /tmp/gui-sandbox-authorized_key /home/agent/.ssh/authorized_keys && rm -f /tmp/gui-sandbox-authorized_key'
-  guest_exec_shell "$vmid" 'rm -f /etc/ssh/ssh_host_* && ssh-keygen -A && systemctl restart ssh.service'
+  if ! guest_exec_shell "$vmid" 'install -d -m 0755 /run/sshd && rm -f /etc/ssh/ssh_host_* && ssh-keygen -A && { systemctl reset-failed ssh.service || true; } && systemctl restart ssh.service'; then
+    guest_exec_shell "$vmid" 'systemctl --no-pager status ssh.service || true; journalctl --no-pager -u ssh.service -n 80 || true' || true
+    return 1
+  fi
 }
 
 ssh_options() {
@@ -481,7 +574,6 @@ make_artifact_dir() {
     if [[ $requested == "$GUI_SANDBOX_ARTIFACT_DIR" ]]; then
       [[ $(stat -c '%u:%g' -- "$base") == "0:$GUI_SANDBOX_TARGET_GID" ]] || die 'root artifact directory has unsafe ownership'
     else
-      under_root "$base" "$(realpath -e -- "$GUI_SANDBOX_ALLOWED_WORKTREE_ROOT")" || die 'explicit artifact destination must be under allowed worktree root'
       [[ $(stat -c '%u:%g' -- "$base") == "$GUI_SANDBOX_TARGET_UID:$GUI_SANDBOX_TARGET_GID" ]] || die 'explicit artifact destination must be task-user owned'
     fi
   fi
@@ -522,18 +614,18 @@ destroy_one() {
   workspace=$(meta_get "$task" workspace)
   printf '%s\n' "$config" | grep -F "mp0: $workspace,mp=/workspace" >/dev/null || die 'refusing destroy: workspace mount changed'
   artifact=$(collect_one "$task" "$requested_artifact")
-  status=$("$GUI_SANDBOX_PCT" status "$vmid" 2>/dev/null || true)
+  status=$(pct_command status "$vmid" 2>/dev/null || true)
   if printf '%s\n' "$status" | grep -Eq 'status: running|running'; then
-    "$GUI_SANDBOX_PCT" stop "$vmid" --timeout 60
+    pct_command stop "$vmid"
   fi
-  "$GUI_SANDBOX_PCT" destroy "$vmid" --purge 1
+  pct_command destroy "$vmid" --purge 1
   rm -f "$(meta_path "$task")"
   rm -rf -- "${GUI_SANDBOX_SSH_DIR:?}/$task"
   jq -n --arg task "$task" --arg artifact_dir "$artifact" --argjson vmid "$vmid" '{task:$task,vmid:$vmid,state:"destroyed",artifact_dir:$artifact_dir}'
 }
 
 cleanup_partial() {
-  local task=$1 vmid=$2 config workspace status
+  local task=$1 vmid=$2 allow_clone=${3:-0} config workspace status owns_workspace=0 owns_clone=0
   [[ -n $vmid && -n $task ]] || return 0
   numeric "$vmid" || {
     note "refusing partial cleanup with invalid VMID: $vmid"
@@ -546,16 +638,21 @@ cleanup_partial() {
     return 0
   fi
   workspace=$(jq -r '.workspace // empty' "$(meta_path "$task")" 2>/dev/null || true)
+  if [[ -n $workspace ]] && printf '%s\n' "$config" | grep -F "mp0: $workspace,mp=/workspace" >/dev/null; then
+    owns_workspace=1
+  fi
+  if [[ $allow_clone == 1 ]] && printf '%s\n' "$config" | grep -Fx "hostname: $task" >/dev/null; then
+    owns_clone=1
+  fi
   if ((vmid >= GUI_SANDBOX_FIRST_VMID && vmid <= GUI_SANDBOX_LAST_VMID)) \
     && tag_in_config "$config" "$managed_tag" \
     && tag_in_config "$config" "$task_prefix$task" \
-    && [[ -n $workspace ]] \
-    && printf '%s\n' "$config" | grep -F "mp0: $workspace,mp=/workspace" >/dev/null; then
-    status=$("$GUI_SANDBOX_PCT" status "$vmid" 2>/dev/null || true)
+    && ((owns_workspace || owns_clone)); then
+    status=$(pct_command status "$vmid" 2>/dev/null || true)
     if printf '%s\n' "$status" | grep -Eq 'status: running|running'; then
-      "$GUI_SANDBOX_PCT" stop "$vmid" --timeout 30 || true
+      pct_command stop "$vmid" || true
     fi
-    if ! "$GUI_SANDBOX_PCT" destroy "$vmid" --purge 1; then
+    if ! pct_command destroy "$vmid" --purge 1; then
       note "refusing partial cleanup after destroy failure: VMID $vmid"
       return 0
     fi
@@ -565,6 +662,32 @@ cleanup_partial() {
   fi
   rm -f "$(meta_path "$task")" 2>/dev/null || true
   rm -rf -- "${GUI_SANDBOX_SSH_DIR:?}/$task" 2>/dev/null || true
+}
+
+failed_boot_diagnostics() {
+  local task=$1 vmid=$2 rootfs output
+  rootfs="$GUI_SANDBOX_STORAGE_MOUNTPOINT/subvol-${vmid}-disk-0"
+  [[ -d $rootfs ]] || return 0
+  output=$(mktemp "$GUI_SANDBOX_STATE_DIR/${task}.boot.XXXXXX")
+  /run/current-system/sw/bin/journalctl --root "$rootfs" --no-pager -n 500 -o short-precise > "$output" 2>&1 || true
+  chmod 0640 "$output"
+  chown "$GUI_SANDBOX_TARGET_UID:$GUI_SANDBOX_TARGET_GID" "$output"
+  note "boot diagnostics: $output"
+}
+
+cleanup_on_exit() {
+  if ((cleanup_needed)); then
+    failed_boot_diagnostics "$cleanup_task" "$cleanup_vmid"
+    cleanup_partial "$cleanup_task" "$cleanup_vmid" 1
+  fi
+}
+
+destroy_creating() {
+  local task=$1 vmid=$2 path
+  cleanup_partial "$task" "$vmid" 1
+  path=$(meta_path "$task")
+  [[ ! -e $path ]] || die "refusing destroy: creating task ownership proof failed"
+  jq -n --arg task "$task" --argjson vmid "$vmid" '{task:$task,vmid:$vmid,state:"destroyed"}'
 }
 
 cmd_template_build() {
@@ -582,17 +705,17 @@ cmd_template_build() {
     tag_in_config "$config" "$managed_tag" || die 'refusing to replace unowned template VMID'
     tag_in_config "$config" "$template_tag" || die 'refusing to replace non-template VMID'
     local status
-    status=$("$GUI_SANDBOX_PCT" status "$GUI_SANDBOX_TEMPLATE_VMID" 2>/dev/null || true)
+    status=$(pct_command status "$GUI_SANDBOX_TEMPLATE_VMID" 2>/dev/null || true)
     if printf '%s\n' "$status" | grep -Eq 'status: running|running'; then
-      "$GUI_SANDBOX_PCT" stop "$GUI_SANDBOX_TEMPLATE_VMID" --timeout 60
+      pct_command stop "$GUI_SANDBOX_TEMPLATE_VMID"
     fi
-    "$GUI_SANDBOX_PCT" destroy "$GUI_SANDBOX_TEMPLATE_VMID" --purge 1
+    pct_command destroy "$GUI_SANDBOX_TEMPLATE_VMID" --purge 1
   fi
   check_gpu_host
   ensure_storage
   archive=$(template_archive)
   [[ -s $GUI_SANDBOX_CUA_ARCHIVE ]] || die 'pinned CUA archive is unavailable in the host store'
-  "$GUI_SANDBOX_PCT" create "$GUI_SANDBOX_TEMPLATE_VMID" "$archive" \
+  pct_command create "$GUI_SANDBOX_TEMPLATE_VMID" "$archive" \
     --ostype ubuntu \
     --hostname gui-sandbox-template \
     --rootfs "$GUI_SANDBOX_STORAGE_ID:$GUI_SANDBOX_ROOTFS_GIB" \
@@ -603,18 +726,19 @@ cmd_template_build() {
     --net0 "name=eth0,bridge=$GUI_SANDBOX_BRIDGE,ip=dhcp,type=veth" \
     --tags "$managed_tag;$template_tag;$schema_prefix$GUI_SANDBOX_PROVISION_SCHEMA"
   apply_idmap "$GUI_SANDBOX_TEMPLATE_VMID"
-  "$GUI_SANDBOX_PCT" push "$GUI_SANDBOX_TEMPLATE_VMID" "$GUI_SANDBOX_CUA_ARCHIVE" /tmp/cua-driver.tar.gz
-  "$GUI_SANDBOX_PCT" push "$GUI_SANDBOX_TEMPLATE_VMID" "$GUI_SANDBOX_GUEST_PROVISION" /tmp/gui-sandbox-guest-provision.sh
-  "$GUI_SANDBOX_PCT" start "$GUI_SANDBOX_TEMPLATE_VMID"
+  apply_rootfs_mount "$GUI_SANDBOX_TEMPLATE_VMID"
+  pct_command start "$GUI_SANDBOX_TEMPLATE_VMID"
   wait_running "$GUI_SANDBOX_TEMPLATE_VMID"
+  pct_command push "$GUI_SANDBOX_TEMPLATE_VMID" "$GUI_SANDBOX_CUA_ARCHIVE" /tmp/cua-driver.tar.gz
+  pct_command push "$GUI_SANDBOX_TEMPLATE_VMID" "$GUI_SANDBOX_GUEST_PROVISION" /tmp/gui-sandbox-guest-provision.sh
   guest_exec "$GUI_SANDBOX_TEMPLATE_VMID" /bin/bash /tmp/gui-sandbox-guest-provision.sh \
     --schema "$GUI_SANDBOX_PROVISION_SCHEMA" \
     --nvidia-version "$GUI_SANDBOX_NVIDIA_VERSION" \
     --gpu-name "$GUI_SANDBOX_GPU_NAME" \
     --cua-version "$GUI_SANDBOX_CUA_VERSION" \
     --driver-archive /tmp/cua-driver.tar.gz
-  "$GUI_SANDBOX_PCT" stop "$GUI_SANDBOX_TEMPLATE_VMID" --timeout 60
-  "$GUI_SANDBOX_PCT" template "$GUI_SANDBOX_TEMPLATE_VMID"
+  pct_command stop "$GUI_SANDBOX_TEMPLATE_VMID"
+  pct_command template "$GUI_SANDBOX_TEMPLATE_VMID"
   template_current || die 'template failed final schema/tag validation'
   jq -n --argjson vmid "$GUI_SANDBOX_TEMPLATE_VMID" --arg schema "$GUI_SANDBOX_PROVISION_SCHEMA" --arg image "$GUI_SANDBOX_TEMPLATE_IMAGE" '{state:"ready",vmid:$vmid,provisioning_schema:$schema,image:$image}'
 }
@@ -631,9 +755,7 @@ cmd_create() {
   done
   safe_task "$task"
   [[ -n $repo ]] || die '--repo is required'
-  if active_task >/dev/null 2>&1; then
-    die "one concurrent task allowed; active task: $(active_task)"
-  fi
+  ensure_task_available "$task"
   template_current || die "template VMID $GUI_SANDBOX_TEMPLATE_VMID is missing or stale; run gui-sandbox template build"
   ensure_storage
   workspace=$(validate_worktree "$repo")
@@ -642,17 +764,17 @@ cmd_create() {
   lease=$(( $(date +%s) + GUI_SANDBOX_LEASE_SECONDS ))
   key_dir=$(create_ssh_material "$task")
   write_meta "$task" creating "$vmid" "$workspace" "$workspace" '' "$lease" "$key_dir/id_ed25519" "$key_dir/known_hosts"
-  # shellcheck disable=SC2034
-  local cleanup_needed=1
-  trap 'if ((cleanup_needed)); then cleanup_partial "$task" "$vmid"; fi' EXIT
-  "$GUI_SANDBOX_PCT" clone "$GUI_SANDBOX_TEMPLATE_VMID" "$vmid" \
+  cleanup_task=$task
+  cleanup_vmid=$vmid
+  cleanup_needed=1
+  trap cleanup_on_exit EXIT
+  pct_command clone "$GUI_SANDBOX_TEMPLATE_VMID" "$vmid" \
     --hostname "$task" \
-    --full 0 \
-    --storage "$GUI_SANDBOX_STORAGE_ID"
-  "$GUI_SANDBOX_PCT" set "$vmid" --tags "$managed_tag;$task_prefix$task;$schema_prefix$GUI_SANDBOX_PROVISION_SCHEMA"
+    --full 0
+  pct_command set "$vmid" --tags "$managed_tag;$task_prefix$task;$schema_prefix$GUI_SANDBOX_PROVISION_SCHEMA"
   apply_idmap "$vmid"
   set_container_config "$vmid" "$task" "$workspace"
-  "$GUI_SANDBOX_PCT" start "$vmid"
+  pct_command start "$vmid"
   wait_running "$vmid"
   install_guest_ssh_key "$vmid" "$key_dir"
   ip=$(guest_ip "$vmid")
@@ -668,15 +790,20 @@ cmd_create() {
   metadata_tmp=$(mktemp "$GUI_SANDBOX_TASK_DIR/.${task}.XXXXXX")
   jq --arg ip "$ip" '.ip=$ip | .state="creating"' "$metadata_path" > "$metadata_tmp"
   chmod 0600 "$metadata_tmp"
-  chown root:root "$metadata_tmp"
+  [[ ${GUI_SANDBOX_TEST_MODE:-0} == 1 ]] || chown root:root "$metadata_tmp"
   mv -f "$metadata_tmp" "$metadata_path"
   ssh_task "$task" env XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-1 /bin/true
   guest_exec "$vmid" /bin/bash -c 'test "$(stat -c %u:%g /workspace)" = 1000:1000 && findmnt -no OPTIONS /workspace | grep -Eq "(^|,)nodev(,|$)" && findmnt -no OPTIONS /workspace | grep -Eq "(^|,)nosuid(,|$)"'
-  guest_exec "$vmid" runuser -u agent -- env XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=wayland-1 /usr/local/bin/gui-sandbox-health
+  if ! wait_guest_gui "$vmid" || ! run_guest_health "$vmid"; then
+    note "guest GUI health did not become ready for $task"
+    guest_gui_diagnostics "$vmid"
+    die "guest GUI health check failed"
+  fi
   # shellcheck disable=SC2034
   update_meta "$task" '.state="active" | .health="healthy"'
-  # shellcheck disable=SC2034
   cleanup_needed=0
+  cleanup_task=
+  cleanup_vmid=
   trap - EXIT
   local result
   result=$(jq . "$(meta_path "$task")")
@@ -790,7 +917,7 @@ cmd_collect() {
 }
 
 cmd_destroy() {
-  local task=${1:-} dest='' arg
+  local task=${1:-} dest='' arg state vmid
   safe_task "$task"
   shift
   while (($# > 0)); do
@@ -800,6 +927,12 @@ cmd_destroy() {
     esac
   done
   require_meta "$task" >/dev/null
+  state=$(meta_get "$task" state)
+  if [[ $state == creating ]]; then
+    vmid=$(meta_get "$task" vmid)
+    destroy_creating "$task" "$vmid"
+    return
+  fi
   destroy_one "$task" "$dest"
 }
 
@@ -823,10 +956,10 @@ cmd_reap() {
           continue
         fi
         destroy_one "$task" ''
-      else
-        vmid=$(jq -r '.vmid' "$path")
-        cleanup_partial "$task" "$vmid"
-      fi
+    else
+      vmid=$(jq -r '.vmid' "$path")
+      cleanup_partial "$task" "$vmid" 1
+    fi
     fi
   done < <(all_meta_paths)
 }

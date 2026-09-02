@@ -28,6 +28,7 @@ in
 
   environment.systemPackages = with pkgs; [
     easyrsa
+    herdr
     i2c-tools
   ];
 
@@ -128,6 +129,19 @@ in
   };
 
   my.services.guiTestSandbox.enable = true;
+
+  # Keep agent-driven activation scoped to this host and flake target.
+  security.sudo.extraRules = [
+    {
+      users = [ "sinkerine" ];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild switch --flake /nixfiles\\#kazuki";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {

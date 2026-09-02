@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 schema=
 expected_nvidia_version=
 expected_gpu_name=
@@ -71,14 +73,19 @@ apt-get install --yes --no-install-recommends \
   fonts-dejavu \
   fonts-noto-color-emoji \
   fonts-noto-core \
+  gir1.2-gtk-3.0 \
+  grim \
   git \
   jq \
+  libglib2.0-bin \
+  libgtk-3-0 \
   libx11-6 \
   libxi6 \
   libxkbcommon0 \
   mesa-utils \
   openssh-server \
   pciutils \
+  python3-gi \
   sway \
   sudo \
   vulkan-tools \
@@ -138,6 +145,8 @@ rm -f /root/.ssh/authorized_keys
 install --directory --owner=agent --group=agent --mode=0755 \
   /home/agent/.config/sway \
   /home/agent/.config/systemd/user
+install --directory --owner=agent --group=agent --mode=0700 \
+  /home/agent/.config/dconf
 
 cat > /home/agent/.config/sway/config <<'SWAY_CONFIG'
 set $mod Mod4
@@ -168,6 +177,23 @@ if [[ -x /opt/cua-driver/cua-cursor-theme ]]; then
   ln -sfn /opt/cua-driver/cua-cursor-theme /usr/local/bin/cua-cursor-theme
 fi
 
+cat > /usr/local/bin/gui-sandbox-accessibility-anchor <<'ACCESSIBILITY_ANCHOR'
+#!/usr/bin/python3
+
+import gi
+
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
+
+window = Gtk.Window(title="GUI sandbox accessibility anchor")
+window.set_default_size(320, 120)
+window.connect("destroy", Gtk.main_quit)
+window.add(Gtk.Label(label="GUI sandbox ready"))
+window.show_all()
+Gtk.main()
+ACCESSIBILITY_ANCHOR
+chmod 0755 /usr/local/bin/gui-sandbox-accessibility-anchor
+
 cat > /etc/profile.d/gui-sandbox.sh <<'PROFILE'
 export XDG_RUNTIME_DIR=/run/user/1000
 export WAYLAND_DISPLAY=wayland-1
@@ -183,11 +209,69 @@ export QT_QPA_PLATFORM='wayland;xcb'
 export SDL_VIDEODRIVER=wayland
 export WLR_RENDERER_ALLOW_SOFTWARE=0
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
-export __EGL_VENDOR_LIBRARY_FILENAMES=/opt/gui-sandbox/host-nvidia/share/glvnd/egl_vendor.d/10_nvidia.json
-export LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-bin/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+export __EGL_VENDOR_LIBRARY_FILENAMES=/etc/glvnd/egl_vendor.d/10_nvidia.json
+export __EGL_EXTERNAL_PLATFORM_CONFIG_DIRS=/etc/egl/egl_external_platform.d
+export LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-egl/lib:/opt/gui-sandbox/host-nvidia-bin/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 export LIBGL_DRIVERS_PATH=/opt/gui-sandbox/host-nvidia/lib/dri
 PROFILE
 chmod 0644 /etc/profile.d/gui-sandbox.sh
+
+install --directory --owner=root --group=root --mode=0755 /etc/glvnd/egl_vendor.d
+cat > /etc/glvnd/egl_vendor.d/10_nvidia.json <<'EGL_VENDOR'
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/opt/gui-sandbox/host-nvidia/lib/libEGL_nvidia.so.0"
+  }
+}
+EGL_VENDOR
+chmod 0644 /etc/glvnd/egl_vendor.d/10_nvidia.json
+
+install --directory --owner=root --group=root --mode=0755 /etc/egl/egl_external_platform.d
+cat > /etc/egl/egl_external_platform.d/09_nvidia_wayland2.json <<'EGL_EXTERNAL_PLATFORM'
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/opt/gui-sandbox/host-nvidia-egl/lib/libnvidia-egl-wayland2.so.1"
+  }
+}
+EGL_EXTERNAL_PLATFORM
+cat > /etc/egl/egl_external_platform.d/10_nvidia_wayland.json <<'EGL_EXTERNAL_PLATFORM'
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/opt/gui-sandbox/host-nvidia-egl/lib/libnvidia-egl-wayland.so.1"
+  }
+}
+EGL_EXTERNAL_PLATFORM
+cat > /etc/egl/egl_external_platform.d/15_nvidia_gbm.json <<'EGL_EXTERNAL_PLATFORM'
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/opt/gui-sandbox/host-nvidia-egl/lib/libnvidia-egl-gbm.so.1"
+  }
+}
+EGL_EXTERNAL_PLATFORM
+cat > /etc/egl/egl_external_platform.d/20_nvidia_xlib.json <<'EGL_EXTERNAL_PLATFORM'
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/opt/gui-sandbox/host-nvidia-egl/lib/libnvidia-egl-xlib.so.1"
+  }
+}
+EGL_EXTERNAL_PLATFORM
+cat > /etc/egl/egl_external_platform.d/20_nvidia_xcb.json <<'EGL_EXTERNAL_PLATFORM'
+{
+  "file_format_version": "1.0.0",
+  "ICD": {
+    "library_path": "/opt/gui-sandbox/host-nvidia-egl/lib/libnvidia-egl-xcb.so.1"
+  }
+}
+EGL_EXTERNAL_PLATFORM
+chmod 0644 /etc/egl/egl_external_platform.d/*.json
+
+install --directory --owner=root --group=root --mode=0755 /usr/lib/x86_64-linux-gnu/gbm
+ln -sfn /opt/gui-sandbox/host-nvidia/lib/gbm/nvidia-drm_gbm.so /usr/lib/x86_64-linux-gnu/gbm/nvidia-drm_gbm.so
 
 install --directory --owner=root --group=root --mode=0755 /etc/xdg/xdg-desktop-portal
 cat > /etc/xdg/xdg-desktop-portal/portals.conf <<'PORTALS'
@@ -225,8 +309,9 @@ Environment=WLR_RENDERER_ALLOW_SOFTWARE=0
 Environment=WLR_NO_HARDWARE_CURSORS=1
 Environment=LIBGL_ALWAYS_SOFTWARE=0
 Environment=__GLX_VENDOR_LIBRARY_NAME=nvidia
-Environment=__EGL_VENDOR_LIBRARY_FILENAMES=/opt/gui-sandbox/host-nvidia/share/glvnd/egl_vendor.d/10_nvidia.json
-Environment=LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-bin/lib
+Environment=__EGL_VENDOR_LIBRARY_FILENAMES=/etc/glvnd/egl_vendor.d/10_nvidia.json
+Environment=__EGL_EXTERNAL_PLATFORM_CONFIG_DIRS=/etc/egl/egl_external_platform.d
+Environment=LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-egl/lib:/opt/gui-sandbox/host-nvidia-bin/lib
 Environment=LIBGL_DRIVERS_PATH=/opt/gui-sandbox/host-nvidia/lib/dri
 ExecStart=/usr/bin/sway --unsupported-gpu --config=/home/agent/.config/sway/config
 Restart=always
@@ -238,11 +323,95 @@ TimeoutStopSec=15
 WantedBy=multi-user.target
 SWAY_UNIT
 
+install --directory --owner=root --group=root --mode=0755 /etc/systemd/user
+cat > /etc/systemd/user/gui-sandbox-atspi.service <<'AT_SPI_USER_UNIT'
+[Unit]
+Description=GUI test sandbox AT-SPI user bus
+After=basic.target
+
+[Service]
+Type=simple
+Environment=HOME=/home/agent
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+Environment=WAYLAND_DISPLAY=wayland-1
+Environment=DISPLAY=:0
+Environment=XDG_SESSION_TYPE=wayland
+Environment=XDG_CURRENT_DESKTOP=sway
+Environment=GDK_BACKEND=wayland,x11
+Environment=GTK_MODULES=gail:atk-bridge
+ExecStart=/usr/libexec/at-spi-bus-launcher --launch-immediately
+Restart=always
+RestartSec=2
+KillMode=mixed
+Slice=session.slice
+TimeoutStopSec=15
+AT_SPI_USER_UNIT
+
+cat > /etc/systemd/system/gui-sandbox-atspi.service <<'AT_SPI_UNIT'
+[Unit]
+Description=GUI test sandbox AT-SPI bus
+After=user@1000.service gui-sandbox-sway.service
+Requires=user@1000.service gui-sandbox-sway.service
+Before=gui-sandbox-cua.service
+
+[Service]
+Type=oneshot
+User=agent
+Group=agent
+Environment=HOME=/home/agent
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+ExecStartPre=/usr/bin/systemctl --user daemon-reload
+ExecStart=/usr/bin/systemctl --user start gui-sandbox-atspi.service
+ExecStartPost=/usr/local/bin/gui-sandbox-atspi-ready
+ExecStop=-/usr/bin/systemctl --user stop gui-sandbox-atspi.service
+RemainAfterExit=yes
+TimeoutStartSec=60
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target
+AT_SPI_UNIT
+
+cat > /usr/local/bin/gui-sandbox-atspi-ready <<'AT_SPI_READY'
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ready_log=/var/log/gui-sandbox/atspi-ready.log
+: > "$ready_log"
+
+for _ in {1..30}; do
+  if /usr/bin/gdbus call --session \
+    --dest org.a11y.Bus \
+    --object-path /org/a11y/bus \
+    --method org.a11y.Bus.GetAddress >>"$ready_log" 2>&1; then
+    exit 0
+  fi
+  /usr/bin/gdbus call --session \
+    --dest org.freedesktop.DBus \
+    --object-path /org/freedesktop/DBus \
+    --method org.freedesktop.DBus.ListNames >>"$ready_log" 2>&1 || true
+  if /usr/bin/gdbus introspect --session \
+    --dest org.a11y.Bus \
+    --object-path /org/a11y/bus >>"$ready_log" 2>&1; then
+    exit 0
+  fi
+  sleep 1
+done
+
+printf '%s\n' 'org.a11y.Bus did not become available on the session bus' >&2
+cat "$ready_log" >&2
+exit 1
+AT_SPI_READY
+chmod 0755 /usr/local/bin/gui-sandbox-atspi-ready
+
 cat > /etc/systemd/system/gui-sandbox-cua.service <<'CUA_UNIT'
 [Unit]
 Description=GUI test sandbox CUA Driver daemon
-After=gui-sandbox-sway.service
-Requires=gui-sandbox-sway.service
+After=gui-sandbox-sway.service gui-sandbox-atspi.service
+Requires=gui-sandbox-sway.service gui-sandbox-atspi.service
 
 [Service]
 Type=simple
@@ -259,10 +428,11 @@ Environment=XDG_CURRENT_DESKTOP=sway
 Environment=GTK_MODULES=gail:atk-bridge
 Environment=WLR_RENDERER_ALLOW_SOFTWARE=0
 Environment=__GLX_VENDOR_LIBRARY_NAME=nvidia
-Environment=__EGL_VENDOR_LIBRARY_FILENAMES=/opt/gui-sandbox/host-nvidia/share/glvnd/egl_vendor.d/10_nvidia.json
-Environment=LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-bin/lib
+Environment=__EGL_VENDOR_LIBRARY_FILENAMES=/etc/glvnd/egl_vendor.d/10_nvidia.json
+Environment=__EGL_EXTERNAL_PLATFORM_CONFIG_DIRS=/etc/egl/egl_external_platform.d
+Environment=LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-egl/lib:/opt/gui-sandbox/host-nvidia-bin/lib
 Environment=LIBGL_DRIVERS_PATH=/opt/gui-sandbox/host-nvidia/lib/dri
-ExecStart=/usr/local/bin/cua-driver serve --socket=/run/user/1000/cua-driver.sock --permission-mode standard
+ExecStart=/usr/local/bin/cua-driver serve --socket=/run/user/1000/cua-driver.sock --permission-mode standard --no-overlay
 Restart=always
 RestartSec=2
 KillMode=mixed
@@ -293,8 +463,9 @@ Environment=XDG_CURRENT_DESKTOP=sway
 Environment=GTK_MODULES=gail:atk-bridge
 Environment=WLR_RENDERER_ALLOW_SOFTWARE=0
 Environment=__GLX_VENDOR_LIBRARY_NAME=nvidia
-Environment=__EGL_VENDOR_LIBRARY_FILENAMES=/opt/gui-sandbox/host-nvidia/share/glvnd/egl_vendor.d/10_nvidia.json
-Environment=LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-bin/lib
+Environment=__EGL_VENDOR_LIBRARY_FILENAMES=/etc/glvnd/egl_vendor.d/10_nvidia.json
+Environment=__EGL_EXTERNAL_PLATFORM_CONFIG_DIRS=/etc/egl/egl_external_platform.d
+Environment=LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-egl/lib:/opt/gui-sandbox/host-nvidia-bin/lib
 Environment=LIBGL_DRIVERS_PATH=/opt/gui-sandbox/host-nvidia/lib/dri
 ExecStart=/usr/local/bin/gui-sandbox-health
 [Install]
@@ -309,12 +480,28 @@ expected=$(cat /etc/gui-sandbox/expected-nvidia-driver)
 expected_gpu=$(cat /etc/gui-sandbox/expected-gpu-name)
 runtime=${XDG_RUNTIME_DIR:-/run/user/1000}
 wayland=${WAYLAND_DISPLAY:-wayland-1}
+anchor_pid=
+x11_cua_pid=
+x11_cua_socket="$runtime/cua-driver-x11.sock"
 export DBUS_SESSION_BUS_ADDRESS=${DBUS_SESSION_BUS_ADDRESS:-unix:path=$runtime/bus}
 export CUA_DRIVER_RS_ENABLE_WAYLAND=1
-export LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-bin/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+export __EGL_EXTERNAL_PLATFORM_CONFIG_DIRS=/etc/egl/egl_external_platform.d
+export LD_LIBRARY_PATH=/opt/gui-sandbox/host-nvidia/lib:/opt/gui-sandbox/host-nvidia-egl/lib:/opt/gui-sandbox/host-nvidia-bin/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 export LIBGL_DRIVERS_PATH=/opt/gui-sandbox/host-nvidia/lib/dri
 export __GLX_VENDOR_LIBRARY_NAME=nvidia
-export __EGL_VENDOR_LIBRARY_FILENAMES=/opt/gui-sandbox/host-nvidia/share/glvnd/egl_vendor.d/10_nvidia.json
+export __EGL_VENDOR_LIBRARY_FILENAMES=/etc/glvnd/egl_vendor.d/10_nvidia.json
+cleanup() {
+  if [[ -n $anchor_pid ]]; then
+    kill "$anchor_pid" 2>/dev/null || true
+    wait "$anchor_pid" 2>/dev/null || true
+  fi
+  if [[ -n $x11_cua_pid ]]; then
+    kill "$x11_cua_pid" 2>/dev/null || true
+    wait "$x11_cua_pid" 2>/dev/null || true
+  fi
+  rm -f "$x11_cua_socket"
+}
+trap cleanup EXIT
 [[ -S "$runtime/$wayland" ]] || { echo "missing Wayland socket" >&2; exit 1; }
 [[ -S /run/user/1000/cua-driver.sock ]] || { echo "missing CUA socket" >&2; exit 1; }
 
@@ -350,11 +537,14 @@ printf '%s\n' "$renderer" | grep -F "$expected" >/dev/null || {
   exit 1
 }
 
+/usr/local/bin/gui-sandbox-accessibility-anchor >/var/log/gui-sandbox/accessibility-anchor.log 2>&1 &
+anchor_pid=$!
+sleep 1
 if command -v gdbus >/dev/null 2>&1; then
   gdbus introspect --session --dest org.a11y.Bus --object-path /org/a11y/bus >/dev/null
 fi
 
-doctor_json=$(/usr/local/bin/cua-driver doctor --json)
+doctor_json=$(/usr/local/bin/cua-driver doctor --json || true)
 printf '%s\n' "$doctor_json" > /var/log/gui-sandbox/cua-doctor.json
 jq -e '.ok == true and any(.probes[]; .label == "display server" and .status == "ok") and any(.probes[]; .label == "AT-SPI" and .status == "ok")' \
   /var/log/gui-sandbox/cua-doctor.json >/dev/null
@@ -362,9 +552,58 @@ jq -e '.ok == true and any(.probes[]; .label == "display server" and .status == 
 jq -e '.overall == "ok"' /var/log/gui-sandbox/health-report.json >/dev/null
 /usr/local/bin/cua-driver call get_accessibility_tree '{}' --socket=/run/user/1000/cua-driver.sock > /var/log/gui-sandbox/accessibility-tree.json
 jq -e 'type == "object"' /var/log/gui-sandbox/accessibility-tree.json >/dev/null
-/usr/local/bin/cua-driver call get_desktop_state '{}' \
-  --screenshot-out-file /var/log/gui-sandbox/health-screenshot.png \
-  --socket=/run/user/1000/cua-driver.sock > /var/log/gui-sandbox/desktop-state.json
+
+# CUA 0.21.0 assumes four-byte wl_shm pixels; NVIDIA headless Sway can report
+# Bgr888 with a three-byte stride. Capture this required PNG with grim through
+# the native Wayland screencopy protocol while keeping semantic probes on the
+# native-Wayland daemon above.
+rm -f "$x11_cua_socket" /var/log/gui-sandbox/desktop-state.json /var/log/gui-sandbox/health-screenshot.png
+env -u WAYLAND_DISPLAY \
+  XDG_RUNTIME_DIR="$runtime" \
+  DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" \
+  DISPLAY="$DISPLAY" \
+  CUA_DRIVER_RS_ENABLE_WAYLAND=0 \
+  /usr/local/bin/cua-driver serve \
+    --socket="$x11_cua_socket" \
+    --permission-mode standard \
+    --no-overlay \
+    >/var/log/gui-sandbox/cua-x11.log 2>&1 &
+x11_cua_pid=$!
+capture_ready=
+for _ in {1..30}; do
+  if [[ -S "$x11_cua_socket" ]] && \
+    env -u WAYLAND_DISPLAY \
+      XDG_RUNTIME_DIR="$runtime" \
+      DBUS_SESSION_BUS_ADDRESS="$DBUS_SESSION_BUS_ADDRESS" \
+      DISPLAY="$DISPLAY" \
+      CUA_DRIVER_RS_ENABLE_WAYLAND=0 \
+      /usr/local/bin/cua-driver call get_desktop_state '{}' \
+        --screenshot-out-file /var/log/gui-sandbox/health-screenshot.png \
+        --socket="$x11_cua_socket" > /var/log/gui-sandbox/desktop-state.json 2>/var/log/gui-sandbox/cua-x11-call.log && \
+      jq -e 'type == "object"' /var/log/gui-sandbox/desktop-state.json >/dev/null 2>&1 && \
+      test -s /var/log/gui-sandbox/health-screenshot.png; then
+    capture_ready=true
+    break
+  fi
+  sleep 1
+done
+if [[ $capture_ready != true ]] && command -v grim >/dev/null 2>&1; then
+  if timeout 10s env -u DISPLAY \
+    XDG_RUNTIME_DIR="$runtime" \
+    WAYLAND_DISPLAY="$wayland" \
+    grim -t png /var/log/gui-sandbox/health-screenshot.png \
+    >/var/log/gui-sandbox/grim-capture.log 2>&1; then
+    jq -n '{capture: "grim-wayland", wayland: $wayland}' --arg wayland "$wayland" \
+      > /var/log/gui-sandbox/desktop-state.json
+    capture_ready=true
+  fi
+fi
+[[ $capture_ready == true ]] || {
+  cat /var/log/gui-sandbox/cua-x11.log >&2 || true
+  cat /var/log/gui-sandbox/cua-x11-call.log >&2 || true
+  cat /var/log/gui-sandbox/grim-capture.log >&2 || true
+  exit 1
+}
 jq -e 'type == "object"' /var/log/gui-sandbox/desktop-state.json >/dev/null
 test -s /var/log/gui-sandbox/health-screenshot.png
 HEALTH_SCRIPT
@@ -388,9 +627,9 @@ loginctl enable-linger agent || touch /var/lib/systemd/linger/agent
 chown agent:agent /var/lib/systemd/linger/agent
 
 systemctl daemon-reload
-systemctl enable ssh.service gui-sandbox-sway.service gui-sandbox-cua.service gui-sandbox-health.service
+systemctl enable ssh.service gui-sandbox-sway.service gui-sandbox-atspi.service gui-sandbox-cua.service gui-sandbox-health.service
 systemctl disable gui-sandbox-health.service || true
-systemctl stop gui-sandbox-health.service gui-sandbox-cua.service gui-sandbox-sway.service || true
+systemctl stop gui-sandbox-health.service gui-sandbox-cua.service gui-sandbox-atspi.service gui-sandbox-sway.service || true
 
 rm -f /etc/ssh/ssh_host_* /tmp/cua-driver.tar.gz
 

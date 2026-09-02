@@ -4,12 +4,73 @@ with lib;
 
 let
   cfg = config.my.services.guiTestSandbox;
+  pvePerl = lib.head (
+    lib.splitString " " (
+      lib.removePrefix "#!"
+        (lib.head (lib.splitString "\n" (builtins.readFile "${pkgs.pve-ha-manager}/bin/.pct-wrapped")))
+    )
+  );
+  pvePerlEnv = builtins.dirOf (builtins.dirOf pvePerl);
+  pctCompat = pkgs.writeShellApplication {
+    name = "gui-sandbox-pct";
+    runtimeInputs = with pkgs; [
+      binutils
+      coreutils
+      gnutar
+      iproute2
+      lxc
+      openssh
+      pve-ha-manager
+      pve-storage
+      systemd
+      util-linux
+      zfs
+      zstd
+    ];
+    text = ''
+      export PATH=${lib.makeBinPath [
+        pkgs.binutils
+        pkgs.coreutils
+        pkgs.gnutar
+        pkgs.iproute2
+        pkgs.lxc
+        pkgs.openssh
+        pkgs.pve-ha-manager
+        pkgs.pve-storage
+        pkgs.systemd
+        pkgs.util-linux
+        pkgs.zfs
+        pkgs.zstd
+      ]}
+      exec ${pvePerl} -T \
+        -I${pvePerlEnv}/lib/perl5/site_perl \
+        -I${pvePerlEnv}/lib/perl5/site_perl/5.40.0 \
+        -I${pkgs.pve-ha-manager}/lib/perl5/site_perl \
+        -I${pkgs.pve-ha-manager}/lib/perl5/site_perl/5.40.0 \
+        -I${pkgs.pve-rados2}/lib/perl5/site_perl \
+        -I${pkgs.pve-rados2}/lib/perl5/site_perl/5.40.0 \
+        -e 'my ($path) = ($ENV{PATH} =~ /^(.*)$/); $ENV{PATH} = $path; require PVE::Tools; my $read = \&PVE::Tools::file_get_contents; no warnings "redefine"; *PVE::Tools::file_get_contents = sub { my ($path, @rest) = @_; $path = "${pkgs.lxc}/share/lxc/config/common.seccomp" if $path eq "${pkgs.pve-container}/share/lxc/config/common.seccomp"; return $read->($path, @rest); }; my $script = shift @ARGV; ($script) = ($script =~ /^(.*)$/); do $script; die $@ if $@;' \
+        ${pkgs.pve-ha-manager}/bin/.pct-wrapped "$@"
+    '';
+  };
   defaultNvidiaVersion =
     if config.hardware.nvidia.package == null then "unset" else config.hardware.nvidia.package.version;
   nvidiaPackage =
     if config.hardware.nvidia.package == null then pkgs.emptyDirectory else config.hardware.nvidia.package;
   nvidiaBinPackage =
     if config.hardware.nvidia.package == null then pkgs.emptyDirectory else config.hardware.nvidia.package.bin;
+  nvidiaEglExternalPlatformsSource = lib.findFirst
+    (package: lib.hasInfix "nvidia-egl-external-platforms" (lib.getName package))
+    pkgs.emptyDirectory
+    config.hardware.graphics.extraPackages;
+  nvidiaEglExternalPlatforms =
+    if nvidiaEglExternalPlatformsSource == pkgs.emptyDirectory then
+      pkgs.emptyDirectory
+    else
+      pkgs.runCommand "gui-sandbox-nvidia-egl-external-platforms" {} ''
+        install -d "$out/lib"
+        cp -L ${nvidiaEglExternalPlatformsSource}/lib/libnvidia-egl-*.so* "$out/lib/"
+      '';
   cuaDriverArchive = pkgs.fetchurl {
     name = "cua-driver-rs-v${cfg.cuaDriverVersion}-linux-x86_64.tar.gz";
     url = cfg.cuaDriverArchiveUrl;
@@ -22,6 +83,7 @@ let
     + cfg.nvidiaGpuName
     + cfg.templateImage
     + cfg.templateImageSha512
+    + toString nvidiaEglExternalPlatforms
   ));
   guestProvision = pkgs.writeText "gui-sandbox-guest-provision.sh" (builtins.readFile ./guest-provision.sh);
   storageBootstrap = pkgs.writeShellApplication {
@@ -31,16 +93,27 @@ let
       set -euo pipefail
 
       dataset=${escapeShellArg cfg.storageDataset}
+      storage_mountpoint=${escapeShellArg cfg.storageMountpoint}
       storage_id=${escapeShellArg cfg.storageId}
       storage_config=/etc/pve/storage.cfg
 
       if ! zfs list -H -o name "$dataset" >/dev/null 2>&1; then
-        zfs create -p -o mountpoint=none "$dataset"
+        zfs create -p -o mountpoint="$storage_mountpoint" "$dataset"
       fi
       [[ $(zfs get -H -o value type "$dataset") == filesystem ]] || {
         echo "gui-sandbox: $dataset is not a ZFS filesystem" >&2
         exit 1
       }
+      current_mountpoint=$(zfs get -H -o value mountpoint "$dataset")
+      case "$current_mountpoint" in
+        "$storage_mountpoint") ;;
+        none) zfs set "mountpoint=$storage_mountpoint" "$dataset" ;;
+        *)
+          echo "gui-sandbox: existing ZFS dataset $dataset has mountpoint $current_mountpoint" >&2
+          exit 1
+          ;;
+      esac
+      [[ $(zfs get -H -o value mounted "$dataset") == yes ]] || zfs mount "$dataset"
 
       command -v pvesm >/dev/null 2>&1 || {
         echo "gui-sandbox: pvesm is unavailable" >&2
@@ -74,8 +147,12 @@ let
           echo "gui-sandbox: existing Proxmox storage $storage_id points at a different pool" >&2
           exit 1
         }
+        configured_mountpoint=$(awk '$1 == "mountpoint" { print $2; exit }' <<<"$storage_block")
+        if [[ $configured_mountpoint != "$storage_mountpoint" ]]; then
+          pvesm set "$storage_id" --mountpoint "$storage_mountpoint"
+        fi
       else
-        pvesm add zfspool "$storage_id" --pool "$dataset" --content rootdir --sparse 1
+        pvesm add zfspool "$storage_id" --pool "$dataset" --content rootdir --sparse 1 --mountpoint "$storage_mountpoint"
       fi
     '';
   };
@@ -93,18 +170,20 @@ let
       git
       gnutar
       jq
+      lxc
       openssh
       proxmox-ve
-      sudo
+      systemd
       util-linux
       zfs
     ];
     text = ''
       # shellcheck disable=SC2016
-      GUI_SANDBOX_ALLOWED_WORKTREE_ROOT=${escapeShellArg cfg.allowedWorktreeRoot}
       GUI_SANDBOX_STATE_DIR=${escapeShellArg cfg.stateDirectory}
       GUI_SANDBOX_STORAGE_ID=${escapeShellArg cfg.storageId}
       GUI_SANDBOX_STORAGE_DATASET=${escapeShellArg cfg.storageDataset}
+      GUI_SANDBOX_STORAGE_MOUNTPOINT=${escapeShellArg cfg.storageMountpoint}
+      GUI_SANDBOX_ROOTFS_MOUNT=${escapeShellArg cfg.rootfsMount}
       GUI_SANDBOX_TEMPLATE_CACHE=${escapeShellArg cfg.templateCache}
       GUI_SANDBOX_TEMPLATE_VMID=${toString cfg.templateVmid}
       GUI_SANDBOX_FIRST_VMID=${toString cfg.firstVmid}
@@ -122,6 +201,7 @@ let
       GUI_SANDBOX_GPU_NAME=${escapeShellArg cfg.nvidiaGpuName}
       GUI_SANDBOX_NVIDIA_PACKAGE=${escapeShellArg (toString nvidiaPackage)}
       GUI_SANDBOX_NVIDIA_BIN=${escapeShellArg (toString nvidiaBinPackage)}
+      GUI_SANDBOX_NVIDIA_EGL=${escapeShellArg (toString nvidiaEglExternalPlatforms)}
       GUI_SANDBOX_NVIDIA_VERSION=${escapeShellArg cfg.nvidiaDriverVersion}
       GUI_SANDBOX_TEMPLATE_IMAGE=${escapeShellArg cfg.templateImage}
       GUI_SANDBOX_TEMPLATE_URL=${escapeShellArg cfg.templateImageUrl}
@@ -131,6 +211,8 @@ let
       GUI_SANDBOX_CUA_SHA256=${escapeShellArg cfg.cuaDriverArchiveSha256}
       GUI_SANDBOX_PROVISION_SCHEMA=${escapeShellArg provisioningSchema}
       GUI_SANDBOX_GUEST_PROVISION=${escapeShellArg (toString guestProvision)}
+      GUI_SANDBOX_PCT=${escapeShellArg (lib.getExe pctCompat)}
+      GUI_SANDBOX_RUN0=${escapeShellArg "${pkgs.systemd}/bin/run0"}
       ${builtins.readFile ./gui-sandbox.sh}
     '';
   };
@@ -138,12 +220,6 @@ in
 {
   options.my.services.guiTestSandbox = {
     enable = mkEnableOption "GPU-backed unprivileged LXC GUI test sandbox";
-
-    allowedWorktreeRoot = mkOption {
-      type = types.str;
-      default = "/home/sinkerine/orca/workspaces";
-      description = "Canonical root below which task worktrees may be mounted read-write.";
-    };
 
     stateDirectory = mkOption {
       type = types.str;
@@ -155,6 +231,18 @@ in
       type = types.str;
       default = "rpool/proxmox/agent-sandbox";
       description = "ZFS filesystem handed to Proxmox zfspool storage.";
+    };
+
+    storageMountpoint = mkOption {
+      type = types.str;
+      default = "/var/lib/gui-test-sandbox/storage";
+      description = "Private host mountpoint inherited by Proxmox ZFS subvolumes.";
+    };
+
+    rootfsMount = mkOption {
+      type = types.str;
+      default = "/run/gui-test-sandbox/rootfs";
+      description = "Writable parent for LXC's temporary root filesystem mounts.";
     };
 
     storageId = mkOption {
@@ -311,6 +399,10 @@ in
         message = "GPU GUI test sandbox requires hardware.nvidia.package";
       }
       {
+        assertion = nvidiaEglExternalPlatformsSource != pkgs.emptyDirectory;
+        message = "GPU GUI test sandbox requires nvidia-egl-external-platforms in hardware.graphics.extraPackages";
+      }
+      {
         assertion = !(hasInfix "/card" cfg.nvidiaRenderNode);
         message = "GUI test sandbox accepts only an NVIDIA render node, never /dev/dri/card*";
       }
@@ -336,6 +428,7 @@ in
       "d ${cfg.stateDirectory}/tasks 0700 root root -"
       "d ${cfg.stateDirectory}/ssh 0750 root sinkerine -"
       "d ${cfg.stateDirectory}/artifacts 0750 root sinkerine -"
+      "d ${cfg.rootfsMount} 0755 root root -"
     ];
 
     security.sudo.extraRules = [
