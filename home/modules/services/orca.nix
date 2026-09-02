@@ -7,6 +7,15 @@
 
 let
   cfg = config.my.services.orca;
+  orcaCli = pkgs.writeShellScriptBin "orca" ''
+    set -euo pipefail
+    export ORCA_NODE_OPTIONS="''${NODE_OPTIONS-}"
+    export ORCA_NODE_REPL_EXTERNAL_MODULE="''${NODE_REPL_EXTERNAL_MODULE-}"
+    unset NODE_OPTIONS
+    unset NODE_REPL_EXTERNAL_MODULE
+    ELECTRON_RUN_AS_NODE=1 exec ${lib.getExe pkgs.electron_43} \
+      "${cfg.package}/opt/orca-ide/resources/app.asar.unpacked/out/cli/index.js" "$@"
+  '';
   serveArgs = [
     "serve"
     "--port"
@@ -54,7 +63,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [ cfg.package ] ++ lib.optional (cfg.mode == "headless") pkgs.xorg-server;
+    home.file.".local/bin/orca".source = "${orcaCli}/bin/orca";
+    programs.zsh.initContent = lib.mkBefore ''
+      export ORCA_CLI_COMMAND="orca"
+    '';
+    home.packages = [ cfg.package orcaCli ] ++ lib.optional (cfg.mode == "headless") pkgs.xorg-server;
 
     systemd.user.services.orca = lib.mkIf (cfg.mode == "headless") {
       Unit = {
