@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   pkgsStable,
   ...
@@ -9,6 +10,8 @@
   home.stateVersion = "26.05";
 
   imports = [ ../common ];
+
+  programs.noctalia.settings.lockscreen.enabled = lib.mkForce false;
 
   my.profiles.trusted.enable = true;
   my.essentials.gui.enable = true;

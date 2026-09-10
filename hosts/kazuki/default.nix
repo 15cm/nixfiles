@@ -139,6 +139,10 @@ in
           command = "/run/current-system/sw/bin/nixos-rebuild switch --flake /nixfiles\\#kazuki";
           options = [ "NOPASSWD" ];
         }
+        {
+          command = "/run/current-system/sw/bin/deploy *";
+          options = [ "NOPASSWD" ];
+        }
       ];
     }
   ];

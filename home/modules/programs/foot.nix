@@ -19,6 +19,7 @@ in {
       settings = {
         main = {
           term = "foot";
+          shell = "${pkgs.tmux}/bin/tmux new-session -A -s main";
           font = "Sarasa Mono SC Nerd Font:size=${toString cfg.fontSize}";
           dpi-aware = "yes";
           initial-color-theme = theme;

@@ -89,7 +89,6 @@ in
         hotkey-overlay.skip-at-startup = true;
         input = {
           keyboard = { repeat-rate = 20; repeat-delay = 200; };
-          focus-follows-mouse = { };
           mouse.accel-profile = "adaptive";
           mouse.accel-speed = 0.6;
           touchpad = {

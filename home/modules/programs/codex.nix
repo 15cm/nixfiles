@@ -50,6 +50,17 @@ with lib; let
     }
   ];
   codexHooksPath = "${config.home.homeDirectory}/.codex/hooks.json";
+  orcaCodexHookPath = "${config.home.homeDirectory}/.codex/.orca/agent-hooks/codex-hook.sh";
+  orcaCodexHookEvents = [
+    "SessionStart"
+    "UserPromptSubmit"
+    "PreToolUse"
+    "PermissionRequest"
+    "PostToolUse"
+    "SubagentStart"
+    "SubagentStop"
+    "Stop"
+  ];
   toml = pkgs.formats.toml {};
   codexModels = {
     terra = "gpt-5.6-terra";
@@ -125,10 +136,47 @@ in {
       codexProfileFiles
       // orcaSkillFiles
       // {
-        ".codex/hooks.json".text = builtins.toJSON {
-          hooks = {
-            SessionStart = [
-              {
+        ".codex/.orca/agent-hooks/codex-hook.sh" = {
+          executable = true;
+          text = ''
+            #!/bin/sh
+            payload="$(cat)"
+            if [ -n "''${ORCA_AGENT_HOOK_ENDPOINT-}" ] && [ -r "$ORCA_AGENT_HOOK_ENDPOINT" ]; then
+              . "$ORCA_AGENT_HOOK_ENDPOINT" 2>/dev/null || :
+            fi
+            [ -n "''${ORCA_AGENT_HOOK_PORT-}" ] || exit 0
+            [ -n "''${ORCA_AGENT_HOOK_TOKEN-}" ] || exit 0
+            [ -n "''${ORCA_PANE_KEY-}" ] || exit 0
+            printf '%s' "$payload" | ${pkgs.curl}/bin/curl -sS -X POST \
+              "http://127.0.0.1:$ORCA_AGENT_HOOK_PORT/hook/codex" \
+              --connect-timeout 0.5 --max-time 1.5 --noproxy 127.0.0.1 \
+              -H "Content-Type: application/x-www-form-urlencoded" \
+              -H "X-Orca-Agent-Hook-Token: $ORCA_AGENT_HOOK_TOKEN" \
+              --data-urlencode "paneKey=$ORCA_PANE_KEY" \
+              --data-urlencode "tabId=''${ORCA_TAB_ID-}" \
+              --data-urlencode "launchToken=''${ORCA_AGENT_LAUNCH_TOKEN-}" \
+              --data-urlencode "worktreeId=''${ORCA_WORKTREE_ID-}" \
+              --data-urlencode "env=''${ORCA_AGENT_HOOK_ENV-}" \
+              --data-urlencode "version=''${ORCA_AGENT_HOOK_VERSION-}" \
+              --data-urlencode "payload@-" >/dev/null 2>&1 || true
+          '';
+        };
+        ".codex/hooks.json" = {
+          force = true;
+          text = builtins.toJSON {
+            hooks = lib.genAttrs orcaCodexHookEvents (event:
+              [
+                {
+                  hooks = [
+                    {
+                      type = "command";
+                      command = orcaCodexHookPath;
+                      timeout = 2;
+                    }
+                  ];
+                }
+              ]
+              ++ lib.optional (event == "SessionStart") {
                 hooks = [
                   {
                     type = "command";
@@ -137,8 +185,7 @@ in {
                     timeout = 10;
                   }
                 ];
-              }
-            ];
+              });
           };
         };
         ".codex/plugins/caveman" = {

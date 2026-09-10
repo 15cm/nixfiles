@@ -7,6 +7,75 @@
 
 let
   cfg = config.my.services.orca;
+  orcaSettings = pkgs.writeText "orca-settings.json" (builtins.toJSON {
+    settings = {
+      # Keep these settings shared between GUI and headless Orca hosts.
+      theme = "dark";
+      disabledTuiAgents = [
+        "claude"
+        "claude-agent-teams"
+      ];
+      agentCmdOverrides = {
+        codex = "codex-trusted";
+      };
+      agentStatusHooksEnabled = true;
+      agentDefaultArgs = {
+        claude = "--dangerously-skip-permissions";
+        "claude-agent-teams" = "--dangerously-skip-permissions";
+        openclaude = "--dangerously-skip-permissions";
+        codex = "--profile luna-medium";
+        gemini = "--yolo";
+        antigravity = "--dangerously-skip-permissions";
+        aider = "--yes-always";
+        amp = "--dangerously-allow-all";
+        kiro = "--trust-all-tools";
+        crush = "--yolo";
+        autohand = "--unrestricted";
+        cline = "--auto-approve true";
+        "command-code" = "--yolo";
+        continue = "--allow \"*\"";
+        cursor = "--yolo";
+        kimi = "--yolo";
+        "mistral-vibe" = "--agent auto-approve";
+        "qwen-code" = "--approval-mode yolo";
+        rovo = "--yolo";
+        hermes = "--yolo";
+        copilot = "--yolo";
+        grok = "--permission-mode bypassPermissions";
+        devin = "--permission-mode bypass";
+        ante = "--yolo";
+      };
+    };
+  });
+  mergeOrcaSettings = pkgs.writeShellScript "merge-orca-settings" ''
+    set -euo pipefail
+
+    target="$HOME/.config/orca/profiles/local-default/orca-data.json"
+    defaults=${orcaSettings}
+    mkdir -p "$(dirname "$target")"
+
+    if [ -f "$target" ]; then
+      tmp="$target.tmp.$$"
+      ${pkgs.jq}/bin/jq -s '
+        def deepmerge(a; b):
+          if (a | type) == "object" and (b | type) == "object" then
+            reduce (b | keys_unsorted[]) as $key
+              (a;
+                .[$key] = if has($key)
+                  then deepmerge(.[$key]; b[$key])
+                  else b[$key]
+                end)
+          else b
+          end;
+
+        . as $documents | deepmerge($documents[0]; $documents[1])
+      ' "$target" "$defaults" > "$tmp"
+      chmod --reference="$target" "$tmp"
+      mv "$tmp" "$target"
+    else
+      cp "$defaults" "$target"
+    fi
+  '';
   orcaCli = pkgs.writeShellScriptBin "orca" ''
     set -euo pipefail
     export ORCA_NODE_OPTIONS="''${NODE_OPTIONS-}"
@@ -27,6 +96,12 @@ let
     cfg.pairingAddress
   ]
   ++ cfg.extraArgs;
+  headlessOrca = pkgs.writeShellScript "orca-headless" ''
+    exec ${pkgs.xvfb-run}/bin/xvfb-run \
+      --auto-servernum \
+      --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
+      ${cfg.package}/bin/orca-ide ${lib.escapeShellArgs serveArgs}
+  '';
 in
 {
   options.my.services.orca = {
@@ -63,7 +138,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.file.".local/bin/orca".source = "${orcaCli}/bin/orca";
+    home.activation.orcaSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      ${mergeOrcaSettings}
+    '';
+    home.file.".local/bin/orca" = {
+      source = "${orcaCli}/bin/orca";
+      force = true;
+    };
     programs.zsh.initContent = lib.mkBefore ''
       export ORCA_CLI_COMMAND="orca"
     '';
@@ -79,8 +160,12 @@ in
 
       Service = {
         Type = "simple";
+        WorkingDirectory = config.home.homeDirectory;
         Environment = [ "LIBGL_ALWAYS_SOFTWARE=1" ];
-        ExecStart = "${cfg.package}/bin/orca-ide ${lib.escapeShellArgs serveArgs}";
+        StandardOutput = "journal";
+        StandardError = "journal";
+        SyslogIdentifier = "orca";
+        ExecStart = headlessOrca;
         Restart = "on-failure";
         RestartPreventExitStatus = 3;
         RestartSec = 5;
