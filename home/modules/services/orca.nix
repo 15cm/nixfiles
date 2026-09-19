@@ -82,8 +82,24 @@ let
     export ORCA_NODE_REPL_EXTERNAL_MODULE="''${NODE_REPL_EXTERNAL_MODULE-}"
     unset NODE_OPTIONS
     unset NODE_REPL_EXTERNAL_MODULE
+
+    # Resolve the active profile target instead of capturing cfg.package's
+    # store path. This keeps the CLI usable after a Nix/Home Manager switch,
+    # while an already-installed wrapper remains unchanged.
+    if ! orca_ide="$(command -v orca-ide)"; then
+      echo "orca: unable to find orca-ide in PATH" >&2
+      exit 127
+    fi
+    orca_ide="$(readlink -f "$orca_ide")"
+    orca_root="$(dirname "$(dirname "$orca_ide")")"
+    cli_entrypoint="$orca_root/opt/orca-ide/resources/app.asar.unpacked/out/cli/index.js"
+    if [ ! -f "$cli_entrypoint" ]; then
+      echo "orca: CLI entrypoint not found: $cli_entrypoint" >&2
+      exit 1
+    fi
+
     ELECTRON_RUN_AS_NODE=1 exec ${lib.getExe pkgs.electron_43} \
-      "${cfg.package}/opt/orca-ide/resources/app.asar.unpacked/out/cli/index.js" "$@"
+      "$cli_entrypoint" "$@"
   '';
   serveArgs = [
     "serve"
