@@ -92,7 +92,7 @@ in
           {
             name = "default";
             match_content = ".*";
-            override_duration = 10000;
+            override_duration = 30000;
           }
         ];
       };

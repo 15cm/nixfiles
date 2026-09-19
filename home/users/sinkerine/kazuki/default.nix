@@ -16,7 +16,13 @@
   my.profiles.trusted.enable = true;
   my.essentials.gui.enable = true;
 
-  home.packages = with pkgs; [ pkgsStable.handbrake ];
+  home.packages = with pkgs; [
+    pkgsStable.handbrake
+    p7zip
+    wineWow64Packages.stable
+    winetricks
+    (retroarch.withCores (libretro: [ libretro.mgba ]))
+  ];
 
   my.programs.hyprland = {
     extraSessionVariables = {

@@ -185,6 +185,7 @@ in
   };
 
   programs.virt-manager.enable = true;
+  programs.steam.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
 
   my.services.aria2 = {

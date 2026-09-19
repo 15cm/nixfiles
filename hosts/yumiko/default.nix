@@ -31,6 +31,18 @@ with lib;
     };
   };
 
+  security.sudo.extraRules = [
+    {
+      users = [ "sinkerine" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
+
    boot.kernelPackages = mkForce pkgs.linuxPackages_6_18;
    my.essentials.zfs = {
      enable = true;

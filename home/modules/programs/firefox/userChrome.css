@@ -8,6 +8,12 @@
     display: none;
 }
 
+/* Sidebery: default width; inline splitter width remains draggable */
+#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] {
+    width: 150px;
+    min-width: 150px !important;
+}
+
 /* Auto-hide sidebar when fullscreen */
 #main-window[inFullscreen] #sidebar-box,
 #main-window[inFullscreen] #sidebar-splitter {

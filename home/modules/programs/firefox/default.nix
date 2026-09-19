@@ -54,6 +54,17 @@ in {
         id = 0;
         name = "default";
         userChrome = (builtins.readFile ./userChrome.css);
+        settings = {
+          "sidebar.backupState" = builtins.toJSON {
+            command = "_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action";
+            panelOpen = true;
+            panelWidth = 150;
+            bookmarksExpandedFolders = [ ];
+            launcherWidth = 55;
+            launcherExpanded = false;
+            launcherVisible = false;
+          };
+        };
         search = {
           force = true;
           default = "google";

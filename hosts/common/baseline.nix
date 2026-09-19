@@ -53,7 +53,7 @@ with lib;
         "https://cache.nixos.org/"
         "https://cache.numtide.com"
         "https://hyprland.cachix.org"
-        "https://cuda-maintainers.cachix.org"
+        "https://cache.nixos-cuda.org"
         "https://cache.saumon.network/proxmox-nixos"
       ];
       trusted-public-keys = config.my.trusts.cache.pubKeys;

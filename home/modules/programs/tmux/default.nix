@@ -48,11 +48,12 @@ in {
           continuum
         ]);
     };
-    # Place my config between mkBefore and mkDefault
-    xdg.configFile."tmux/tmux.conf".text = pipe ./tmux.conf.jinja [
+    # Keep custom settings in Home Manager's generated config so the module's
+    # prefix and any extraConfig from other modules (such as Powerline) are
+    # preserved.
+    programs.tmux.extraConfig = pipe ./tmux.conf.jinja [
       (templateFile "tmux.conf" templateData)
       builtins.readFile
-      (mkOrder 600)
     ];
   };
 }
