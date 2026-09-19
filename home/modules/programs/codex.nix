@@ -256,6 +256,7 @@ in {
 
           approval_policy = "never";
           sandbox_mode = "danger-full-access";
+          bypass_hook_trust = true;
 
           tui.status_line = [
             "model-with-reasoning"

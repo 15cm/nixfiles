@@ -33,6 +33,7 @@ writeShellApplication {
 
     exec ${lib.getExe codex} \
       -C "$root" \
+      --dangerously-bypass-hook-trust \
       -c "projects.$root.trust_level=\"trusted\"" \
       "$@"
   '';
