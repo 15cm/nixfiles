@@ -145,7 +145,7 @@ in
           users = [ initCfg.user ];
           commands = [
             {
-              command = "${dockerServiceInit}/bin/docker-service-init";
+              command = "/run/current-system/sw/bin/docker-service-init";
               options = [ "NOPASSWD" ];
             }
           ];
