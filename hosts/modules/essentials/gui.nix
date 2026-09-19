@@ -60,6 +60,8 @@ in
       # For easy effects https://github.com/nix-community/home-manager/issues/3113
       # Required by pipewire rt mod and Flatpak.
       programs.dconf.enable = true;
+      # Provide the AT-SPI accessibility bus used by CUA for UI inspection.
+      services.gnome.at-spi2-core.enable = true;
       programs.nix-ld.enable = true;
       security.rtkit.enable = true;
       services.pipewire = {

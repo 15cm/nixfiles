@@ -60,6 +60,9 @@
     jailed-agents = {
       url = "github:andersonjoseph/jailed-agents";
     };
+    cua = {
+      url = "github:trycua/cua";
+    };
     fcitx5-vinput = {
       url = "github:xifan2333/fcitx5-vinput";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -85,6 +88,7 @@
       nixvim,
       llm-agents,
       jailed-agents,
+      cua,
       fcitx5-vinput,
       proxmox-nixos,
       ...
@@ -105,6 +109,7 @@
           nixpkgs
           llm-agents
           fcitx5-vinput
+          cua
           ;
       };
       packages = forAllSystems (

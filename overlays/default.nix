@@ -2,6 +2,7 @@
   nixpkgs,
   llm-agents,
   fcitx5-vinput,
+  cua,
   ...
 }:
 
@@ -28,11 +29,19 @@ in
     final: _prev:
     let
       llmAgentsPkgs = llmAgentsFor final.stdenv.hostPlatform.system;
+      cuaPkgs = cua.packages.${final.stdenv.hostPlatform.system};
+      cuaDriver = cuaPkgs.cua-driver;
     in
     (import ../pkgs {
       pkgs = final;
     })
     // {
+      cua-driver = cuaDriver;
+      cua = cuaDriver.overrideAttrs (old: {
+        postInstall = (old.postInstall or "") + ''
+          ln -s cua-driver "$out/bin/cua"
+        '';
+      });
       inherit (llmAgentsPkgs) codex;
       "claude-code" = llmAgentsPkgs.claude-code;
       inherit (fcitx5VinputFor final.stdenv.hostPlatform.system) fcitx5-vinput;
