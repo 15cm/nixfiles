@@ -45,6 +45,7 @@
   pipewire,
   pnpmConfigHook,
   pnpm_10,
+  pnpm_11,
   pkg-config,
   python3,
   stdenv,
@@ -54,25 +55,27 @@
 
 let
   electron = electron_43;
-  pnpm = pnpm_10;
+  pnpm = pnpm_11;
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "orca-ide";
-  version = "1.4.178-rc.2-d0fe1ec";
+  # Keep this update method: append the date and timestamp through seconds
+  # to the upstream version, and pin the matching commit from custom.
+  version = "1.4.197-20260919.005758";
 
-  # Pinned from the custom branch: https://github.com/15cm/orca/tree/custom
+  # Always update from the custom branch commit; keep this method honored.
   src = fetchFromGitHub {
     owner = "15cm";
     repo = "orca";
-    rev = "d0fe1ec4a8e7c6320683c795979c08acec53566d";
-    hash = "sha256-ojD9ynyGALtIO/MDD5UmxuNHe1RkgBY/mKVl67R1Xak=";
+    rev = "af5f1827594d1c984fdba601b297d8a2e2805d3a";
+    hash = "sha256-ocIMWQ35QLATIPHkSgztKMaEpmdrrwuaiyQTzjQ2MCU=";
   };
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     inherit pnpm;
     fetcherVersion = 4;
-    hash = "sha256-kBKZZrxwCEEUwt0NDQYBj5qtcXGU1WePoDuh5/ULRTU=";
+    hash = "sha256-bJZ1dmrlfXe7j0Sw+/n7fVusz/dtjejWk2HaU4Cngsw=";
   };
 
   nativeBuildInputs = [
@@ -139,7 +142,7 @@ stdenv.mkDerivation (finalAttrs: {
     # release hook's online Electron download and native rebuild.
     substituteInPlace config/electron-builder.config.cjs \
       --replace-fail \
-        "beforeBuild: electronBuilderNativeRebuild," \
+        "  beforeBuild: electronBuilderNativeRebuild," \
         "beforeBuild: null,"
     # Static musl helper binaries have no dynamic symbol table. Keep the
     # upstream relocated-symbol check for binaries with DT_NEEDED entries.
@@ -149,17 +152,9 @@ stdenv.mkDerivation (finalAttrs: {
         "const providerViolations = neededLibraries.size > 0 && Object.values(RELOCATED_SYMBOL_PROVIDERS).some("
     # Nix's current Electron and compiler target the host nixpkgs glibc, not
     # the upstream Ubuntu 20.04 compatibility floor.
-    substituteInPlace config/electron-builder.config.cjs \
-      --replace-fail \
-        "verifyLinuxGlibcFloor(context.appOutDir)" \
-        "void context.appOutDir"
-    # Electron's ELECTRON_RUN_AS_NODE mode sets PR_SET_NO_NEW_PRIVS on Linux.
-    # Orca's detached terminal daemon must remain able to launch explicitly
-    # authorized host helpers such as the gui-sandbox root-owned CLI.
-    substituteInPlace src/main/daemon/daemon-init.ts \
-      --replace-fail \
-        "          ...(relocatedHost ? { execPath: relocatedHost.execPath } : {})," \
-        "          ...(process.platform === 'linux' ? { execPath: '${nodejs_24}/bin/node' } : relocatedHost ? { execPath: relocatedHost.execPath } : {}),"
+    sed -i \
+      '/^[[:space:]]*verifyLinuxGlibcFloor(context.appOutDir, {$/,+2c\\      void context.appOutDir' \
+      config/electron-builder.config.cjs
   '';
 
   buildPhase = ''

@@ -145,9 +145,7 @@ in
       source = "${orcaCli}/bin/orca";
       force = true;
     };
-    programs.zsh.initContent = lib.mkBefore ''
-      export ORCA_CLI_COMMAND="orca"
-    '';
+    home.sessionVariables.ORCA_CLI_COMMAND = "orca";
     home.packages = [ cfg.package orcaCli ] ++ lib.optional (cfg.mode == "headless") pkgs.xorg-server;
 
     systemd.user.services.orca = lib.mkIf (cfg.mode == "headless") {
@@ -161,7 +159,10 @@ in
       Service = {
         Type = "simple";
         WorkingDirectory = config.home.homeDirectory;
-        Environment = [ "LIBGL_ALWAYS_SOFTWARE=1" ];
+        Environment = [
+          "LIBGL_ALWAYS_SOFTWARE=1"
+          "ORCA_CLI_COMMAND=orca"
+        ];
         StandardOutput = "journal";
         StandardError = "journal";
         SyslogIdentifier = "orca";
