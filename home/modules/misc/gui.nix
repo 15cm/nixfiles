@@ -196,7 +196,7 @@ in
           nix-direnv.enable = true;
           config.whitelist.prefix = [
             "${config.home.homeDirectory}/tech/repo/"
-            "${config.home.homeDirectory}/orca/workspaces/"
+            "${config.home.homeDirectory}/orca/"
           ];
         };
         my.services.clipper = {

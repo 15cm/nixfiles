@@ -25,12 +25,144 @@ in
   environment.systemPackages = with pkgs; [
     easyrsa
     brightnessctl
+    xray
   ];
+
+  programs.proxychains = {
+    enable = true;
+    package = pkgs.proxychains-ng;
+    chain.type = "strict";
+    proxyDNS = true;
+    proxies.xray-http = {
+      enable = true;
+      type = "http";
+      host = "127.0.0.1";
+      port = 10808;
+    };
+  };
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = {
       hashedPassword.neededForUsers = true;
+      xrayClientId = {
+        owner = "xray";
+        group = "xray";
+      };
+    };
+    templates."xray.json" = {
+      owner = "xray";
+      group = "xray";
+      content = builtins.toJSON {
+        log.loglevel = "warning";
+        inbounds = [
+          {
+            tag = "socks-in";
+            listen = "127.0.0.1";
+            port = 10809;
+            protocol = "socks";
+            settings = {
+              auth = "noauth";
+              udp = true;
+            };
+          }
+          {
+            tag = "http-in";
+            listen = "127.0.0.1";
+            port = 10808;
+            protocol = "http";
+          }
+        ];
+        outbounds = [
+          {
+            tag = "amane";
+            protocol = "vless";
+            settings.vnext = [
+              {
+                address = "direct.15cm.net";
+                port = config.my.ports.xray.listen;
+                users = [
+                  {
+                    id = config.sops.placeholder.xrayClientId;
+                    encryption = "none";
+                    flow = "xtls-rprx-vision";
+                  }
+                ];
+              }
+            ];
+            streamSettings = {
+              network = "tcp";
+              security = "reality";
+              realitySettings = {
+                fingerprint = "chrome";
+                serverName = "www.cloudflare.com";
+                publicKey = "IM4pgDQbcql0ZIrzUWeU0HKE8GWbqsAV1t3c-PC20ks";
+                shortId = "a1b2c3d4";
+              };
+            };
+          }
+          {
+            tag = "sachi";
+            protocol = "vless";
+            settings.vnext = [
+              {
+                address = "mado.moe";
+                port = config.my.ports.xray.listen;
+                users = [
+                  {
+                    id = config.sops.placeholder.xrayClientId;
+                    encryption = "none";
+                    flow = "xtls-rprx-vision";
+                  }
+                ];
+              }
+            ];
+            streamSettings = {
+              network = "tcp";
+              security = "reality";
+              realitySettings = {
+                fingerprint = "chrome";
+                serverName = "www.cloudflare.com";
+                publicKey = "-6pvY7DzL_M7q-7fNeZZrnxosjIFyNPltVCo4rFu1yo";
+                shortId = "e5f60718";
+              };
+            };
+          }
+          {
+            tag = "direct";
+            protocol = "freedom";
+          }
+        ];
+        routing = {
+          domainStrategy = "IPIfNonMatch";
+          balancers = [
+            {
+              tag = "servers";
+              selector = [ "amane" "sachi" ];
+            }
+          ];
+          rules = [
+            {
+              type = "field";
+              inboundTag = [ "socks-in" "http-in" ];
+              domain = [ "geosite:cn" ];
+              outboundTag = "direct";
+            }
+            {
+              type = "field";
+              inboundTag = [ "socks-in" "http-in" ];
+              ip = [ "geoip:cn" ];
+              outboundTag = "direct";
+            }
+            {
+              type = "field";
+              inboundTag = [ "socks-in" "http-in" ];
+              balancerTag = "servers";
+            }
+          ];
+        };
+      };
+      restartUnits = [ "xray.service" ];
     };
     age = {
       keyFile = "/keys/age/${hostname}.txt";
@@ -38,6 +170,21 @@ in
     };
     # https://github.com/Mic92/sops-nix/issues/167
     gnupg.sshKeyPaths = [ ];
+  };
+
+  users.users.xray = {
+    group = "xray";
+    isSystemUser = true;
+  };
+  users.groups.xray = { };
+  services.xray = {
+    enable = true;
+    settingsFile = config.sops.templates."xray.json".path;
+  };
+  systemd.services.xray.serviceConfig = {
+    DynamicUser = mkForce false;
+    User = "xray";
+    Group = "xray";
   };
 
   services.openssh = {

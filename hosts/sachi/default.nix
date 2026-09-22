@@ -31,46 +31,30 @@ in
   environment.systemPackages = with pkgs; [
     deploy-rs
     nvidia-container-toolkit
-    v2ray
+    xray
   ];
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
     secrets = {
       hashedPassword.neededForUsers = true;
-      v2rayClientId = {
-        owner = "v2ray";
-        group = "v2ray";
+      xrayClientId = {
+        owner = "xray";
+        group = "xray";
       };
-      v2raySniClientId = {
-        owner = "v2ray";
-        group = "v2ray";
-      };
-      v2rayTlsCert = {
-        format = "binary";
-        sopsFile = ./zrepl/sachi.m.mado.moe.crt;
-        owner = "v2ray";
-        group = "v2ray";
-      };
-      v2rayTlsKey = {
-        format = "binary";
-        sopsFile = ./zrepl/sachi.m.mado.moe.key;
-        owner = "v2ray";
-        group = "v2ray";
+      xrayPrivateKey = {
+        owner = "xray";
+        group = "xray";
       };
     };
-    templates."v2ray.json" = {
-      owner = "v2ray";
-      group = "v2ray";
+    templates."xray.json" = {
+      owner = "xray";
+      group = "xray";
       content =
         let
-          vmessClient = {
-            id = config.sops.placeholder.v2rayClientId;
-            alterId = 0;
-          };
-          vmessSniClient = {
-            id = config.sops.placeholder.v2raySniClientId;
-            alterId = 0;
+          xrayClient = {
+            id = config.sops.placeholder.xrayClientId;
+            flow = "xtls-rprx-vision";
           };
         in
         builtins.toJSON {
@@ -78,27 +62,44 @@ in
           inbounds = [
             {
               listen = "0.0.0.0";
-              port = config.my.ports.v2ray.listen;
-              protocol = "vmess";
-              settings.clients = [ vmessClient ];
-              streamSettings.network = "tcp";
-            }
-            {
-              listen = "0.0.0.0";
-              port = config.my.ports.v2ray.listenTls;
-              protocol = "vmess";
-              settings.clients = [ vmessSniClient ];
+              port = config.my.ports.xray.listen;
+              protocol = "vless";
+              settings = {
+                clients = [ xrayClient ];
+                decryption = "none";
+              };
               streamSettings = {
                 network = "tcp";
-                security = "tls";
-                tlsSettings = {
-                  serverName = "google-analytics.com";
-                  certificates = [
-                    {
-                      certificateFile = config.sops.secrets.v2rayTlsCert.path;
-                      keyFile = config.sops.secrets.v2rayTlsKey.path;
-                    }
-                  ];
+                security = "reality";
+                realitySettings = {
+                  show = false;
+                  dest = "www.cloudflare.com:443";
+                  xver = 0;
+                  serverNames = [ "www.cloudflare.com" ];
+                  privateKey = config.sops.placeholder.xrayPrivateKey;
+                  shortIds = [ "e5f60718" ];
+                };
+              };
+            }
+            # Mobile-only SNI spoofing profile. Excluded from normal client routing.
+            {
+              listen = "0.0.0.0";
+              port = config.my.ports.xray.mobileSachi;
+              protocol = "vless";
+              settings = {
+                clients = [ xrayClient ];
+                decryption = "none";
+              };
+              streamSettings = {
+                network = "tcp";
+                security = "reality";
+                realitySettings = {
+                  show = false;
+                  dest = "www.paypal.com:443";
+                  xver = 0;
+                  serverNames = [ "www.paypal.com" ];
+                  privateKey = config.sops.placeholder.xrayPrivateKey;
+                  shortIds = [ "27323628" ];
                 };
               };
             }
@@ -109,7 +110,7 @@ in
             }
           ];
         };
-      restartUnits = [ "v2ray.service" ];
+      restartUnits = [ "xray.service" ];
     };
     age = {
       keyFile = "/keys/age/${hostname}.txt";
@@ -254,23 +255,23 @@ in
     enable = true;
     useRoutingFeatures = "server";
   };
-  users.users.v2ray = {
-    group = "v2ray";
+  users.users.xray = {
+    group = "xray";
     isSystemUser = true;
   };
-  users.groups.v2ray = { };
-  services.v2ray = {
+  users.groups.xray = { };
+  services.xray = {
     enable = true;
-    configFile = config.sops.templates."v2ray.json".path;
+    settingsFile = config.sops.templates."xray.json".path;
   };
-  systemd.services.v2ray.serviceConfig = {
+  systemd.services.xray.serviceConfig = {
     DynamicUser = mkForce false;
-    User = "v2ray";
-    Group = "v2ray";
+    User = "xray";
+    Group = "xray";
   };
-  networking.firewall.allowedTCPPorts = with config.my.ports.v2ray; [
-    listen
-    listenTls
+  networking.firewall.allowedTCPPorts = [
+    config.my.ports.xray.listen
+    config.my.ports.xray.mobileSachi
   ];
   my.services.proxmox = {
     enable = true;

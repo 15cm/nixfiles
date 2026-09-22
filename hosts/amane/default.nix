@@ -22,28 +22,73 @@ with lib;
     defaultSopsFile = ./secrets.yaml;
     secrets = {
       hashedPassword.neededForUsers = true;
-      v2rayClientId = {
-        owner = "v2ray";
-        group = "v2ray";
+      xrayClientId = {
+        owner = "xray";
+        group = "xray";
+      };
+      xrayPrivateKey = {
+        owner = "xray";
+        group = "xray";
       };
     };
-    templates."v2ray.json" = {
-      owner = "v2ray";
-      group = "v2ray";
+    templates."xray.json" = {
+      owner = "xray";
+      group = "xray";
       content = builtins.toJSON {
         log.loglevel = "warning";
         inbounds = [
           {
             listen = "0.0.0.0";
-            port = config.my.ports.v2ray.listen;
-            protocol = "vmess";
-            settings.clients = [
-              {
-                id = config.sops.placeholder.v2rayClientId;
-                alterId = 0;
-              }
-            ];
-            streamSettings.network = "tcp";
+            port = config.my.ports.xray.listen;
+            protocol = "vless";
+            settings = {
+              clients = [
+                {
+                  id = config.sops.placeholder.xrayClientId;
+                  flow = "xtls-rprx-vision";
+                }
+              ];
+              decryption = "none";
+            };
+            streamSettings = {
+              network = "tcp";
+              security = "reality";
+              realitySettings = {
+                show = false;
+                dest = "www.cloudflare.com:443";
+                xver = 0;
+                serverNames = [ "www.cloudflare.com" ];
+                privateKey = config.sops.placeholder.xrayPrivateKey;
+                shortIds = [ "a1b2c3d4" ];
+              };
+            };
+          }
+          # Mobile-only SNI spoofing profile. Excluded from normal client routing.
+          {
+            listen = "0.0.0.0";
+            port = config.my.ports.xray.mobileAmane;
+            protocol = "vless";
+            settings = {
+              clients = [
+                {
+                  id = config.sops.placeholder.xrayClientId;
+                  flow = "xtls-rprx-vision";
+                }
+              ];
+              decryption = "none";
+            };
+            streamSettings = {
+              network = "tcp";
+              security = "reality";
+              realitySettings = {
+                show = false;
+                dest = "www.paypal.com:443";
+                xver = 0;
+                serverNames = [ "www.paypal.com" ];
+                privateKey = config.sops.placeholder.xrayPrivateKey;
+                shortIds = [ "8c614ced" ];
+              };
+            };
           }
         ];
         outbounds = [
@@ -52,7 +97,7 @@ with lib;
           }
         ];
       };
-      restartUnits = [ "v2ray.service" ];
+      restartUnits = [ "xray.service" ];
     };
     age = {
       keyFile = "/keys/age/${hostname}.txt";
@@ -71,7 +116,7 @@ with lib;
     };
   };
 
-  environment.systemPackages = with pkgs; [ v2ray ];
+  environment.systemPackages = with pkgs; [ xray ];
 
   users.users.sinkerine.linger = true;
 
@@ -91,7 +136,8 @@ with lib;
     useDHCP = true;
     firewall = {
       allowedTCPPorts = [
-        config.my.ports.v2ray.listen
+        config.my.ports.xray.listen
+        config.my.ports.xray.mobileAmane
         # Coturn
         3478
         5349
@@ -133,19 +179,19 @@ with lib;
     enable = true;
     useRoutingFeatures = "server";
   };
-  users.users.v2ray = {
-    group = "v2ray";
+  users.users.xray = {
+    group = "xray";
     isSystemUser = true;
   };
-  users.groups.v2ray = { };
-  services.v2ray = {
+  users.groups.xray = { };
+  services.xray = {
     enable = true;
-    configFile = config.sops.templates."v2ray.json".path;
+    settingsFile = config.sops.templates."xray.json".path;
   };
-  systemd.services.v2ray.serviceConfig = {
+  systemd.services.xray.serviceConfig = {
     DynamicUser = mkForce false;
-    User = "v2ray";
-    Group = "v2ray";
+    User = "xray";
+    Group = "xray";
   };
   my.services.gateway = {
     enable = true;

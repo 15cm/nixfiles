@@ -90,12 +90,12 @@ in
         show_actions = true;
         # Noctalia 5.1 replaced the legacy `filters` array with named filter
         # tables. Keep a catch-all so external notifications stay visible for
-        # 30 seconds, including Orca's desktop notifications.
+        # 15 seconds, including Orca's desktop notifications.
         filter_order = [ "default" ];
         filter.default = {
           enabled = true;
           match_content = ".*";
-          override_duration = 30000;
+          override_duration = 15000;
         };
       };
       osd.kinds = {

@@ -14,7 +14,7 @@ in
       tailscale = attrsOption;
       grafana = attrsOption;
       aria2 = attrsOption;
-      v2ray = attrsOption;
+      xray = attrsOption;
     };
   };
   config.my.ports.gateway = {
@@ -59,8 +59,9 @@ in
   config.my.ports.aria2 = {
     listen = 6800;
   };
-  config.my.ports.v2ray = {
-    listen = 10086;
-    listenTls = 10087;
+  config.my.ports.xray = {
+    listen = 10087;
+    mobileAmane = 10088;
+    mobileSachi = 10089;
   };
 }
