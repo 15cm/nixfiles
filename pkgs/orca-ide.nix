@@ -61,14 +61,14 @@ stdenv.mkDerivation (finalAttrs: {
   pname = "orca-ide";
   # Keep this update method: append the date and timestamp through seconds
   # to the upstream version, and pin the matching commit from custom.
-  version = "1.4.197-20260922.080847";
+  version = "1.4.197-20260922.091304";
 
   # Always update from the custom branch commit; keep this method honored.
   src = fetchFromGitHub {
     owner = "15cm";
     repo = "orca";
-    rev = "cdf06662936c03f333c4917cea9e74078702e55f";
-    hash = "sha256-8vXMjOKOiP5fwIHB97caRBgeFnHuN5RggkHVSC0pCLs=";
+    rev = "3c420c958241c4717fbb4feb89a510d0c9a8f819";
+    hash = "sha256-footYr3KycPEHhEMHL9utrQhqekd6b4HinfCDnVg3rE=";
   };
 
   pnpmDeps = fetchPnpmDeps {

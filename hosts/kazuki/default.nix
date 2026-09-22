@@ -209,6 +209,59 @@ in
       config.my.ip.ranges.tailscale
     ];
   };
+
+  # Local OpenAI-compatible inference endpoint for Hermes and other agents.
+  systemd.services.llama-qwen35 = {
+    description = "llama.cpp Qwen3.5 9B inference server";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    unitConfig = {
+      ConditionPathExists = [
+        "/home/sinkerine/.cache/llama.cpp/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive-Q4_K_M.gguf"
+        "/home/sinkerine/.cache/llama.cpp/mmproj-Qwen3.5-9B-Uncensored-HauhauCS-Aggressive-BF16.gguf"
+      ];
+    };
+    serviceConfig = {
+      User = "sinkerine";
+      Group = "users";
+      ExecStart = ''
+        ${lib.getExe' pkgs.llama-cpp-cuda "llama-server"} \
+          --model /home/sinkerine/.cache/llama.cpp/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive-Q4_K_M.gguf \
+          --alias Qwen3.5-9B-Uncensored-HauhauCS-Aggressive-Q4_K_M \
+          --mmproj /home/sinkerine/.cache/llama.cpp/mmproj-Qwen3.5-9B-Uncensored-HauhauCS-Aggressive-BF16.gguf \
+          --host 127.0.0.1 \
+          --port 8081 \
+          --ctx-size 131072 \
+          --parallel 1 \
+          --n-gpu-layers 32 \
+          --flash-attn on \
+          --cache-type-k q8_0 \
+          --cache-type-v q8_0 \
+          --chat-template-kwargs '{"enable_thinking":false}' \
+          --metrics
+      '';
+      Restart = "on-failure";
+      RestartSec = 5;
+      SupplementaryGroups = [ "video" "render" ];
+      NoNewPrivileges = true;
+      PrivateTmp = true;
+      ProtectSystem = "strict";
+      ProtectHome = "read-only";
+      ReadWritePaths = [ "/home/sinkerine/.cache/llama.cpp" ];
+    };
+  };
+
+  services.traefik.dynamicConfigOptions.http = {
+    routers.llamaQwen35 = {
+      rule = "Host(`llama.${hostname}.m.mado.moe`)";
+      middlewares = [ "lan-only@file" ];
+      service = "llamaQwen35";
+    };
+    services.llamaQwen35.loadBalancer.servers = [
+      { url = "http://127.0.0.1:8081"; }
+    ];
+  };
   my.services.smartd.enable = true;
   my.services.metrics = {
     enable = true;
