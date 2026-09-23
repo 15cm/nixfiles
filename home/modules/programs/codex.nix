@@ -63,11 +63,10 @@ with lib; let
   ];
   toml = pkgs.formats.toml {};
   codexModels = {
-    terra = "gpt-5.6-terra";
-    luna = "gpt-5.6-luna";
+    luna = "gpt-6-luna";
   };
   defaultCodexModelName = "sol";
-  defaultCodexModel = "gpt-5.6-${defaultCodexModelName}";
+  defaultCodexModel = "gpt-6-${defaultCodexModelName}";
   notificationsEnabled = false;
   reasoningEfforts = [
     "medium"
